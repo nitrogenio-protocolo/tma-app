@@ -14,34 +14,43 @@ eyeBtn.addEventListener('click', () => {
     }
 });
 
-// 2. Conexão Real com a Carteira (Web3)
+// 2. Conexão com a Carteira (Focada no seu saldo pessoal de 6.71)
 const connectBtn = document.getElementById('connect-trigger');
 
 connectBtn.addEventListener('click', async () => {
     if (window.ethereum) {
         try {
-            // Solicita autorização de acesso
+            // Pede para conectar
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const account = accounts[0];
             
-            connectBtn.innerText = "CONECTANDO...";
+            // FORÇA A REDE BNB (Para achar seus 6.71)
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }], 
+                });
+            } catch (err) {
+                console.log("Rede já está certa ou precisa ser aceita.");
+            }
+
+            connectBtn.innerText = "LENDO SALDO...";
             
-            // Conecta à rede e busca o saldo real
             const provider = new ethers.BrowserProvider(window.ethereum);
             const balance = await provider.getBalance(account);
             const ethBalance = ethers.formatEther(balance);
             
-            // Atualiza o app com seus dados
+            // Atualiza com seu valor real
             currentBalance = parseFloat(ethBalance).toFixed(4) + " BNB";
             balanceVal.innerText = currentBalance;
             connectBtn.innerText = account.substring(0, 6) + "..." + account.substring(38);
             
-            alert("Conectado ao Cofre com sucesso!");
+            alert("Sua carteira pessoal foi lida com sucesso!");
         } catch (error) {
-            alert("Conexão recusada ou erro na rede.");
+            alert("Erro ao ler sua carteira pessoal.");
         }
     } else {
-        alert("Carteira não encontrada. Use o navegador da MetaMask ou Trust Wallet.");
+        alert("Abra este site dentro da sua MetaMask.");
     }
 });
 
