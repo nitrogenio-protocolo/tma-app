@@ -1,0 +1,61 @@
+/* style.css - A ALMA VISUAL DO NITROGÊNIO */
+:root {
+    --azul-nitro: #007AFF; /* O azul de materialização */
+    --branco-puro: #ffffff;
+    --cinza-suave: #f9f9f9;
+    --cinza-texto: #9e9e9e;
+}
+
+/* Ajuste do Cabeçalho */
+.btn-conectar {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px; /* Aumentei o espaço interno */
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre o olho e o texto */
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Ajuste do Saldo */
+.saldo-valor {
+    font-size: 32px; /* Reduzido de 38px */
+    font-weight: 400;
+    margin-top: 5px;
+}
+
+/* Splash Screen com a Materialização Azul */
+#splash {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--branco-puro);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10000;
+}
+
+.materialize-animation {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--azul-nitro);
+    filter: blur(20px);
+    animation: surgimento 2.5s infinite ease-in-out;
+}
+
+@keyframes surgimento {
+    0% { transform: scale(0); opacity: 0; filter: blur(30px); }
+    50% { transform: scale(1.2); opacity: 0.7; filter: blur(10px); background: #00d4ff; }
+    100% { transform: scale(1); opacity: 0; filter: blur(40px); }
+}
+
+/* Cards sem bordas e com feedback */
+.icon-card {
+    background: var(--cinza-suave);
+    border-radius: 18px;
+    transition: all 0.3s ease;
+    border: none !important;
+}
+.icon-card:active { transform: scale(0.92); background: #ececec; }
