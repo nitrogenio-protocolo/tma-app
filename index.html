@@ -20,10 +20,16 @@
     </div>
 
     <div id="home-app" style="opacity: 0; display: none;">
-        <header class="header-app">
-            <div class="logo-text">Nitrogênio</div>
-            <button class="btn-connect">CONECTAR</button>
-        </header>
+        
+<header class="header-app">
+    <div class="logo-text">Nitrogênio</div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <button id="toggle-visibility" style="background: none; border: none; color: #86868b; font-size: 18px; cursor: pointer;">
+            <i class="fa-solid fa-eye"></i>
+        </button>
+        <button class="btn-connect" id="connect-trigger">CONECTAR</button>
+    </div>
+</header>
 
         <div class="balance-section">
             <div class="balance-label">Saldo em Conta</div>
