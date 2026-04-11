@@ -102,6 +102,33 @@ html, body {
     font-weight: 600;
 }
 
+/* --- ESTILO DO ÍCONE DE PRIVACIDADE (OLHO) --- */
+#toggle-visibility {
+    background: none;
+    border: none;
+    color: #86868b;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+#toggle-visibility.active {
+    color: #007AFF; /* Fica azul quando o saldo estiver visível */
+}
+
+#toggle-visibility i {
+    transition: transform 0.2s ease;
+}
+
+#toggle-visibility:active i {
+    transform: scale(0.9); /* Efeito de clique no ícone */
+}
+/* -------------------------------------------- */
+
 .balance-section { padding: 10px 20px; }
 .balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; }
 .balance-amount { font-size: 26px; font-weight: 700; }
