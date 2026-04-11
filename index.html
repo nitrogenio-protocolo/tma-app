@@ -3,85 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitrogênio Protocolo</title>
+    <title>Nitrogênio Protocolo - Dashboard</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: sans-serif; overflow: hidden; background: #FFFFFF; }
+        :root { --blue: #0047AB; --clean-gray: #F8F9FA; --text: #4A4A4A; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Inter', sans-serif; background: #FFFFFF; color: var(--text); overflow-x: hidden; }
         
-        /* Camada Azul Blueberry */
-        .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background-color: #0047AB; display: flex; justify-content: center; 
-            align-items: center; z-index: 100; 
-            transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1); 
-        }
-
-        /* Efeito de Materialização Etérea */
-        .materialize { 
-            text-align: center; color: white; opacity: 0; 
-            transform: scale(0); transition: all 2s ease-out; 
-        }
+        /* Splash Screen */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--blue); display: flex; justify-content: center; align-items: center; z-index: 1000; transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
+        .materialize { text-align: center; color: white; opacity: 0; transform: scale(0.8); transition: 1.5s; }
         .show { opacity: 1; transform: scale(1); }
+        .fox-logo { width: 120px; display: none; margin-bottom: 15px; }
 
-        /* Estilo da SUA Raposa */
-        .fox-logo { 
-            width: 160px; margin-bottom: 20px; display: none; 
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-        }
+        /* Home Principal */
+        .dashboard { padding: 20px; opacity: 0; transition: 1s; display: none; }
+        .active-app { display: block; opacity: 1; }
 
-        /* Dashboard Branco Máximo (Paz) */
-        .dashboard { 
-            background: #FFFFFF; min-height: 100vh; display: flex; 
-            flex-direction: column; justify-content: center; 
-            align-items: center; opacity: 0; transition: opacity 1s; 
-            color: #4A4A4A; 
-        }
-        .dashboard-active { opacity: 1; }
+        header { text-align: center; padding: 20px 0; border-bottom: 1px solid #EEE; }
+        .token-info { background: var(--clean-gray); padding: 15px; border-radius: 12px; margin: 20px 0; text-align: center; }
+        
+        /* Botões de Ação Rápida */
+        .action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
+        .action-btn { background: white; border: 1px solid #EEE; padding: 15px 5px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; cursor: pointer; }
+        .action-btn i { display: block; margin-bottom: 5px; font-size: 1.2rem; }
+
+        /* As 8 Salas do Protocolo */
+        .rooms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .room-card { border: 1px solid #F0F0F0; padding: 20px; border-radius: 12px; font-size: 0.8rem; text-align: center; background: #FFF; transition: 0.3s; }
+        .room-card:active { background: var(--blue); color: white; }
+
+        .footer-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #EEE; display: flex; justify-content: space-around; padding: 15px 0; }
     </style>
 </head>
 <body>
 
-    <div id="blue-screen" class="overlay">
-        <div id="material-container" class="materialize">
+    <div id="splash" class="overlay">
+        <div id="loader" class="materialize">
             <img src="raposa.png" class="fox-logo" id="fox-img">
-            <h1 id="main-text" style="font-weight: 100; letter-spacing: 8px; font-size: 2rem;">DAO</h1>
+            <h1 id="splash-text" style="font-weight: 200; letter-spacing: 5px;">NITROGÊNIO</h1>
         </div>
     </div>
 
-    <div id="main-app" class="dashboard">
-        <p style="color: #BBBBBB; letter-spacing: 3px; font-size: 0.7rem;">PROTOCOLO</p>
-        <h2 style="font-weight: 300; letter-spacing: 5px; font-size: 1.8rem; margin-top: 5px;">NITROGÊNIO</h2>
-        <div style="margin-top: 40px; border: 1px solid #F2F2F2; padding: 30px; border-radius: 15px; width: 250px;">
-            <button style="background: none; border: 1px solid #4A4A4A; color: #4A4A4A; padding: 12px 20px; border-radius: 5px; width: 100%; font-size: 0.8rem; letter-spacing: 1px;">CONECTAR CARTEIRA</button>
+    <div id="app" class="dashboard">
+        <header>
+            <p style="font-size: 0.6rem; letter-spacing: 3px; margin: 0; color: #AAA;">NITROGÊNIO PROTOCOLO</p>
+            <h2 style="font-weight: 300; margin: 5px 0;">Home</h2>
+        </header>
+
+        <div class="token-info">
+            <small>Saldo Token N</small>
+            <div style="font-size: 1.8rem; font-weight: 200;">0.00 N</div>
+            <button style="font-size: 0.6rem; background: #000; color: #FFF; border: none; padding: 5px 10px; border-radius: 4px; margin-top: 5px;">CONECTAR SAFE WALLET</button>
         </div>
+
+        <div class="action-grid">
+            <div class="action-btn">Pagar</div>
+            <div class="action-btn">Receber</div>
+            <div class="action-btn">Escanear</div>
+        </div>
+
+        <h3 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #AAA;">Ecossistema (8 Salas)</h3>
+        <div class="rooms-grid">
+            <div class="room-card">1. Governança</div>
+            <div class="room-card">2. Pool de Liquidez</div>
+            <div class="room-card">3. NFT Alpha</div>
+            <div class="room-card">4. Troca (Pancake)</div>
+            <div class="room-card">5. Cofre (Safe)</div>
+            <div class="room-card">6. Comunidade</div>
+            <div class="room-card">7. Auditoria</div>
+            <div class="room-card">8. Suporte</div>
+        </div>
+
+        <div style="height: 100px;"></div> </div>
+
+    <div class="footer-nav">
+        <span>Home</span>
+        <span>Carteira</span>
+        <span>NFT</span>
+        <span>Config</span>
     </div>
 
     <script>
         window.onload = () => {
-            const container = document.getElementById('material-container');
-            const text = document.getElementById('main-text');
+            const loader = document.getElementById('loader');
             const fox = document.getElementById('fox-img');
-            const blue = document.getElementById('blue-screen');
-            const app = document.getElementById('main-app');
+            const splash = document.getElementById('splash');
+            const app = document.getElementById('app');
 
-            // 1. Materializa DAO (Início da paz)
-            setTimeout(() => container.classList.add('show'), 500);
-
-            // 2. Transição suave para a Raposa + Nome
+            // Sequência de Entrada
+            setTimeout(() => loader.classList.add('show'), 500);
+            setTimeout(() => { fox.style.display = "inline-block"; }, 1000);
+            
+            // Abre o App
             setTimeout(() => {
-                container.classList.remove('show');
-                setTimeout(() => {
-                    text.innerText = "NITROGÊNIO";
-                    text.style.fontSize = "1.4rem";
-                    fox.style.display = "inline-block";
-                    container.classList.add('show');
-                }, 1500);
-            }, 3500);
-
-            // 3. Teletransporte para o Dashboard Branco
-            setTimeout(() => {
-                blue.style.transform = "translateY(-100%)";
-                app.classList.add('dashboard-active');
-            }, 8500);
+                splash.style.transform = "translateY(-100%)";
+                app.classList.add('active-app');
+            }, 5000);
         };
     </script>
 </body>
