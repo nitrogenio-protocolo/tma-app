@@ -3,94 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitrogênio - Experiência de Materialização</title>
+    <title>Nitrogênio Protocolo</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Mantém a paz visual, sem barras de rolagem */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: sans-serif; overflow: hidden; background: #FFFFFF; }
+        
+        /* Camada Azul Blueberry */
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: #0047AB; display: flex; justify-content: center; 
+            align-items: center; z-index: 100; 
+            transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1); 
         }
 
-        /* 💙 Fundo Blueberry da Experiência Inicial */
-        .experience-container {
-            background-color: #0047AB; /* Blueberry */
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10;
-            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); /* Cortina suave */
+        /* Efeito de Materialização Etérea */
+        .materialize { 
+            text-align: center; color: white; opacity: 0; 
+            transform: scale(0); transition: all 2s ease-out; 
+        }
+        .show { opacity: 1; transform: scale(1); }
+
+        /* Estilo da SUA Raposa */
+        .fox-logo { 
+            width: 160px; margin-bottom: 20px; display: none; 
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
         }
 
-        /* ✨ Efeito de Materialização (Escala e Transparência) */
-        .materialize {
-            color: white;
-            font-weight: 200;
-            letter-spacing: 5px;
-            font-size: 2.5rem;
-            
-            opacity: 0;
-            transform: scale(0); /* Começa do zero absoluto */
-            transition: all 1.8s ease-out; /* Materialização lenta e suave */
+        /* Dashboard Branco Máximo (Paz) */
+        .dashboard { 
+            background: #FFFFFF; min-height: 100vh; display: flex; 
+            flex-direction: column; justify-content: center; 
+            align-items: center; opacity: 0; transition: opacity 1s; 
+            color: #4A4A4A; 
         }
-
-        /* Estados de Animação */
-        .materialize.visible {
-            opacity: 1;
-            transform: scale(1); /* Chega ao tamanho normal */
-        }
-
-        /* 🥼 Ambiente Pós-Experiência (Branco Máximo) */
-        .white-realm {
-            background-color: #FFFFFF;
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-
-        .realm-visible {
-            opacity: 1;
-        }
-
+        .dashboard-active { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <div id="experience" class="experience-container">
-        <div id="material-text" class="materialize">DAO</div>
+    <div id="blue-screen" class="overlay">
+        <div id="material-container" class="materialize">
+            <img src="raposa.png" class="fox-logo" id="fox-img">
+            <h1 id="main-text" style="font-weight: 100; letter-spacing: 8px; font-size: 2rem;">DAO</h1>
+        </div>
     </div>
 
-    <div id="realm" class="white-realm">
-        <h2 style="color: #4A4A4A; font-weight: 400; margin-bottom: 30px;">Bem-vindo</h2>
-        <button style="background-color: white; color: #4A4A4A; border: 1px solid #F2F2F2; padding: 15px 30px; border-radius: 50px;">Conectar Carteira</button>
+    <div id="main-app" class="dashboard">
+        <p style="color: #BBBBBB; letter-spacing: 3px; font-size: 0.7rem;">PROTOCOLO</p>
+        <h2 style="font-weight: 300; letter-spacing: 5px; font-size: 1.8rem; margin-top: 5px;">NITROGÊNIO</h2>
+        <div style="margin-top: 40px; border: 1px solid #F2F2F2; padding: 30px; border-radius: 15px; width: 250px;">
+            <button style="background: none; border: 1px solid #4A4A4A; color: #4A4A4A; padding: 12px 20px; border-radius: 5px; width: 100%; font-size: 0.8rem; letter-spacing: 1px;">CONECTAR CARTEIRA</button>
+        </div>
     </div>
 
     <script>
-        const experience = document.getElementById('experience');
-        const text = document.getElementById('material-text');
-        const realm = document.getElementById('realm');
-
         window.onload = () => {
-            // 1. Inicia Materialização de "DAO"
-            setTimeout(() => {
-                text.classList.add('visible');
-            }, 500);
+            const container = document.getElementById('material-container');
+            const text = document.getElementById('main-text');
+            const fox = document.getElementById('fox-img');
+            const blue = document.getElementById('blue-screen');
+            const app = document.getElementById('main-app');
 
-            // 2. DAO desaparece
-            setTimeout(() => {
-                text.classList.remove('visible');
-            }, 3000);
+            // 1. Materializa DAO (Início da paz)
+            setTimeout(() => container.classList.add('show'), 500);
 
-            // 3. Inicia Materialização de "NITROGÊNIO"
+            // 2. Transição suave para a Raposa + Nome
             setTimeout(() => {
-                text.innerText = "NITROGÊNIO";
-                text.classList.add('visible');
-            }, 4500);
+                container.classList.remove('show');
+                setTimeout(() => {
+                    text.innerText = "NITROGÊNIO";
+                    text.style.fontSize = "1.4rem";
+                    fox.style.display = "inline-block";
+                    container.classList.add('show');
+                }, 1500);
+            }, 3500);
 
-            // 4. A Cortina Azul Sobe (O Teletransporte Suave)
+            // 3. Teletransporte para o Dashboard Branco
             setTimeout(() => {
-                experience.style.transform = "translateY(-100%)"; // Sobe a cortina
-                realm.classList.add('realm-visible'); // Revela o branco
-            }, 7500);
+                blue.style.transform = "translateY(-100%)";
+                app.classList.add('dashboard-active');
+            }, 8500);
         };
     </script>
 </body>
