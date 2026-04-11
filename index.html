@@ -4,47 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nitrogênio Protocolo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* RESET BÁSICO */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: #ffffff;
-            overflow: hidden; /* Evita barras de rolagem durante a splash */
+            font-family: -apple-system, sans-serif;
+            overflow-x: hidden;
         }
 
-        /* CONTAINER DA SPLASH */
+        /* --- ESTILO DA SPLASH --- */
         #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #007AFF; /* Azul Nitrogênio */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #007AFF;
+            display: flex; justify-content: center; align-items: center;
             z-index: 10000;
             transition: opacity 0.8s ease-out;
-        }
-
-        .splash-content {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
         }
 
         .splash-text {
             position: absolute;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-weight: bold;
             font-size: 28px;
             text-transform: uppercase;
@@ -52,30 +35,16 @@
             opacity: 0;
         }
 
-        /* 1º PASSO: DAO (PULSO) */
-        #text-dao {
-            animation: fadeInOutPulse 2s forwards ease-in-out;
-            animation-delay: 0.5s;
-        }
+        #text-dao { animation: fadeInOutPulse 2s forwards 0.5s; }
+        #text-nitrogenio { animation: fadeInOut 2s forwards 2.5s; }
 
-        /* 2º PASSO: NITROGÊNIO (APARECE E SOME) */
-        #text-nitrogenio {
-            animation: fadeInOut 2s forwards ease-in-out;
-            animation-delay: 2.5s;
-        }
-
-        /* 3º PASSO: A RAPOSA (MATERIALIZAÇÃO FINAL) */
         #splash-logo {
             position: absolute;
             width: 160px;
             opacity: 0;
             filter: blur(15px) brightness(2);
-            transform: scale(0.8);
-            animation: materializeRa 2.5s forwards ease-in-out;
-            animation-delay: 4.5s;
+            animation: materializeRa 2.5s forwards 4.5s;
         }
-
-        /* --- ANIMAÇÕES --- */
 
         @keyframes fadeInOutPulse {
             0% { opacity: 0; transform: scale(0.8); }
@@ -94,9 +63,54 @@
             100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
         }
 
-        .fade-out {
-            opacity: 0;
-            pointer-events: none;
+        .fade-out { opacity: 0; pointer-events: none; }
+
+        /* --- ESTILO DA HOME --- */
+        .header-app {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; position: sticky; top: 0; background: white; z-index: 100;
+        }
+
+        .logo-text { font-size: 18px; font-weight: 800; color: #007AFF; letter-spacing: 2px; }
+
+        .btn-connect {
+            background: #007AFF; color: white; border: none;
+            padding: 10px 18px; border-radius: 12px; font-size: 12px; font-weight: 600;
+        }
+
+        .balance-section { padding: 10px 20px; }
+        .balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; }
+        .balance-amount { font-size: 26px; font-weight: 700; }
+
+        .action-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 15px; padding: 20px; margin: 15px;
+            background: #f5f5f7; border-radius: 20px;
+        }
+
+        .action-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 8px; font-size: 10px; font-weight: 600; color: #007AFF;
+        }
+
+        .banner-nft {
+            margin: 0 20px 30px; height: 140px;
+            background: linear-gradient(135deg, #001f3f 0%, #007AFF 100%);
+            border-radius: 24px; display: flex; align-items: center;
+            padding: 25px; color: white; position: relative; overflow: hidden;
+        }
+
+        .rooms-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 25px; padding: 0 25px; margin-bottom: 100px;
+        }
+
+        .room-icon { display: flex; justify-content: center; font-size: 24px; color: #444; }
+
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 75px;
+            background: white; border-top: 1px solid #eee;
+            display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px;
         }
     </style>
 </head>
@@ -110,202 +124,63 @@
         </div>
     </div>
 
-    <div style="padding: 40px; text-align: center; font-family: sans-serif;">
-        <h1 style="color: #007AFF;">Protocolo Ativo</h1>
-        <p>Bem-vindo ao ecossistema.</p>
+    <div id="home-app" style="opacity: 0; transition: opacity 1.5s ease-in; display: none;">
+        <header class="header-app">
+            <div class="logo-text">Nitrogênio</div>
+            <button class="btn-connect">CONECTAR</button>
+        </header>
+
+        <div class="balance-section">
+            <div class="balance-label">Saldo em Conta</div>
+            <div class="balance-amount">0.00 N</div>
+        </div>
+
+        <div class="action-bar">
+            <div class="action-item"><i class="fa-solid fa-arrow-up"></i>PAGAR</div>
+            <div class="action-item"><i class="fa-solid fa-arrow-down"></i>RECEBER</div>
+            <div class="action-item"><i class="fa-solid fa-qrcode"></i>SCAN</div>
+            <div class="action-item"><i class="fa-solid fa-right-left"></i>TROCAR</div>
+        </div>
+
+        <div class="banner-nft">
+            <strong>NFT ALPHA</strong>
+            <i class="fa-solid fa-id-badge" style="position: absolute; right: 20px; font-size: 80px; opacity: 0.15;"></i>
+        </div>
+
+        <div class="rooms-grid">
+            <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-headset"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-landmark"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-microchip"></i></div>
+        </div>
+
+        <nav class="nav-bar">
+            <div class="nav-item" style="color: #007AFF;"><i class="fa-solid fa-house" style="font-size: 22px;"></i></div>
+            <div class="nav-item" style="color: #ccc;"><i class="fa-brands fa-telegram" style="font-size: 22px;"></i></div>
+            <div class="nav-item" style="color: #ccc;"><i class="fa-solid fa-circle-question" style="font-size: 22px;"></i></div>
+        </nav>
     </div>
 
     <script>
         window.addEventListener('load', () => {
-            // Tempo total: 0.5s (espera) + 2s (DAO) + 2s (Nitrogênio) + 2.5s (Raposa) = ~7-8 segundos
+            const splash = document.getElementById('splash-screen');
+            const home = document.getElementById('home-app');
+
             setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
                 if (splash) {
                     splash.classList.add('fade-out');
-                    setTimeout(() => splash.remove(), 1000);
+                    setTimeout(() => {
+                        splash.remove();
+                        home.style.display = 'block';
+                        setTimeout(() => { home.style.opacity = '1'; }, 50);
+                    }, 800);
                 }
-            }, 8500); 
+            }, 8000); 
         });
     </script>
 </body>
 </html>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<style>
-    /* ESTILO PROFISSIONAL CLEAN */
-    :root {
-        --blue-nitro: #007AFF;
-        --bg-clean: #ffffff;
-        --text-dark: #1d1d1f;
-        --text-gray: #86868b;
-        --card-gray: #f5f5f7;
-    }
-
-    body {
-        background-color: var(--bg-clean);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        color: var(--text-dark);
-        -webkit-font-smoothing: antialiased;
-    }
-
-    /* HEADER */
-    .header-app {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
-
-    .logo-text {
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        color: var(--blue-nitro);
-        text-transform: uppercase;
-    }
-
-    .btn-connect {
-        background: var(--blue-nitro);
-        color: white;
-        border: none;
-        padding: 10px 18px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-    }
-
-    /* SALDO */
-    .balance-section {
-        padding: 10px 20px;
-        margin-top: 10px;
-    }
-
-    .balance-label {
-        font-size: 11px;
-        color: var(--text-gray);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .balance-amount {
-        font-size: 26px;
-        font-weight: 700;
-        margin-top: 4px;
-    }
-
-    /* AÇÕES RÁPIDAS (ÍCONES) */
-    .action-bar {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        padding: 20px;
-        margin: 15px;
-        background: var(--card-gray);
-        border-radius: 20px;
-    }
-
-    .action-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--blue-nitro);
-    }
-
-    .action-item i {
-        font-size: 20px;
-    }
-
-    /* BANNER ALPHA */
-    .banner-nft {
-        margin: 0 20px 30px;
-        height: 140px;
-        background: linear-gradient(135deg, #001f3f 0%, #007AFF 100%);
-        border-radius: 24px;
-        display: flex;
-        align-items: center;
-        padding: 25px;
-        color: white;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .banner-nft strong { font-size: 20px; z-index: 2; }
-
-    /* GRID DE SALAS (8 ÍCONES) */
-    .rooms-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 25px;
-        padding: 0 25px;
-        margin-bottom: 100px;
-    }
-
-    .room-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24px;
-        color: #444;
-        transition: transform 0.2s;
-    }
-
-    /* RODAPÉ FIXO */
-    .nav-bar {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 75px;
-        background: white;
-        border-top: 1px solid #eee;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding-bottom: 15px;
-    }
-
-    .nav-item { font-size: 22px; color: #ccc; cursor: pointer; }
-    .nav-active { color: var(--blue-nitro); }
-
-</style>
-
-<div id="home-app">
-    <header class="header-app">
-        <div class="logo-text">Nitrogênio</div>
-        <button class="btn-connect">CONECTAR</button>
-    </header>
-
-    <div class="balance-section">
-        <div class="balance-label">Saldo em Conta</div>
-        <div class="balance-amount">0.00 N</div>
-    </div>
-
-    <div class="action-bar">
-        <div class="action-item"><i class="fa-solid fa-arrow-up"></i>PAGAR</div>
-        <div class="action-item"><i class="fa-solid fa-arrow-down"></i>RECEBER</div>
-        <div class="action-item"><i class="fa-solid fa-qrcode"></i>SCAN</div>
-        <div class="action-item"><i class="fa-solid fa-right-left"></i>TROCAR</div>
-    </div>
-
-    <div class="banner-nft">
-        <strong>NFT ALPHA</strong>
-        <i class="fa-solid fa-id-badge" style="position: absolute; right: 20px; font-size: 80px; opacity: 0.15;"></i>
-    </div>
-
-    <div class="rooms-grid">
-        <div class="room-icon"><i class="fa-solid fa-vault"></i></div>      <div class="room-icon"><i class="fa-solid fa-cart-shopping"></i></div> <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>          <div class="room-icon"><i class="fa-solid fa-headset"></i></div>       <div class="room-icon"><i class="fa-solid fa-landmark"></i></div>      <div class="room-icon"><i class="fa-solid fa-users"></i></div>         <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>    <div class="room-icon"><i class="fa-solid fa-microchip"></i></div>     </div>
-
-    <nav class="nav-bar">
-        <div class="nav-item nav-active"><i class="fa-solid fa-house"></i></div>
-        <div class="nav-item"><i class="fa-brands fa-telegram"></i></div>
-        <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
-    </nav>
-</div>
