@@ -4,203 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nitrogênio Protocolo</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --branco-puro: #ffffff;
-            --cinza-suave: #f8f9fa;
-            --cinza-medio: #9e9e9e;
-            --preto-suave: #212121;
-            --sombra: 0 4px 20px rgba(0, 0, 0, 0.03);
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--branco-puro);
-            color: var(--preto-suave);
-        }
-
-        /* --- SPLASH SCREEN --- */
-        #splash {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--branco-puro);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease;
-        }
-
-        .materialize-logo {
-            width: 120px;
-            opacity: 0;
-            filter: blur(15px) brightness(3);
-            transform: scale(0.8);
-            animation: materializar 2.5s forwards ease-in-out;
-        }
-
-        @keyframes materializar {
-            0% { opacity: 0; filter: blur(15px) brightness(3); transform: scale(0.8); }
-            50% { opacity: 0.5; filter: blur(5px) brightness(1.5); transform: scale(1.05); }
-            100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
-        }
-
-        /* --- INTERFACE PRINCIPAL --- */
-        .app-container {
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header-brand {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .btn-conectar {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* --- SALDO --- */
-        .saldo-box {
-            margin-bottom: 40px;
-        }
-        .saldo-label { color: var(--cinza-medio); font-size: 14px; }
-        .saldo-valor { font-size: 38px; font-weight: 300; margin-top: 5px; }
-        .saldo-valor span { font-size: 24px; color: var(--cinza-medio); }
-
-        /* --- GRADES DE ÍCONES --- */
-        .grid-acoes, .grid-salas {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .grid-salas { grid-template-columns: repeat(2, 1fr); }
-
-        .icon-card {
-            background: var(--cinza-suave);
-            aspect-ratio: 1/1;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--cinza-medio);
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .icon-card:active { transform: scale(0.95); background: #f0f0f0; }
-
-        /* Banner NFT */
-        .nft-alpha-banner {
-            width: 100%;
-            height: 180px;
-            background: var(--cinza-suave);
-            border-radius: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #d1d1d1;
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
-
-        /* --- RODAPÉ --- */
-        footer {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%;
-            height: 70px;
-            background: var(--branco-puro);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding-bottom: 10px;
-        }
-
-        .footer-item { color: var(--cinza-medio); cursor: pointer; }
-
-        .hide { opacity: 0; pointer-events: none; }
-    </style>
 </head>
 <body>
 
     <div id="splash">
-        <i data-lucide="layers" class="materialize-logo" style="color: #212121; width: 60px; height: 60px;"></i>
+        <div class="materialize-animation"></div>
     </div>
 
-    <div class="app-container">
-        <header>
-            <div class="header-brand">Nitrogênio</div>
+    <div class="app-container" style="padding: 20px; max-width: 500px; margin: 0 auto;">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div style="font-size: 24px; font-weight: 800;">Nitrogênio</div>
             <button class="btn-conectar">
-                <i data-lucide="eye" width="16"></i>
+                <i data-lucide="eye" width="18"></i>
                 CONECTAR
             </button>
         </header>
 
         <div class="saldo-box">
-            <div class="saldo-label">Saldo Token N</div>
-            <div class="saldo-valor">0.00 <span>N</span></div>
+            <div style="color: #9e9e9e; font-size: 13px;">Saldo Token N</div>
+            <div class="saldo-valor">0.00 <span style="font-size: 20px; color: #ccc;">N</span></div>
         </div>
 
-        <div class="grid-acoes">
-            <div class="icon-card"><i data-lucide="arrow-up-right"></i></div>
-            <div class="icon-card"><i data-lucide="arrow-down-left"></i></div>
-            <div class="icon-card"><i data-lucide="qr-code"></i></div>
-            <div class="icon-card"><i data-lucide="refresh-cw"></i></div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 30px 0;">
+            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="arrow-up-right"></i></div>
+            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="arrow-down-left"></i></div>
+            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="qr-code"></i></div>
+            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="refresh-cw"></i></div>
         </div>
 
-        <div class="nft-alpha-banner">NFT ALPHA</div>
+        <div style="background: #f9f9f9; height: 160px; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #ddd; font-size: 12px; letter-spacing: 3px; margin-bottom: 20px;">
+            NFT ALPHA
+        </div>
 
-        <div class="grid-salas">
-            <div class="icon-card"><i data-lucide="shopping-bag"></i></div>
-            <div class="icon-card"><i data-lucide="landmark"></i></div>
-            <div class="icon-card"><i data-lucide="droplets"></i></div>
-            <div class="icon-card"><i data-lucide="help-circle"></i></div>
-            <div class="icon-card"><i data-lucide="shield-check"></i></div>
-            <div class="icon-card"><i data-lucide="users"></i></div>
-            <div class="icon-card"><i data-lucide="layout"></i></div>
-            <div class="icon-card"><i data-lucide="cpu"></i></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="icon-card" style="height: 120px; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="shopping-cart" width="28"></i></div>
+            <div class="icon-card" style="height: 120px; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="landmark" width="28"></i></div>
         </div>
     </div>
 
-    <footer>
-        <div class="footer-item"><i data-lucide="home"></i></div>
-        <div class="footer-item"><i data-lucide="navigation"></i></div>
-        <div class="footer-item"><i data-lucide="message-square"></i></div>
-    </footer>
-
     <script>
-        // Inicializa Ícones
         lucide.createIcons();
-
-        // Lógica da Splash Screen
         window.addEventListener('load', () => {
             setTimeout(() => {
-                const splash = document.getElementById('splash');
-                splash.classList.add('hide');
-                setTimeout(() => splash.remove(), 800);
-            }, 3000); // 3 segundos de materialização
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => document.getElementById('splash').remove(), 600);
+            }, 2500);
         });
     </script>
 </body>
