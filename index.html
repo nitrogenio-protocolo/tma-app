@@ -3,102 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitrogênio Protocolo - Dashboard</title>
+    <title>Nitrogênio Protocolo</title>
     <style>
-        :root { --blue: #0047AB; --clean-gray: #F8F9FA; --text: #4A4A4A; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Inter', sans-serif; background: #FFFFFF; color: var(--text); overflow-x: hidden; }
-        
-        /* Splash Screen */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--blue); display: flex; justify-content: center; align-items: center; z-index: 1000; transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
-        .materialize { text-align: center; color: white; opacity: 0; transform: scale(0.8); transition: 1.5s; }
-        .show { opacity: 1; transform: scale(1); }
-        .fox-logo { width: 120px; display: none; margin-bottom: 15px; }
+        :root {
+            --branco-max: #FFFFFF;
+            --cinza-suave: #F5F5F5;
+            --cinza-fino: #EEEEEE;
+            --preto-medio: #333333;
+            --blueberry: #1E3A8A;
+        }
 
-        /* Home Principal */
-        .dashboard { padding: 20px; opacity: 0; transition: 1s; display: none; }
-        .active-app { display: block; opacity: 1; }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--branco-max);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--preto-medio);
+            overflow-x: hidden;
+        }
 
-        header { text-align: center; padding: 20px 0; border-bottom: 1px solid #EEE; }
-        .token-info { background: var(--clean-gray); padding: 15px; border-radius: 12px; margin: 20px 0; text-align: center; }
-        
-        /* Botões de Ação Rápida */
-        .action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
-        .action-btn { background: white; border: 1px solid #EEE; padding: 15px 5px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; cursor: pointer; }
-        .action-btn i { display: block; margin-bottom: 5px; font-size: 1.2rem; }
+        /* Animação de Materialização */
+        @keyframes materializar {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* As 8 Salas do Protocolo */
-        .rooms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .room-card { border: 1px solid #F0F0F0; padding: 20px; border-radius: 12px; font-size: 0.8rem; text-align: center; background: #FFF; transition: 0.3s; }
-        .room-card:active { background: var(--blue); color: white; }
+        .app-container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: materializar 0.8s ease-out forwards;
+        }
 
-        .footer-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #EEE; display: flex; justify-content: space-around; padding: 15px 0; }
+        /* Top Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-connect {
+            background: #000;
+            color: #FFF;
+            border: none;
+            border-radius: 25px;
+            padding: 8px 16px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Saldo */
+        .wallet-info {
+            margin-bottom: 25px;
+        }
+
+        .label-saldo {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 4px;
+        }
+
+        .saldo-container {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .valor {
+            font-size: 2.2rem;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        /* Ações Rápidas */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            background: var(--branco-max);
+            border: 1px solid var(--cinza-fino);
+            border-radius: 12px;
+            padding: 15px 0;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        /* Card Protagonista NFT */
+        .nft-hero {
+            background: var(--branco-max);
+            border: 1px solid var(--cinza-suave);
+            border-radius: 18px;
+            padding: 50px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .nft-hero span {
+            color: #BBB;
+            font-weight: 500;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        /* Grid de Salas */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-bottom: 100px;
+        }
+
+        .room-card {
+            background: var(--branco-max);
+            border: 1px solid var(--cinza-suave);
+            padding: 22px 10px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #444;
+        }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--cinza-fino);
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-icon { font-size: 1.4rem; cursor: pointer; }
+        .help-card {
+            border: 1.5px solid var(--cinza-fino);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-    <div id="splash" class="overlay">
-        <div id="loader" class="materialize">
-            <img src="raposa.png" class="fox-logo" id="fox-img">
-            <h1 id="splash-text" style="font-weight: 200; letter-spacing: 5px;">NITROGÊNIO</h1>
+<div class="app-container">
+    
+    <header>
+        <div class="brand">
+            <h2>Nitrogênio</h2>
+            <span style="cursor: pointer; font-size: 1.1rem;">👁️</span>
         </div>
+        <button class="btn-connect" onclick="alert('Conectar Carteira em breve')">CONECTAR CARTEIRA</button>
+    </header>
+
+    <section class="wallet-info">
+        <div class="label-saldo">Saldo Token N</div>
+        <div class="saldo-container">
+            <h1 class="valor">0.00 N</h1>
+        </div>
+    </section>
+
+    <div class="quick-actions">
+        <div class="action-btn">PAGAR</div>
+        <div class="action-btn">RECEBER</div>
+        <div class="action-btn">ESCANEAR</div>
+        <div class="action-btn">TROCAR</div>
     </div>
 
-    <div id="app" class="dashboard">
-        <header>
-            <p style="font-size: 0.6rem; letter-spacing: 3px; margin: 0; color: #AAA;">NITROGÊNIO PROTOCOLO</p>
-            <h2 style="font-weight: 300; margin: 5px 0;">Home</h2>
-        </header>
-
-        <div class="token-info">
-            <small>Saldo Token N</small>
-            <div style="font-size: 1.8rem; font-weight: 200;">0.00 N</div>
-            <button style="font-size: 0.6rem; background: #000; color: #FFF; border: none; padding: 5px 10px; border-radius: 4px; margin-top: 5px;">CONECTAR SAFE WALLET</button>
-        </div>
-
-        <div class="action-grid">
-            <div class="action-btn">Pagar</div>
-            <div class="action-btn">Receber</div>
-            <div class="action-btn">Escanear</div>
-        </div>
-
-        <h3 style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #AAA;">Ecossistema (8 Salas)</h3>
-        <div class="rooms-grid">
-            <div class="room-card">1. Governança</div>
-            <div class="room-card">2. Pool de Liquidez</div>
-            <div class="room-card">3. NFT Alpha</div>
-            <div class="room-card">4. Troca (Pancake)</div>
-            <div class="room-card">5. Cofre (Safe)</div>
-            <div class="room-card">6. Comunidade</div>
-            <div class="room-card">7. Auditoria</div>
-            <div class="room-card">8. Suporte</div>
-        </div>
-
-        <div style="height: 100px;"></div> </div>
-
-    <div class="footer-nav">
-        <span>Home</span>
-        <span>Carteira</span>
-        <span>NFT</span>
-        <span>Config</span>
+    <div class="nft-hero">
+        <span>NFT ALPHA</span>
     </div>
 
-    <script>
-        window.onload = () => {
-            const loader = document.getElementById('loader');
-            const fox = document.getElementById('fox-img');
-            const splash = document.getElementById('splash');
-            const app = document.getElementById('app');
+    <div class="rooms-grid">
+        <div class="room-card">Mercado</div>
+        <div class="room-card">Tesouraria</div>
+        <div class="room-card">Coleta N</div>
+        <div class="room-card">Suporte</div>
+        <div class="room-card">Governo</div>
+        <div class="room-card">Comunidade</div>
+        <div class="room-card">Mural</div>
+        <div class="room-card">Protocolo</div>
+    </div>
 
-            // Sequência de Entrada
-            setTimeout(() => loader.classList.add('show'), 500);
-            setTimeout(() => { fox.style.display = "inline-block"; }, 1000);
-            
-            // Abre o App
-            setTimeout(() => {
-                splash.style.transform = "translateY(-100%)";
-                app.classList.add('active-app');
-            }, 5000);
-        };
-    </script>
+</div>
+
+<footer>
+    <div class="nav-icon">🏠</div>
+    <div class="nav-icon">✈️</div>
+    <div class="help-card">?</div>
+</footer>
+
 </body>
 </html>
