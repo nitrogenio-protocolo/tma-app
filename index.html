@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitrogênio</title>
+    <title>Nitrogênio Protocolo</title>
     <style>
         /* RESET BÁSICO */
         * {
@@ -13,7 +13,8 @@
         }
 
         body {
-            background-color: #ffffff; /* Fundo do site */
+            background-color: #ffffff;
+            overflow: hidden; /* Evita barras de rolagem durante a splash */
         }
 
         /* CONTAINER DA SPLASH */
@@ -23,84 +24,76 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #007AFF; /* TELA AZUL */
+            background-color: #007AFF; /* Azul Nitrogênio */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 1s ease-out; /* Transição de saída */
+            transition: opacity 0.8s ease-out;
         }
 
-        /* CONTEÚDO CENTRALIZADO */
         .splash-content {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
         }
 
-        /* ESTILO COMUM PARA OS TEXTOS */
         .splash-text {
             position: absolute;
             color: #ffffff;
-            font-family: sans-serif; /* Simples e direto */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-weight: bold;
-            font-size: 24px;
+            font-size: 28px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0; /* Começa invisível */
+            letter-spacing: 4px;
+            opacity: 0;
         }
 
-        /* 1º PASSO: EFEITO DAO (PULSO) */
+        /* 1º PASSO: DAO (PULSO) */
         #text-dao {
             animation: fadeInOutPulse 2s forwards ease-in-out;
-            animation-delay: 0.5s; /* Pequeno delay inicial */
+            animation-delay: 0.5s;
         }
 
-        /* 2º PASSO: NITROGÊNIO (SURGIMENTO) */
+        /* 2º PASSO: NITROGÊNIO (APARECE E SOME) */
         #text-nitrogenio {
-            animation: fadeIn 1.5s forwards ease-in-out;
-            animation-delay: 2.5s; /* Aparece após o DAO sumir */
+            animation: fadeInOut 2s forwards ease-in-out;
+            animation-delay: 2.5s;
         }
 
-        /* 3º PASSO: A RAPOSA (MATERIALIZAÇÃO) */
+        /* 3º PASSO: A RAPOSA (MATERIALIZAÇÃO FINAL) */
         #splash-logo {
             position: absolute;
-            width: 150px;
+            width: 160px;
             opacity: 0;
-            /* Efeito de materialização */
             filter: blur(15px) brightness(2);
             transform: scale(0.8);
-            animation: materializeRa 2s forwards ease-in-out;
-            animation-delay: 4s; /* Aparece após o "Nitrogênio" */
+            animation: materializeRa 2.5s forwards ease-in-out;
+            animation-delay: 4.5s;
         }
 
         /* --- ANIMAÇÕES --- */
 
-        /* DAO: Aparece, pulsa e some */
         @keyframes fadeInOutPulse {
-            0% { opacity: 0; transform: scale(0.9); }
-            20% { opacity: 1; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); } /* Pulso */
-            80% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); }
             100% { opacity: 0; transform: scale(1); }
         }
 
-        /* NITROGÊNIO: Apenas aparece e fica */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            50% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
         }
 
-        /* RAPOSA: Materialização (tira o blur e arruma o brilho/escala) */
         @keyframes materializeRa {
             0% { opacity: 0; filter: blur(20px) brightness(5); transform: scale(0.7); }
             100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
         }
 
-        /* CLASSE DE SAÍDA (CHAMADA PELO JS) */
         .fade-out {
             opacity: 0;
             pointer-events: none;
@@ -112,30 +105,26 @@
     <div id="splash-screen">
         <div class="splash-content">
             <div id="text-dao" class="splash-text">DAO</div>
-            
             <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
-            
             <img src="raposa.png" alt="Raposa" id="splash-logo">
         </div>
     </div>
 
-    <div style="padding: 20px; text-align: center;">
-        <h1>O site carregou!</h1>
-        <p>A sequência da splash acabou.</p>
+    <div style="padding: 40px; text-align: center; font-family: sans-serif;">
+        <h1 style="color: #007AFF;">Protocolo Ativo</h1>
+        <p>Bem-vindo ao ecossistema.</p>
     </div>
 
     <script>
-        // Lógica simples para remover a splash após a sequência
         window.addEventListener('load', () => {
-            // O tempo total deve cobrir todas as animações (aproximadamente 7 segundos)
+            // Tempo total: 0.5s (espera) + 2s (DAO) + 2s (Nitrogênio) + 2.5s (Raposa) = ~7-8 segundos
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if (splash) {
                     splash.classList.add('fade-out');
-                    // Remove do DOM após a transição do fade-out
                     setTimeout(() => splash.remove(), 1000);
                 }
-            }, 7000); 
+            }, 8500); 
         });
     </script>
 </body>
