@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitrogênio</title>
+    <style>
+        /* RESET BÁSICO */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background-color: #ffffff; /* Fundo do site */
+        }
+
+        /* CONTAINER DA SPLASH */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #007AFF; /* TELA AZUL */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease-out; /* Transição de saída */
+        }
+
+        /* CONTEÚDO CENTRALIZADO */
+        .splash-content {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+        }
+
+        /* ESTILO COMUM PARA OS TEXTOS */
+        .splash-text {
+            position: absolute;
+            color: #ffffff;
+            font-family: sans-serif; /* Simples e direto */
+            font-weight: bold;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0; /* Começa invisível */
+        }
+
+        /* 1º PASSO: EFEITO DAO (PULSO) */
+        #text-dao {
+            animation: fadeInOutPulse 2s forwards ease-in-out;
+            animation-delay: 0.5s; /* Pequeno delay inicial */
+        }
+
+        /* 2º PASSO: NITROGÊNIO (SURGIMENTO) */
+        #text-nitrogenio {
+            animation: fadeIn 1.5s forwards ease-in-out;
+            animation-delay: 2.5s; /* Aparece após o DAO sumir */
+        }
+
+        /* 3º PASSO: A RAPOSA (MATERIALIZAÇÃO) */
+        #splash-logo {
+            position: absolute;
+            width: 150px;
+            opacity: 0;
+            /* Efeito de materialização */
+            filter: blur(15px) brightness(2);
+            transform: scale(0.8);
+            animation: materializeRa 2s forwards ease-in-out;
+            animation-delay: 4s; /* Aparece após o "Nitrogênio" */
+        }
+
+        /* --- ANIMAÇÕES --- */
+
+        /* DAO: Aparece, pulsa e some */
+        @keyframes fadeInOutPulse {
+            0% { opacity: 0; transform: scale(0.9); }
+            20% { opacity: 1; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); } /* Pulso */
+            80% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1); }
+        }
+
+        /* NITROGÊNIO: Apenas aparece e fica */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* RAPOSA: Materialização (tira o blur e arruma o brilho/escala) */
+        @keyframes materializeRa {
+            0% { opacity: 0; filter: blur(20px) brightness(5); transform: scale(0.7); }
+            100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
+        }
+
+        /* CLASSE DE SAÍDA (CHAMADA PELO JS) */
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div id="text-dao" class="splash-text">DAO</div>
+            
+            <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
+            
+            <img src="logo-raposa-branca.png" alt="Raposa" id="splash-logo">
+        </div>
+    </div>
+
+    <div style="padding: 20px; text-align: center;">
+        <h1>O site carregou!</h1>
+        <p>A sequência da splash acabou.</p>
+    </div>
+
+    <script>
+        // Lógica simples para remover a splash após a sequência
+        window.addEventListener('load', () => {
+            // O tempo total deve cobrir todas as animações (aproximadamente 7 segundos)
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.classList.add('fade-out');
+                    // Remove do DOM após a transição do fade-out
+                    setTimeout(() => splash.remove(), 1000);
+                }
+            }, 7000); 
+        });
+    </script>
+</body>
+</html>
