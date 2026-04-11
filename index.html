@@ -2,117 +2,10 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nitrogênio Protocolo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: #ffffff;
-            font-family: -apple-system, sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* --- ESTILO DA SPLASH --- */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #007AFF;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease-out;
-        }
-
-        .splash-text {
-            position: absolute;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 28px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            opacity: 0;
-        }
-
-        #text-dao { animation: fadeInOutPulse 2s forwards 0.5s; }
-        #text-nitrogenio { animation: fadeInOut 2s forwards 2.5s; }
-
-        #splash-logo {
-            position: absolute;
-            width: 160px;
-            opacity: 0;
-            filter: blur(15px) brightness(2);
-            animation: materializeRa 2.5s forwards 4.5s;
-        }
-
-        @keyframes fadeInOutPulse {
-            0% { opacity: 0; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.1); }
-            100% { opacity: 0; transform: scale(1); }
-        }
-
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(10px); }
-            50% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-10px); }
-        }
-
-        @keyframes materializeRa {
-            0% { opacity: 0; filter: blur(20px) brightness(5); transform: scale(0.7); }
-            100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
-        }
-
-        .fade-out { opacity: 0; pointer-events: none; }
-
-        /* --- ESTILO DA HOME --- */
-        .header-app {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px; position: sticky; top: 0; background: white; z-index: 100;
-        }
-
-        .logo-text { font-size: 18px; font-weight: 800; color: #007AFF; letter-spacing: 2px; }
-
-        .btn-connect {
-            background: #007AFF; color: white; border: none;
-            padding: 10px 18px; border-radius: 12px; font-size: 12px; font-weight: 600;
-        }
-
-        .balance-section { padding: 10px 20px; }
-        .balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; }
-        .balance-amount { font-size: 26px; font-weight: 700; }
-
-        .action-bar {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 15px; padding: 20px; margin: 15px;
-            background: #f5f5f7; border-radius: 20px;
-        }
-
-        .action-item {
-            display: flex; flex-direction: column; align-items: center;
-            gap: 8px; font-size: 10px; font-weight: 600; color: #007AFF;
-        }
-
-        .banner-nft {
-            margin: 0 20px 30px; height: 140px;
-            background: linear-gradient(135deg, #001f3f 0%, #007AFF 100%);
-            border-radius: 24px; display: flex; align-items: center;
-            padding: 25px; color: white; position: relative; overflow: hidden;
-        }
-
-        .rooms-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 25px; padding: 0 25px; margin-bottom: 100px;
-        }
-
-        .room-icon { display: flex; justify-content: center; font-size: 24px; color: #444; }
-
-        .nav-bar {
-            position: fixed; bottom: 0; width: 100%; height: 75px;
-            background: white; border-top: 1px solid #eee;
-            display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -124,7 +17,7 @@
         </div>
     </div>
 
-    <div id="home-app" style="opacity: 0; transition: opacity 1.5s ease-in; display: none;">
+    <div id="home-app">
         <header class="header-app">
             <div class="logo-text">Nitrogênio</div>
             <button class="btn-connect">CONECTAR</button>
@@ -159,9 +52,9 @@
         </div>
 
         <nav class="nav-bar">
-            <div class="nav-item" style="color: #007AFF;"><i class="fa-solid fa-house" style="font-size: 22px;"></i></div>
-            <div class="nav-item" style="color: #ccc;"><i class="fa-brands fa-telegram" style="font-size: 22px;"></i></div>
-            <div class="nav-item" style="color: #ccc;"><i class="fa-solid fa-circle-question" style="font-size: 22px;"></i></div>
+            <div class="nav-item" style="color: #007AFF;"><i class="fa-solid fa-house"></i></div>
+            <div class="nav-item"><i class="fa-brands fa-telegram"></i></div>
+            <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
         </nav>
     </div>
 
@@ -169,7 +62,6 @@
         window.addEventListener('load', () => {
             const splash = document.getElementById('splash-screen');
             const home = document.getElementById('home-app');
-
             setTimeout(() => {
                 if (splash) {
                     splash.classList.add('fade-out');
@@ -179,7 +71,7 @@
                         setTimeout(() => { home.style.opacity = '1'; }, 50);
                     }, 800);
                 }
-            }, 8000); 
+            }, 7000); 
         });
     </script>
 </body>
