@@ -3,100 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitrogênio Protocolo - TMA</title>
+    <title>Nitrogênio - Experiência de Materialização</title>
     <style>
-        /* Estética Cyber-Industrial Clean */
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0047AB; /* Azul Blueberry */
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Mantém a paz visual, sem barras de rolagem */
+        }
+
+        /* 💙 Fundo Blueberry da Experiência Inicial */
+        .experience-container {
+            background-color: #0047AB; /* Blueberry */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10;
+            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); /* Cortina suave */
+        }
+
+        /* ✨ Efeito de Materialização (Escala e Transparência) */
+        .materialize {
             color: white;
-        }
-
-        .container {
-            text-align: center;
-            position: relative;
-            width: 100%;
-        }
-
-        /* Animações de Suavidade */
-        .fade-text {
-            position: absolute;
-            width: 100%;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 3rem;
-            font-weight: bold;
+            font-weight: 200;
             letter-spacing: 5px;
+            font-size: 2.5rem;
+            
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        .btn-conectar {
-            margin-top: 100px;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            background-color: white;
-            color: #0047AB;
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: scale(0); /* Começa do zero absoluto */
+            transition: all 1.8s ease-out; /* Materialização lenta e suave */
         }
 
         /* Estados de Animação */
-        .show { opacity: 1 !important; }
-        .move-up { opacity: 1 !important; transform: translateY(0) !important; }
+        .materialize.visible {
+            opacity: 1;
+            transform: scale(1); /* Chega ao tamanho normal */
+        }
+
+        /* 🥼 Ambiente Pós-Experiência (Branco Máximo) */
+        .white-realm {
+            background-color: #FFFFFF;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .realm-visible {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="status-dao" class="fade-text">DAO</div>
-        
-        <div id="status-nitro" class="fade-text">NITROGÊNIO</div>
+    <div id="experience" class="experience-container">
+        <div id="material-text" class="materialize">DAO</div>
+    </div>
 
-        <button id="btn-wallet" class="btn-conectar">CONECTAR CARTEIRA (ALPHA)</button>
+    <div id="realm" class="white-realm">
+        <h2 style="color: #4A4A4A; font-weight: 400; margin-bottom: 30px;">Bem-vindo</h2>
+        <button style="background-color: white; color: #4A4A4A; border: 1px solid #F2F2F2; padding: 15px 30px; border-radius: 50px;">Conectar Carteira</button>
     </div>
 
     <script>
-        const dao = document.getElementById('status-dao');
-        const nitro = document.getElementById('status-nitro');
-        const btn = document.getElementById('btn-wallet');
+        const experience = document.getElementById('experience');
+        const text = document.getElementById('material-text');
+        const realm = document.getElementById('realm');
 
-        // Sequência de "Teletransporte Suave"
         window.onload = () => {
-            // 1. Aparece DAO
+            // 1. Inicia Materialização de "DAO"
             setTimeout(() => {
-                dao.classList.add('show');
+                text.classList.add('visible');
             }, 500);
 
-            // 2. Apaga DAO
+            // 2. DAO desaparece
             setTimeout(() => {
-                dao.classList.remove('show');
-            }, 2500);
+                text.classList.remove('visible');
+            }, 3000);
 
-            // 3. Aparece Nitrogênio Fixado
+            // 3. Inicia Materialização de "NITROGÊNIO"
             setTimeout(() => {
-                nitro.classList.add('show');
-            }, 4000);
+                text.innerText = "NITROGÊNIO";
+                text.classList.add('visible');
+            }, 4500);
 
-            // 4. Sobe o botão de conexão
+            // 4. A Cortina Azul Sobe (O Teletransporte Suave)
             setTimeout(() => {
-                btn.classList.add('move-up');
-            }, 5000);
+                experience.style.transform = "translateY(-100%)"; // Sobe a cortina
+                realm.classList.add('realm-visible'); // Revela o branco
+            }, 7500);
         };
     </script>
 </body>
