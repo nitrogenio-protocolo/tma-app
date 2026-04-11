@@ -4,53 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nitrogênio Protocolo</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* --- TEMA E ANIMAÇÃO ORIGINAL --- */
+        :root {
+            --azul-material: #007AFF; /* Seu azul de assinatura */
+            --branco: #ffffff;
+            --cinza-suave: #f5f5f5;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--branco);
+            font-family: sans-serif;
+        }
+
+        /* RESGATE DA ANIMAÇÃO AZUL */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--branco);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+
+        .blue-glow {
+            width: 100px; height: 100px;
+            background: var(--azul-material);
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: materializar 2s infinite ease-in-out;
+        }
+
+        @keyframes materializar {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* --- INTERFACE --- */
+        .header {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 20px;
+        }
+
+        /* AJUSTE DO OLHO: Agora ao lado do texto com espaço */
+        .btn-conectar {
+            background: #000; color: #fff; border: none;
+            padding: 10px 18px; border-radius: 25px;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 12px; font-weight: bold;
+        }
+
+        /* AJUSTE DO SALDO: Menor e mais elegante */
+        .saldo-container { padding: 0 20px; }
+        .saldo-txt { color: #999; font-size: 14px; }
+        .saldo-num { font-size: 32px; font-weight: bold; margin-top: 5px; }
+        .saldo-num span { color: #ccc; font-weight: normal; }
+
+        /* GRADES DE ÍCONES (CINZA SUAVE SEM BORDAS) */
+        .grid {
+            display: grid; gap: 15px; padding: 20px;
+        }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+        .card {
+            background: var(--cinza-suave);
+            border-radius: 15px;
+            display: flex; justify-content: center; align-items: center;
+            color: #888; transition: transform 0.1s;
+            border: none; /* Removendo bordas como pedido */
+        }
+        .card:active { transform: scale(0.95); }
+
+        /* RODAPÉ CINZA CLARO */
+        footer {
+            position: fixed; bottom: 0; width: 100%;
+            height: 70px; display: flex; justify-content: space-around;
+            align-items: center; background: #fff;
+        }
+        .footer-icon { color: #bbb; }
+    </style>
 </head>
 <body>
 
-    <div id="splash">
-        <div class="materialize-animation"></div>
+    <div id="splash-screen">
+        <div class="blue-glow"></div>
     </div>
 
-    <div class="app-container" style="padding: 20px; max-width: 500px; margin: 0 auto;">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <div style="font-size: 24px; font-weight: 800;">Nitrogênio</div>
-            <button class="btn-conectar">
-                <i data-lucide="eye" width="18"></i>
-                CONECTAR
-            </button>
-        </header>
+    <header class="header">
+        <div style="font-size: 24px; font-weight: 800;">Nitrogênio</div>
+        <button class="btn-conectar">
+            <i data-lucide="eye" width="18"></i>
+            CONECTAR
+        </button>
+    </header>
 
-        <div class="saldo-box">
-            <div style="color: #9e9e9e; font-size: 13px;">Saldo Token N</div>
-            <div class="saldo-valor">0.00 <span style="font-size: 20px; color: #ccc;">N</span></div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 30px 0;">
-            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="arrow-up-right"></i></div>
-            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="arrow-down-left"></i></div>
-            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="qr-code"></i></div>
-            <div class="icon-card" style="aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="refresh-cw"></i></div>
-        </div>
-
-        <div style="background: #f9f9f9; height: 160px; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #ddd; font-size: 12px; letter-spacing: 3px; margin-bottom: 20px;">
-            NFT ALPHA
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="icon-card" style="height: 120px; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="shopping-cart" width="28"></i></div>
-            <div class="icon-card" style="height: 120px; display: flex; justify-content: center; align-items: center; color: #bbb;"><i data-lucide="landmark" width="28"></i></div>
-        </div>
+    <div class="saldo-container">
+        <div class="saldo-txt">Saldo Token N</div>
+        <div class="saldo-num">0.00 <span>N</span></div>
     </div>
+
+    <div class="grid grid-4">
+        <div class="card" style="height: 70px;"><i data-lucide="arrow-up-right"></i></div>
+        <div class="card" style="height: 70px;"><i data-lucide="arrow-down-left"></i></div>
+        <div class="card" style="height: 70px;"><i data-lucide="qr-code"></i></div>
+        <div class="card" style="height: 70px;"><i data-lucide="refresh-cw"></i></div>
+    </div>
+
+    <div style="margin: 0 20px 20px 20px; height: 150px; background: var(--cinza-suave); border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #ddd; letter-spacing: 5px; font-size: 12px;">
+        NFT ALPHA
+    </div>
+
+    <div class="grid grid-2">
+        <div class="card" style="height: 100px;"><i data-lucide="shopping-bag" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="landmark" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="droplet" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="help-circle" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="shield" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="users" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="layout" width="28"></i></div>
+        <div class="card" style="height: 100px;"><i data-lucide="cpu" width="28"></i></div>
+    </div>
+
+    <footer>
+        <i data-lucide="home" class="footer-icon"></i>
+        <i data-lucide="send" class="footer-icon"></i>
+        <i data-lucide="message-square" class="footer-icon"></i>
+    </footer>
 
     <script>
         lucide.createIcons();
         window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash').remove(), 600);
-            }, 2500);
+                const s = document.getElementById('splash-screen');
+                s.style.opacity = '0';
+                s.style.transition = 'opacity 0.5s';
+                setTimeout(() => s.remove(), 500);
+            }, 2000);
         });
     </script>
 </body>
