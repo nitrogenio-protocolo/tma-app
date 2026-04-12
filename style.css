@@ -59,8 +59,8 @@ html, body {
     width: 65vw;
     max-width: 320px;
     opacity: 0;
-    /* Ela começa a aparecer aos 5 segundos agora */
-    animation: materializeRa 3s forwards 5s; 
+    /* Ela começa a aparecer aos 7 segundos agora */
+    animation: materializeRa 5s forwards 7s; 
     z-index: 10001;
 }
 
