@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div id="text-dao" class="splash-text">DAO</div>
+            <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
+            <img src="raposa.png" alt="Raposa" id="splash-logo">
+        </div>
+    </div>
+
+    <div id="home-app">
+        <header class="header-app">
+            <div class="logo-text">Nitrogênio</div>
+            <button class="btn-connect">CONECTAR</button>
+        </header>
+
+        <div class="balance-section">
+            <div class="balance-label">Saldo em Conta</div>
+            <div class="balance-amount">0.00 N</div>
+        </div>
+
+        <div class="action-bar">
+            <div class="action-item"><i class="fa-solid fa-arrow-up"></i>PAGAR</div>
+            <div class="action-item"><i class="fa-solid fa-arrow-down"></i>RECEBER</div>
+            <div class="action-item"><i class="fa-solid fa-qrcode"></i>SCAN</div>
+            <div class="action-item"><i class="fa-solid fa-right-left"></i>TROCAR</div>
+        </div>
+
+        <div class="banner-nft">
+            <strong>NFT ALPHA</strong>
+            <i class="fa-solid fa-id-badge" style="position: absolute; right: 20px; font-size: 80px; opacity: 0.15;"></i>
+        </div>
+
+        <div class="rooms-grid">
+            <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-headset"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-landmark"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
+            <div class="room-icon"><i class="fa-solid fa-microchip"></i></div>
+        </div>
+
+        <nav class="nav-bar">
+            <div class="nav-item" style="color: #007AFF;"><i class="fa-solid fa-house"></i></div>
+            <div class="nav-item"><i class="fa-brands fa-telegram"></i></div>
+            <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
+        </nav>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            const home = document.getElementById('home-app');
+            setTimeout(() => {
+                if (splash) {
+                    splash.classList.add('fade-out');
+                    setTimeout(() => {
+                        splash.remove();
+                        home.style.display = 'block';
+                        setTimeout(() => { home.style.opacity = '1'; }, 50);
+                    }, 800);
+                }
+            }, 7000); 
+        });
+    </script>
+</body>
+</html>
