@@ -53,17 +53,15 @@ html, body {
 #text-dao { animation: fadeInOutPulse 3s forwards 0.5s; }
 #text-nitrogenio { animation: fadeInOut 3s forwards 3s; }
 
-/* LOGO DA RAPOSA - AGORA APARECE MAIS CEDO */
+/* LOGO DA RAPOSA - AGORA ELA SÓ APARECE DEPOIS DO NITROGÊNIO */
 #splash-logo {
     position: absolute;
     width: 65vw;
     max-width: 320px;
     opacity: 0;
-    /* Ela começa a aparecer aos 0 segundos agora */
-        /* A Raposa agora espera 0 segundos para a pista estar limpa */
-    animation: materializeRa 0s forwards 0s; 
+    /* Ela espera 7.5 segundos (7.5s) para a pista estar limpa e brilha por 3 segundos (3s) */
+    animation: materializeRa 3s forwards 7.5s; 
     z-index: 10001;
-
 }
 
 @keyframes fadeInOutPulse {
@@ -77,18 +75,21 @@ html, body {
     50% { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(-20px); }
 }
+
 @keyframes materializeRa {
     0% { opacity: 0; filter: blur(20px); transform: scale(0.8); }
     50% { opacity: 1; filter: blur(0); transform: scale(1); }
-    /* Aos 100% ela fica transparente para dar lugar à raposa do aplicativo */
+    /* Aos 100% ela apaga para a tela azul sumir limpa */
     100% { opacity: 0; filter: blur(10px); transform: scale(1.1); }
+} /* <--- ESSA CHAVE AQUI É IMPORTANTE! */
 
-/* HOME APP */
+/* --- ESTILO DA HOME (PÓS-SPLASH) --- */
 #home-app {
     display: none;
     opacity: 0;
     transition: opacity 1s ease;
 }
+
 
 .header-app {
     display: flex;
