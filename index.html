@@ -4,75 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nitrogênio Protocolo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div id="splash-screen">
+    <div id="splash-screen" class="splash">
         <div class="splash-content">
-            <div id="text-dao" class="splash-text">DAO</div>
-            <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
-            <img src="raposa.png" alt="Raposa" id="splash-logo">
+            <h1 class="fade-in">NITROGÊNIO</h1>
+            <p class="fade-in-delay">DAO</p>
         </div>
     </div>
 
-    <div id="home-app">
-        <header class="header-app">
-            <div class="logo-text">Nitrogênio</div>
-            <button class="btn-connect">CONECTAR</button>
+    <div id="home-screen" class="container" style="display: none;">
+        <header>
+            <div class="logo-area">
+                <span class="brand-name">NITROGÊNIO</span>
+            </div>
+            <div class="header-actions">
+                <i id="toggle-visibility" class="fas fa-eye eye-btn"></i>
+                <button class="btn-conectar">CONECTAR</button>
+            </div>
         </header>
 
-        <div class="balance-section">
-            <div class="balance-label">Saldo em Conta</div>
-            <div class="balance-amount">0.00 N</div>
-        </div>
+        <main>
+            <section class="balance-section">
+                <p>SALDO EM CONTA <i class="fas fa-sync-alt refresh-icon"></i></p>
+                <h2 id="saldo-valor">0.00 N</h2>
+            </section>
 
-        <div class="action-bar">
-            <div class="action-item"><i class="fa-solid fa-arrow-up"></i>PAGAR</div>
-            <div class="action-item"><i class="fa-solid fa-arrow-down"></i>RECEBER</div>
-            <div class="action-item"><i class="fa-solid fa-qrcode"></i>SCAN</div>
-            <div class="action-item"><i class="fa-solid fa-right-left"></i>TROCAR</div>
-        </div>
+            <nav class="quick-actions">
+                <div class="action-item"><i class="fas fa-arrow-up"></i><span>PAGAR</span></div>
+                <div class="action-item"><i class="fas fa-arrow-down"></i><span>RECEBER</span></div>
+                <div class="action-item"><i class="fas fa-th-large"></i><span>SCAN</span></div>
+                <div class="action-item"><i class="fas fa-exchange-alt"></i><span>TROCAR</span></div>
+            </nav>
 
-        <div class="banner-nft">
-            <strong>NFT ALPHA</strong>
-            <i class="fa-solid fa-id-badge" style="position: absolute; right: 20px; font-size: 80px; opacity: 0.15;"></i>
-        </div>
+            <div class="nft-alpha-card">
+                <div class="nft-info">
+                    <h3>NFT ALPHA</h3>
+                </div>
+                <div class="nft-visual">
+                    <i class="fas fa-fox raposa-logo"></i> 
+                    </div>
+            </div>
 
-        <div class="rooms-grid">
-            <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-headset"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-landmark"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-users"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
-            <div class="room-icon"><i class="fa-solid fa-microchip"></i></div>
-        </div>
+            <div class="function-grid">
+                <div class="grid-item"><i class="fas fa-wallet"></i></div>
+                <div class="grid-item"><i class="fas fa-shopping-cart"></i></div>
+                <div class="grid-item"><i class="fas fa-leaf"></i></div>
+                <div class="grid-item"><i class="fas fa-headset"></i></div>
+                <div class="grid-item"><i class="fas fa-university"></i></div>
+                <div class="grid-item"><i class="fas fa-users"></i></div>
+                <div class="grid-item"><i class="fas fa-laptop"></i></div>
+                <div class="grid-item"><i class="fas fa-microchip"></i></div>
+            </div>
+        </main>
 
-        <nav class="nav-bar">
-            <div class="nav-item" style="color: #007AFF;"><i class="fa-solid fa-house"></i></div>
-            <div class="nav-item"><i class="fa-brands fa-telegram"></i></div>
-            <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
-        </nav>
+        <footer class="bottom-nav">
+            <i class="fas fa-home active"></i>
+            <i class="fas fa-paper-plane"></i>
+            <i class="fas fa-question-circle"></i>
+        </footer>
     </div>
 
-    <script>
-        window.addEventListener('load', () => {
-            const splash = document.getElementById('splash-screen');
-            const home = document.getElementById('home-app');
-            setTimeout(() => {
-                if (splash) {
-                    splash.classList.add('fade-out');
-                    setTimeout(() => {
-                        splash.remove();
-                        home.style.display = 'block';
-                        setTimeout(() => { home.style.opacity = '1'; }, 50);
-                    }, 800);
-                }
-            }, 7000); 
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
