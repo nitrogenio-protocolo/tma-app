@@ -1,8 +1,5 @@
-/* PROJETO NITROGÊNIO - CSS AJUSTADO 
-   FOCO: IMPACTO VISUAL E USABILIDADE MOBILE
-*/
+/* PROJETO NITROGÊNIO - VERSÃO FINAL AJUSTADA */
 
-/* RESET PROFISSIONAL */
 html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -10,25 +7,25 @@ html, body {
     height: 100% !important;
     box-sizing: border-box;
     overflow-x: hidden;
-    background-color: #ffffff; /* Fundo Clean */
+    background-color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 * { box-sizing: inherit; }
 
-/* --- TELA DE ABERTURA (SPLASH SCREEN) --- */
+/* TELA AZUL (SPLASH) */
 #splash-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #007AFF; /* Azul Nitrogênio */
+    background-color: #007AFF;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    transition: opacity 1.5s ease-in-out; /* Saída suave de elite */
+    transition: opacity 1.5s ease-in-out;
 }
 
 .splash-content {
@@ -40,35 +37,33 @@ html, body {
     height: 100%;
 }
 
-/* Textos da Splash - Aumentados para Impacto */
 .splash-text {
     position: absolute;
     color: #ffffff;
     font-weight: 900;
-    font-size: 12vw; /* Grande e responsivo */
+    font-size: 12vw;
     text-transform: uppercase;
-    letter-spacing: 8px; /* Estilo luxo */
+    letter-spacing: 8px;
     opacity: 0;
     text-align: center;
     width: 100%;
 }
 
-/* Animações dos Textos */
+/* Ajuste de tempo dos textos */
 #text-dao { animation: fadeInOutPulse 3s forwards 0.5s; }
-#text-nitrogenio { animation: fadeInOut 3s forwards 3.5s; }
+#text-nitrogenio { animation: fadeInOut 3s forwards 3s; }
 
-/* LOGO DA RAPOSA - A Estrela do App */
+/* LOGO DA RAPOSA - AGORA APARECE MAIS CEDO */
 #splash-logo {
     position: absolute;
-    width: 65vw; /* Ocupa 65% da largura da tela */
+    width: 65vw;
     max-width: 320px;
     opacity: 0;
-    filter: blur(15px) brightness(2);
-    /* Materialização lenta e imponente */
-    animation: materializeRa 4s forwards 6.5s; 
+    /* Ela começa a aparecer aos 5 segundos agora */
+    animation: materializeRa 3s forwards 5s; 
+    z-index: 10001;
 }
 
-/* KEYFRAMES DAS ANIMAÇÕES */
 @keyframes fadeInOutPulse {
     0% { opacity: 0; transform: scale(0.8); }
     50% { opacity: 1; transform: scale(1.1); }
@@ -82,15 +77,13 @@ html, body {
 }
 
 @keyframes materializeRa {
-    0% { opacity: 0; filter: blur(25px) brightness(4); transform: scale(0.7); }
-    100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1.1); }
+    0% { opacity: 0; filter: blur(15px); transform: scale(0.8); }
+    100% { opacity: 1; filter: blur(0); transform: scale(1); }
 }
 
-.fade-out { opacity: 0; pointer-events: none; }
-
-/* --- ESTILO DA HOME (PÓS-SPLASH) --- */
+/* HOME APP */
 #home-app {
-    display: none; /* Começa escondido para a Splash brilhar */
+    display: none;
     opacity: 0;
     transition: opacity 1s ease;
 }
@@ -124,12 +117,10 @@ html, body {
     font-weight: 700;
 }
 
-/* SEÇÃO DE SALDO */
 .balance-section { padding: 20px; margin-top: 10px; }
-.balance-label { font-size: 12px; color: #86868b; text-transform: uppercase; letter-spacing: 1px; }
+.balance-label { font-size: 12px; color: #86868b; text-transform: uppercase; }
 .balance-amount { font-size: 32px; font-weight: 800; color: #1d1d1f; margin-top: 5px; }
 
-/* BARRA DE AÇÕES (PAGAR, RECEBER, SCAN) */
 .action-bar {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -150,9 +141,6 @@ html, body {
     color: #007AFF;
 }
 
-.action-item i { font-size: 20px; }
-
-/* BANNER DO NFT ALPHA */
 .banner-nft {
     margin: 10px 15px 30px;
     height: 160px;
@@ -164,12 +152,8 @@ html, body {
     color: white;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0, 122, 255, 0.2);
 }
 
-.banner-nft strong { font-size: 24px; letter-spacing: 2px; }
-
-/* GRID DE SALAS/ÍCONES */
 .rooms-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -178,17 +162,8 @@ html, body {
     margin-bottom: 110px;
 }
 
-.room-icon { 
-    display: flex; 
-    justify-content: center; 
-    font-size: 26px; 
-    color: #3a3a3c; 
-    transition: transform 0.2s;
-}
+.room-icon { display: flex; justify-content: center; font-size: 26px; color: #3a3a3c; }
 
-.room-icon:active { transform: scale(0.9); }
-
-/* BARRA DE NAVEGAÇÃO INFERIOR */
 .nav-bar {
     position: fixed;
     bottom: 0;
@@ -201,7 +176,4 @@ html, body {
     justify-content: space-around;
     align-items: center;
     padding-bottom: 20px;
-    z-index: 1000;
 }
-
-.nav-item { font-size: 24px; color: #8e8e93; }
