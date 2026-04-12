@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         if (splash && home) {
             // Em vez de remover, vamos suavizar a transparência
-            splash.style.transition = "opacity 2s ease-in-out";
+            splash.style.transition = "opacity 4.5s ease-in-out";
             splash.style.opacity = '0';
             
             // Ligamos a Home por baixo enquanto a Splash ainda some
