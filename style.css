@@ -60,8 +60,10 @@ html, body {
     max-width: 320px;
     opacity: 0;
     /* Ela começa a aparecer aos 0 segundos agora */
-    animation: materializeRa 4s forwards 6s; 
+        /* A Raposa agora espera 7.5 segundos para a pista estar limpa */
+    animation: materializeRa 3s forwards 7.5s; 
     z-index: 10001;
+
 }
 
 @keyframes fadeInOutPulse {
@@ -75,11 +77,10 @@ html, body {
     50% { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(-20px); }
 }
-
 @keyframes materializeRa {
-    0% { opacity: 0; filter: blur(15px); transform: scale(0.8); }
+    0% { opacity: 0; filter: blur(20px); transform: scale(0.8); }
     50% { opacity: 1; filter: blur(0); transform: scale(1); }
-    /* Aos 100% ela fica transparente de novo para dar lugar à outra */
+    /* Aos 100% ela fica transparente para dar lugar à raposa do aplicativo */
     100% { opacity: 0; filter: blur(10px); transform: scale(1.1); }
 }
 
