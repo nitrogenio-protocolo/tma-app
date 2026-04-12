@@ -60,8 +60,8 @@ html, body {
     max-width: 320px;
     opacity: 0;
     /* Ela começa a aparecer aos 0 segundos agora */
-        /* A Raposa agora espera 7.5 segundos para a pista estar limpa */
-    animation: materializeRa 3s forwards 7.5s; 
+        /* A Raposa agora espera 0 segundos para a pista estar limpa */
+    animation: materializeRa 0s forwards 0s; 
     z-index: 10001;
 
 }
