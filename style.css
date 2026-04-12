@@ -53,14 +53,14 @@ html, body {
 #text-dao { animation: fadeInOutPulse 3s forwards 0.5s; }
 #text-nitrogenio { animation: fadeInOut 3s forwards 3s; }
 
-/* LOGO DA RAPOSA - AGORA ELA SÓ APARECE DEPOIS DO NITROGÊNIO */
+/* LOGO DA RAPOSA - A ESTRELA DO FINAL */
 #splash-logo {
     position: absolute;
     width: 65vw;
     max-width: 320px;
     opacity: 0;
-    /* Ela espera 7.5 segundos (7.5s) para a pista estar limpa e brilha por 3 segundos (3s) */
-    animation: materializeRa 3s forwards 7.5s; 
+    /* Ela espera 7 segundos para entrar, depois que tudo sumiu */
+    animation: materializeRa 3s forwards 7s; 
     z-index: 10001;
 }
 
@@ -78,10 +78,11 @@ html, body {
 
 @keyframes materializeRa {
     0% { opacity: 0; filter: blur(20px); transform: scale(0.8); }
-    50% { opacity: 1; filter: blur(0); transform: scale(1); }
-    /* Aos 100% ela apaga para a tela azul sumir limpa */
+    40% { opacity: 1; filter: blur(0); transform: scale(1); }
+    /* Aos 80% ela começa a sumir para não "atropelar" a Home */
     100% { opacity: 0; filter: blur(10px); transform: scale(1.1); }
-} /* <--- ESSA CHAVE AQUI É IMPORTANTE! */
+}
+
 
 /* --- ESTILO DA HOME (PÓS-SPLASH) --- */
 #home-app {
