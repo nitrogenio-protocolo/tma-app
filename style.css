@@ -60,7 +60,7 @@ html, body {
     max-width: 320px;
     opacity: 0;
     /* Ela começa a aparecer aos 7 segundos agora */
-    animation: materializeRa 5s forwards 7s; 
+    animation: materializeRa 3s forwards 7s; 
     z-index: 10001;
 }
 
