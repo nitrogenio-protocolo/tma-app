@@ -13,19 +13,22 @@
         <div class="splash-content">
             <div id="text-dao" class="splash-text">DAO</div>
             <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
-            <img src="raposa.png" alt="Raposa" id="splash-logo">
+            <img src="raposa.png" alt="Raposa" id="splash-logo" class="splash-img">
         </div>
     </div>
 
-    <div id="home-app">
+    <div id="home-app" style="display: none; opacity: 0;">
         <header class="header-app">
             <div class="logo-text">Nitrogênio</div>
-            <button class="btn-connect">CONECTAR</button>
+            <div class="header-right">
+                <i id="toggle-visibility" class="fa-solid fa-eye" style="color: #007AFF; font-size: 20px; cursor: pointer; margin-right: 15px;"></i>
+                <button class="btn-connect">CONECTAR</button>
+            </div>
         </header>
 
         <div class="balance-section">
             <div class="balance-label">Saldo em Conta</div>
-            <div class="balance-amount">0.00 N</div>
+            <div id="balance-val" class="balance-amount">0.00 N</div>
         </div>
 
         <div class="action-bar">
@@ -62,17 +65,47 @@
         window.addEventListener('load', () => {
             const splash = document.getElementById('splash-screen');
             const home = document.getElementById('home-app');
+            const raposa = document.getElementById('splash-logo');
+            
+            // 1. Faz a raposa aparecer 2 segundos depois do texto
+            setTimeout(() => {
+                if(raposa) raposa.style.opacity = '1';
+            }, 2000);
+
+            // 2. Transição para a Home
             setTimeout(() => {
                 if (splash) {
-                    splash.classList.add('fade-out');
+                    splash.style.opacity = '0';
                     setTimeout(() => {
                         splash.remove();
                         home.style.display = 'block';
-                        setTimeout(() => { home.style.opacity = '1'; }, 50);
-                    }, 800);
+                        setTimeout(() => { 
+                            home.style.opacity = '1'; 
+                            ligarMotorApp(); // Liga o Olho e a Carteira
+                        }, 50);
+                    }, 1000);
                 }
-            }, 7000); 
+            }, 9000); 
         });
+
+        function ligarMotorApp() {
+            const eyeBtn = document.getElementById('toggle-visibility');
+            const balanceVal = document.getElementById('balance-val');
+            let oculto = false;
+
+            if (eyeBtn && balanceVal) {
+                eyeBtn.addEventListener('click', () => {
+                    oculto = !oculto;
+                    if (oculto) {
+                        balanceVal.innerText = "****";
+                        eyeBtn.classList.replace('fa-eye', 'fa-eye-slash');
+                    } else {
+                        balanceVal.innerText = "0.00 N";
+                        eyeBtn.classList.replace('fa-eye-slash', 'fa-eye');
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>
