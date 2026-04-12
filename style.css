@@ -153,18 +153,14 @@ html, body {
     color: #007AFF;
 }
 
-.banner-nft {
-    margin: 0 20px 30px;
-    height: 140px;
-    background: linear-gradient(135deg, #001f3f 0%, #007AFF 100%);
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    padding: 25px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
+<div class="banner-nft">
+    <strong>NFT ALPHA</strong>
+    
+    <img src="raposa.png" alt="Raposa Alpha" class="img-raposa-card">
+    
+    <i class="fa-solid fa-id-badge" style="position: absolute; right: 20px; font-size: 80px; opacity: 0.15;"></i>
+</div>
+
 
 .rooms-grid {
     display: grid;
