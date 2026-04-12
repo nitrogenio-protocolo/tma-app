@@ -59,8 +59,8 @@ html, body {
     width: 65vw;
     max-width: 320px;
     opacity: 0;
-    /* Ela espera 15 segundos para entrar, depois que tudo sumiu */
-    animation: materializeRa 0s forwards 0s; 
+    /* Ela espera 8 segundos para entrar, depois que tudo sumiu */
+    animation: materializeRa 7s forwards 7s; 
     z-index: 10001;
 }
 
