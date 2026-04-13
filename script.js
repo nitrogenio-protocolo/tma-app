@@ -110,3 +110,26 @@ window.addEventListener('load', () => {
         }, 3000); // Reduzi para 3s para o teste real não ser cansativo
     }
 });
+// --- 7. FINALIZAÇÃO (TELA DE SUCESSO) ---
+function showSuccessScreen(valorRecebido) {
+    // 1. Esconde a área do QR Code ou formulário
+    // Certifique-se que o ID 'home-app' ou o ID da sua área de cobrança exista
+    const areaPrincipal = document.getElementById('home-app'); 
+    if (areaPrincipal) areaPrincipal.style.display = 'none';
+
+    // 2. Mostra a tela de sucesso (aquela que definimos no CSS)
+    const telaSucesso = document.getElementById('tela-sucesso');
+    if (telaSucesso) {
+        telaSucesso.style.display = 'flex'; // Usamos flex para centralizar os itens
+    }
+
+    // 3. Atualiza o texto com o valor real que caiu
+    const txtValor = document.getElementById('valor-confirmado');
+    if (txtValor) {
+        txtValor.innerText = `+ ${valorRecebido} BNB`;
+    }
+
+    // 4. Feedback Sonoro Real
+    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-37a.mp3'); 
+    audio.play().catch(e => console.log("Áudio aguardando interação do usuário."));
+}
