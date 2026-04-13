@@ -18,8 +18,7 @@ let provider, signer;
 
 eyeBtn.addEventListener('click', () => {
     eyeBtn.classList.toggle('active');
-    const isActive = eyeBtn.classList.contains('active');
-    balanceVal.innerText = isActive ? currentBalance : "****";
+    const isActive =document.querySelector('.balance-amount').innerText = currentBalance;
     eyeBtn.innerHTML = isActive ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
 });
 
