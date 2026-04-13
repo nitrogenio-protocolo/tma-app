@@ -40,7 +40,7 @@ html, body {
     position: absolute;
     color: #ffffff;
     font-weight: bold;
-    font-size: 28px;
+    font-size: 45px;
     text-transform: uppercase;
     letter-spacing: 4px;
     opacity: 0;
@@ -53,7 +53,7 @@ html, body {
 
 #splash-logo {
     position: absolute;
-    width: 160px;
+    width: 280px;
     opacity: 0;
     filter: blur(15px) brightness(2);
     animation: materializeRa 2.5s forwards 4.5s;
@@ -90,7 +90,7 @@ html, body {
     z-index: 100;
 }
 
-.logo-text { font-size: 18px; font-weight: 800; color: #007AFF; letter-spacing: 2px; }
+.logo-text { font-size: 24px; font-weight: 800; color: #007AFF; letter-spacing: 2px; }
 
 .btn-connect {
     background: #007AFF;
@@ -174,7 +174,7 @@ html, body {
     margin-bottom: 100px;
 }
 
-.room-icon { display: flex; justify-content: center; font-size: 24px; color: #444; }
+.room-icon { display: flex; justify-content: center; font-size: 32px; color: #444; }
 
 .nav-bar {
     position: fixed;
