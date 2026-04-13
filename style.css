@@ -197,7 +197,7 @@ html, body {
 }
 
 .raposa-no-card {
-    width: 200px; /* Tamanho discreto para o card */
+    width: 60px; /* Tamanho discreto para o card */
     height: auto;
     opacity: 0.5; /* Meio transparente para ficar elegante */
     filter: brightness(0) invert(1); /* Deixa ela branca igual ao texto */
