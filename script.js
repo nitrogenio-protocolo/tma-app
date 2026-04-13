@@ -93,7 +93,7 @@ function startPaymentWatcher(expectedValue) {
         if (current > initialBalance) {
             const diff = ethers.formatEther(current - initialBalance);
             if (parseFloat(diff) >= parseFloat(expectedValue)) {
-                showSuccessScreen(); // Crie esta função para mostrar o Check Verde
+                showSuccessScreen(recebido); // Crie esta função para mostrar o Check Verde
                 provider.removeAllListeners("block");
             }
         }
