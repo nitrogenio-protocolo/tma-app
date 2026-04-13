@@ -19,7 +19,7 @@ html, body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #ffffff;
+    background-color: #007AFF;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +76,11 @@ html, body {
     100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1); }
 }
 
-.fade-out { opacity: 0; pointer-events: none; }
+.fade-out { 
+    opacity: 0 !important; 
+    background-color: #ffffff !important; 
+    pointer-events: none; 
+}
 
 /* ESTILO DA HOME */
 .header-app {
