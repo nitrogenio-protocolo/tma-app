@@ -3,9 +3,6 @@ let currentBalance = "0.00 BNB";
 let userAccount = null;
 let provider, signer;
 
-// --- 2. LÓGICA DE PRIVACIDADE (OLHO) ---
-const eyeBtn = document.getElementById('toggle-visibility');
-const balanceVal = document.querySelector('.balance-amount');
 
 eyeBtn.addEventListener('click', () => {
     eyeBtn.classList.toggle('active');
