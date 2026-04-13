@@ -48,7 +48,7 @@ html, body {
 }
 
 /* ANIMAÇÕES DA SPLASH */
-#text-dao { animation: fadeInOutPulse 2s forwards 0.5s; }
+#text-dao { animation: fadeInOutPulse 2s forwards 2.5s; }
 #text-nitrogenio { animation: fadeInOut 2s forwards 2.5s; }
 
 #splash-logo {
