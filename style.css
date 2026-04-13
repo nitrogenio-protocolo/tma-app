@@ -53,7 +53,7 @@ html, body {
 
 #splash-logo {
     position: absolute;
-    width: 300px;
+    width: 500px;
     opacity: 0;
     filter: blur(15px) brightness(2);
     animation: materializeRa 2.5s forwards 4.5s;
