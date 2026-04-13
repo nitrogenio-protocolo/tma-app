@@ -24,9 +24,8 @@ html, body {
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    transition: opacity 0.8s ease-out;
+    transition: opacity 0.8s ease-out, background-color 0.8s ease-out;
 }
-
 .splash-content {
     position: relative;
     display: flex;
