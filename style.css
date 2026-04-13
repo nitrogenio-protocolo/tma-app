@@ -130,6 +130,67 @@ html, body {
 #toggle-visibility:active i {
     transform: scale(0.9); /* Efeito de clique no ícone */
 }
+/* --- ESTILO DA TELA PAGAR --- */
+.address-container {
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+}
+
+#wallet-address {
+    width: 100%;
+    padding: 15px 50px 15px 15px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #f9f9f9; /* Cinza claro industrial */
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.qr-icon-button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #007AFF; /* Seu azul Blueberry */
+}
+/* --- ESTILO DA TELA RECEBER --- */
+.conversion-card {
+    background: #ffffff;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 20px;
+    border: 1px solid #f0f0f0;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.input-group input {
+    border: none;
+    font-size: 32px;
+    width: 100%;
+    outline: none;
+    margin-left: 10px;
+}
+
+.bnb-estimate {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+#bnb-converted {
+    color: #007AFF;
+    font-weight: 600;
+}
 /* -------------------------------------------- */
 
 .balance-section { padding: 10px 20px; }
@@ -204,4 +265,40 @@ html, body {
     height: auto;
     opacity: 0.5; /* Meio transparente para ficar elegante */
     filter: brightness(0) invert(1); /* Deixa ela branca igual ao texto */
+}
+/* --- TELA DE SUCESSO FINAL --- */
+#tela-sucesso {
+    display: none; /* Inicia escondida */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: white;
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-icon {
+    width: 100px;
+    height: 100px;
+    background: #28a745;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.2);
+}
+
+.success-icon svg {
+    width: 50px;
+    height: 50px;
+    stroke: white;
+}
+
+#valor-confirmado {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
 }
