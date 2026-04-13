@@ -188,3 +188,17 @@ html, body {
     align-items: center;
     padding-bottom: 15px;
 }
+.banner-nft {
+    position: relative; /* Isso mantém a raposa presa dentro do card */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.raposa-no-card {
+    width: 60px; /* Tamanho discreto para o card */
+    height: auto;
+    opacity: 0.5; /* Meio transparente para ficar elegante */
+    filter: brightness(0) invert(1); /* Deixa ela branca igual ao texto */
+}
