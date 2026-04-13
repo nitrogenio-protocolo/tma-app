@@ -1,3 +1,15 @@
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+        setTimeout(() => {
+            splash.classList.add('fade-out');
+            setTimeout(() => splash.remove(), 800);
+        }, 3000); 
+    }
+});
+
+// ... o restante do código (variáveis globais, conexão, etc) vem abaixo ...
+
 // --- 1. VARIÁVEIS GLOBAIS ---
 let currentBalance = "0.00 BNB";
 let userAccount = null;
