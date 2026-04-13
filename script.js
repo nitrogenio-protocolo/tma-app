@@ -1,71 +1,112 @@
-// 1. Lógica do Olho (Privacidade)
+// --- 1. VARIÁVEIS GLOBAIS ---
+let currentBalance = "0.00 BNB";
+let userAccount = null;
+let provider, signer;
+
+// --- 2. LÓGICA DE PRIVACIDADE (OLHO) ---
 const eyeBtn = document.getElementById('toggle-visibility');
 const balanceVal = document.querySelector('.balance-amount');
-let currentBalance = "0.00 N"; 
 
 eyeBtn.addEventListener('click', () => {
     eyeBtn.classList.toggle('active');
-    if (eyeBtn.classList.contains('active')) {
-        balanceVal.innerText = currentBalance;
-        eyeBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-    } else {
-        balanceVal.innerText = "****";
-        eyeBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
-    }
+    const isActive = eyeBtn.classList.contains('active');
+    balanceVal.innerText = isActive ? currentBalance : "****";
+    eyeBtn.innerHTML = isActive ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
 });
 
-// 2. Conexão com a Carteira (Focada no seu saldo pessoal de 6.71)
+// --- 3. CONEXÃO E REDE (ESTRATÉGIA REAL) ---
 const connectBtn = document.getElementById('connect-trigger');
 
-connectBtn.addEventListener('click', async () => {
-    if (window.ethereum) {
+async function syncWallet() {
+    if (!window.ethereum) return alert("Abra na MetaMask!");
+
+    try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        userAccount = accounts[0];
+
+        // Força a rede BNB (0x38)
         try {
-            // Pede para conectar
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0];
-            
-            // FORÇA A REDE BNB (Para achar seus 6.71)
-            try {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: '0x38' }],
+            });
+        } catch (err) {
+            if (err.code === 4902) {
                 await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x38' }], 
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                        chainId: '0x38',
+                        chainName: 'BNB Smart Chain',
+                        nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                        rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                        blockExplorerUrls: ['https://bscscan.com/']
+                    }]
                 });
-            } catch (err) {
-                console.log("Rede já está certa ou precisa ser aceita.");
             }
-
-            connectBtn.innerText = "LENDO SALDO...";
-            
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const balance = await provider.getBalance(account);
-            const ethBalance = ethers.formatEther(balance);
-            
-            // Atualiza com seu valor real
-            currentBalance = parseFloat(ethBalance).toFixed(4) + " BNB";
-            balanceVal.innerText = currentBalance;
-            connectBtn.innerText = account.substring(0, 6) + "..." + account.substring(38);
-            
-            alert("Sua carteira pessoal foi lida com sucesso!");
-        } catch (error) {
-            alert("Erro ao ler sua carteira pessoal.");
         }
-    } else {
-        alert("Abra este site dentro da sua MetaMask.");
-    }
-});
 
-// 3. Lógica da Splash (Transição)
+        provider = new ethers.BrowserProvider(window.ethereum);
+        signer = await provider.getSigner();
+        
+        // Atualiza Saldo
+        const balance = await provider.getBalance(userAccount);
+        currentBalance = parseFloat(ethers.formatEther(balance)).toFixed(6) + " BNB";
+        
+        // UI Update
+        if (eyeBtn.classList.contains('active')) balanceVal.innerText = currentBalance;
+        connectBtn.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(38);
+        
+    } catch (error) {
+        console.error(error);
+        alert("Erro na conexão real.");
+    }
+}
+
+connectBtn.addEventListener('click', syncWallet);
+
+// --- 4. MOTOR DE RECEBIMENTO (CONVERSÃO BRL -> BNB) ---
+async function getBnbPrice() {
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=brl');
+    const data = await response.json();
+    return data.binancecoin.brl;
+}
+
+// Quando digitar no campo de Reais (id: brl-input)
+async function handleBrlInput(val) {
+    const price = await getBnbPrice();
+    const bnbNeeded = (val / price).toFixed(6);
+    document.getElementById('bnb-display').innerText = bnbNeeded + " BNB";
+    return bnbNeeded;
+}
+
+// --- 5. MONITOR DE SUCESSO (WATCHER) ---
+function startPaymentWatcher(expectedValue) {
+    let initialBalance;
+    
+    provider.on("block", async () => {
+        const current = await provider.getBalance(userAccount);
+        if (!initialBalance) {
+            initialBalance = current;
+            return;
+        }
+
+        if (current > initialBalance) {
+            const diff = ethers.formatEther(current - initialBalance);
+            if (parseFloat(diff) >= parseFloat(expectedValue)) {
+                showSuccessScreen(); // Crie esta função para mostrar o Check Verde
+                provider.removeAllListeners("block");
+            }
+        }
+    });
+}
+
+// --- 6. SPLASH SCREEN ---
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
-    const home = document.getElementById('home-app');
-    setTimeout(() => {
-        if (splash) {
+    if (splash) {
+        setTimeout(() => {
             splash.classList.add('fade-out');
-            setTimeout(() => {
-                splash.remove();
-                home.style.display = 'block';
-                setTimeout(() => { home.style.opacity = '1'; }, 50);
-            }, 800);
-        }
-    }, 7500); 
+            setTimeout(() => splash.remove(), 800);
+        }, 3000); // Reduzi para 3s para o teste real não ser cansativo
+    }
 });
