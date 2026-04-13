@@ -60,7 +60,27 @@
             <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
         </nav>
     </div>
+                   </nav>
+    </div> <div id="tela-sucesso">
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <div class="success-text">
+            <h2>Pagamento Recebido!</h2>
+            <p id="valor-confirmado">0.00 BNB</p>
+            <p style="font-size: 12px; margin-top: 10px;">Transação confirmada na BNB Chain</p>
+        </div>
+        <button onclick="location.reload()" style="margin-top: 30px; padding: 10px 20px; border-radius: 8px; border: none; background: #007BFF; color: white; cursor: pointer;">
+            Nova Cobrança
+        </button>
+    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
     <script>
         window.addEventListener('load', () => {
             const splash = document.getElementById('splash-screen');
