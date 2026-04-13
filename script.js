@@ -133,3 +133,27 @@ function showSuccessScreen(valorRecebido) {
     const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-37a.mp3'); 
     audio.play().catch(e => console.log("Áudio aguardando interação do usuário."));
 }
+// Função para abrir a tela de Receber
+document.getElementById('btn-receber').addEventListener('click', () => {
+    document.querySelector('.balance-section').style.display = 'none';
+    document.querySelector('.banner-nft').style.display = 'none';
+    document.querySelector('.rooms-grid').style.display = 'none';
+    document.getElementById('area-receber').style.display = 'block';
+});
+
+// Função para voltar para a Home
+function fecharReceber() {
+    document.getElementById('area-receber').style.display = 'none';
+    document.querySelector('.balance-section').style.display = 'block';
+    document.querySelector('.banner-nft').style.display = 'block';
+    document.querySelector('.rooms-grid').style.display = 'grid';
+}
+
+// Lógica de conversão automática enquanto você digita
+document.getElementById('brl-input').addEventListener('input', async (e) => {
+    const valorBrl = e.target.value;
+    if (valorBrl > 0) {
+        const bnbValor = await handleBrlInput(valorBrl); // Usa a função que já criamos
+        // Aqui chamaremos o gerador de QR Code no próximo passo
+    }
+});
