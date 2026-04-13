@@ -24,41 +24,33 @@
         </header>
 
         <div class="balance-section">
-    <div class="balance-label">Saldo em Conta</div>
-    <div class="balance-main">
-        <span class="balance-amount">0.00 N</span>
-
+            <div class="balance-label">Saldo em Conta</div>
+            <div class="balance-main">
+                <span class="balance-amount">0.00 N</span>
+            </div>
+        </div>
 
         <div class="action-bar">
-            <div class="action-item"><i class="fa-solid fa-arrow-up"></i>pagar</div>
-            <div id="btn-receber" class="fa-solid fa-arrow-down"></i>receber</div>
-            <div class="action-item"><i class="fa-solid fa-right-left"></i>trocar</div>
+            <div class="action-item">
+                <i class="fa-solid fa-arrow-up"></i>
+                <span>pagar</span>
+            </div>
+            <div id="btn-receber" class="action-item" style="cursor: pointer;">
+                <i class="fa-solid fa-arrow-down"></i>
+                <span>receber</span>
+            </div>
+            <div class="action-item">
+                <i class="fa-solid fa-right-left"></i>
+                <span>trocar</span>
+            </div>
         </div>
 
         <div class="banner-nft">
-    <strong>NFT ALPHA</strong>
-    <img src="raposa.png" class="raposa-no-card" alt="Raposa Nitrogen">
-</div>
-       <div id="area-receber" style="display: none; padding: 20px;">
-    <div class="conversion-card">
-        <div class="balance-label">Valor a Receber (R$)</div>
-        <div class="input-group">
-            <span>R$</span>
-            <input type="number" id="brl-input" placeholder="0,00" step="0.01">
+            <strong>NFT ALPHA</strong>
+            <img src="raposa.png" class="raposa-no-card" alt="Raposa Nitrogen">
         </div>
-        <div class="bnb-estimate">
-            Você receberá: <span id="bnb-display">0.000000</span> BNB
-        </div>
-    </div>
-    
-    <div id="qrcode-container" style="text-align: center; margin-top: 20px;"></div>
-    
-    <button onclick="fecharReceber()" style="width: 100%; margin-top: 20px; background: #eee; border: none; padding: 10px; border-radius: 10px;">
-        Cancelar
-    </button>
-</div>
 
- <div class="rooms-grid">
+        <div class="rooms-grid">
             <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
             <div class="room-icon"><i class="fa-solid fa-cart-shopping"></i></div>
             <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
@@ -73,28 +65,46 @@
             <div class="nav-item" style="color: #007AFF;"><i class="fa-solid fa-house"></i></div>
             <div class="nav-item"><i class="fa-brands fa-telegram"></i></div>
             <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
-        
         </nav>
-    </div> <div id="tela-sucesso">
-        <div class="success-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+    </div>
+
+    <div id="area-receber" style="display: none; padding: 20px;">
+        <div class="conversion-card">
+            <div class="balance-label">Valor a Receber (R$)</div>
+            <div class="input-group">
+                <span>R$</span>
+                <input type="number" id="brl-input" placeholder="0,00" step="0.01">
+            </div>
+            <div class="bnb-estimate">
+                Você receberá: <span id="bnb-display">0.000000</span> BNB
+            </div>
+        </div>
+        
+        <div id="qrcode-container" style="text-align: center; margin-top: 20px;"></div>
+        
+        <button onclick="fecharReceber()" style="width: 100%; margin-top: 20px; background: #eee; border: none; padding: 15px; border-radius: 12px; font-weight: bold;">
+            Cancelar
+        </button>
+    </div>
+
+    <div id="tela-sucesso" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; flex-direction: column; align-items: center; justify-content: center;">
+        <div class="success-icon" style="background: #28a745; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" style="width: 40px;">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         </div>
-        <div class="success-text">
-            <h2>Pagamento Recebido!</h2>
-            <p id="valor-confirmado">0.00 BNB</p>
-            <p style="font-size: 12px; margin-top: 10px;">Transação confirmada na BNB Chain</p>
+        <div class="success-text" style="text-align: center;">
+            <h2 style="margin: 0;">Pagamento Recebido!</h2>
+            <p id="valor-confirmado" style="font-size: 24px; font-weight: bold; color: #333;">0.00 BNB</p>
+            <p style="font-size: 12px; color: #666;">Confirmado na BNB Chain</p>
         </div>
-        <button onclick="location.reload()" style="margin-top: 30px; padding: 10px 20px; border-radius: 8px; border: none; background: #007BFF; color: white; cursor: pointer;">
+        <button onclick="location.reload()" style="margin-top: 30px; padding: 12px 30px; border-radius: 10px; border: none; background: #007BFF; color: white; font-weight: bold;">
             Nova Cobrança
         </button>
     </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-    
     <script src="script.js"></script>
 </body>
 </html>
