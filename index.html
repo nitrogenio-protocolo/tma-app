@@ -81,21 +81,4 @@
     <script src="script.js"></script>
 </body>
 </html>
-    <script>
-        window.addEventListener('load', () => {
-            const splash = document.getElementById('splash-screen');
-            const home = document.getElementById('home-app');
-            setTimeout(() => {
-                if (splash) {
-                    splash.classList.add('fade-out');
-                    setTimeout(() => {
-                        splash.remove();
-                        home.style.display = 'block';
-                        setTimeout(() => { home.style.opacity = '1'; }, 50);
-                    }, 800);
-                }
-            }, 7000); 
-        });
-    </script>
-</body>
-</html>
+    
