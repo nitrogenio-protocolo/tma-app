@@ -4,72 +4,33 @@ window.addEventListener('load', () => {
     if (splash) {
         setTimeout(() => {
             splash.classList.add('fade-out');
-            setTimeout(() => {
-                splash.remove();
-            }, 800);
+            setTimeout(() => { splash.remove(); }, 800);
         }, 3000);
     }
 });
 
 // --- 2. VARIÁVEIS GLOBAIS ---
-let currentBalance = "0.00 BNB";
 let userAccount = null;
 let provider, signer;
 
 // --- 3. CONEXÃO COM A CARTEIRA ---
-const connectBtn = document.getElementById('connect-trigger');
-
 async function syncWallet() {
-    if (!window.ethereum) return alert("Por favor, abra o app dentro do navegador da MetaMask!");
-
+    if (!window.ethereum) return alert("Por favor, abra o app dentro da MetaMask.");
     try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         userAccount = accounts[0];
-
-        // Força a rede BNB (0x38)
-        try {
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: '0x38' }],
-            });
-        } catch (err) {
-            if (err.code === 4902) {
-                await window.ethereum.request({
-                    method: 'wallet_addEthereumChain',
-                    params: [{
-                        chainId: '0x38',
-                        chainName: 'BNB Smart Chain',
-                        nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                        rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                        blockExplorerUrls: ['https://bscscan.com/']
-                    }]
-                });
-            }
-        }
-
         provider = new ethers.BrowserProvider(window.ethereum);
         signer = await provider.getSigner();
-        
-        // Atualiza Saldo na Tela
         const balance = await provider.getBalance(userAccount);
-        currentBalance = parseFloat(ethers.formatEther(balance)).toFixed(6) + " BNB";
-        
-        document.querySelector('.balance-amount').innerText = currentBalance;
-        connectBtn.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(38);
-        
-    } catch (error) {
-        console.error(error);
-        alert("Erro ao conectar carteira.");
-    }
+        document.querySelector('.balance-amount').innerText = parseFloat(ethers.formatEther(balance)).toFixed(6) + " BNB";
+        document.getElementById('connect-trigger').innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(38);
+    } catch (err) { alert("Erro ao conectar."); }
 }
 
-if (connectBtn) {
-    connectBtn.addEventListener('click', syncWallet);
-}
+const connectBtn = document.getElementById('connect-trigger');
+if (connectBtn) connectBtn.addEventListener('click', syncWallet);
 
-// --- 4. FUNÇÕES DE NAVEGAÇÃO (BOTÕES) ---
-
-// Abrir tela de Receber
+// --- 4. NAVEGAÇÃO ---
 const btnReceber = document.getElementById('btn-receber');
 if (btnReceber) {
     btnReceber.addEventListener('click', () => {
@@ -78,111 +39,60 @@ if (btnReceber) {
     });
 }
 
-// Voltar para Home
 function fecharReceber() {
     document.getElementById('area-receber').style.display = 'none';
     document.getElementById('home-app').style.display = 'block';
 }
 
-// --- 5. MOTOR DE PAGAMENTO (BRL -> BNB) ---
-
+// --- 5. MOTOR DE PREÇO ---
 async function getBnbPrice() {
     try {
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=brl');
+        const response = await fetch('https://api.coingecko.com/v3/simple/price?ids=binancecoin&vs_currencies=brl');
         const data = await response.json();
         return data.binancecoin.brl;
-    } catch (e) {
-        return 3000; // Valor aproximado de segurança caso a API falhe
-    }
+    } catch (e) { return 3000; }
 }
 
-const brlInput = document.getElementById('brl-input');
-if (brlInput) {
-    brlInput.addEventListener('input', async (e) => {
-        const valorBrl = e.target.value;
-        if (valorBrl > 0) {
-            const price = await getBnbPrice();
-            const bnbNeeded = (valorBrl / price).toFixed(6);
-            document.getElementById('bnb-display').innerText = bnbNeeded + " BNB";
-        }
-    });
-}
-
-// --- 6. TELA DE SUCESSO ---
-function showSuccessScreen(valorRecebido) {
-    document.getElementById('home-app').style.display = 'none';
-    document.getElementById('area-receber').style.display = 'none';
-    
-    const telaSucesso = document.getElementById('tela-sucesso');
-    if (telaSucesso) {
-        telaSucesso.style.display = 'flex';
-        document.getElementById('valor-confirmado').innerText = `+ ${valorRecebido} BNB`;
-    }
-
-    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-37a.mp3'); 
-    audio.play().catch(e => console.log("Áudio aguardando interação."));
-}
-
-// --- 7. GERADOR DE QR CODE E BOTÃO FLUTUANTE ---
+// --- 6. QR CODE E LÓGICA DO BOTÃO ---
 let qrcode = null;
-
-function gerarCobranca(valorBNB) {
-    const container = document.getElementById('qrcode-container');
-    container.innerHTML = ""; 
-
-    if (userAccount && valorBNB > 0) {
-        // Formata a URI para a rede BSC (ID 56)
-        const uri = `ethereum:${userAccount}@56?value=${ethers.parseEther(valorBNB.toString())}`;
-        
-        qrcode = new QRCode(container, {
-            text: uri,
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    }
-}
-
-// Atualização do leitor de input (agora ele NÃO gera o QR Code sozinho)
 const brlInput = document.getElementById('brl-input');
+
 if (brlInput) {
     brlInput.addEventListener('input', async (e) => {
         const valorBrl = e.target.value;
         const bnbDisplay = document.getElementById('bnb-display');
-        
         if (valorBrl > 0) {
             const price = await getBnbPrice();
-            const bnbNeeded = (valorBrl / price).toFixed(6);
-            bnbDisplay.innerText = bnbNeeded;
-            // O comando 'gerarCobranca' foi removido daqui para não aparecer automático
+            bnbDisplay.innerText = (valorBrl / price).toFixed(6);
         } else {
             bnbDisplay.innerText = "0.000000";
-            document.getElementById('qrcode-container').innerHTML = "";
         }
     });
 }
 
-// Lógica do Botão Flutuante 'Nitro' (Confirmar/Gerar QR Code)
-document.addEventListener('DOMContentLoaded', () => {
-    const btnFlutuante = document.getElementById('btn-flutuante-nitro');
-    if (btnFlutuante) {
-        btnFlutuante.addEventListener('click', () => {
-            const areaReceber = document.getElementById('area-receber');
-            const bnbDisplay = document.getElementById('bnb-display');
-            const valorBNB = bnbDisplay ? bnbDisplay.innerText : "0";
+function gerarCobranca(valorBNB) {
+    const container = document.getElementById('qrcode-container');
+    container.innerHTML = ""; 
+    if (userAccount && valorBNB > 0) {
+        const uri = `ethereum:${userAccount}@56?value=${ethers.parseEther(valorBNB.toString())}`;
+        qrcode = new QRCode(container, { text: uri, width: 200, height: 200 });
+    } else if (!userAccount) {
+        alert("Conecte sua carteira primeiro!");
+    }
+}
 
-            // Se o usuário clicar no botão enquanto estiver na Home, ele abre a tela de receber
-            if (areaReceber.style.display === 'none' || areaReceber.style.display === '') {
-                document.getElementById('btn-receber').click();
-            } 
-            // Se já estiver na tela de receber e tiver um valor, ele gera o QR Code
-            else if (parseFloat(valorBNB) > 0) {
-                gerarCobranca(valorBNB);
-            } else {
-                alert("Por favor, digite um valor em Reais primeiro.");
-            }
-        });
+// Lógica do Botão Azul (Atalho e Gerador)
+document.addEventListener('click', (e) => {
+    if (e.target.closest('#btn-flutuante-nitro')) {
+        const areaReceber = document.getElementById('area-receber');
+        const bnbDisplay = document.getElementById('bnb-display');
+
+        if (areaReceber.style.display === 'none' || areaReceber.style.display === '') {
+            btnReceber.click();
+        } else if (parseFloat(bnbDisplay.innerText) > 0) {
+            gerarCobranca(bnbDisplay.innerText);
+        } else {
+            alert("Digite um valor!");
+        }
     }
 });
