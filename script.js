@@ -122,3 +122,56 @@ function showSuccessScreen(valorRecebido) {
     const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-37a.mp3'); 
     audio.play().catch(e => console.log("Áudio aguardando interação."));
 }
+
+// --- 7. GERADOR DE QR CODE E BOTÃO FLUTUANTE ---
+let qrcode = null;
+
+function gerarCobranca(valorBNB) {
+    const container = document.getElementById('qrcode-container');
+    container.innerHTML = ""; 
+
+    if (userAccount && valorBNB > 0) {
+        const uri = `ethereum:${userAccount}@56?value=${ethers.parseEther(valorBNB.toString())}`;
+        
+        qrcode = new QRCode(container, {
+            text: uri,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+}
+
+// Atualização do leitor de input para gerar o QR Code
+if (brlInput) {
+    brlInput.addEventListener('input', async (e) => {
+        const valorBrl = e.target.value;
+        const bnbDisplay = document.getElementById('bnb-display');
+        
+        if (valorBrl > 0) {
+            const price = await getBnbPrice();
+            const bnbNeeded = (valorBrl / price).toFixed(6);
+            bnbDisplay.innerText = bnbNeeded;
+            gerarCobranca(bnbNeeded); 
+        } else {
+            bnbDisplay.innerText = "0.000000";
+            document.getElementById('qrcode-container').innerHTML = "";
+        }
+    });
+}
+
+// Lógica do Botão Flutuante 'Nitro'
+document.addEventListener('DOMContentLoaded', () => {
+    const btnFlutuante = document.getElementById('btn-flutuante-nitro');
+    if (btnFlutuante) {
+        btnFlutuante.addEventListener('click', () => {
+            if (document.getElementById('area-receber').style.display === 'none') {
+                document.getElementById('btn-receber').click();
+            } else {
+                alert("Aguardando confirmação do pagamento...");
+            }
+        });
+    }
+});
