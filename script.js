@@ -131,6 +131,7 @@ function gerarCobranca(valorBNB) {
     container.innerHTML = ""; 
 
     if (userAccount && valorBNB > 0) {
+        // Formata a URI para a rede BSC (ID 56)
         const uri = `ethereum:${userAccount}@56?value=${ethers.parseEther(valorBNB.toString())}`;
         
         qrcode = new QRCode(container, {
@@ -144,7 +145,8 @@ function gerarCobranca(valorBNB) {
     }
 }
 
-// Atualização do leitor de input para gerar o QR Code
+// Atualização do leitor de input (agora ele NÃO gera o QR Code sozinho)
+const brlInput = document.getElementById('brl-input');
 if (brlInput) {
     brlInput.addEventListener('input', async (e) => {
         const valorBrl = e.target.value;
@@ -154,7 +156,7 @@ if (brlInput) {
             const price = await getBnbPrice();
             const bnbNeeded = (valorBrl / price).toFixed(6);
             bnbDisplay.innerText = bnbNeeded;
-            gerarCobranca(bnbNeeded); 
+            // O comando 'gerarCobranca' foi removido daqui para não aparecer automático
         } else {
             bnbDisplay.innerText = "0.000000";
             document.getElementById('qrcode-container').innerHTML = "";
@@ -162,15 +164,24 @@ if (brlInput) {
     });
 }
 
-// Lógica do Botão Flutuante 'Nitro'
+// Lógica do Botão Flutuante 'Nitro' (Confirmar/Gerar QR Code)
 document.addEventListener('DOMContentLoaded', () => {
     const btnFlutuante = document.getElementById('btn-flutuante-nitro');
     if (btnFlutuante) {
         btnFlutuante.addEventListener('click', () => {
-            if (document.getElementById('area-receber').style.display === 'none') {
+            const areaReceber = document.getElementById('area-receber');
+            const bnbDisplay = document.getElementById('bnb-display');
+            const valorBNB = bnbDisplay ? bnbDisplay.innerText : "0";
+
+            // Se o usuário clicar no botão enquanto estiver na Home, ele abre a tela de receber
+            if (areaReceber.style.display === 'none' || areaReceber.style.display === '') {
                 document.getElementById('btn-receber').click();
+            } 
+            // Se já estiver na tela de receber e tiver um valor, ele gera o QR Code
+            else if (parseFloat(valorBNB) > 0) {
+                gerarCobranca(valorBNB);
             } else {
-                alert("Aguardando confirmação do pagamento...");
+                alert("Por favor, digite um valor em Reais primeiro.");
             }
         });
     }
