@@ -290,3 +290,39 @@ html, body {
     font-weight: bold;
     color: #333;
 }
+
+/* --- ESTILOS DO BOTÃO FLUTUANTE (POLEGAR) --- */
+.nitro-fab {
+    position: fixed;
+    right: 20px;
+    bottom: 90px; 
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, #007AFF, #0056b3);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.nitro-fab img {
+    width: 35px;
+    filter: brightness(0) invert(1); 
+}
+
+/* --- AJUSTE DO QR CODE --- */
+#qrcode-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#qrcode-container img {
+    border: 10px solid white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
