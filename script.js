@@ -38,11 +38,21 @@ if (btnReceber) {
         document.getElementById('area-receber').style.display = 'block';
     });
 }
-
 function fecharReceber() {
+    // 1. Esconde a área de receber e volta para a home
     document.getElementById('area-receber').style.display = 'none';
     document.getElementById('home-app').style.display = 'block';
+
+    // 2. LIMPEZA: Reseta o valor digitado e apaga o QR Code
+    const brlInput = document.getElementById('brl-input');
+    const bnbDisplay = document.getElementById('bnb-display');
+    const qrContainer = document.getElementById('qrcode-container');
+
+    if (brlInput) brlInput.value = ""; // Limpa o campo de R$
+    if (bnbDisplay) bnbDisplay.innerText = "0.000000"; // Zera o cálculo de BNB
+    if (qrContainer) qrContainer.innerHTML = ""; // APAGA O QR CODE da tela
 }
+
 
 // --- 5. MOTOR DE PREÇO ---
 async function getBnbPrice() {
