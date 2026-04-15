@@ -97,8 +97,19 @@ const addressInput = document.getElementById('wallet-address');
 const btnConfirmarPagar = document.getElementById('btn-confirmar-pagar');
 
 function validarPagar() {
-    const valorValido = valorPagarInput.value > 0;
-    const enderecoValido = addressInput.value.startsWith('0x') && addressInput.value.length === 42;
+    const valor = document.getElementById('valor-pagar').value;
+    const endereco = document.getElementById('wallet-address').value;
+    const btnPagar = document.getElementById('btn-confirmar-pagar');
+
+    // Verifica se tem valor e se o endereço começa com 0x e tem 42 caracteres
+    if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
+        btnPagar.classList.add('active'); // Deixa o botão azul/clicável
+        btnPagar.disabled = false;
+    } else {
+        btnPagar.classList.remove('active');
+        btnPagar.disabled = true;
+    }
+}
 
     if (valorValido && enderecoValido) {
         btnConfirmarPagar.classList.add('active');
