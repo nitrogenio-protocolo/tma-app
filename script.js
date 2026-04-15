@@ -110,3 +110,42 @@ function gerarCobranca() {
     // Formato EIP-681 simplificado
     new QRCode(container, { text: `ethereum:${userAccount}?value=${bnbValor}`, width: 200, height: 200 });
 }
+
+// --- FUNÇÃO PARA PAGAR DE VERDADE ---
+async function executarPagamento() {
+    const valorN = document.getElementById('valor-pagar').value;
+    const enderecoDestino = document.getElementById('wallet-address').value;
+
+    if (!userAccount || !signer) return alert("Conecte a carteira primeiro!");
+    if (!ethers.isAddress(enderecoDestino)) return alert("Endereço de destino inválido!");
+
+    try {
+        const btnPagar = document.getElementById('btn-confirmar-pagar');
+        btnPagar.innerText = "PROCESSANDO...";
+        btnPagar.disabled = true;
+
+        // Isso aqui chama a MetaMask de verdade
+        const tx = await signer.sendTransaction({
+            to: enderecoDestino,
+            value: ethers.parseEther(valorN) 
+        });
+
+        alert("Transação enviada! Hash: " + tx.hash);
+        await tx.wait(); // Espera confirmar na rede
+        
+        alert("Pagamento concluído!");
+        fecharPagar();
+        updateUI(); 
+
+    } catch (err) {
+        console.error(err);
+        alert("Falha no pagamento. Verifique saldo ou conexão.");
+    } finally {
+        const btnPagar = document.getElementById('btn-confirmar-pagar');
+        btnPagar.innerText = "PAGAR";
+        btnPagar.disabled = false;
+    }
+}
+
+// Ativa o clique do botão
+document.getElementById('btn-confirmar-pagar')?.addEventListener('click', executarPagamento);
