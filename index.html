@@ -31,12 +31,11 @@
         </div>
 
         <div class="action-bar">
-            <div class="action-item">
-                onclick="abrirPagar()" style="cursor: pointer;">
+            <div class="action-item" onclick="abrirPagar()" style="cursor: pointer;">
                 <i class="fa-solid fa-arrow-up"></i>
                 <span>pagar</span>
             </div>
-            <div id="btn-receber" class="action-item" style="cursor: pointer;">
+            <div id="btn-receber" class="action-item" onclick="abrirReceber()" style="cursor: pointer;">
                 <i class="fa-solid fa-arrow-down"></i>
                 <span>receber</span>
             </div>
@@ -81,54 +80,37 @@
             </div>
         </div>
         
-        <div id="qrcode-container" style="text-align: center; margin-top: 20px;"></div>
+        <div id="qrcode-container"></div>
         
-        <button onclick="fecharReceber()" style="width: 100%; margin-top: 20px; background: #eee; border: none; padding: 15px; border-radius: 12px; font-weight: bold;">
+        <button onclick="fecharReceber()" style="width: 100%; margin-top: 20px; background: #eee; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer;">
             Cancelar
         </button>
     </div>
 
-   <div id="area-pagar" style="display: none; padding: 20px;">
-    <div class="conversion-card">
-        <div class="balance-label">VALOR A PAGAR (N)</div>
-        <div class="input-group">
-            <span>N</span>
-            <input type="number" id="valor-pagar" placeholder="0.00" step="0.01">
+    <div id="area-pagar" style="display: none; padding: 20px;">
+        <div class="conversion-card">
+            <div class="balance-label">VALOR A PAGAR (N)</div>
+            <div class="input-group">
+                <span>N</span>
+                <input type="number" id="valor-pagar" placeholder="0.00" step="0.01">
+            </div>
+            
+            <div class="balance-label" style="margin-top: 15px;">ENDEREÇO DE DESTINO</div>
+            <div class="address-container">
+                <input type="text" id="wallet-address" placeholder="0x... ou ler QR">
+                <i class="fas fa-qrcode qr-icon-button" onclick="abrirScanner()"></i>
+            </div>
+            
+            <div class="bnb-estimate">Taxa de rede: <span id="taxa-estimada">Calculando...</span></div>
         </div>
-        
-        <div class="balance-label" style="margin-top: 15px;">ENDEREÇO DE DESTINO</div>
-        <div class="address-container" style="position: relative; margin-top: 10px;">
-            <input type="text" id="wallet-address" placeholder="0x... ou ler QR" 
-                   style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #eee; background: #f9f9f9; outline: none;">
-            <i class="fas fa-qrcode qr-icon-button" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #007AFF; cursor: pointer;" onclick="abrirScanner()"></i>
-        </div>
-        
-        <div class="bnb-estimate">Taxa de rede: <span id="taxa-estimada">Calculando...</span></div>
-    </div>
 
-    <button onclick="fecharPagar()" style="width: 100%; margin-top: 20px; background: #f5f5f7; border: none; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer;">
-        Cancelar
-    </button>
-</div>
-    
-    <div id="tela-sucesso" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; flex-direction: column; align-items: center; justify-content: center;">
-        <div class="success-icon" style="background: #28a745; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" style="width: 40px;">
-                <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-        </div>
-        <div class="success-text" style="text-align: center;">
-            <h2 style="margin: 0;">Pagamento Recebido!</h2>
-            <p id="valor-confirmado" style="font-size: 24px; font-weight: bold; color: #333;">0.00 BNB</p>
-            <p style="font-size: 12px; color: #666;">Confirmado na BNB Chain</p>
-        </div>
-        <button onclick="location.reload()" style="margin-top: 30px; padding: 12px 30px; border-radius: 10px; border: none; background: #007BFF; color: white; font-weight: bold;">
-            Nova Cobrança
+        <button onclick="fecharPagar()" style="width: 100%; margin-top: 20px; background: #f5f5f7; border: none; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer;">
+            Cancelar
         </button>
     </div>
-
-     <button id="btn-flutuante-nitro" class="nitro-fab">
-     </button>
+    
+    <div id="tela-sucesso" style="display: none;">
+        </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
