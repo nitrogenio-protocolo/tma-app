@@ -24,7 +24,6 @@ async function syncWallet() {
         signer = await provider.getSigner();
         const balance = await provider.getBalance(userAccount);
         
-        // Atualiza interface
         document.querySelector('.balance-amount').innerText = parseFloat(ethers.formatEther(balance)).toFixed(6) + " BNB";
         document.getElementById('connect-trigger').innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(38);
     } catch (err) { 
@@ -38,7 +37,6 @@ if (connectBtn) connectBtn.addEventListener('click', syncWallet);
 
 // --- 4. NAVEGAÇÃO DO APP ---
 
-// Funções para PAGAR
 function abrirPagar() {
     document.getElementById('home-app').style.display = 'none';
     document.getElementById('area-receber').style.display = 'none'; 
@@ -48,9 +46,12 @@ function abrirPagar() {
 function fecharPagar() {
     document.getElementById('area-pagar').style.display = 'none';
     document.getElementById('home-app').style.display = 'block';
+    // Limpeza Pagar
+    document.getElementById('valor-pagar').value = "";
+    document.getElementById('wallet-address').value = "";
+    document.getElementById('btn-confirmar-pagar').classList.remove('active');
 }
 
-// Funções para RECEBER
 function abrirReceber() {
     document.getElementById('home-app').style.display = 'none';
     document.getElementById('area-pagar').style.display = 'none'; 
@@ -61,13 +62,15 @@ function fecharReceber() {
     document.getElementById('area-receber').style.display = 'none';
     document.getElementById('home-app').style.display = 'block';
     
-    // Limpeza técnica
     const brlInput = document.getElementById('brl-input');
     const bnbDisplay = document.getElementById('bnb-display');
     const qrContainer = document.getElementById('qrcode-container');
+    const btnGerar = document.getElementById('btn-gerar-qr');
+
     if (brlInput) brlInput.value = "";
     if (bnbDisplay) bnbDisplay.innerText = "0.000000";
     if (qrContainer) qrContainer.innerHTML = "";
+    if (btnGerar) btnGerar.classList.remove('active');
 }
 
 // --- 5. MOTOR DE PREÇO (API) ---
@@ -76,43 +79,63 @@ async function getBnbPrice() {
         const response = await fetch('https://api.coingecko.com/v3/simple/price?ids=binancecoin&vs_currencies=brl');
         const data = await response.json();
         return data.binancecoin.brl;
-    } catch (e) { 
-        return 3000; // Valor de segurança caso a API falhe
-    }
+    } catch (e) { return 3000; }
 }
 
-// --- 6. CÁLCULO E QR CODE ---
+// --- 6. LÓGICA DAS PÍLULAS (ACENDER/APAGAR) ---
 
-// Listener para conversão automática de R$ para BNB
+// Lógica para RECEBER (Monitora R$)
 const brlInput = document.getElementById('brl-input');
+const btnGerar = document.getElementById('btn-gerar-qr');
+
 if (brlInput) {
     brlInput.addEventListener('input', async (e) => {
         const valorBrl = e.target.value;
         const bnbDisplay = document.getElementById('bnb-display');
+        
         if (valorBrl > 0) {
+            btnGerar.classList.add('active'); // Acende Azul
             const price = await getBnbPrice();
             bnbDisplay.innerText = (valorBrl / price).toFixed(6);
         } else {
+            btnGerar.classList.remove('active'); // Apaga Cinza
             bnbDisplay.innerText = "0.000000";
         }
     });
 }
 
-// Função para gerar o QR Code (Acionada por um botão futuro ou ação)
+// Lógica para PAGAR (Monitora Valor N e Endereço)
+const valorPagarInput = document.getElementById('valor-pagar');
+const addressInput = document.getElementById('wallet-address');
+const btnPagar = document.getElementById('btn-confirmar-pagar');
+
+function validarPagar() {
+    if (valorPagarInput.value > 0 && addressInput.value.length > 10) {
+        btnPagar.classList.add('active');
+    } else {
+        btnPagar.classList.remove('active');
+    }
+}
+
+if (valorPagarInput) valorPagarInput.addEventListener('input', validarPagar);
+if (addressInput) addressInput.addEventListener('input', validarPagar);
+
+// --- 7. FUNÇÕES DE EXECUÇÃO ---
+
 function gerarCobranca() {
+    if (!btnGerar.classList.contains('active')) return; // Só funciona se estiver azul
+
     const bnbDisplay = document.getElementById('bnb-display');
     const valorBNB = bnbDisplay ? bnbDisplay.innerText : "0";
     const container = document.getElementById('qrcode-container');
     
     if (!userAccount) return alert("Conecte sua carteira primeiro!");
-    if (parseFloat(valorBNB) <= 0) return alert("Digite um valor válido!");
 
     container.innerHTML = ""; 
     const uri = `ethereum:${userAccount}@56?value=${ethers.parseEther(valorBNB)}`;
     qrcode = new QRCode(container, { text: uri, width: 200, height: 200 });
 }
 
-// Placeholder para o Scanner (Área Pagar)
 function abrirScanner() {
     alert("Câmera será ativada para ler QR Code.");
 }
