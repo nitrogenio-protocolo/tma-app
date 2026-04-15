@@ -7,14 +7,19 @@ let userAccount = null;
 let provider, signer;
 let scannerAtivo = null;
 
+// Captura de elementos repetitivos
+const addressInput = document.getElementById('wallet-address');
+const valorPagarInput = document.getElementById('valor-pagar');
+
 // --- 2. TELA DE SPLASH ---
+// Garante que a splash suma após o carregamento
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
         setTimeout(() => {
-            splash.classList.add('fade-out');
+            splash.style.opacity = '0';
             setTimeout(() => splash.remove(), 800);
-        }, 4000);
+        }, 4000); // 4 segundos de exibição
     }
 });
 
@@ -49,9 +54,8 @@ function fecharPagar() {
     document.getElementById('area-pagar').style.display = 'none';
     document.getElementById('home-app').style.display = 'block';
     
-    // Reset campos
-    document.getElementById('valor-pagar').value = "";
-    document.getElementById('wallet-address').value = "";
+    if(valorPagarInput) valorPagarInput.value = "";
+    if(addressInput) addressInput.value = "";
     validarPagar();
 }
 
@@ -93,14 +97,11 @@ brlInput?.addEventListener('input', async (e) => {
 });
 
 function validarPagar() {
-    const valorInput = document.getElementById('valor-pagar');
-    const enderecoInput = document.getElementById('wallet-address');
     const btnPagar = document.getElementById('btn-confirmar-pagar');
+    if (!valorPagarInput || !addressInput || !btnPagar) return;
 
-    if (!valorInput || !enderecoInput || !btnPagar) return;
-
-    const valor = parseFloat(valorInput.value);
-    const endereco = enderecoInput.value.trim();
+    const valor = parseFloat(valorPagarInput.value);
+    const endereco = addressInput.value.trim();
 
     if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
         btnPagar.classList.add('active');
@@ -111,29 +112,8 @@ function validarPagar() {
     }
 }
 
-document.getElementById('valor-pagar')?.addEventListener('input', validarPagar);
-document.getElementById('wallet-address')?.addEventListener('input', validarPagar);
-
-    // Verifica se tem valor e se o endereço começa com 0x e tem 42 caracteres
-    if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
-        btnPagar.classList.add('active'); // Deixa o botão azul/clicável
-        btnPagar.disabled = false;
-    } else {
-        btnPagar.classList.remove('active');
-        btnPagar.disabled = true;
-    }
-}
-
-    if (valorValido && enderecoValido) {
-        btnConfirmarPagar.classList.add('active');
-    } else {
-        btnConfirmarPagar.classList.remove('active');
-    }
-}
-
 valorPagarInput?.addEventListener('input', validarPagar);
 addressInput?.addEventListener('input', validarPagar);
-addressInput?.addEventListener('paste', () => setTimeout(validarPagar, 100));
 
 // --- 6. LEITOR DE QR CODE (SCANNER) ---
 function toggleScanner() {
@@ -150,15 +130,14 @@ function toggleScanner() {
             { facingMode: "environment" },
             config,
             (text) => {
-                // Limpa o endereço caso venha no formato ethereum:0x...
                 const cleanAddress = text.includes(':') ? text.split(':')[1].split('@')[0] : text;
-                addressInput.value = cleanAddress;
+                if(addressInput) addressInput.value = cleanAddress;
                 pararScanner();
                 validarPagar();
             },
-            (err) => {} // Erros silenciosos de leitura
+            (err) => {} 
         ).catch(err => {
-            alert("Erro na câmera. Verifique as permissões de HTTPS.");
+            alert("Erro na câmera. Verifique se está em HTTPS.");
             readerDiv.style.display = 'none';
         });
     }
@@ -181,7 +160,6 @@ function gerarCobranca() {
     if (!userAccount) return alert("Conecte a carteira primeiro.");
     
     container.innerHTML = "";
-    // Formato EIP-681 para carteiras cripto
     const uri = `ethereum:${userAccount}@56?value=${ethers.parseUnits(bnbValor, 18)}`;
     new QRCode(container, { text: uri, width: 220, height: 220 });
 }
