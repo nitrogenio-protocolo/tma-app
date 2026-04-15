@@ -113,18 +113,30 @@ function gerarCobranca(valorBNB) {
     }
 }
 
-// Lógica do Botão Azul (Atalho e Gerador)
+// ... (função gerarCobranca termina aqui em cima)
+
+// --- ESTE É O BLOCO NOVO QUE VOCÊ VAI COLAR NO FINAL ---
 document.addEventListener('click', (e) => {
     if (e.target.closest('#btn-flutuante-nitro')) {
         const areaReceber = document.getElementById('area-receber');
+        const areaPagar = document.getElementById('area-pagar');
         const bnbDisplay = document.getElementById('bnb-display');
 
-        if (areaReceber.style.display === 'none' || areaReceber.style.display === '') {
-            btnReceber.click();
-        } else if (parseFloat(bnbDisplay.innerText) > 0) {
-            gerarCobranca(bnbDisplay.innerText);
-        } else {
-            alert("Digite um valor!");
+        // 1. Se estiver na tela de RECEBER, gera o QR Code
+        if (areaReceber && areaReceber.style.display === 'block') {
+            if (parseFloat(bnbDisplay.innerText) > 0) {
+                gerarCobranca(bnbDisplay.innerText);
+            } else {
+                alert("Digite um valor!");
+            }
+        } 
+        // 2. Se estiver na tela de PAGAR, executa a confirmação
+        else if (areaPagar && areaPagar.style.display === 'block') {
+            alert("Iniciando transação de pagamento...");
+        }
+        // 3. Se estiver na HOME, abre a tela de Pagar
+        else {
+            abrirPagar(); 
         }
     }
 });
