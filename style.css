@@ -318,13 +318,14 @@ html, body {
 .nitro-fab {
     position: fixed;
     right: 20px;
-    bottom: 70px; 
+    bottom: 70px;
     width: 65px;
     height: 65px;
-    background: linear-gradient(135deg, #007AFF, #0056b3);
+    /* Altere o background abaixo para vermelho */
+    background: linear-gradient(135deg, #FF4B2B, #FF416C); 
     border-radius: 50%;
     border: 3px solid white;
-    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4); /* Ajuste a sombra para combinar */
     display: flex;
     align-items: center;
     justify-content: center;
