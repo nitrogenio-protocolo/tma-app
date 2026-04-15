@@ -154,3 +154,65 @@ async function executarPagamento() {
 
 // Ativa o clique do botão
 document.getElementById('btn-confirmar-pagar')?.addEventListener('click', executarPagamento);
+
+// --- AJUSTE NO BOTÃO RECEBER (LIMPEZA AUTOMÁTICA) ---
+function fecharReceber() {
+    // Limpa o valor digitado
+    document.getElementById('bnb-receber').value = "";
+    // Apaga o QR Code gerado
+    document.getElementById('qrcode-container').innerHTML = "";
+    // Volta para a home
+    fecharView('area-receber');
+}
+
+// --- AJUSTE NO SCANNER (PAGAR) ---
+let html5QrCode;
+
+async function toggleScanner() {
+    const readerDiv = document.getElementById('reader');
+    
+    if (!scannerAtivo) {
+        readerDiv.style.display = 'block';
+        scannerAtivo = true;
+        
+        html5QrCode = new Html5Qrcode("reader");
+        
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+        try {
+            await html5QrCode.start(
+                { facingMode: "environment" }, // Usa a câmera traseira
+                config,
+                (decodedText) => {
+                    // Quando ler o QR Code:
+                    document.getElementById('wallet-address').value = decodedText;
+                    pararScanner(); // Desliga a câmera
+                    validatePagar(); // Valida o botão de pagar
+                }
+            );
+        } catch (err) {
+            console.error("Erro ao abrir câmera:", err);
+            alert("Erro ao acessar a câmera. Verifique as permissões.");
+            pararScanner();
+        }
+    } else {
+        pararScanner();
+    }
+}
+
+function pararScanner() {
+    if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+            document.getElementById('reader').style.display = 'none';
+            scannerAtivo = false;
+        }).catch(err => console.error("Erro ao parar scanner:", err));
+    }
+}
+
+// Garanta que ao fechar a tela de pagar, a câmera desligue também
+function fecharPagar() {
+    pararScanner();
+    document.getElementById('valor-pagar').value = "";
+    document.getElementById('wallet-address').value = "";
+    fecharView('area-pagar');
+}
