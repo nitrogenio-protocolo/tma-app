@@ -8,13 +8,14 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #1d1d1f;
+    overflow-x: hidden;
 }
 
-/* 2. SPLASH SCREEN (Otimizada) */
+/* 2. SPLASH SCREEN */
 #splash-screen {
     position: fixed;
     inset: 0;
@@ -56,7 +57,15 @@ body {
 
 .fade-out { opacity: 0 !important; pointer-events: none; }
 
-/* 3. LAYOUT & HEADER */
+/* 3. ESTRUTURA DA HOME (CORREÇÃO DO DESERTO) */
+#home-app {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 90px;
+}
+
 .header-app {
     display: flex;
     justify-content: space-between;
@@ -67,18 +76,8 @@ body {
 
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
 
-.btn-connect {
-    background: #007AFF;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 12px;
-}
-
-/* 4. SALDO & AÇÕES */
-.balance-section { padding: 20px; }
+/* 4. SALDO E AÇÕES */
+.balance-section { padding: 10px 20px 20px; }
 .balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; }
 .balance-amount { font-size: 28px; font-weight: 700; margin-top: 5px; }
 
@@ -86,7 +85,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background: #f5f5f7;
-    margin: 0 20px;
+    margin: 0 20px 20px;
     padding: 20px;
     border-radius: 20px;
     gap: 10px;
@@ -102,13 +101,49 @@ body {
     gap: 8px;
 }
 
-/* 5. CARDS & INPUTS */
+/* 5. BANNER NFT ALPHA (RAPOSA) */
+.banner-nft {
+    margin: 0 20px 20px;
+    height: 120px;
+    background: #f8f8f8; /* Fundo leve para destacar a raposa */
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.raposa-no-card {
+    height: 90%;
+    width: auto;
+    opacity: 0.15; /* Sutil como no design original */
+    object-fit: contain;
+}
+
+/* 6. GRID DE SALAS */
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 25px;
+    margin-top: 10px;
+}
+
+.room-icon {
+    display: flex;
+    justify-content: center;
+    font-size: 28px;
+    color: #444;
+}
+
+/* 7. ÁREAS DE PAGAR/RECEBER */
 .conversion-card {
     background: #fff;
     padding: 20px;
     border-radius: 20px;
     border: 1px solid #f2f2f7;
-    margin-bottom: 20px;
+    margin: 0 20px 20px;
 }
 
 .input-group {
@@ -123,52 +158,41 @@ body {
     font-weight: 700;
     width: 100%;
     outline: none;
-    margin-left: 10px;
 }
 
-.address-container {
-    position: relative;
-    margin-top: 10px;
-}
-
-#wallet-address {
-    width: 100%;
-    padding: 14px 45px 14px 15px;
-    border-radius: 12px;
-    border: 1px solid #eee;
-    background: #f9f9f9;
-    font-size: 14px;
-}
-
+/* QR CODE CENTRALIZADO */
 #qrcode-container {
     display: flex !important;
     justify-content: center !important;
-    margin-top: 20px;
-    padding: 10px;
+    align-items: center !important;
+    margin: 20px auto;
     width: 100%;
+    padding: 15px;
 }
 
-/* 6. LEITOR DE QR CODE (AJUSTE TÉCNICO) */
+#qrcode-container canvas, #qrcode-container img {
+    max-width: 220px !important;
+    height: auto !important;
+    border: 8px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* 8. CÂMERA E LEITOR */
 #reader {
-    width: 100%;
-    border-radius: 12px;
+    width: calc(100% - 40px);
+    margin: 15px 20px;
+    border-radius: 15px;
     overflow: hidden;
-    margin-top: 15px;
     border: 2px solid #007AFF;
     background: #000;
 }
 
-#reader video {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: cover;
-}
-
-/* 7. BOTÕES PÍLULA */
+/* 9. BOTÕES PÍLULA */
 .botoes-container {
     display: flex;
     gap: 12px;
-    padding: 0 5px;
+    padding: 0 20px;
+    margin-bottom: 20px;
 }
 
 .btn-pilula {
@@ -180,46 +204,28 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-cancelar { background: #f2f2f7; color: #8e8e93; }
 .btn-acao { background: #f2f2f7; color: #aeaeb2; pointer-events: none; }
-
 .btn-acao.active {
     background: #007AFF;
     color: #fff;
     pointer-events: auto;
-    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
-.btn-pilula:active { transform: scale(0.95); }
-
-/* 8. GRID E NAV */
-.rooms-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-    padding: 25px;
-    margin-bottom: 80px;
-}
-
+/* 10. NAV BAR FIXA */
 .nav-bar {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 70px;
-    background: #fff;
+    height: 75px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     border-top: 1px solid #f2f2f7;
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
-
-#home-app {
-    width: 100%;
-    min-height: 100vh;
-    display: block;
-    overflow-y: auto;
-    padding-bottom: 100px; /* Espaço para a nav-bar não tampar nada */
+    z-index: 999;
+    padding-bottom: env(safe-area-inset-bottom);
 }
