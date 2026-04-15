@@ -118,11 +118,34 @@ html, body {
 #toggle-visibility:active i {
     transform: scale(0.9); /* Efeito de clique no ícone */
 }
-/* --- ESTILO DA TELA PAGAR --- */
+/* --- ESTILO DA TELA PAGAR (ATUALIZADO) --- */
 .address-container {
     position: relative;
-    width: 90%;
-    margin: 20px auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#wallet-address {
+    width: 100%;
+    padding: 15px 50px 15px 15px; /* Espaço de 50px na direita para o ícone */
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.qr-icon-button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #007AFF; /* Seu azul Blueberry */
+    font-size: 22px;
 }
 
 #wallet-address {
