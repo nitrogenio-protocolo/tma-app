@@ -97,9 +97,23 @@ const addressInput = document.getElementById('wallet-address');
 const btnConfirmarPagar = document.getElementById('btn-confirmar-pagar');
 
 function validarPagar() {
-    const valor = document.getElementById('valor-pagar').value;
-    const endereco = document.getElementById('wallet-address').value;
+    const valorInput = document.getElementById('valor-pagar');
+    const enderecoInput = document.getElementById('wallet-address');
     const btnPagar = document.getElementById('btn-confirmar-pagar');
+
+    if (!valorInput || !enderecoInput || !btnPagar) return;
+
+    const valor = valorInput.value;
+    const endereco = enderecoInput.value;
+
+    if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
+        btnPagar.classList.add('active');
+        btnPagar.disabled = false;
+    } else {
+        btnPagar.classList.remove('active');
+        btnPagar.disabled = true;
+    }
+}
 
     // Verifica se tem valor e se o endereço começa com 0x e tem 42 caracteres
     if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
