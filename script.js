@@ -38,6 +38,37 @@ if (btnReceber) {
         document.getElementById('area-receber').style.display = 'block';
     });
 }
+// --- NAVEGAÇÃO TELA PAGAR ---
+
+function abrirPagar() {
+    document.getElementById('home-app').style.display = 'none';
+    document.getElementById('area-pagar').style.display = 'block';
+}
+
+function fecharPagar() {
+    document.getElementById('area-pagar').style.display = 'none';
+    document.getElementById('home-app').style.display = 'block';
+}
+
+// --- LÓGICA DO BOTÃO AZUL (NITRO FAB) ---
+const btnFab = document.getElementById('btn-flutuante-nitro');
+
+if (btnFab) {
+    btnFab.onclick = function() {
+        const areaPagar = document.getElementById('area-pagar');
+        const areaReceber = document.getElementById('area-receber');
+
+        // 1. Se estiver na tela de PAGAR, ele executa a ação de confirmar
+        if (areaPagar && areaPagar.style.display === 'block') {
+            console.log("Confirmando pagamento...");
+            // Aqui você pode chamar a função de transação no futuro
+        } 
+        // 2. Se estiver na HOME, ele serve como atalho para abrir a tela de pagar
+        else if (areaPagar && (areaPagar.style.display === 'none' || areaPagar.style.display === '')) {
+            abrirPagar();
+        }
+    };
+}
 function fecharReceber() {
     // 1. Esconde a área de receber e volta para a home
     document.getElementById('area-receber').style.display = 'none';
