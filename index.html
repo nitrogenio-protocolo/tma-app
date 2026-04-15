@@ -80,11 +80,12 @@
             </div>
         </div>
         
+        <div class="botoes-container">
+            <button onclick="fecharReceber()" class="btn-pilula btn-cancelar">Cancelar</button>
+            <button id="btn-gerar-qr" class="btn-pilula btn-acao" onclick="gerarCobranca()">Gerar QR</button>
+        </div>
+
         <div id="qrcode-container"></div>
-        
-        <button onclick="fecharReceber()" style="width: 100%; margin-top: 20px; background: #eee; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer;">
-            Cancelar
-        </button>
     </div>
 
     <div id="area-pagar" style="display: none; padding: 20px;">
@@ -104,13 +105,13 @@
             <div class="bnb-estimate">Taxa de rede: <span id="taxa-estimada">Calculando...</span></div>
         </div>
 
-        <button onclick="fecharPagar()" style="width: 100%; margin-top: 20px; background: #f5f5f7; border: none; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer;">
-            Cancelar
-        </button>
+        <div class="botoes-container">
+            <button onclick="fecharPagar()" class="btn-pilula btn-cancelar">Cancelar</button>
+            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao">Pagar</button>
+        </div>
     </div>
     
-    <div id="tela-sucesso" style="display: none;">
-        </div>
+    <div id="tela-sucesso" style="display: none;"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
