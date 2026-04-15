@@ -91,10 +91,15 @@ const addrInput = document.getElementById('wallet-address');
 
 const validatePagar = () => {
     const btn = document.getElementById('btn-confirmar-pagar');
-    const isValid = valorPagarInput.value > 0 && ethers.isAddress(addrInput.value);
+    const valor = parseFloat(valorPagarInput.value);
+    const endereco = addrInput.value.trim(); // O .trim() remove espaços vazios
+
+    // Se tiver valor maior que zero e o endereço tiver pelo menos 42 caracteres
+    const isValid = valor > 0 && endereco.length >= 42;
+    
     btn.disabled = !isValid;
     btn.classList.toggle('active', isValid);
-}
+};
 
 valorPagarInput?.addEventListener('input', validatePagar);
 addrInput?.addEventListener('input', validatePagar);
