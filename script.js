@@ -92,10 +92,6 @@ brlInput?.addEventListener('input', async (e) => {
     }
 });
 
-const valorPagarInput = document.getElementById('valor-pagar');
-const addressInput = document.getElementById('wallet-address');
-const btnConfirmarPagar = document.getElementById('btn-confirmar-pagar');
-
 function validarPagar() {
     const valorInput = document.getElementById('valor-pagar');
     const enderecoInput = document.getElementById('wallet-address');
@@ -103,8 +99,8 @@ function validarPagar() {
 
     if (!valorInput || !enderecoInput || !btnPagar) return;
 
-    const valor = valorInput.value;
-    const endereco = enderecoInput.value;
+    const valor = parseFloat(valorInput.value);
+    const endereco = enderecoInput.value.trim();
 
     if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
         btnPagar.classList.add('active');
@@ -114,6 +110,9 @@ function validarPagar() {
         btnPagar.disabled = true;
     }
 }
+
+document.getElementById('valor-pagar')?.addEventListener('input', validarPagar);
+document.getElementById('wallet-address')?.addEventListener('input', validarPagar);
 
     // Verifica se tem valor e se o endereço começa com 0x e tem 42 caracteres
     if (valor > 0 && endereco.startsWith('0x') && endereco.length === 42) {
