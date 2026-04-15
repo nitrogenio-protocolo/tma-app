@@ -309,11 +309,6 @@ html, body {
     cursor: pointer;
 }
 
-.nitro-fab img {
-    width: 35px;
-    filter: brightness(0) invert(1); 
-}
-
 /* --- AJUSTE DO QR CODE --- */
 #qrcode-container {
     display: flex;
