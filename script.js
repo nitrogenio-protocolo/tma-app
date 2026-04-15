@@ -117,26 +117,29 @@ function gerarCobranca(valorBNB) {
 
 // --- ESTE É O BLOCO NOVO QUE VOCÊ VAI COLAR NO FINAL ---
 document.addEventListener('click', (e) => {
-    if (e.target.closest('#btn-flutuante-nitro')) {
-        const areaReceber = document.getElementById('area-receber');
-        const areaPagar = document.getElementById('area-pagar');
-        const bnbDisplay = document.getElementById('bnb-display');
+    const btn = e.target.closest('#btn-flutuante-nitro');
+    if (!btn) return; // Se não clicou no botão, não faz nada
 
-        // 1. Se estiver na tela de RECEBER, gera o QR Code
-        if (areaReceber && areaReceber.style.display === 'block') {
-            if (parseFloat(bnbDisplay.innerText) > 0) {
-                gerarCobranca(bnbDisplay.innerText);
-            } else {
-                alert("Digite um valor!");
-            }
-        } 
-        // 2. Se estiver na tela de PAGAR, executa a confirmação
-        else if (areaPagar && areaPagar.style.display === 'block') {
-            alert("Iniciando transação de pagamento...");
+    const areaReceber = document.getElementById('area-receber');
+    const areaPagar = document.getElementById('area-pagar');
+    const bnbDisplay = document.getElementById('bnb-display');
+
+    // Lógica para quando a tela de RECEBER está visível
+    if (areaReceber && getComputedStyle(areaReceber).display === 'block') {
+        const valor = bnbDisplay ? parseFloat(bnbDisplay.innerText) : 0;
+        if (valor > 0) {
+            gerarCobranca(valor);
+        } else {
+            alert("Digite um valor para receber!");
         }
-        // 3. Se estiver na HOME, abre a tela de Pagar
-        else {
-            abrirPagar(); 
-        }
+    } 
+    // Lógica para quando a tela de PAGAR está visível
+    else if (areaPagar && getComputedStyle(areaPagar).display === 'block') {
+        alert("Confirmando pagamento...");
+        // Aqui entrará a função de enviar BNB futuramente
+    }
+    // Lógica para a HOME (se nenhuma das telas acima estiver aberta)
+    else {
+        abrirPagar(); // Ou abrirReceber(), conforme sua preferência de atalho
     }
 });
