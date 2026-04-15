@@ -273,3 +273,48 @@ html, body {
     justify-content: center;
     margin-bottom: 20px;
 }
+
+/* 10. NOVOS BOTÕES EM PÍLULA (LADO A LADO) */
+.botoes-container {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    padding: 0 15px;
+    margin-top: 5px;
+}
+
+.btn-pilula {
+    flex: 1;
+    padding: 16px;
+    border-radius: 50px; /* Formato Pílula */
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Pílula de Cancelar (Cinza) */
+.btn-cancelar {
+    background-color: #f2f2f7;
+    color: #8e8e93;
+}
+
+/* Pílula de Ação (Gerar/Pagar) - Começa "Apagada" */
+.btn-acao {
+    background-color: #f2f2f7;
+    color: #aeaeb2;
+}
+
+/* Quando o botão ACENDE (Azul Médio) */
+.btn-acao.active {
+    background-color: #007AFF;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+}
+
+.btn-pilula:active {
+    transform: scale(0.96);
+}
