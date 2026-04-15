@@ -1,18 +1,19 @@
-/* RESET PROFISSIONAL - FOCO TOTAL NO CENTRO */
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
+/* 1. RESET PROFISSIONAL */
+* {
     box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
     overflow-x: hidden;
     background-color: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-* { box-sizing: inherit; }
-
-/* CONTAINER DA SPLASH */
+/* 2. CONTAINER DA SPLASH SCREEN */
 #splash-screen {
     position: fixed;
     top: 0;
@@ -24,8 +25,9 @@ html, body {
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    transition: opacity 0.8s ease-out, background-color 0.8s ease-out;
+    transition: opacity 0.8s ease-out;
 }
+
 .splash-content {
     position: relative;
     display: flex;
@@ -46,7 +48,6 @@ html, body {
     text-align: center;
 }
 
-/* ANIMAÇÕES DA SPLASH */
 #text-dao { animation: fadeInOutPulse 2s forwards 0.5s; }
 #text-nitrogenio { animation: fadeInOut 2s forwards 2.5s; }
 
@@ -77,11 +78,10 @@ html, body {
 
 .fade-out { 
     opacity: 0 !important; 
-    background-color: #ffffff !important; 
     pointer-events: none; 
 }
 
-/* ESTILO DA HOME */
+/* 3. HOME APP - HEADER E SALDO */
 .header-app {
     display: flex;
     justify-content: space-between;
@@ -103,73 +103,85 @@ html, body {
     border-radius: 12px;
     font-size: 12px;
     font-weight: 600;
+    cursor: pointer;
 }
 
-#toggle-visibility.active {
-    color: #007AFF; /* Fica azul quando o saldo estiver visível */
+.balance-section { padding: 10px 20px; }
+.balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; margin-bottom: 5px; }
+.balance-amount { font-size: 26px; font-weight: 700; color: #1d1d1f; }
+
+/* 4. ACTION BAR (PAGAR, RECEBER, TROCAR) */
+.action-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 20px;
+    margin: 15px;
+    background: #f5f5f7;
+    border-radius: 20px;
 }
 
-#toggle-visibility i {
-    transition: transform 0.2s ease;
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #007AFF;
 }
 
-#toggle-visibility:active i {
-    transform: scale(0.9); /* Efeito de clique no ícone */
-}
-/* --- ESTILO DA TELA PAGAR (ATUALIZADO) --- */
-.address-container {
-    position: relative;
-    width: 100%;
+/* 5. BANNER NFT ALPHA */
+.banner-nft {
+    margin: 0 20px 30px;
+    height: 100px;
+    background: linear-gradient(135deg, #001f3f 0%, #007AFF 100%);
+    border-radius: 24px;
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    justify-content: space-between;
+    padding: 25px;
+    color: white;
+    position: relative;
+    overflow: hidden;
 }
 
-#wallet-address {
+.raposa-no-card {
+    width: 100px;
+    height: auto;
+    opacity: 0.5;
+    filter: brightness(0) invert(1);
+}
+
+/* 6. GRID DE SALAS E NAV BAR */
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 0 25px;
+    margin-bottom: 100px;
+}
+
+.room-icon { display: flex; justify-content: center; font-size: 32px; color: #444; }
+
+.nav-bar {
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    padding: 15px 50px 15px 15px; /* Espaço de 50px na direita para o ícone */
-    border: 1px solid #eee;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-    color: #333;
-    outline: none;
+    height: 75px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 15px;
 }
 
-.qr-icon-button {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #007AFF; /* Seu azul Blueberry */
-    font-size: 22px;
-}
-
-#wallet-address {
-    width: 100%;
-    padding: 15px 50px 15px 15px;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    background-color: #f9f9f9; /* Cinza claro industrial */
-    font-size: 14px;
-    color: #333;
-    outline: none;
-}
-
-.qr-icon-button {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #007AFF; /* Seu azul Blueberry */
-}
-/* --- ESTILO DA TELA RECEBER --- */
+/* 7. ESTILO DOS CARDS DE TRANSAÇÃO (PAGAR/RECEBER) */
 .conversion-card {
     background: #ffffff;
     padding: 20px;
-    margin: 15px;
+    margin-bottom: 15px;
     border-radius: 20px;
     border: 1px solid #f0f0f0;
 }
@@ -196,88 +208,51 @@ html, body {
     margin-top: 5px;
 }
 
-#bnb-converted {
-    color: #007AFF;
-    font-weight: 600;
-}
-/* -------------------------------------------- */
-
-.balance-section { padding: 10px 20px; }
-.balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; }
-.balance-amount { font-size: 26px; font-weight: 700; }
-
-.action-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    padding: 20px;
-    margin: 15px;
-    background: #f5f5f7;
-    border-radius: 20px;
-}
-
-.action-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #007AFF;
-}
-
-.banner-nft {
-    margin: 0 20px 30px;
-    height: 100px;
-    background: linear-gradient(135deg, #001f3f 0%, #007AFF 100%);
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    padding: 25px;
-    color: white;
+/* 8. CAMPO DE ENDEREÇO COM ÍCONE QR */
+.address-container {
     position: relative;
-    overflow: hidden;
-}
-
-.rooms-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-    padding: 0 25px;
-    margin-bottom: 100px;
-}
-
-.room-icon { display: flex; justify-content: center; font-size: 32px; color: #444; }
-
-.nav-bar {
-    position: fixed;
-    bottom: 0;
     width: 100%;
-    height: 75px;
-    background: white;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding-bottom: 15px;
-}
-.banner-nft {
-    position: relative; /* Isso mantém a raposa presa dentro do card */
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
+    margin-top: 10px;
 }
 
-.raposa-no-card {
-    width: 100px; /* Tamanho discreto para o card */
-    height: auto;
-    opacity: 0.5; /* Meio transparente para ficar elegante */
-    filter: brightness(0) invert(1); /* Deixa ela branca igual ao texto */
+#wallet-address {
+    width: 100%;
+    padding: 15px 50px 15px 15px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    outline: none;
 }
-/* --- TELA DE SUCESSO FINAL --- */
+
+.qr-icon-button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #007AFF;
+    font-size: 22px;
+}
+
+/* 9. QR CODE E TELA DE SUCESSO */
+#qrcode-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#qrcode-container img {
+    border: 10px solid white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 #tela-sucesso {
-    display: none; /* Inicia escondida */
+    display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -297,49 +272,4 @@ html, body {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.2);
-}
-
-.success-icon svg {
-    width: 50px;
-    height: 50px;
-    stroke: white;
-}
-
-#valor-confirmado {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* --- ESTILOS DO BOTÃO FLUTUANTE (POLEGAR) --- */
-.nitro-fab {
-    position: fixed;
-    right: 20px;
-    bottom: 70px;
-    width: 65px;
-    height: 65px;
-    /* Altere o background abaixo para vermelho */
-    background: linear-gradient(135deg, #FF4B2B, #FF416C); 
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4); /* Ajuste a sombra para combinar */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    cursor: pointer;
-}
-
-/* --- AJUSTE DO QR CODE --- */
-#qrcode-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-#qrcode-container img {
-    border: 10px solid white;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
