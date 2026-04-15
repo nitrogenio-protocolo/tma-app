@@ -65,6 +65,7 @@ function fecharReceber() {
     document.getElementById('home-app').style.display = 'block';
     document.getElementById('brl-input').value = "";
     document.getElementById('qrcode-container').innerHTML = "";
+    document.getElementById('bnb-display').innerText = "0.000000";
 }
 
 // --- 5. LÓGICA DE PREÇOS E VALIDAÇÃO ---
