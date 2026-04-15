@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
     if (splash) {
         setTimeout(() => {
             splash.classList.add('fade-out');
-            setTimeout(() => splash.remove(), 200);
+            setTimeout(() => splash.remove(), 800);
         }, 4000);
     }
 });
