@@ -6,6 +6,7 @@
     <title>Nitrogênio Protocolo v2.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
 
@@ -103,17 +104,16 @@
                 <input type="text" id="wallet-address" placeholder="0x...">
                 <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
             </div>
-            <div id="reader" style="width: 100%; display:none;"></div>
+            <div id="reader" style="width: 100%; display:none; margin-top:15px; border-radius:10px; overflow:hidden;"></div>
         </div>
         <div class="grupo-botoes">
             <button class="btn-pilula btn-cancelar" onclick="fecharPagar()">CANCELAR</button>
-            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao" disabled>PAGAR</button>
+            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao">PAGAR</button>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="script.js"></script>
 </body>
 </html>
