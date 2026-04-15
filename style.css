@@ -160,6 +160,21 @@ body {
     font-weight: 700;
     text-transform: uppercase;
 }
+   /* Container para alinhar os botões lado a lado e ao centro */
+.grupo-botoes {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;
+    gap: 15px;               /* Espaço entre os botões */
+    margin: 20px 0;          /* Espaço em cima e embaixo */
+    width: 100%;
+}
+
+/* Ajuste para que os botões não fiquem colados nas bordas */
+.btn-pilula {
+    flex: 1;                 /* Faz os botões terem o mesmo tamanho */
+    max-width: 160px;        /* Impede que fiquem largos demais */
+}
 
 .btn-cancelar { background: #f2f2f7; color: #8e8e93; }
 
