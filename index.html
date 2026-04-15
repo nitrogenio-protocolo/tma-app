@@ -31,11 +31,11 @@
         </div>
 
         <div class="action-bar">
-            <div class="action-item" onclick="abrirPagar()" style="cursor: pointer;">
+            <div class="action-item" onclick="abrirPagar()">
                 <i class="fa-solid fa-arrow-up"></i>
                 <span>pagar</span>
             </div>
-            <div id="btn-receber" class="action-item" onclick="abrirReceber()" style="cursor: pointer;">
+            <div id="btn-receber" class="action-item" onclick="abrirReceber()">
                 <i class="fa-solid fa-arrow-down"></i>
                 <span>receber</span>
             </div>
@@ -99,8 +99,10 @@
             <div class="balance-label" style="margin-top: 15px;">ENDEREÇO DE DESTINO</div>
             <div class="address-container">
                 <input type="text" id="wallet-address" placeholder="0x... ou ler QR">
-                <i class="fas fa-qrcode qr-icon-button" onclick="abrirScanner()"></i>
+                <i class="fas fa-qrcode qr-icon-button" onclick="toggleScanner()"></i>
             </div>
+            
+            <div id="reader" style="width: 100%; display:none; margin-top: 15px; border-radius: 12px; overflow: hidden;"></div>
             
             <div class="bnb-estimate">Taxa de rede: <span id="taxa-estimada">Calculando...</span></div>
         </div>
@@ -115,6 +117,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script> <script src="script.js"></script>
 </body>
 </html>
