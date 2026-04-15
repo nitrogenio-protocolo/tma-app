@@ -105,8 +105,6 @@ html, body {
     font-weight: 600;
 }
 
-}
-
 #toggle-visibility.active {
     color: #007AFF; /* Fica azul quando o saldo estiver visível */
 }
