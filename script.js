@@ -1,6 +1,6 @@
 /**
- * NITROGÊNIO PROTOCOLO - v2.0 stable
- * Lógica: Web3 Flow & Splash Control
+ * NITROGÊNIO PROTOCOLO - v2.0 stable (Updated)
+ * Lógica: Web3 Flow & Splash Control com Scanner Robusto
  */
 
 // 1. Splash Control (Animação Sequencial)
@@ -12,24 +12,28 @@ window.addEventListener('load', () => {
 
     if (!splash) return;
 
-    // Tempo de cada fade-in (milissegundos)
     const delay = 800; 
 
-    setTimeout(() => { textDao.classList.add('fade-in'); }, delay);
-    setTimeout(() => { textDao.style.display = 'none'; textNitrogenio.classList.add('fade-in'); }, delay * 2);
-    setTimeout(() => { textNitrogenio.style.display = 'none'; splashLogo.classList.add('fade-in'); }, delay * 3);
+    setTimeout(() => { textDao?.classList.add('fade-in'); }, delay);
+    setTimeout(() => { 
+        if(textDao) textDao.style.display = 'none'; 
+        textNitrogenio?.classList.add('fade-in'); 
+    }, delay * 2);
+    setTimeout(() => { 
+        if(textNitrogenio) textNitrogenio.style.display = 'none'; 
+        splashLogo?.classList.add('fade-in'); 
+    }, delay * 3);
 
-    // Some tudo
     setTimeout(() => {
         splash.style.transition = 'opacity 0.6s ease';
         splash.style.opacity = '0';
         setTimeout(() => { splash.remove(); }, 600);
-    }, delay * 5); // Tchau splash
+    }, delay * 5);
 });
 
-// 2. Web3 Connection (Core)
+// 2. Web3 Connection
 let userAccount = null;
-let provider, signer, scannerAtivo;
+let provider, signer, scannerAtivo = false;
 
 async function syncWallet() {
     if (!window.ethereum) return alert("Abra o app dentro da MetaMask Browser.");
@@ -50,17 +54,13 @@ function updateUI() {
     const balanceDisplay = document.querySelector('.balance-amount');
     const nftBalanceDisplay = document.getElementById('nft-balance');
 
-    if (userAccount) {
-        // Formata o endereço (0xabcd...efgh)
+    if (userAccount && btn) {
         btn.innerText = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
         
-        // Pega Saldo Principal
         provider.getBalance(userAccount).then(bal => {
             const formatBal = parseFloat(ethers.formatEther(bal)).toFixed(4);
-            balanceDisplay.innerText = `${formatBal} BNB`;
-            // Por enquanto, vou mostrar o mesmo saldo no NFT, para provar que funciona
-            // Quando você tiver o contrato, a gente muda a função de leitura
-            nftBalanceDisplay.innerText = `Saldo NFT: ${formatBal} BNB`;
+            if(balanceDisplay) balanceDisplay.innerText = `${formatBal} BNB`;
+            if(nftBalanceDisplay) nftBalanceDisplay.innerText = `Saldo NFT: ${formatBal} BNB`;
         });
     }
 }
@@ -81,28 +81,32 @@ function fecharView(viewId) {
 }
 
 function abrirPagar() { abrirView('area-pagar'); }
-function fecharPagar() { fecharView('area-pagar'); }
 function abrirReceber() { abrirView('area-receber'); }
-function fecharReceber() { fecharView('area-receber'); }
 
-// 4. Validations
+// 4. Validations (Melhorado para Mobile)
 const valorPagarInput = document.getElementById('valor-pagar');
 const addrInput = document.getElementById('wallet-address');
 
 const validatePagar = () => {
     const btn = document.getElementById('btn-confirmar-pagar');
-    const valor = parseFloat(valorPagarInput.value);
-    const endereco = addrInput.value.trim(); // O .trim() remove espaços vazios
+    if (!btn || !valorPagarInput || !addrInput) return;
 
-    // Se tiver valor maior que zero e o endereço tiver pelo menos 42 caracteres
-    const isValid = valor > 0 && endereco.length >= 42;
+    let valorStr = valorPagarInput.value.replace(',', '.');
+    const valor = parseFloat(valorStr);
+    const endereco = addrInput.value.trim();
+
+    // Valida se o endereço começa com 0x e tem o tamanho certo
+    const isValid = valor > 0 && endereco.startsWith('0x') && endereco.length === 42;
     
     btn.disabled = !isValid;
     btn.classList.toggle('active', isValid);
 };
 
-valorPagarInput?.addEventListener('input', validatePagar);
-addrInput?.addEventListener('input', validatePagar);
+// Escuta múltiplos eventos para garantir que o "colar" funcione sempre
+['input', 'change', 'paste', 'keyup'].forEach(evt => {
+    valorPagarInput?.addEventListener(evt, validatePagar);
+    addrInput?.addEventListener(evt, validatePagar);
+});
 
 // 5. QR Code & Scanner
 function gerarCobranca() {
@@ -112,14 +116,12 @@ function gerarCobranca() {
     if (!userAccount || !bnbValor) return alert("Conecte a carteira e insira valor!");
     
     container.innerHTML = "";
-    // Formato EIP-681 simplificado
     new QRCode(container, { text: `ethereum:${userAccount}?value=${bnbValor}`, width: 200, height: 200 });
 }
 
-// --- FUNÇÃO PARA PAGAR DE VERDADE ---
 async function executarPagamento() {
-    const valorN = document.getElementById('valor-pagar').value;
-    const enderecoDestino = document.getElementById('wallet-address').value;
+    let valorN = document.getElementById('valor-pagar').value.replace(',', '.');
+    const enderecoDestino = document.getElementById('wallet-address').value.trim();
 
     if (!userAccount || !signer) return alert("Conecte a carteira primeiro!");
     if (!ethers.isAddress(enderecoDestino)) return alert("Endereço de destino inválido!");
@@ -129,14 +131,13 @@ async function executarPagamento() {
         btnPagar.innerText = "PROCESSANDO...";
         btnPagar.disabled = true;
 
-        // Isso aqui chama a MetaMask de verdade
         const tx = await signer.sendTransaction({
             to: enderecoDestino,
             value: ethers.parseEther(valorN) 
         });
 
-        alert("Transação enviada! Hash: " + tx.hash);
-        await tx.wait(); // Espera confirmar na rede
+        alert("Transação enviada!");
+        await tx.wait(); 
         
         alert("Pagamento concluído!");
         fecharPagar();
@@ -144,28 +145,25 @@ async function executarPagamento() {
 
     } catch (err) {
         console.error(err);
-        alert("Falha no pagamento. Verifique saldo ou conexão.");
+        alert("Falha no pagamento. Verifique saldo.");
     } finally {
         const btnPagar = document.getElementById('btn-confirmar-pagar');
-        btnPagar.innerText = "PAGAR";
-        btnPagar.disabled = false;
+        if(btnPagar) {
+            btnPagar.innerText = "PAGAR";
+            btnPagar.disabled = false;
+        }
     }
 }
 
-// Ativa o clique do botão
 document.getElementById('btn-confirmar-pagar')?.addEventListener('click', executarPagamento);
 
-// --- AJUSTE NO BOTÃO RECEBER (LIMPEZA AUTOMÁTICA) ---
 function fecharReceber() {
-    // Limpa o valor digitado
     document.getElementById('bnb-receber').value = "";
-    // Apaga o QR Code gerado
     document.getElementById('qrcode-container').innerHTML = "";
-    // Volta para a home
     fecharView('area-receber');
 }
 
-// --- AJUSTE NO SCANNER (PAGAR) ---
+// --- SCANNER COM LIMPEZA DE PREFIXO ---
 let html5QrCode;
 
 async function toggleScanner() {
@@ -176,23 +174,26 @@ async function toggleScanner() {
         scannerAtivo = true;
         
         html5QrCode = new Html5Qrcode("reader");
-        
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        const config = { fps: 15, qrbox: { width: 250, height: 250 } };
 
         try {
             await html5QrCode.start(
-                { facingMode: "environment" }, // Usa a câmera traseira
+                { facingMode: "environment" },
                 config,
                 (decodedText) => {
-                    // Quando ler o QR Code:
-                    document.getElementById('wallet-address').value = decodedText;
-                    pararScanner(); // Desliga a câmera
-                    validatePagar(); // Valida o botão de pagar
+                    // LIMPEZA: Remove "ethereum:" e qualquer parâmetro após "?"
+                    let cleanAddr = decodedText.replace(/^(ethereum:)/i, "").trim();
+                    if (cleanAddr.includes("?")) {
+                        cleanAddr = cleanAddr.split("?")[0];
+                    }
+
+                    document.getElementById('wallet-address').value = cleanAddr;
+                    pararScanner(); 
+                    validatePagar(); 
                 }
             );
         } catch (err) {
-            console.error("Erro ao abrir câmera:", err);
-            alert("Erro ao acessar a câmera. Verifique as permissões.");
+            console.error("Erro câmera:", err);
             pararScanner();
         }
     } else {
@@ -205,14 +206,18 @@ function pararScanner() {
         html5QrCode.stop().then(() => {
             document.getElementById('reader').style.display = 'none';
             scannerAtivo = false;
-        }).catch(err => console.error("Erro ao parar scanner:", err));
+        }).catch(() => {
+            document.getElementById('reader').style.display = 'none';
+            scannerAtivo = false;
+        });
+    } else {
+        scannerAtivo = false;
     }
 }
 
-// Garanta que ao fechar a tela de pagar, a câmera desligue também
 function fecharPagar() {
     pararScanner();
-    document.getElementById('valor-pagar').value = "";
-    document.getElementById('wallet-address').value = "";
+    if(valorPagarInput) valorPagarInput.value = "";
+    if(addrInput) addrInput.value = "";
     fecharView('area-pagar');
 }
