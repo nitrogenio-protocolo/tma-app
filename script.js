@@ -59,11 +59,13 @@ function updateUI() {
         
         provider.getBalance(userAccount).then(bal => {
             const formatBal = parseFloat(ethers.formatEther(bal)).toFixed(4);
-            if(balanceDisplay) balanceDisplay.innerText = `${formatBal} BNB`;
-        });
+            if (balanceDisplay) {
+                balanceDisplay.innerText = `${formatBal} BNB`;
+            }
+            // A linha do Saldo NFT foi removida daqui para não travar o visual
+        }).catch(err => console.error("Erro ao buscar saldo:", err));
     }
 }
-
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
 // 3. Navigation Engine
