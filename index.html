@@ -32,15 +32,15 @@
         </div>
 
         <div class="action-bar">
-            <div class="action-item" onclick="abrirPagar()">
+            <div class="action-item" onclick="event.preventDefault(); abrirPagar()">
                 <i class="fa-solid fa-arrow-up"></i>
                 <span>pagar</span>
             </div>
-            <div class="action-item" onclick="abrirReceber()">
+            <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
                 <i class="fa-solid fa-arrow-down"></i>
                 <span>receber</span>
             </div>
-            <div class="action-item">
+            <div class="action-item" onclick="event.preventDefault();">
                 <i class="fa-solid fa-right-left"></i>
                 <span>trocar</span>
             </div>
@@ -55,192 +55,98 @@
         </div>
 
         <div class="carousel-wrapper">
-    <div class="room-carousel">
-        <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-    <h3>COFRE</h3>
-    <p>Gestão e Liquidez</p>
-    
-    <div class="full-content">
-        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #007AFF; margin-top: 10px;">
-            <p style="margin: 0; font-size: 12px; color: #666;">Endereço da Safe Wallet:</p>
-            <code style="display: block; word-break: break-all; color: #007AFF; font-weight: bold; margin: 10px 0;">
-                0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219
-            </code>
-        </div>
+            <div class="room-carousel">
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3>COFRE</h3>
+                    <p>Gestão e Liquidez</p>
+                    <div class="full-content">
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #007AFF; margin-top: 10px;">
+                            <p style="margin: 0; font-size: 12px; color: #666;">Endereço da Safe Wallet:</p>
+                            <code style="display: block; word-break: break-all; color: #007AFF; font-weight: bold; margin: 10px 0;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
+                        </div>
+                        <div style="text-align: left; margin-top: 20px; font-size: 14px; line-height: 1.5;">
+                            <p><strong>🛡️ Transparência:</strong> 1% de cada transação do Token N é enviado automaticamente para este cofre social.</p>
+                            <p><strong>🤝 Governança:</strong> Atualmente gerido pelo criador. Futura transição para 21 Guardiões.</p>
+                        </div>
+                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
+                    </div>
+                </div>
 
-        <div style="text-align: left; margin-top: 20px; font-size: 14px; line-height: 1.5;">
-            <p><strong>🛡️ Transparência:</strong> 1% de cada transação do Token N é enviado automaticamente para este cofre social.</p>
-            <p><strong>🤝 Governança:</strong> Atualmente gerido pelo criador. Futura transição para 21 Guardiões com voto 11/21.</p>
-        </div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <h3>COLETA</h3>
+                    <p>Entrada de Materiais</p>
+                    <div class="full-content">
+                        <div style="background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
+                            <p style="margin: 0; color: #2e7d32; font-weight: bold;">🌱 Benefício Alpha Ativo</p>
+                            <p style="font-size: 13px; color: #388e3c; margin-top: 5px;">Detentores do NFT Alpha têm direito a uma bonificação de boas-vindas.</p>
+                        </div>
+                        <button style="width: 100%; background: #28a745; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 20px;">EFETUAR RESGATE (CLAIM)</button>
+                    </div>
+                </div>
 
-        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" 
-           target="_blank" 
-           style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">
-           AUDITAR NO BSCSCAN
-        </a>
-    </div>
-</div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-building-columns"></i></div>
+                    <h3>GOVERNO</h3>
+                    <p>Decisões Coletivas</p>
+                    <div class="full-content">
+                        <div style="background: #007AFF; color: white; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
+                            <p style="margin: 0; font-weight: bold;">⚠️ Área Executiva</p>
+                            <p style="font-size: 13px; opacity: 0.9;">Apenas as 5 pautas mais votadas chegam aqui.</p>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
-    <h3>COLETA</h3>
-    <p>Entrada de Materiais</p>
-    
-    <div class="full-content">
-        <div style="background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
-            <p style="margin: 0; color: #2e7d32; font-weight: bold;">🌱 Benefício Alpha Ativo</p>
-            <p style="font-size: 13px; color: #388e3c; margin-top: 5px;">Detentores do NFT Alpha têm direito a um resgate único de incentivo.</p>
-        </div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>COMUNIDADE</h3>
+                    <p>Espaço Guardiões</p>
+                    <div class="full-content">
+                        <div style="border-left: 4px solid #007AFF; padding-left: 15px; text-align: left; margin-top: 10px;">
+                            <p><strong>📢 Filtro de Pautas:</strong> Vote nas propostas com seu NFT Alpha.</p>
+                        </div>
+                    </div>
+                </div>
 
-        <div style="text-align: left; margin-top: 20px; font-size: 14px;">
-            <p><strong>Valor do Resgate:</strong> 5.00 USD (em Token N)</p>
-            <p><strong>Regra:</strong> Apenas um resgate por carteira. O cálculo é feito pelo preço real da PancakeSwap.</p>
-        </div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
+                    <h3>MURAL</h3>
+                    <p>Avisos e Transparência</p>
+                    <div class="full-content">
+                        <div style="background: #333; color: #fff; padding: 15px; border-radius: 12px; text-align: left;">
+                            <p style="margin:0; font-weight:bold;">📋 Diário de Bordo</p>
+                        </div>
+                    </div>
+                </div>
 
-        <button id="btn-claim-nft" style="width: 100%; background: #28a745; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer;">
-            EFETUAR RESGATE (CLAIM)
-        </button>
-        
-        <p style="font-size: 11px; color: #888; margin-top: 10px; font-style: italic;">
-            *Requer pequena fração de BNB para taxa de rede (gás).
-        </p>
-    </div>
-</div>
-
-        <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-building-columns"></i></div>
-    <h3>GOVERNO</h3>
-    <p>Decisões Coletivas</p>
-    
-    <div class="full-content">
-        <div style="background: #007AFF; color: white; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
-            <p style="margin: 0; font-weight: bold;">⚠️ Área Executiva</p>
-            <p style="font-size: 13px; opacity: 0.9; margin-top: 5px;">Apenas as 5 pautas mais votadas pela Comunidade chegam aqui para a validação final.</p>
-        </div>
-
-        <div style="text-align: left; margin-top: 20px; font-size: 14px;">
-            <p><strong>Quórum de Segurança:</strong></p>
-            <p style="color: #555;">Para os recursos saírem do Cofre, é necessário o voto de <strong>11 dos 21 Guardiões</strong>.</p>
-            
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-            
-            <p style="font-weight: bold; color: #007AFF;">Status de Governança:</p>
-            <p style="font-size: 13px;">Aguardando pautas promovidas pela Sala Comunidade.</p>
-        </div>
-
-        <div style="margin-top: 20px; border: 1px solid #007AFF; padding: 10px; border-radius: 10px; color: #007AFF; font-size: 12px; font-weight: bold;">
-            <i class="fa-solid fa-lock"></i> ACESSO RESTRITO AOS GUARDIÕES
-        </div>
-    </div>
-</div>
-
-        <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
-    <h3>COMUNIDADE</h3>
-    <p>Espaço Guardiões</p>
-    
-    <div class="full-content">
-        <div style="border-left: 4px solid #007AFF; padding-left: 15px; text-align: left; margin-top: 10px;">
-            <p style="margin-bottom: 5px;"><strong>📢 Filtro de Pautas</strong></p>
-            <p style="font-size: 14px; color: #555;">As propostas criadas no Cofre aparecem aqui para receber o apoio da comunidade via NFT Alpha.</p>
-        </div>
-
-        <div style="background: #fcfcfc; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-top: 20px; text-align: left;">
-            <span style="font-size: 10px; background: #e0e0e0; padding: 2px 6px; border-radius: 4px; color: #666;">AGUARDANDO PROPOSTA</span>
-            <p style="margin: 10px 0 5px 0; font-weight: bold; color: #333;">O fluxo está ativo.</p>
-            <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Assim que uma pauta nascer no Cofre, o card de votação aparecerá aqui automaticamente.</p>
-        </div>
-
-        <p style="font-size: 12px; color: #007AFF; margin-top: 15px; font-weight: bold;">
-            <i class="fa-solid fa-circle-info"></i> As 5 mais votadas sobem para o Governo.
-        </p>
-    </div>
-</div>
-
-        
-<div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
-    <h3>MURAL</h3>
-    <p>Avisos e Transparência</p>
-    
-    <div class="full-content">
-        <div style="background: #333; color: #fff; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
-            <p style="margin: 0; font-weight: bold; font-size: 14px;">📋 Diário de Bordo do Protocolo</p>
-            <p style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Aqui o código publica automaticamente o resultado das votações do Governo.</p>
-        </div>
-
-        <div style="text-align: left; margin-top: 20px;">
-            <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
-                <span style="font-size: 10px; background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">✅ EXECUTADO</span>
-                <p style="margin: 5px 0; font-size: 14px; font-weight: bold;">Criação do Cofre Safe Wallet</p>
-                <p style="font-size: 11px; color: #888;">Protocolo ativo e pronto para receber recursos.</p>
-            </div>
-
-            <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
-                <span style="font-size: 10px; background: #ffc107; color: black; padding: 2px 6px; border-radius: 4px; font-weight: bold;">📉 SEM QUÓRUM</span>
-                <p style="margin: 5px 0; font-size: 14px; font-weight: bold;">Votação Alpha Exemplo</p>
-                <p style="font-size: 11px; color: #888;">As pautas precisam de 11 votos para avançar.</p>
-            </div>
-        </div>
-
-        <p style="font-size: 12px; color: #666; font-style: italic; margin-top: 10px;">
-            "O que o código decide, o Mural publica."
-        </p>
-    </div>
-</div>
-        <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-microchip"></i></div>
-    <h3>REGRAS</h3>
-    <p>Manual de Conduta</p>
-    
-    <div class="full-content">
-        <div style="text-align: left; margin-top: 10px;">
-            <p style="font-weight: bold; color: #333; border-bottom: 2px solid #007AFF; display: inline-block;">Token N: O Contrato de Ouro</p>
-            <ul style="font-size: 13px; color: #555; padding-left: 20px; margin-top: 10px;">
-                <li><strong>Suprimento:</strong> 1.000.000.000 (Fixo).</li>
-                <li><strong>Taxa de 1%:</strong> Enviada ao Cofre para sustentar o ecossistema.</li>
-                <li><strong>Transparência:</strong> O código impede a criação de novos tokens.</li>
-            </ul>
-
-            <p style="font-weight: bold; color: #333; border-bottom: 2px solid #007AFF; display: inline-block; margin-top: 15px;">Protocolo NFT Alpha</p>
-            <ul style="font-size: 13px; color: #555; padding-left: 20px; margin-top: 10px;">
-                <li><strong>Identidade:</strong> Credencial única de acesso e votação.</li>
-                <li><strong>Poder:</strong> 1 NFT = 1 Voto para filtrar pautas da Comunidade.</li>
-                <li><strong>Incentivo Alpha:</strong> Direito exclusivo a uma bonificação de boas-vindas em Token N (equivalente a 5 USD).</li>
-            </ul>
-
-            <div style="background: #fff3cd; padding: 10px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #ffc107;">
-                <p style="margin: 0; font-size: 12px; font-weight: bold;">⚖️ Governança Pura:</p>
-                <p style="margin: 0; font-size: 11px;">Decisões finais exigem 11 de 21 votos dos Guardiões. O código é a autoridade máxima.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <nav class="nav-bar">
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>REGRAS</h3>
+                    <p>Manual de Conduta</p>
+                    <div class="full-content">
+                        <p style="font-weight: bold; color: #333; border-bottom: 2px solid #007AFF; display: inline-block;">Token N: Suprimento 1B</p>
+                    </div>
+                </div>
+            </div> </div> <nav class="nav-bar">
             <div class="nav-item active"><i class="fa-solid fa-house"></i></div>
             <div class="nav-item"><i class="fa-brands fa-telegram"></i></div>
             <div class="nav-item"><i class="fa-solid fa-circle-question"></i></div>
         </nav>
-    </div>
-
-    <div id="area-receber" class="area-interna" style="display: none;">
+    </div> <div id="area-receber" class="area-interna" style="display: none;">
         <header class="area-header">
             <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
             <h2>RECEBER</h2>
         </header>
         <div class="conversion-card">
             <div class="balance-label">Valor a receber (BNB)</div>
-            <div class="input-group">
-                <input type="number" id="bnb-receber" placeholder="0.00" step="0.0001">
-            </div>
+            <div class="input-group"><input type="number" id="bnb-receber" placeholder="0.00" step="0.0001"></div>
         </div>
         <div class="grupo-botoes">
             <button class="btn-pilula btn-cancelar" onclick="fecharReceber()">CANCELAR</button>
             <button id="btn-gerar-qr" class="btn-pilula btn-acao" onclick="gerarCobranca()" disabled>GERAR QR</button>
         </div>
-        <div id="qrcode-container" style="display: flex; justify-content: center; margin-top: 20px;"></div>
+        <div id="qrcode-container"></div>
     </div>
 
     <div id="area-pagar" class="area-interna" style="display: none;">
@@ -250,15 +156,13 @@
         </header>
         <div class="conversion-card">
             <div class="balance-label">VALOR EM BNB</div>
-            <div class="input-group">
-                <input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001">
-            </div>
+            <div class="input-group"><input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001"></div>
             <div class="balance-label">DESTINO (CARTEIRA)</div>
             <div class="address-container">
                 <input type="text" id="wallet-address" placeholder="0x...">
                 <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
             </div>
-            <div id="reader" style="width: 100%; display:none; margin-top:15px; border-radius:15px; overflow:hidden; border: 2px solid #007bff;"></div>
+            <div id="reader" style="display:none;"></div>
         </div>
         <div class="grupo-botoes">
             <button class="btn-pilula btn-cancelar" onclick="fecharPagar()">CANCELAR</button>
