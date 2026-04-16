@@ -1,6 +1,6 @@
 /**
- * NITROGÊNIO PROTOCOLO - v2.0 stable (Updated)
- * Lógica: Web3 Flow & Splash Control com Scanner Robusto
+ * NITROGÊNIO PROTOCOLO - v2.0 stable (Final Adjusted)
+ * Lógica: Web3 Flow, Splash Control & UI Sync
  */
 
 // 1. Splash Control (Animação Sequencial)
@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
     }, delay * 5);
 });
 
-// 2. Web3 Connection
+// 2. Web3 Connection & UI Update
 let userAccount = null;
 let provider, signer, scannerAtivo = false;
 
@@ -52,20 +52,21 @@ async function syncWallet() {
 function updateUI() {
     const btn = document.getElementById('connect-trigger');
     const balanceDisplay = document.querySelector('.balance-amount');
-    const nftBalanceDisplay = document.getElementById('nft-balance');
 
     if (userAccount && btn) {
+        // Atualiza o endereço no botão azul do topo
         btn.innerText = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
         
         provider.getBalance(userAccount).then(bal => {
             const formatBal = parseFloat(ethers.formatEther(bal)).toFixed(4);
+            // ATUALIZA APENAS O SALDO PRINCIPAL
             if (balanceDisplay) {
                 balanceDisplay.innerText = `${formatBal} BNB`;
             }
-            // A linha do Saldo NFT foi removida daqui para não travar o visual
-        }).catch(err => console.error("Erro ao buscar saldo:", err));
+        }).catch(err => console.error("Erro ao carregar saldo:", err));
     }
 }
+
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
 // 3. Navigation Engine
@@ -84,9 +85,10 @@ function fecharView(viewId) {
 function abrirPagar() { abrirView('area-pagar'); }
 function abrirReceber() { abrirView('area-receber'); }
 
-// 4. Validations (Melhorado para Mobile)
+// 4. Validations (Pagar & Receber)
 const valorPagarInput = document.getElementById('valor-pagar');
 const addrInput = document.getElementById('wallet-address');
+const bnbReceberInput = document.getElementById('bnb-receber');
 
 const validatePagar = () => {
     const btn = document.getElementById('btn-confirmar-pagar');
@@ -96,23 +98,33 @@ const validatePagar = () => {
     const valor = parseFloat(valorStr);
     const endereco = addrInput.value.trim();
 
-    // Valida se o endereço começa com 0x e tem o tamanho certo
     const isValid = valor > 0 && endereco.startsWith('0x') && endereco.length === 42;
     
     btn.disabled = !isValid;
     btn.classList.toggle('active', isValid);
 };
 
-// Escuta múltiplos eventos para garantir que o "colar" funcione sempre
+const validateReceber = () => {
+    const btnGerar = document.getElementById('btn-gerar-qr');
+    const valor = parseFloat(bnbReceberInput?.value.replace(',', '.') || "0");
+    const isValid = valor > 0;
+
+    if (btnGerar) {
+        btnGerar.disabled = !isValid;
+        btnGerar.style.opacity = isValid ? "1" : "0.5";
+    }
+};
+
+// Listeners de entrada
 ['input', 'change', 'paste', 'keyup'].forEach(evt => {
     valorPagarInput?.addEventListener(evt, validatePagar);
     addrInput?.addEventListener(evt, validatePagar);
+    bnbReceberInput?.addEventListener(evt, validateReceber);
 });
 
-// 5. QR Code & Scanner
+// 5. QR Code Engine
 function gerarCobranca() {
-    const balInput = document.getElementById('bnb-receber');
-    const bnbValor = balInput.value;
+    const bnbValor = bnbReceberInput.value;
     const container = document.getElementById('qrcode-container');
     if (!userAccount || !bnbValor) return alert("Conecte a carteira e insira valor!");
     
@@ -121,8 +133,8 @@ function gerarCobranca() {
 }
 
 async function executarPagamento() {
-    let valorN = document.getElementById('valor-pagar').value.replace(',', '.');
-    const enderecoDestino = document.getElementById('wallet-address').value.trim();
+    let valorN = valorPagarInput.value.replace(',', '.');
+    const enderecoDestino = addrInput.value.trim();
 
     if (!userAccount || !signer) return alert("Conecte a carteira primeiro!");
     if (!ethers.isAddress(enderecoDestino)) return alert("Endereço de destino inválido!");
@@ -137,20 +149,18 @@ async function executarPagamento() {
             value: ethers.parseEther(valorN) 
         });
 
-        alert("Transação enviada!");
         await tx.wait(); 
-        
         alert("Pagamento concluído!");
         fecharPagar();
         updateUI(); 
 
     } catch (err) {
         console.error(err);
-        alert("Falha no pagamento. Verifique saldo.");
+        alert("Falha no pagamento.");
     } finally {
         const btnPagar = document.getElementById('btn-confirmar-pagar');
         if(btnPagar) {
-            btnPagar.innerText = "PAGAR";
+            btnPagar.innerText = "CONFIRMAR PAGAMENTO";
             btnPagar.disabled = false;
         }
     }
@@ -159,42 +169,34 @@ async function executarPagamento() {
 document.getElementById('btn-confirmar-pagar')?.addEventListener('click', executarPagamento);
 
 function fecharReceber() {
-    document.getElementById('bnb-receber').value = "";
+    if(bnbReceberInput) bnbReceberInput.value = "";
     document.getElementById('qrcode-container').innerHTML = "";
     fecharView('area-receber');
 }
 
-// --- SCANNER COM LIMPEZA DE PREFIXO ---
+// 6. Scanner Logic
 let html5QrCode;
 
 async function toggleScanner() {
     const readerDiv = document.getElementById('reader');
-    
     if (!scannerAtivo) {
         readerDiv.style.display = 'block';
         scannerAtivo = true;
-        
         html5QrCode = new Html5Qrcode("reader");
-        const config = { fps: 15, qrbox: { width: 250, height: 250 } };
-
         try {
             await html5QrCode.start(
                 { facingMode: "environment" },
-                config,
+                { fps: 15, qrbox: { width: 250, height: 250 } },
                 (decodedText) => {
-                    // LIMPEZA: Remove "ethereum:" e qualquer parâmetro após "?"
                     let cleanAddr = decodedText.replace(/^(ethereum:)/i, "").trim();
-                    if (cleanAddr.includes("?")) {
-                        cleanAddr = cleanAddr.split("?")[0];
-                    }
-
-                    document.getElementById('wallet-address').value = cleanAddr;
+                    if (cleanAddr.includes("?")) cleanAddr = cleanAddr.split("?")[0];
+                    addrInput.value = cleanAddr;
                     pararScanner(); 
                     validatePagar(); 
                 }
             );
         } catch (err) {
-            console.error("Erro câmera:", err);
+            console.error(err);
             pararScanner();
         }
     } else {
