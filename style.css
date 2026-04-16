@@ -119,6 +119,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0; /* Adicione isso para centralizar */
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -127,4 +128,5 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     border-top: 1px solid #eee;
     padding: 10px 0;
     z-index: 1000;
+    margin: 0; /* Garante que não tenha margem lateral */
 }
