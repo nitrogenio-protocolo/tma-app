@@ -176,3 +176,13 @@ function fecharPagar() {
     if(addrInput) addrInput.value = "";
     fecharView('area-pagar');
 }
+
+function expandRoom(card) {
+    card.classList.toggle('expanded');
+    // Trava o fundo para foco total
+    if (card.classList.contains('expanded')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+}
