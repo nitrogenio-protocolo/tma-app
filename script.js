@@ -60,7 +60,7 @@ function updateUI() {
         provider.getBalance(userAccount).then(bal => {
             const formatBal = parseFloat(ethers.formatEther(bal)).toFixed(4);
             if(balanceDisplay) balanceDisplay.innerText = `${formatBal} BNB`;
-            if(nftBalanceDisplay) nftBalanceDisplay.innerText = `Saldo NFT: ${formatBal} BNB`;
+            if(nftBalanceDisplay) nftBalanceDisplay.innerText = NFT ALPHA 
         });
     }
 }
