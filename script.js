@@ -161,17 +161,23 @@ async function toggleScanner() {
     } else { pararScanner(); }
 }
 
-function pararScanner() {
-    if (html5QrCode) {
-        html5QrCode.stop().then(() => {
+async function pararScanner() {
+    if (html5QrCode && scannerAtivo) {
+        try {
+            await html5QrCode.stop(); // O 'await' faz o código esperar o desligamento real
+            console.log("Scanner parado com sucesso");
+        } catch (err) {
+            console.error("Erro ao parar scanner:", err);
+        } finally {
             document.getElementById('reader').style.display = 'none';
             scannerAtivo = false;
-        }).catch(() => { scannerAtivo = false; });
+        }
     }
 }
 
-function fecharPagar() {
-    pararScanner();
+// E ajuste a fecharPagar para ser assíncrona também:
+async function fecharPagar() {
+    await pararScanner(); // Espera o scanner morrer antes de trocar a tela
     if(valorPagarInput) valorPagarInput.value = "";
     if(addrInput) addrInput.value = "";
     fecharView('area-pagar');
