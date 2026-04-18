@@ -74,9 +74,15 @@ function fecharView(viewId) {
     document.getElementById('home-app').style.display = 'block';
 }
 
-function abrirPagar() { abrirView('area-pagar'); }
-function abrirReceber() { abrirView('area-receber'); }
+function abrirPagar(event) { 
+    if (event) event.preventDefault(); 
+    abrirView('area-pagar'); 
+}
 
+function abrirReceber(event) { 
+    if (event) event.preventDefault(); 
+    abrirView('area-receber'); 
+}
 // 4. Validações e Ajuste de Tamanho (Inputs)
 const valorPagarInput = document.getElementById('valor-pagar');
 const addrInput = document.getElementById('wallet-address');
