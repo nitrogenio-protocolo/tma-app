@@ -18,6 +18,34 @@
         </div>
     </div>
 
+      <div id="modal-termos" class="modal-cortina">
+    <div class="cortina-content">
+        <img src="raposa.png" alt="Logo" class="raposa-topo">
+        
+        <div class="texto-termos">
+            <h3>Protocolo Nitrogênio</h3>
+            <p>*Este software é uma interface de governança descentralizada sem promessas de lucro.</p>
+            
+            <label class="check-container">
+                <input type="checkbox" id="check-tecnico" onchange="validarTermos()">
+                <span class="checkmark"></span>
+                Li e aceito os termos técnicos.
+            </label>
+
+            <label class="check-container">
+                <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()">
+                <span class="checkmark"></span>
+                Sou responsável por minhas transações.
+            </label>
+        </div>
+
+        <div class="rodape-termos">
+            <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
+            <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled>ACESSAR PROTOCOLO</button>
+        </div>
+    </div>
+</div>
+    
     <div id="home-app">
         <header class="header-app">
             <div class="logo-text">Nitrogênio</div>
