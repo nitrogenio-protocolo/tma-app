@@ -228,3 +228,29 @@ setTimeout(() => {
         if(modal) modal.style.display = 'none';
     }
 }, 100);
+
+
+function gerenciarCicloComunidade() {
+    const agora = new Date();
+    const diaSemana = agora.getDay(); // 0=Dom, 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex, 6=Sab
+    const listaPautas = document.getElementById('lista-pautas-comunidade');
+    const cronometro = document.getElementById('cronometro-da-dao');
+
+    // Se for Segunda (1) ou Terça (2)
+    if (diaSemana === 1 || diaSemana === 2) {
+        // Esconde o cronômetro e as pautas
+        if(cronometro) cronometro.style.display = 'none';
+        
+        // Troca o conteúdo pela mensagem de preparação
+        listaPautas.innerHTML = `
+            <div style="text-align: center; padding: 40px 20px; background: #f9f9f9; border-radius: 18px; border: 1px dashed #ccc;">
+                <i class="fa-solid fa- clock-rotate-left" style="font-size: 30px; color: #888; margin-bottom: 15px;"></i>
+                <h3 style="color: #333; font-size: 16px;">Conselho preparando pautas...</h3>
+                <p style="font-size: 13px; color: #666;">Novas propostas do cofre social estarão disponíveis para votação na quarta-feira.</p>
+            </div>
+        `;
+    }
+}
+
+// Chamar a função
+gerenciarCicloComunidade();
