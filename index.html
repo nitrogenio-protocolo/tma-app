@@ -130,29 +130,42 @@
                     <div class="room-icon"><i class="fa-solid fa-users"></i></div>
                     <h3>COMUNIDADE</h3>
                     <p>Área de exercícios</p>
-                    <div class="full-content" style="display:none;">
-                        <div style="border-left: 4px solid #007AFF; padding: 10px; text-align: left; margin: 10px;">
-                            <p style="font-size: 13px;"><strong>📢 Filtro de Pautas:</strong> Vote nas propostas com seu NFT Alpha.</p>
-                        </div>
+                    
+<div class="full-content">
+    <div id="cronometro-da-dao" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+        <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
+        <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
+    </div>
 
-                        <div style="background: #ffffff; margin: 10px; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: left;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span style="font-size: 10px; color: #888; font-family: monospace;">ID: 0x71...f42</span>
-                                <span style="background: #eef6ff; color: #007AFF; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;">SEMANAL</span>
-                            </div>
-                            <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">Proposta de Melhoria #01</h4>
-                            <p style="margin: 0 0 15px 0; color: #666; font-size: 13px;">Descrição da pauta para votação na DAO.</p>
-                            <div style="border-top: 1px solid #eee; padding-top: 10px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                    <span style="color: #444; font-size: 13px;">Recurso:</span>
-                                    <span style="font-weight: bold; color: #007AFF; font-size: 16px;">500 N</span>
-                                </div>
-                                <button style="width: 100%; height: 45px; background: #007AFF; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;">CONFIRMAR VOTO</button>
-                            </div>
-                        </div>
-                    </div>
+    <div id="lista-pautas-comunidade">
+        
+        <div class="card-pauta" style="background: white; border: 1px solid #eee; border-radius: 18px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10px; font-weight: bold; color: #007AFF; background: #eef6ff; padding: 4px 8px; border-radius: 6px;">#042 - SOCIAL</span>
+                <span style="color: #007AFF; font-weight: 800; font-size: 14px;"><i class="fa-solid fa-id-card"></i> 42 Votos</span>
+            </div>
+
+            <h3 style="margin: 12px 0 6px 0; font-size: 17px;">10 Jaquetas Alpha - Zona Norte</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Compra de fardamento para entregadores parceiros da região norte.</p>
+
+            <div style="background: #f5f5f7; border-radius: 12px; padding: 12px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                    <span style="color: #888;">VALOR:</span>
+                    <span style="font-weight: bold;">1.500 N</span>
                 </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                    <span style="color: #888;">DESTINO:</span>
+                    <span style="font-family: monospace; color: #007AFF;">0x71C...3aB2</span>
+                </div>
+            </div>
 
+            <button class="btn-votar-alpha" style="width: 100%; background: #007AFF; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 14px;">
+                VOTAR COM NFT ALPHA
+            </button>
+        </div>
+
+    </div>
+</div>
                 <div class="room-card" onclick="expandRoom(this)">
                     <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
                     <h3>MURAL</h3>
