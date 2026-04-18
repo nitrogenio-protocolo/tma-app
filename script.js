@@ -192,3 +192,39 @@ function expandRoom(card) {
         document.body.style.overflow = 'auto';
     }
 }
+
+
+function validarTermos() {
+    const check1 = document.getElementById('check-tecnico').checked;
+    const check2 = document.getElementById('check-responsabilidade').checked;
+    const btn = document.getElementById('btn-entrar');
+    const msg = document.getElementById('msg-convite');
+
+    if (check1 && check2) {
+        btn.disabled = false;
+        btn.classList.add('ativo');
+        btn.innerText = "TOMAR A PÍLULA VERMELHA";
+        msg.innerHTML = "<strong>Você está pronto.</strong>";
+        msg.style.color = "#ff4444";
+    } else {
+        btn.disabled = true;
+        btn.classList.remove('ativo');
+        btn.innerText = "ACESSAR PROTOCOLO";
+        msg.innerText = "Aceite os termos para prosseguir";
+        msg.style.color = "#666";
+    }
+}
+
+function aceitarTermos() {
+    // Efeito de subir a cortina
+    document.getElementById('modal-termos').style.transform = 'translateY(-100%)';
+    localStorage.setItem('termosAceitos', 'true');
+}
+
+// Verifica o aceite sem bugar o seu window.onload atual
+setTimeout(() => {
+    if(localStorage.getItem('termosAceitos') === 'true') {
+        const modal = document.getElementById('modal-termos');
+        if(modal) modal.style.display = 'none';
+    }
+}, 100);
