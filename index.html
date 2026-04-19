@@ -1,12 +1,21 @@
-<!DOCTYPE html>
+import os
+
+# Definindo o conteúdo HTML corrigido
+html_content = """<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nitrogênio Protocolo v2.0</title>
+    <title>Nitrogênio v2.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        /* Ajuste rápido para garantir que o carrossel funcione visualmente */
+        .carousel-wrapper { overflow-x: auto; padding: 10px 0; }
+        .room-carousel { display: flex; gap: 15px; padding: 0 10px; }
+        .room-card { min-width: 280px; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    </style>
 </head>
 <body>
 
@@ -18,33 +27,27 @@
         </div>
     </div>
 
-      <div id="modal-termos" class="modal-cortina">
-    <div class="cortina-content">
-        <img src="raposa.png" alt="Logo" class="raposa-topo">
-        
-        <div class="texto-termos">
-            <h3>Protocolo Nitrogênio</h3>
-            <p>*Este software é uma interface de governança descentralizada sem promessas de lucro.</p>
-            
-            <label class="check-container">
-                <input type="checkbox" id="check-tecnico" onchange="validarTermos()">
-                <span class="checkmark"></span>
-                Li e aceito os termos técnicos.
-            </label>
-
-            <label class="check-container">
-                <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()">
-                <span class="checkmark"></span>
-                Sou responsável por minhas transações.
-            </label>
-        </div>
-
-        <div class="rodape-termos">
-            <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
-            <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled>ACESSAR PROTOCOLO</button>
+    <div id="modal-termos" class="modal-cortina">
+        <div class="cortina-content">
+            <img src="raposa.png" alt="Logo" class="raposa-topo">
+            <div class="texto-termos">
+                <h3>Nitrogênio</h3>
+                <p>*Este software é uma interface de governança descentralizada sem promessas de lucro.</p>
+                <label class="check-container">
+                    <input type="checkbox" id="check-tecnico" onchange="validarTermos()">
+                    <span class="checkmark"></span> Li e aceito os termos técnicos.
+                </label>
+                <label class="check-container">
+                    <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()">
+                    <span class="checkmark"></span> Sou responsável por minhas transações.
+                </label>
+            </div>
+            <div class="rodape-termos">
+                <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
+                <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled>ACESSAR PROTOCOLO</button>
+            </div>
         </div>
     </div>
-</div>
     
     <div id="home-app">
         <header class="header-app">
@@ -60,15 +63,15 @@
         </div>
 
         <div class="action-bar">
-            <div class="action-item" onclick="event.preventDefault(); abrirPagar()">
+            <div class="action-item" onclick="abrirPagar()">
                 <i class="fa-solid fa-arrow-up"></i>
                 <span>pagar</span>
             </div>
-            <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
+            <div class="action-item" onclick="abrirReceber()">
                 <i class="fa-solid fa-arrow-down"></i>
                 <span>receber</span>
             </div>
-            <div class="action-item" onclick="event.preventDefault();">
+            <div class="action-item">
                 <i class="fa-solid fa-right-left"></i>
                 <span>trocar</span>
             </div>
@@ -84,33 +87,20 @@
 
         <div class="carousel-wrapper">
             <div class="room-carousel">
-                <div class="room-card" onclick="expandRoom(this)">
-                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-                    <h3>COFRE</h3>
-                    <p>Gestão e Liquidez</p>
-                    <div class="full-content">
-                        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #007AFF; margin-top: 10px;">
-                            <p style="margin: 0; font-size: 12px; color: #666;">Endereço da Safe Wallet:</p>
-                            <code style="display: block; word-break: break-all; color: #007AFF; font-weight: bold; margin: 10px 0;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
-                        </div>
-                        <div style="text-align: left; margin-top: 20px; font-size: 14px; line-height: 1.5;">
-                            <p><strong>🛡️ Transparência:</strong> 1% de cada transação do Token N é enviado automaticamente para este cofre social.</p>
-                            <p><strong>🤝 Governança:</strong> Atualmente gerido pelo criador. Futura transição para 21 Guardiões.</p>
-                        </div>
-                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
-                    </div>
-                </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
-                    <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
-                    <h3>COLETA</h3>
-                    <p>Distribuição de Ativos</p>
+                    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>COMUNIDADE</h3>
+                    <p>Área de exercícios</p>
                     <div class="full-content">
-                        <div style="background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
-                            <p style="margin: 0; color: #2e7d32; font-weight: bold;">🌱 Benefício Alpha Ativo</p>
-                            <p style="font-size: 13px; color: #388e3c; margin-top: 5px;">Detentores do NFT Alpha têm direito a uma bonificação de boas-vindas.</p>
+                        <div id="cronometro-da-dao" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+                            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
+                            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
                         </div>
-                        <button style="width: 100%; background: #28a745; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 20px;">EFETUAR RESGATE (CLAIM)</button>
+                        <div class="card-pauta" style="background: white; border: 1px solid #eee; border-radius: 18px; padding: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                            <h3 style="margin: 0 0 6px 0; font-size: 17px;">10 Jaquetas Alpha</h3>
+                            <button class="btn-votar-alpha" style="width: 100%; background: #007AFF; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; margin-top: 10px;">VOTAR COM NFT ALPHA</button>
+                        </div>
                     </div>
                 </div>
 
@@ -119,130 +109,80 @@
                     <h3>GOVERNO</h3>
                     <p>Decisões Coletivas</p>
                     <div class="full-content">
-                        <div style="background: #007AFF; color: white; padding: 15px; border-radius: 12px; text-align: left; margin-top: 10px;">
+                        <div style="background: #007AFF; color: white; padding: 15px; border-radius: 12px; text-align: left;">
                             <p style="margin: 0; font-weight: bold;">⚠️ Área Executiva</p>
-                            <p style="font-size: 13px; opacity: 0.9;">Apenas as 5 pautas mais votadas chegam aqui.</p>
+                            <p style="font-size: 13px; opacity: 0.9;">Apenas as pautas aprovadas chegam aqui.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
-                    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
-                    <h3>COMUNIDADE</h3>
-                    <p>Área de exercícios</p>
-                    
-<div class="full-content">
-    <div id="cronometro-da-dao" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-        <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
-        <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
-    </div>
-
-    <div id="lista-pautas-comunidade">
-        
-        <div class="card-pauta" style="background: white; border: 1px solid #eee; border-radius: 18px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 10px; font-weight: bold; color: #007AFF; background: #eef6ff; padding: 4px 8px; border-radius: 6px;">#042 - SOCIAL</span>
-                <span style="color: #007AFF; font-weight: 800; font-size: 14px;"><i class="fa-solid fa-id-card"></i> 42 Votos</span>
-            </div>
-
-            <h3 style="margin: 12px 0 6px 0; font-size: 17px;">10 Jaquetas Alpha - Zona Norte</h3>
-            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Compra de fardamento para entregadores parceiros da região norte.</p>
-
-            <div style="background: #f5f5f7; border-radius: 12px; padding: 12px; margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
-                    <span style="color: #888;">VALOR:</span>
-                    <span style="font-weight: bold;">1.500 N</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                    <span style="color: #888;">DESTINO:</span>
-                    <span style="font-family: monospace; color: #007AFF;">0x71C...3aB2</span>
-                </div>
-            </div>
-
-            <button class="btn-votar-alpha" style="width: 100%; background: #007AFF; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 14px;">
-                VOTAR COM NFT ALPHA
-            </button>
-        </div>
-
-    </div>
-</div>
-                <div class="room-card" onclick="expandRoom(this)">
                     <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
                     <h3>MURAL</h3>
                     <p>Avisos e Transparência</p>
                     <div class="full-content">
-    <div style="text-align: left; padding: 10px;">
-        <h4 style="color: #333; margin-bottom: 20px; border-bottom: 2px solid #007AFF; display: inline-block;">HISTÓRICO DE DECISÕES</h4>
+                        <div style="text-align: left; padding: 10px;">
+                            <h4 style="color: #333; margin-bottom: 10px; border-bottom: 2px solid #007AFF; display: inline-block;">HISTÓRICO</h4>
+                            <div style="border-left: 4px solid #28a745; background: #f8fff9; padding: 10px; border-radius: 0 12px 12px 0;">
+                                <div style="font-weight: bold; color: #28a745; font-size: 12px;">✅ PAGO</div>
+                                <div style="font-size: 14px; font-weight: bold;">Jaquetas - Zona Norte</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="recibo-mural" style="border-left: 4px solid #28a745; background: #f8fff9; padding: 15px; border-radius: 0 12px 12px 0; margin-bottom: 15px;">
-            <div style="font-weight: bold; color: #28a745; font-size: 14px; margin-bottom: 8px;">✅ APROVADO E PAGO</div>
-            <div style="font-size: 15px; font-weight: bold; margin-bottom: 4px;">10 Jaquetas Alpha - Zona Norte</div>
-            <div style="font-size: 12px; color: #666;">
-                Região: Zona Norte <br>
-                Valor: 1.500 N <br>
-                Destino: 0x71C...3aB2
-            </div>
-            <a href="#" style="display: inline-block; margin-top: 10px; font-size: 11px; color: #007AFF; font-weight: bold; text-decoration: none;">VER NO BSCSCAN <i class="fa-solid fa-external-link"></i></a>
-        </div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <h3>COLETA</h3>
+                    <p>Distribuição de Ativos</p>
+                    <div class="full-content">
+                        <div style="background: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 12px;">
+                            <p style="color: #2e7d32; font-weight: bold;">🌱 Benefício Ativo</p>
+                            <button style="width: 100%; background: #28a745; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 10px;">RESGATAR (CLAIM)</button>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="recibo-mural" style="border-left: 4px solid #28a745; background: #f8fff9; padding: 15px; border-radius: 0 12px 12px 0; margin-bottom: 15px;">
-            <div style="font-weight: bold; color: #28a745; font-size: 14px; margin-bottom: 8px;">✅ APROVADO E PAGO</div>
-            <div style="font-size: 15px; font-weight: bold; margin-bottom: 4px;">Apoio Social Emergencial</div>
-            <div style="font-size: 12px; color: #666;">
-                Região: Vila Hortolândia <br>
-                Valor: 500 N <br>
-                Destino: 0x42A...9f10
-                
-               <a href="#" style="display: inline-block; margin-top: 10px; font-size: 11px; color: #007AFF; font-weight: bold; text-decoration: none;">VER NO BSCSCAN <i class="fa-solid fa-external-link"></i></a>
-        </div>
-    </div>
-</div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-file-shield"></i></div>
+                    <h3>PROTOCOLO</h3>
+                    <p>Regras e Diretrizes</p>
+                    <div class="full-content">
+                        <div style="background: #f5f5f7; padding: 15px; border-radius: 12px; font-size: 13px;">
+                            <p><strong>Governança:</strong> Atuação múltipla técnica e comercial.</p>
+                            <p><strong>Apoio Social:</strong> Distribuição via blockchain para a comunidade.</p>
+                        </div>
+                    </div>
+                </div>
 
- </div> </div> <nav class="nav-bar">
-        <div class="nav-item active" onclick="location.reload()">
-            <i class="fa-solid fa-house"></i>
-        </div>
-        <i class="fa-solid fa-house"></i>
-    </div>
-    <div class="nav-item active" onclick="location.reload()">
-        <i class="fa-solid fa-house"></i>
-    </div>
+                <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3>COFRE</h3>
+                    <p>Gestão e Liquidez</p>
+                    <div class="full-content">
+                        <code style="display: block; word-break: break-all; color: #007AFF; font-size: 11px;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
+                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; margin-top: 15px;">AUDITAR</a>
+                    </div>
+                </div>
 
-       
-            <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')">
-                <i class="fa-brands fa-telegram"></i>
-            </div>
-            <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'">
-                <i class="fa-solid fa-circle-question"></i>
-            </div>
-        </nav>
-    </div>
-                  </div> </div> <nav class="nav-bar">
+            </div> </div> <nav class="nav-bar">
             <div class="nav-item active" onclick="location.reload()">
                 <i class="fa-solid fa-house"></i>
             </div>
-            
             <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')">
                 <i class="fa-brands fa-telegram"></i>
             </div>
-            
             <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'">
                 <i class="fa-solid fa-circle-question"></i>
             </div>
         </nav>
-    </div> <div id="area-receber" class="area-interna" style="display: none;">
+    </div>
+
+    <div id="area-receber" class="area-interna" style="display: none;">
         <header class="area-header">
             <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
             <h2>RECEBER</h2>
         </header>
-        <div class="conversion-card">
-            <div class="balance-label">Valor a receber (BNB)</div>
-            <div class="input-group"><input type="number" id="bnb-receber" placeholder="0.00" step="0.0001"></div>
-        </div>
-        <div class="grupo-botoes">
-            <button class="btn-pilula btn-cancelar" onclick="fecharReceber()">CANCELAR</button>
-            <button id="btn-gerar-qr" class="btn-pilula btn-acao" onclick="gerarCobranca()" disabled>GERAR QR</button>
-        </div>
         <div id="qrcode-container"></div>
     </div>
 
@@ -251,24 +191,15 @@
             <i class="fa-solid fa-angle-left" onclick="fecharPagar()"></i>
             <h2>PAGAR</h2>
         </header>
-        <div class="conversion-card">
-            <div class="balance-label">VALOR EM BNB</div>
-            <div class="input-group"><input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001"></div>
-            <div class="balance-label">DESTINO (CARTEIRA)</div>
-            <div class="address-container">
-                <input type="text" id="wallet-address" placeholder="0x...">
-                <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
-            </div>
-            <div id="reader" style="display:none;"></div>
-        </div>
-        <div class="grupo-botoes">
-            <button class="btn-pilula btn-cancelar" onclick="fecharPagar()">CANCELAR</button>
-            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao" disabled>CONFIRMAR PAGAMENTO</button>
-        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
-</html>
+</html>"""
+
+# Salvando o arquivo
+file_path = "index_corrigido.html"
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
