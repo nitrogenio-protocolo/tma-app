@@ -300,6 +300,7 @@ async function processarVoto(escolha) {
         // Pequeno delay para o usuário ver o sucesso antes de fechar
         setTimeout(() => {
             fecharModalVotacao();
+            document.getElementById('contador-votos').innerHTML = '<i class="fa-solid fa-id-card"></i> 43 Votos';
             // Atualiza o botão na home para mostrar que já votou
             const btnVotar = document.querySelector('.btn-votar-alpha');
             if (btnVotar) {
