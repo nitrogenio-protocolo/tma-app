@@ -265,7 +265,11 @@ gerenciarCicloComunidade();
 function abrirModalVotacao(e) {
     if (e) e.stopPropagation(); // Evita que o card feche ao clicar no botão
     const modal = document.getElementById('modal-votacao');
-    if (modal) modal.style.bottom = "0"; // Faz a janela subir
+    if (modal) {
+        modal.style.zIndex = "3000"; // Isso coloca o modal na frente de tudo
+        modal.style.bottom = "0"; 
+    }
+} modal.style.bottom = "0"; // Faz a janela subir
 }
 
 // 2. Função para fechar a Janela
