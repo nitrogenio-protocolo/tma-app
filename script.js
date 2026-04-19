@@ -260,3 +260,58 @@ function gerenciarCicloComunidade() {
 
 // Chamar a função
 gerenciarCicloComunidade();
+
+// 1. Função para abrir a Janela de Votação
+function abrirModalVotacao(e) {
+    if (e) e.stopPropagation(); // Evita que o card feche ao clicar no botão
+    const modal = document.getElementById('modal-votacao');
+    if (modal) modal.style.bottom = "0"; // Faz a janela subir
+}
+
+// 2. Função para fechar a Janela
+function fecharModalVotacao() {
+    const modal = document.getElementById('modal-votacao');
+    if (modal) modal.style.bottom = "-100%"; // Faz a janela descer
+}
+
+// 3. Função de Votação Real (Majestosa e Sem Gás)
+async function processarVoto(escolha) {
+    const status = document.getElementById('status-assinatura');
+    status.innerText = "Aguardando assinatura digital...";
+    status.style.color = "#007AFF";
+
+    try {
+        // Conecta com a carteira usando a biblioteca ethers que você já tem
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        
+        // Mensagem técnica que o usuário assina (Custo ZERO de gás)
+        const mensagem = `Protocolo Nitrogênio\nAção: Votação Governança\nPauta: #042 - 10 Jaquetas Alpha\nEscolha: ${escolha}`;
+        
+        // Solicita a assinatura
+        const assinatura = await signer.signMessage(mensagem);
+        
+        console.log("Assinatura realizada:", assinatura);
+        
+        // Feedback de sucesso "Geminial"
+        status.innerText = "✅ VOTO REGISTRADO COM SUCESSO!";
+        status.style.color = "#28a745";
+
+        // Pequeno delay para o usuário ver o sucesso antes de fechar
+        setTimeout(() => {
+            fecharModalVotacao();
+            // Atualiza o botão na home para mostrar que já votou
+            const btnVotar = document.querySelector('.btn-votar-alpha');
+            if (btnVotar) {
+                btnVotar.innerText = "VOTO COMPUTADO";
+                btnVotar.style.background = "#28a745";
+                btnVotar.disabled = true;
+            }
+        }, 2000);
+
+    } catch (error) {
+        console.error("Erro na votação:", error);
+        status.innerText = "Votação cancelada ou erro na assinatura.";
+        status.style.color = "#ff4444";
+    }
+}
