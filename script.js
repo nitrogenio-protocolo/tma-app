@@ -269,7 +269,7 @@ function abrirModalVotacao(e) {
         modal.style.zIndex = "3000"; // Isso coloca o modal na frente de tudo
         modal.style.bottom = "0"; 
     }
-} modal.style.bottom = "0"; // Faz a janela subir
+} 
 }
 
 // 2. Função para fechar a Janela
