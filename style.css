@@ -185,3 +185,8 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     z-index: 5000;
     margin: 0; /* Garante que não tenha margem lateral */
 }
+
+/* Ajuste no Modal de Votação (Bottom Sheet) */
+.modal-votacao-sheet {
+    z-index: 6000 !important; /* O rei da montanha, fica por cima de tudo */
+}
