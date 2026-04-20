@@ -235,32 +235,6 @@ setTimeout(() => {
     }
 }, 100);
 
-
-function gerenciarCicloComunidade() {
-    const agora = new Date();
-    const diaSemana = agora.getDay(); // 0=Dom, 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex, 6=Sab
-    const listaPautas = document.getElementById('lista-pautas-comunidade');
-    const cronometro = document.getElementById('cronometro-da-dao');
-
-    // Se for Segunda (1) ou Terça (2)
-    if (diaSemana === 1 || diaSemana === 2) {
-        // Esconde o cronômetro e as pautas
-        if(cronometro) cronometro.style.display = 'none';
-        
-        // Troca o conteúdo pela mensagem de preparação
-        listaPautas.innerHTML = `
-            <div style="text-align: center; padding: 40px 20px; background: #f9f9f9; border-radius: 18px; border: 1px dashed #ccc;">
-                <i class="fa-solid fa- clock-rotate-left" style="font-size: 30px; color: #888; margin-bottom: 15px;"></i>
-                <h3 style="color: #333; font-size: 16px;">Conselho preparando pautas...</h3>
-                <p style="font-size: 13px; color: #666;">Novas propostas do cofre social estarão disponíveis para votação na quarta-feira.</p>
-            </div>
-        `;
-    }
-}
-
-// Chamar a função
-gerenciarCicloComunidade();
-
 // 1. Função para abrir a Janela de Votação
 function abrirModalVotacao(e) {
     if (e) e.stopPropagation(); // Evita que o card feche ao clicar no botão
@@ -320,23 +294,31 @@ async function processarVoto(escolha) {
     }
 }
 
-// --- MOTOR DE GOVERNANÇA (Ciclo Automático Semanal) ---
+// --- MOTOR DE GOVERNANÇA UNIFICADO ---
 function motorGovernançaNitrogenio() {
     const agora = new Date();
-    const diaSemana = agora.getDay(); // 0=Dom, 1=Seg, 2=Ter, 3=Qua...
+    const diaSemana = agora.getDay(); // 1 = Segunda-feira
     
-    const areaComunidade = document.getElementById('cronometro-da-dao');
+    const crono = document.getElementById('cronometro-da-dao');
     const areaGoverno = document.getElementById('lista-pautas-governo');
 
-    // REGRA: SEGUNDA-FEIRA (Promoção da Pauta para o Governo)
+    // REGRA DE SEGUNDA-FEIRA: LIMPEZA E PROMOÇÃO
     if (diaSemana === 1) {
-        if(areaComunidade) {
-            areaComunidade.parentElement.innerHTML = `
-                <div style="text-align:center; padding:25px; color:#666; background:#f9f9f9; border-radius:18px; border: 1px dashed #007AFF;">
-                    <i class="fa-solid fa-check-to-slot" style="font-size:32px; color:#007AFF; margin-bottom:12px;"></i>
-                    <p style="margin:0; font-size:14px; line-height:1.4;"><b>Votação Encerrada!</b><br>As pautas mais votadas foram enviadas para análise do Governo.</p>
+        
+        // Limpa a pauta da Comunidade (remove o card 'atrevido')
+        if(crono && crono.parentElement) {
+            crono.parentElement.innerHTML = `
+                <div style="text-align:center; padding:30px 15px; color:#666; background:#f9f9f9; border-radius:18px; border: 1px dashed #007AFF;">
+                    <i class="fa-solid fa-box-archive" style="font-size:32px; color:#007AFF; margin-bottom:12px;"></i>
+                    <p style="margin:0; font-size:14px; line-height:1.5;">
+                        <b>Votação Finalizada!</b><br>
+                        A pauta #042 foi enviada para os Guardiões.<br>
+                        <small style="color:#007AFF;">Aguarde novas pautas.</small>
+                    </p>
                 </div>`;
         }
+
+        // Alimenta a sala Governo com a pauta oficial
         if (areaGoverno) {
             areaGoverno.innerHTML = `
                 <div class="card-pauta-executiva" style="background:#eef6ff; border-left:4px solid #007AFF; padding:15px; border-radius:12px; text-align:left; margin-bottom:15px;">
@@ -345,18 +327,11 @@ function motorGovernançaNitrogenio() {
                     <div style="height:8px; background:#ddd; border-radius:4px; overflow:hidden; margin:10px 0;">
                         <div style="width:52%; height:100%; background:#007AFF;"></div>
                     </div>
-                    <p style="font-size:11px; color:#666;"><b>Meta:</b> 11 votos favoráveis para aprovação (Quórum de 21).</p>
+                    <p style="font-size:11px; color:#666;"><b>Aprovação:</b> Requer 11 votos dos Guardiões (21 total).</p>
                 </div>`;
         }
     }
-
-    // REGRA: TERÇA-FEIRA (Limpeza Geral para nova semana)
-    if (diaSemana === 2) {
-         if(areaComunidade) {
-             areaComunidade.innerHTML = '<p style="text-align:center; color:#999;">Preparando novas pautas...</p>';
-         }
-    }
 }
 
-// Executa o motor ao carregar a página
+// Chamar o motor único
 motorGovernançaNitrogenio();
