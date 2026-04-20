@@ -319,39 +319,41 @@ async function processarVoto(escolha) {
         status.style.color = "#ff4444";
     }
 }
-// --- MOTOR DE GOVERNANÇA (Democracia Sem Descanso) ---
+
+// --- MOTOR DE GOVERNANÇA (Ciclo Automático Semanal) ---
 function motorGovernançaNitrogenio() {
     const agora = new Date();
     const diaSemana = agora.getDay(); // 0=Dom, 1=Seg, 2=Ter, 3=Qua...
     
-    const areaComunidade = document.getElementById('cronometro-da-dao')?.parentElement;
+    const areaComunidade = document.getElementById('cronometro-da-dao');
     const areaGoverno = document.getElementById('lista-pautas-governo');
-    const areaMural = document.getElementById('historico-mural');
 
-    // REGRA: SEGUNDA-FEIRA (Promoção para o Governo)
+    // REGRA: SEGUNDA-FEIRA (Promoção da Pauta para o Governo)
     if (diaSemana === 1) {
-        // Limpa a Comunidade
+        
+        // 1. Limpa a área da Comunidade e avisa que subiu
         if(areaComunidade) {
-            areaComunidade.innerHTML = `
-                <div style="text-align:center; padding:20px; color:#666;">
-                    <i class="fa-solid fa-check-to-slot" style="font-size:30px; color:#007AFF;"></i>
-                    <p style="margin-top:10px;">Votação encerrada! As pautas mais votadas subiram para o Governo.</p>
+            areaComunidade.parentElement.innerHTML = `
+                <div style="text-align:center; padding:25px; color:#666; background:#f9f9f9; border-radius:18px; border: 1px dashed #007AFF;">
+                    <i class="fa-solid fa-check-to-slot" style="font-size:32px; color:#007AFF; margin-bottom:12px;"></i>
+                    <p style="margin:0; font-size:14px; line-height:1.4;"><b>Votação Encerrada!</b><br>As pautas mais votadas foram enviadas para análise do Governo.</p>
                 </div>`;
         }
 
-        // Alimenta o Governo com a Pauta #042 (Análise de 7 dias)
+        // 2. Alimenta a sala Governo com a pauta #042 (Regra dos 11 votos)
         if (areaGoverno) {
             areaGoverno.innerHTML = `
                 <div class="card-pauta-executiva" style="background:#eef6ff; border-left:4px solid #007AFF; padding:15px; border-radius:12px; text-align:left; margin-bottom:15px;">
-                    <small style="color:#007AFF; font-weight:bold;">SITUAÇÃO: EM ANÁLISE EXECUTIVA (7 DIAS)</small>
-                    <h4 style="margin:8px 0; color:#333;">#042 - 10 Jaquetas Alpha</h4>
+                    <small style="color:#007AFF; font-weight:bold; font-size:10px;">ESTADO: ANÁLISE DOS GUARDIÕES</small>
+                    <h4 style="margin:8px 0; color:#333; font-size:16px;">#042 - 10 Jaquetas Alpha</h4>
                     <div style="height:8px; background:#ddd; border-radius:4px; overflow:hidden; margin:10px 0;">
-                        <div style="width:70%; height:100%; background:#007AFF;"></div>
+                        <div style="width:52%; height:100%; background:#007AFF;"></div>
                     </div>
-                    <p style="font-size:11px; color:#666;">Aguardando quórum de 42 votos dos Guardiões para envio ao Mural.</p>
+                    <p style="font-size:11px; color:#666;"><b>Meta:</b> 11 votos favoráveis para aprovação (Quórum de 21).</p>
                 </div>`;
         }
     }
+}
     
     // REGRA: TERÇA-FEIRA (Limpeza Geral para nova semana)
     if (diaSemana === 2) {
