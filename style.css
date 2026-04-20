@@ -182,6 +182,6 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     background: white;
     border-top: 1px solid #eee;
     padding: 10px 0;
-    z-index: 1000;
+    z-index: 5000;
     margin: 0; /* Garante que não tenha margem lateral */
 }
