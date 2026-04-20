@@ -26,8 +26,8 @@ window.addEventListener('load', () => {
     }, delay * 5);
 });
 
-// 2. Web3 & Saldo
-let userAccount = null;
+// 2. Web3 & Saldo  
+const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; //
 let provider, signer, scannerAtivo = false;
 
 async function syncWallet() {
