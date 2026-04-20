@@ -77,29 +77,35 @@ function updateUI() {
 }
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
-// 3. Navegação (Ajustado)
+// 3. Navegação (Versão Final corrigida)
 function abrirView(viewId) {
-    document.getElementById('home-app').style.display = 'none';
-    document.querySelectorAll('.area-interna').forEach(area => {
-        area.style.display = 'none';
-    });
-    const target = document.getElementById(viewId);
-    if (target) target.style.display = 'block';
+    const view = document.getElementById(viewId);
+    if (view) {
+        // Esconde a home
+        document.getElementById('home-app').style.display = 'none';
+        // Esconde todas as outras áreas internas primeiro
+        document.querySelectorAll('.area-interna').forEach(a => a.style.display = 'none');
+        // Mostra a tela desejada
+        view.style.display = 'block';
+        window.scrollTo(0, 0);
+    } else {
+        console.error("Tela não encontrada: " + viewId);
+    }
 }
 
 function fecharView(viewId) {
     if (scannerAtivo) pararScanner();
-    document.getElementById(viewId).style.display = 'none';
-    document.getElementById('home-app').style.display = 'block';
+    const view = document.getElementById(viewId);
+    if (view) view.style.display = 'none';
+    document.getElementById('home-app').style.display = 'flex';
 }
 
-function abrirPagar() { 
-    abrirView('area-pagar'); 
-}
+function abrirPagar() { abrirView('area-pagar'); }
+function abrirReceber() { abrirView('area-receber'); }
 
-function abrirReceber() { 
-    abrirView('area-receber'); 
-}
+// Funções de fechar específicas (para os botões de voltar/cancelar)
+function fecharPagar() { fecharView('area-pagar'); }
+function fecharReceber() { fecharView('area-receber'); }
 // 4. Validações e Ajuste de Tamanho (Inputs)
 const valorPagarInput = document.getElementById('valor-pagar');
 const addrInput = document.getElementById('wallet-address');
