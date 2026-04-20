@@ -77,28 +77,30 @@ function updateUI() {
 }
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
-// 3. Navegação (Versão Final corrigida)
+// 3. Navegação Blindada (Não depende da Web3 para abrir)
 function abrirView(viewId) {
-    const view = document.getElementById(viewId);
-    if (view) {
-        // Esconde a home
-        document.getElementById('home-app').style.display = 'none';
-        // Esconde todas as outras áreas internas primeiro
+    try {
+        const home = document.getElementById('home-app');
+        const targetView = document.getElementById(viewId);
+        
+        if (!targetView) return console.error("ID não encontrado:", viewId);
+
+        // Esconde tudo primeiro
+        home.style.display = 'none';
         document.querySelectorAll('.area-interna').forEach(a => a.style.display = 'none');
-        // Mostra a tela desejada
-        view.style.display = 'block';
+
+        // Abre a tela
+        targetView.style.setProperty('display', 'block', 'important');
         window.scrollTo(0, 0);
-    } else {
-        console.error("Tela não encontrada: " + viewId);
+        
+        console.log("Navegou para:", viewId);
+    } catch (err) {
+        alert("Erro ao navegar: " + err.message);
     }
 }
 
-function fecharView(viewId) {
-    if (scannerAtivo) pararScanner();
-    const view = document.getElementById(viewId);
-    if (view) view.style.display = 'none';
-    document.getElementById('home-app').style.display = 'flex';
-}
+function abrirPagar() { abrirView('area-pagar'); }
+function abrirReceber() { abrirView('area-receber'); }
 
 function abrirPagar() { abrirView('area-pagar'); }
 function abrirReceber() { abrirView('area-receber'); }
