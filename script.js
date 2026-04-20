@@ -330,8 +330,6 @@ function motorGovernançaNitrogenio() {
 
     // REGRA: SEGUNDA-FEIRA (Promoção da Pauta para o Governo)
     if (diaSemana === 1) {
-        
-        // 1. Limpa a área da Comunidade e avisa que subiu
         if(areaComunidade) {
             areaComunidade.parentElement.innerHTML = `
                 <div style="text-align:center; padding:25px; color:#666; background:#f9f9f9; border-radius:18px; border: 1px dashed #007AFF;">
@@ -339,8 +337,6 @@ function motorGovernançaNitrogenio() {
                     <p style="margin:0; font-size:14px; line-height:1.4;"><b>Votação Encerrada!</b><br>As pautas mais votadas foram enviadas para análise do Governo.</p>
                 </div>`;
         }
-
-        // 2. Alimenta a sala Governo com a pauta #042 (Regra dos 11 votos)
         if (areaGoverno) {
             areaGoverno.innerHTML = `
                 <div class="card-pauta-executiva" style="background:#eef6ff; border-left:4px solid #007AFF; padding:15px; border-radius:12px; text-align:left; margin-bottom:15px;">
@@ -353,11 +349,12 @@ function motorGovernançaNitrogenio() {
                 </div>`;
         }
     }
-}
-    
+
     // REGRA: TERÇA-FEIRA (Limpeza Geral para nova semana)
     if (diaSemana === 2) {
-         if(areaComunidade) areaComunidade.innerHTML = '<p style="text-align:center; color:#999;">Preparando novas pautas...</p>';
+         if(areaComunidade) {
+             areaComunidade.innerHTML = '<p style="text-align:center; color:#999;">Preparando novas pautas...</p>';
+         }
     }
 }
 
