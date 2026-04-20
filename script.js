@@ -77,11 +77,14 @@ function updateUI() {
 }
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
-// 3. Navegação
+// 3. Navegação (Ajustado)
 function abrirView(viewId) {
     document.getElementById('home-app').style.display = 'none';
-    document.querySelectorAll('.area-interna').forEach(a => a.style.display = 'none');
-    document.getElementById(viewId).style.display = 'block';
+    document.querySelectorAll('.area-interna').forEach(area => {
+        area.style.display = 'none';
+    });
+    const target = document.getElementById(viewId);
+    if (target) target.style.display = 'block';
 }
 
 function fecharView(viewId) {
@@ -90,13 +93,11 @@ function fecharView(viewId) {
     document.getElementById('home-app').style.display = 'block';
 }
 
-function abrirPagar(event) { 
-    if (event) event.preventDefault(); 
+function abrirPagar() { 
     abrirView('area-pagar'); 
 }
 
-function abrirReceber(event) { 
-    if (event) event.preventDefault(); 
+function abrirReceber() { 
     abrirView('area-receber'); 
 }
 // 4. Validações e Ajuste de Tamanho (Inputs)
