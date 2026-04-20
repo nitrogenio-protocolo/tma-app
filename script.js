@@ -41,7 +41,8 @@ async function syncWallet() {
         updateUI();
     } catch (err) { console.error("Conexão falhou:", err); }
 }
-if (!provider) return;
+{
+    if (!provider) return;
     try {
         const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
         const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
