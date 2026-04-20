@@ -335,29 +335,30 @@ function motorGovernançaNitrogenio() {
     }
 }
 
-// Chamar o motor único
-motorGovernançaNitrogenio();
+function motorGovernançaNitrogenio() {
+    const agora = new Date();
+    const diaSemana = agora.getDay(); // 1 é Segunda, 3 é Quarta
+    
+    const areaComunidade = document.getElementById('cronometro-da-dao')?.parentElement;
+    const areaGoverno = document.getElementById('lista-pautas-governo');
+    const areaMural = document.getElementById('historico-mural');
 
-// --- LÓGICA DO MURAL DE TRANSPARÊNCIA ---
-const areaMural = document.getElementById('historico-mural');
+    if (!areaComunidade || !areaGoverno || !areaMural) return;
 
-if (areaMural) {
-    // Simulando o histórico de pautas já encerradas
-    const conquistas = [
-        { id: "041", titulo: "Auxílio Manutenção Pneus", data: "13/04/2026", status: "EXECUTADO" },
-        { id: "040", titulo: "Parceria Borracharia Centro", data: "06/04/2026", status: "ATIVO" }
-    ];
+    // SEGUNDA E TERÇA: O sistema "limpa" a comunidade e sobe para o Governo
+    if (diaSemana === 1 || diaSemana === 2) {
+        pautasNitrogenio.forEach(p => {
+            if (p.status === "COMUNIDADE") p.status = "GOVERNO";
+        });
+        areaComunidade.innerHTML = "<p style='text-align:center; padding:20px;'>Aguardando novas sugestões (Quarta-feira)...</p>";
+    }
 
-    areaMural.innerHTML = conquistas.map(item => `
-        <div style="background: #fff; border-bottom: 1px solid #eee; padding: 15px 5px; display: flex; justify-content: space-between; align-items: center;">
-            <div style="text-align: left;">
-                <span style="font-size: 9px; color: #007AFF; font-weight: bold; text-transform: uppercase;">Protocolo #${item.id}</span>
-                <h4 style="margin: 2px 0; font-size: 14px; color: #333;">${item.titulo}</h4>
-                <small style="color: #999;">Finalizado em ${item.data}</small>
-            </div>
-            <div style="background: #e8f5e9; color: #2e7d32; font-size: 9px; font-weight: bold; padding: 4px 8px; border-radius: 20px;">
-                ${item.status}
-            </div>
-        </div>
-    `).join('');
+    // QUARTA A DOMINGO: Votação aberta na Comunidade
+    if (diaSemana >= 3 || diaSemana === 0) {
+        // Lógica para permitir votos
+    }
+
+    // ATUALIZA AS TELAS
+    renderizarGoverno();
+    renderizarMural();
 }
