@@ -301,7 +301,8 @@ function motorGovernançaNitrogenio() {
     
     const crono = document.getElementById('cronometro-da-dao');
     const areaGoverno = document.getElementById('lista-pautas-governo');
-
+    // Trava de segurança: se os elementos não existirem na tela, a função para aqui. if (!crono || !areaGoverno) return; 
+    
     // REGRA DE SEGUNDA-FEIRA: LIMPEZA E PROMOÇÃO
     if (diaSemana === 1) {
         
@@ -335,3 +336,27 @@ function motorGovernançaNitrogenio() {
 
 // Chamar o motor único
 motorGovernançaNitrogenio();
+
+// --- LÓGICA DO MURAL DE TRANSPARÊNCIA ---
+const areaMural = document.getElementById('historico-mural');
+
+if (areaMural) {
+    // Simulando o histórico de pautas já encerradas
+    const conquistas = [
+        { id: "041", titulo: "Auxílio Manutenção Pneus", data: "13/04/2026", status: "EXECUTADO" },
+        { id: "040", titulo: "Parceria Borracharia Centro", data: "06/04/2026", status: "ATIVO" }
+    ];
+
+    areaMural.innerHTML = conquistas.map(item => `
+        <div style="background: #fff; border-bottom: 1px solid #eee; padding: 15px 5px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="text-align: left;">
+                <span style="font-size: 9px; color: #007AFF; font-weight: bold; text-transform: uppercase;">Protocolo #${item.id}</span>
+                <h4 style="margin: 2px 0; font-size: 14px; color: #333;">${item.titulo}</h4>
+                <small style="color: #999;">Finalizado em ${item.data}</small>
+            </div>
+            <div style="background: #e8f5e9; color: #2e7d32; font-size: 9px; font-weight: bold; padding: 4px 8px; border-radius: 20px;">
+                ${item.status}
+            </div>
+        </div>
+    `).join('');
+}
