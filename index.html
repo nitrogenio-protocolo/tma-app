@@ -152,18 +152,22 @@
                 </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
-                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-                    <h3>COFRE</h3>
-                    <p>Gestão e Liquidez</p>
-                    <div class="full-content">
-                        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #007AFF; margin-top: 10px;">
-                            <code style="display: block; word-break: break-all; color: #007AFF; font-weight: bold;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
-                        </div>
-                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
-                    </div>
-                </div>
-            </div> 
+    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+    <h3>COFRE</h3>
+    <p>Gestão e Liquidez</p>
+    <div class="full-content">
+        <div style="background: #eef6ff; padding: 20px; border-radius: 18px; text-align: center; margin-bottom: 15px; border: 1px solid #007AFF;">
+            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 5px;">SALDO ATUAL NO SAFE:</small>
+            <span id="saldo-safe-real" style="font-size: 24px; font-weight: 800; color: #333;">0.0000 BNB</span>
+        </div>
+
+        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #ccc; margin-top: 10px;">
+            <code style="display: block; word-break: break-all; color: #666; font-size: 11px;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
+        </div>
+        
+        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
     </div>
+</div>
 
     <nav class="nav-bar">
         <div class="nav-item active" onclick="location.reload()">
