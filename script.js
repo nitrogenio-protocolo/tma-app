@@ -30,7 +30,7 @@ window.addEventListener('load', () => {
 const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; //
 let provider, signer, scannerAtivo = false;
 
-async function syncWallet() {
+   async function syncWallet() {
     if (!window.ethereum) return alert("Abra o app dentro da MetaMask Browser.");
     try {
         const browserProvider = new ethers.BrowserProvider(window.ethereum);
@@ -39,16 +39,23 @@ async function syncWallet() {
         provider = browserProvider;
         signer = await browserProvider.getSigner();
         updateUI();
-    } catch (err) { console.error("Conexão falhou:", err); }
+        // Chama a função do cofre logo após conectar
+        atualizarSaldoRealCofre();
+    } catch (err) { 
+        console.error("Conexão falhou:", err); 
+    }
 }
-{
+
+async function atualizarSaldoRealCofre() {
     if (!provider) return;
     try {
         const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
         const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
         const display = document.getElementById('saldo-safe-real');
         if (display) display.innerText = `${formatado} BNB`;
-    } catch (err) { console.error("Erro Safe:", err); }
+    } catch (err) { 
+        console.error("Erro Safe:", err); 
+    }
 }
 
 function updateUI() {
