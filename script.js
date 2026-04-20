@@ -301,7 +301,8 @@ function motorGovernançaNitrogenio() {
     
     const crono = document.getElementById('cronometro-da-dao');
     const areaGoverno = document.getElementById('lista-pautas-governo');
-    // Trava de segurança: se os elementos não existirem na tela, a função para aqui. if (!crono || !areaGoverno) return; 
+    // Trava de segurança: se os elementos não existirem na tela, a função para aqui.
+    if (!crono || !areaGoverno) return; 
     
     // REGRA DE SEGUNDA-FEIRA: LIMPEZA E PROMOÇÃO
     if (diaSemana === 1) {
