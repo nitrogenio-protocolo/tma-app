@@ -121,6 +121,7 @@ const validateReceber = () => {
     const isValid = valor > 0;
     if (btnGerar) {
         btnGerar.disabled = !isValid;
+        btnGerar.classList.toggle('active', isValid); 
         btnGerar.style.opacity = isValid ? "1" : "0.5";
     }
 };
