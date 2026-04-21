@@ -39,8 +39,7 @@ let provider, signer, scannerAtivo = false;
         provider = browserProvider;
         signer = await browserProvider.getSigner();
         updateUI();
-        // Chama a função do cofre logo após conectar
-        atualizarSaldoRealCofre();
+        
     } catch (err) { 
         console.error("Conexão falhou:", err); 
     }
