@@ -226,13 +226,12 @@ function validarTermos() {
     if (check1 && check2) {
         btn.disabled = false;
         btn.classList.add('ativo');
-        btn.innerText = "TOMAR A PÍLULA VERMELHA";
-        msg.innerHTML = "<strong>Você está pronto.</strong>";
-        msg.style.color = "#ff4444";
+        // Texto de aviso removido para ficar subliminar
+        msg.innerText = ""; 
     } else {
         btn.disabled = true;
         btn.classList.remove('ativo');
-        btn.innerText = "ACESSAR PROTOCOLO";
+        // Texto de instrução discreto enquanto não aceita
         msg.innerText = "Aceite os termos para prosseguir";
         msg.style.color = "#666";
     }
