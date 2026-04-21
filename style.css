@@ -218,3 +218,43 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     padding-bottom: 60px; /* Margem de segurança para os botões no fundo */
     -webkit-overflow-scrolling: touch; /* Deixa o scroll suave no iPhone */
 }
+
+
+/* --- ESTILO DOS MINI-CARDS REAIS DO NITROGÊNIO --- */
+.card-pauta {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 15px;
+    border: 1px solid #f2f2f7;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    text-align: left; /* Garante o alinhamento profissional */
+}
+
+.card-pauta h4 {
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.card-pauta p {
+    font-family: sans-serif;
+    line-height: 1.4;
+}
+
+.btn-votar {
+    transition: all 0.3s ease;
+}
+
+.btn-votar:active {
+    transform: scale(0.96); /* Efeito de pílula sendo apertada */
+    background: #005ecb;
+}
+
+/* Ajuste para o link do BSCScan ficar subliminar */
+.card-pauta a {
+    transition: opacity 0.2s;
+}
+
+.card-pauta a:hover {
+    opacity: 0.7;
+}
