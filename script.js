@@ -351,3 +351,82 @@ function motorGovernançaNitrogenio() {
 
 // Inicializa o motor automaticamente
 motorGovernançaNitrogenio();
+
+
+// --- 7. INTEGRAÇÃO REAL COM COFRE SAFE (API) ---
+
+/**
+ * Puxa as propostas pendentes da Safe Wallet e cria os mini-cards.
+ * Chamamos isso na Quarta-feira (quando abre a votação na comunidade).
+ */
+async function carregarPautasReaisDoCofre() {
+    const enderecoCofre = ENDERECO_COFRE_SAFE; // Usa a variável que você já tem no topo
+    const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${enderecoCofre}/multisig-transactions/`;
+    const containerComunidade = document.getElementById('cronometro-da-dao')?.parentElement;
+
+    if (!containerComunidade) return;
+
+    try {
+        const resposta = await fetch(urlAPI);
+        const dados = await resposta.json();
+
+        // Filtramos apenas pautas pendentes (não executadas)
+        const pautasPendentes = dados.results.filter(tx => !tx.isExecuted);
+
+        if (pautasPendentes.length === 0) {
+            containerComunidade.innerHTML = "<p style='text-align:center; color:#8e8e93;'>Nenhuma pauta pendente no cofre.</p>";
+            return;
+        }
+
+        containerComunidade.innerHTML = ""; // Limpa o "placeholder"
+
+        pautasPendentes.forEach(pauta => {
+            // Criamos o card compacto e subliminar
+            const card = document.createElement('div');
+            card.className = 'card-pauta'; // Usa o CSS que definimos
+            card.style = "background:#fff; border-radius:20px; padding:15px; margin-bottom:15px; border:1px solid #f2f2f7; box-shadow:0 4px 12px rgba(0,0,0,0.05);";
+            
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:bold; color:#8e8e93; margin-bottom:10px;">
+                    <span>#${pauta.nonce}</span>
+                    <span style="color:#007AFF;">COFRE NITROGÊNIO</span>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">Propósito:</h4>
+                    <p style="font-size:14px; color:#333; margin:4px 0; font-weight:500;">
+                        ${pauta.description || "Ação técnica de governança"}
+                    </p>
+                </div>
+                <button class="btn-votar" onclick="abrirModalVotacao(event)" 
+                        style="width:100%; background:#007AFF; color:white; border:none; padding:10px; border-radius:50px; font-size:12px; font-weight:bold; cursor:pointer;">
+                    VOTAR
+                </button>
+                <div style="text-align:center; margin-top:10px;">
+                    <a href="https://bscscan.com/tx/${pauta.safeTxHash}" target="_blank" style="font-size:10px; color:#007AFF; text-decoration:none;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Auditar no BSCScan
+                    </a>
+                </div>
+            `;
+            containerComunidade.appendChild(card);
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar Safe:", erro);
+        containerComunidade.innerHTML = "<p style='color:red; font-size:12px;'>Erro ao conectar com o Cofre Real.</p>";
+    }
+}
+
+// Atualiza o seu motor para chamar a função real na Quarta-feira
+const originalMotor = motorGovernançaNitrogenio;
+motorGovernançaNitrogenio = function() {
+    originalMotor(); // Roda o que você já tinha
+    const diaSemana = new Date().getDay();
+    
+    // Se for Quarta, Quinta, Sexta, Sábado ou Domingo (3 a 0)
+    if (diaSemana >= 3 || diaSemana === 0) {
+        carregarPautasReaisDoCofre();
+    }
+};
+
+// Reinicializa para aplicar a mudança
+motorGovernançaNitrogenio();
