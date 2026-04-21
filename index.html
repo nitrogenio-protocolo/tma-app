@@ -152,72 +152,35 @@
                 </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-    <h3>COFRE</h3>
-    <p>Gestão e Liquidez</p>
-    <div class="full-content">
-        <div style="background: #eef6ff; padding: 20px; border-radius: 18px; text-align: center; margin-bottom: 15px; border: 1px solid #007AFF;">
-            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 5px;">SALDO ATUAL NO SAFE:</small>
-            <span id="saldo-safe-real" style="font-size: 24px; font-weight: 800; color: #333;">0.0000 BNB</span>
+                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3>COFRE</h3>
+                    <p>Gestão e Liquidez</p>
+                    <div class="full-content">
+                        <div style="background: #eef6ff; padding: 20px; border-radius: 18px; text-align: center; margin-bottom: 15px; border: 1px solid #007AFF;">
+                            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 5px;">SALDO ATUAL NO SAFE:</small>
+                            <span id="saldo-safe-real" style="font-size: 24px; font-weight: 800; color: #333;">0.0000 BNB</span>
+                        </div>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #ccc; margin-top: 10px;">
+                            <code style="display: block; word-break: break-all; color: #666; font-size: 11px;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
+                        </div>
+                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
+                    </div>
+                </div> </div> </div> <nav class="nav-bar">
+            <div class="nav-item active" onclick="location.reload()">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')">
+                <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+        </nav>
+    </div> <div id="area-receber" class="area-interna" style="display: none;">
         </div>
-
-        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #ccc; margin-top: 10px;">
-            <code style="display: block; word-break: break-all; color: #666; font-size: 11px;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
-        </div>
-        
-        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
-    </div>
-</div>
-
-    <nav class="nav-bar">
-        <div class="nav-item active" onclick="location.reload()">
-            <i class="fa-solid fa-house"></i>
-        </div>
-        <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')">
-            <i class="fa-brands fa-telegram"></i>
-        </div>
-        <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'">
-            <i class="fa-solid fa-circle-question"></i>
-        </div>
-    </nav>
-</div> 
-                
-             <div id="area-receber" class="area-interna" style="display: none;">
-        <header class="area-header">
-            <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
-            <h2>RECEBER</h2>
-        </header>
-        <div class="conversion-card">
-            <div class="balance-label">Valor a receber (BNB)</div>
-            <div class="input-group"><input type="number" id="bnb-receber" placeholder="0.00" step="0.0001"></div>
-        </div>
-        <div class="grupo-botoes">
-            <button class="btn-pilula btn-cancelar" onclick="fecharReceber()">CANCELAR</button>
-            <button id="btn-gerar-qr" class="btn-pilula btn-acao" onclick="gerarCobranca()" disabled>GERAR QR</button>
-        </div>
-        <div id="qrcode-container"></div>
-    </div>
 
     <div id="area-pagar" class="area-interna" style="display: none;">
-        <header class="area-header">
-            <i class="fa-solid fa-angle-left" onclick="fecharPagar()"></i>
-            <h2>PAGAR</h2>
-        </header>
-        <div class="conversion-card">
-            <div class="balance-label">VALOR EM BNB</div>
-            <div class="input-group"><input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001"></div>
-            <div class="balance-label">DESTINO (CARTEIRA)</div>
-            <div class="address-container">
-                <input type="text" id="wallet-address" placeholder="0x...">
-                <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
-            </div>
-            <div id="reader" style="display:none;"></div>
         </div>
-        <div class="grupo-botoes">
-            <button class="btn-pilula btn-cancelar" onclick="fecharPagar()">CANCELAR</button>
-            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao" disabled>CONFIRMAR PAGAMENTO</button>
-        </div>
-    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
