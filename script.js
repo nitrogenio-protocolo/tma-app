@@ -307,44 +307,7 @@ async function processarVoto(escolha) {
     }
 }
 
-// --- MOTOR DE GOVERNANÇA (VERSÃO ÚNICA E ESTÁVEL) ---
-function motorGovernançaNitrogenio() {
-    const agora = new Date();
-    const diaSemana = agora.getDay(); // 1 = Segunda-feira
-    
-    const crono = document.getElementById('cronometro-da-dao');
-    const areaGoverno = document.getElementById('lista-pautas-governo');
-    
-    if (!crono || !areaGoverno) return; 
-    
-    // REGRA DE SEGUNDA E TERÇA: LIMPEZA E PROMOÇÃO
-    if (diaSemana === 1 || diaSemana === 2) {
-        
-        // 1. Limpa a pauta da Comunidade
-        if(crono.parentElement) {
-            crono.parentElement.innerHTML = `
-                <div style="text-align:center; padding:30px 15px; color:#666; background:#f9f9f9; border-radius:18px; border: 1px dashed #007AFF;">
-                    <i class="fa-solid fa-box-archive" style="font-size:32px; color:#007AFF; margin-bottom:12px;"></i>
-                    <p style="margin:0; font-size:14px; line-height:1.5;">
-                        <b>Votação Finalizada!</b><br>
-                        A pauta anterior foi enviada para os Guardiões.<br>
-                        <small style="color:#007AFF;">Novas pautas a partir de Quarta.</small>
-                    </p>
-                </div>`;
-        }
-
-        // 2. Alimenta a sala Governo (Onde os Guardiões analisam)
-        areaGoverno.innerHTML = `
-            <div class="card-pauta-executiva" style="background:#eef6ff; border-left:4px solid #007AFF; padding:15px; border-radius:12px; text-align:left; margin-bottom:15px;">
-                <small style="color:#007AFF; font-weight:bold; font-size:10px;">ESTADO: ANÁLISE DOS GUARDIÕES</small>
-                <h4 style="margin:8px 0; color:#333; font-size:16px;">#042 - 10 Jaquetas Alpha</h4>
-                <div style="height:8px; background:#ddd; border-radius:4px; overflow:hidden; margin:10px 0;">
-                    <div style="width:52%; height:100%; background:#007AFF;"></div>
-                </div>
-                <p style="font-size:11px; color:#666;"><b>Aprovação:</b> Requer 11 votos dos Guardiões (21 total).</p>
-            </div>`;
-    }
-}
+/
 
 // Inicializa o motor automaticamente
 motorGovernançaNitrogenio();
