@@ -39,12 +39,24 @@ let provider, signer, scannerAtivo = false;
         provider = browserProvider;
         signer = await browserProvider.getSigner();
         updateUI();
-        
+        // Chama a função do cofre logo após conectar
+        atualizarSaldoRealCofre();
     } catch (err) { 
         console.error("Conexão falhou:", err); 
     }
 }
 
+async function atualizarSaldoRealCofre() {
+    if (!provider) return;
+    try {
+        const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
+        const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
+        const display = document.getElementById('saldo-safe-real');
+        if (display) display.innerText = `${formatado} BNB`;
+    } catch (err) { 
+        console.error("Erro Safe:", err); 
+    }
+}
 
 function updateUI() {
     const btn = document.getElementById('connect-trigger');
@@ -65,37 +77,28 @@ function updateUI() {
 }
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
-// 3. Navegação Blindada (Não depende da Web3 para abrir)
+// 3. Navegação
 function abrirView(viewId) {
-    try {
-        const home = document.getElementById('home-app');
-        const targetView = document.getElementById(viewId);
-        
-        if (!targetView) return console.error("ID não encontrado:", viewId);
-
-        // Esconde tudo primeiro
-        home.style.display = 'none';
-        document.querySelectorAll('.area-interna').forEach(a => a.style.display = 'none');
-
-        // Abre a tela
-        targetView.style.setProperty('display', 'block', 'important');
-        window.scrollTo(0, 0);
-        
-        console.log("Navegou para:", viewId);
-    } catch (err) {
-        alert("Erro ao navegar: " + err.message);
-    }
+    document.getElementById('home-app').style.display = 'none';
+    document.querySelectorAll('.area-interna').forEach(a => a.style.display = 'none');
+    document.getElementById(viewId).style.display = 'block';
 }
 
-function abrirPagar() { abrirView('area-pagar'); }
-function abrirReceber() { abrirView('area-receber'); }
+function fecharView(viewId) {
+    if (scannerAtivo) pararScanner();
+    document.getElementById(viewId).style.display = 'none';
+    document.getElementById('home-app').style.display = 'block';
+}
 
-function abrirPagar() { abrirView('area-pagar'); }
-function abrirReceber() { abrirView('area-receber'); }
+function abrirPagar(event) { 
+    if (event) event.preventDefault(); 
+    abrirView('area-pagar'); 
+}
 
-// Funções de fechar específicas (para os botões de voltar/cancelar)
-function fecharPagar() { fecharView('area-pagar'); }
-function fecharReceber() { fecharView('area-receber'); }
+function abrirReceber(event) { 
+    if (event) event.preventDefault(); 
+    abrirView('area-receber'); 
+}
 // 4. Validações e Ajuste de Tamanho (Inputs)
 const valorPagarInput = document.getElementById('valor-pagar');
 const addrInput = document.getElementById('wallet-address');
@@ -287,6 +290,64 @@ async function processarVoto(escolha) {
         status.innerText = "✅ VOTO REGISTRADO COM SUCESSO!";
         status.style.color = "#28a745";
 
+        // Pequeno delay para o usuário ver o sucesso antes de fechar
+        setTimeout(() => {
+            fecharModalVotacao();
+            document.getElementById('contador-votos').innerHTML = '<i class="fa-solid fa-id-card"></i> 43 Votos';
+            // Atualiza o botão na home para mostrar que já votou
+            const btnVotar = document.querySelector('.btn-votar-alpha');
+            if (btnVotar) {
+                btnVotar.innerText = "VOTO COMPUTADO";
+                btnVotar.style.background = "#28a745";
+                btnVotar.disabled = true;
+            }
+        }, 2000);
+
+    } catch (error) {
+        console.error("Erro na votação:", error);
+        status.innerText = "Votação cancelada ou erro na assinatura.";
+        status.style.color = "#ff4444";
+    }
+}
+
+// --- MOTOR DE GOVERNANÇA (VERSÃO ÚNICA E ESTÁVEL) ---
+function motorGovernançaNitrogenio() {
+    const agora = new Date();
+    const diaSemana = agora.getDay(); // 1 = Segunda-feira
+    
+    const crono = document.getElementById('cronometro-da-dao');
+    const areaGoverno = document.getElementById('lista-pautas-governo');
+    
+    if (!crono || !areaGoverno) return; 
+    
+    // REGRA DE SEGUNDA E TERÇA: LIMPEZA E PROMOÇÃO
+    if (diaSemana === 1 || diaSemana === 2) {
         
+        // 1. Limpa a pauta da Comunidade
+        if(crono.parentElement) {
+            crono.parentElement.innerHTML = `
+                <div style="text-align:center; padding:30px 15px; color:#666; background:#f9f9f9; border-radius:18px; border: 1px dashed #007AFF;">
+                    <i class="fa-solid fa-box-archive" style="font-size:32px; color:#007AFF; margin-bottom:12px;"></i>
+                    <p style="margin:0; font-size:14px; line-height:1.5;">
+                        <b>Votação Finalizada!</b><br>
+                        A pauta anterior foi enviada para os Guardiões.<br>
+                        <small style="color:#007AFF;">Novas pautas a partir de Quarta.</small>
+                    </p>
+                </div>`;
+        }
+
+        // 2. Alimenta a sala Governo (Onde os Guardiões analisam)
+        areaGoverno.innerHTML = `
+            <div class="card-pauta-executiva" style="background:#eef6ff; border-left:4px solid #007AFF; padding:15px; border-radius:12px; text-align:left; margin-bottom:15px;">
+                <small style="color:#007AFF; font-weight:bold; font-size:10px;">ESTADO: ANÁLISE DOS GUARDIÕES</small>
+                <h4 style="margin:8px 0; color:#333; font-size:16px;">#042 - 10 Jaquetas Alpha</h4>
+                <div style="height:8px; background:#ddd; border-radius:4px; overflow:hidden; margin:10px 0;">
+                    <div style="width:52%; height:100%; background:#007AFF;"></div>
+                </div>
+                <p style="font-size:11px; color:#666;"><b>Aprovação:</b> Requer 11 votos dos Guardiões (21 total).</p>
+            </div>`;
+    }
+}
+
 // Inicializa o motor automaticamente
 motorGovernançaNitrogenio();
