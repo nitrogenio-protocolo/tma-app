@@ -45,17 +45,6 @@ let provider, signer, scannerAtivo = false;
     }
 }
 
-async function atualizarSaldoRealCofre() {
-    if (!provider) return;
-    try {
-        const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
-        const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
-        const display = document.getElementById('saldo-safe-real');
-        if (display) display.innerText = `${formatado} BNB`;
-    } catch (err) { 
-        console.error("Erro Safe:", err); 
-    }
-}
 
 function updateUI() {
     const btn = document.getElementById('connect-trigger');
