@@ -163,8 +163,12 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .grupo-botoes { display: flex; gap: 15px; padding: 20px; }
 .btn-pilula { flex: 1; padding: 16px; border-radius: 50px; border: none; font-weight: 700; text-transform: uppercase; font-size: 14px; cursor: pointer; }
 .btn-cancelar { background: #f2f2f7; color: #8e8e93; }
-.btn-acao { background: #d2d2d7; color: #fff; }
-.btn-acao.active { background: #007AFF; }
+.btn-acao { background: #d2d2d7; color: #fff; transition: background 0.3s; }
+.btn-acao.active { 
+    background: #007AFF !important; 
+    color: #ffffff !important; 
+}
+
 
 #qrcode-container { display: flex; justify-content: center; margin-top: 20px; }
 #reader { margin-top: 15px; border-radius: 12px; overflow: hidden; }
