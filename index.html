@@ -151,7 +151,32 @@
                     </div>
                 </div>
 
-                </div> <div id="area-receber" class="area-interna">
+                   <div class="room-card" onclick="expandRoom(this)">
+                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3>COFRE</h3>
+                    <p>Gestão e Liquidez</p>
+                    <div class="full-content">
+                        <div style="background: #eef6ff; padding: 20px; border-radius: 18px; text-align: center; margin-bottom: 15px; border: 1px solid #007AFF;">
+                            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 5px;">SALDO ATUAL NO SAFE:</small>
+                            <span id="saldo-safe-real" style="font-size: 24px; font-weight: 800; color: #333;">0.0000 BNB</span>
+                        </div>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #ccc; margin-top: 10px;">
+                            <code style="display: block; word-break: break-all; color: #666; font-size: 11px;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
+                        </div>
+                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
+                    </div>
+                </div> </div> </div> <nav class="nav-bar">
+            <div class="nav-item active" onclick="location.reload()">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')">
+                <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+        </nav>
+     </div> <div id="area-receber" class="area-interna">
         <header class="area-header">
             <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
             <h2>RECEBER</h2>
@@ -193,7 +218,3 @@
     
     <div id="modal-votacao" class="modal-votacao-sheet" style="position: fixed; bottom: -100%; left: 0; width: 100%; background: white; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); transition: bottom 0.4s ease-out; z-index: 9000; padding: 20px; text-align: center; box-sizing: border-box;">
         </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
