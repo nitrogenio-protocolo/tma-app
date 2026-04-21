@@ -287,27 +287,6 @@ async function processarVoto(escolha) {
         status.innerText = "✅ VOTO REGISTRADO COM SUCESSO!";
         status.style.color = "#28a745";
 
-        // Pequeno delay para o usuário ver o sucesso antes de fechar
-        setTimeout(() => {
-            fecharModalVotacao();
-            document.getElementById('contador-votos').innerHTML = '<i class="fa-solid fa-id-card"></i> 43 Votos';
-            // Atualiza o botão na home para mostrar que já votou
-            const btnVotar = document.querySelector('.btn-votar-alpha');
-            if (btnVotar) {
-                btnVotar.innerText = "VOTO COMPUTADO";
-                btnVotar.style.background = "#28a745";
-                btnVotar.disabled = true;
-            }
-        }, 2000);
-
-    } catch (error) {
-        console.error("Erro na votação:", error);
-        status.innerText = "Votação cancelada ou erro na assinatura.";
-        status.style.color = "#ff4444";
-    }
-}
-
-/
-
+        
 // Inicializa o motor automaticamente
 motorGovernançaNitrogenio();
