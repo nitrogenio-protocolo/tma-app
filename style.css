@@ -50,16 +50,25 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     max-height: 50%;
 }
 
-/* Estilo das Pílulas */
+/* --- Ajuste da Pílula Vermelha --- */
 .btn-pilula-termos {
-    width: 100%;
-    padding: 15px;
+    width: 150px; /* Definimos uma largura fixa para não esticar na tela toda */
+    height: 50px; /* Mantém a altura de pílula */
     border-radius: 25px;
     border: none;
     background: #ccc; /* Cinza inicial */
     color: white;
     font-weight: bold;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: block;   /* Ajuda no alinhamento */
+    margin: 20px auto; /* Centraliza a pílula na tela */
+}
+
+/* Quando ela "acorda" (fica ativa) */
+.btn-pilula-termos.ativo {
+    background: #ff4444; /* Vermelho Matrix */
+    box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
 .btn-pilula-termos.ativo {
