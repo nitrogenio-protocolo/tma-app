@@ -379,9 +379,33 @@ async function carregarPautasReaisDoCofre() {
         containerComunidade.innerHTML = ""; // Limpa o "placeholder"
 
         pautasPendentes.forEach(pauta => {
-            // Criamos o card compacto e subliminar
+            // --- FILTRO DE SIMULAÇÕES ---
+            // Se não tiver nonce, ignoramos (evita rascunhos e simulações locais)
+            if (pauta.nonce === null || pauta.nonce === undefined) return;
+
+            // --- LÓGICA DE IGNIÇÃO (TEXTO DO SAFE) ---
+            let textoFinal = "Ação técnica de governança";
+
+            if (pauta.origin) {
+                try {
+                    const originData = JSON.parse(pauta.origin);
+                    if (originData.description) {
+                        // Extrai o texto e limpa links (mantendo o card clean)
+                        textoFinal = originData.description.split('http')[0].trim();
+                    }
+                } catch(e) {
+                    // Se o origin for string pura (não JSON), tentamos usá-la
+                    if(typeof pauta.origin === 'string') {
+                        textoFinal = pauta.origin.split('http')[0].trim();
+                    }
+                }
+            } else if (pauta.description && !pauta.description.includes("governança")) {
+                textoFinal = pauta.description;
+            }
+
+            // --- RENDERIZAÇÃO DO CARD ---
             const card = document.createElement('div');
-            card.className = 'card-pauta'; // Usa o CSS que definimos
+            card.className = 'card-pauta'; 
             card.style = "background:#fff; border-radius:20px; padding:15px; margin-bottom:15px; border:1px solid #f2f2f7; box-shadow:0 4px 12px rgba(0,0,0,0.05);";
             
             card.innerHTML = `
@@ -390,17 +414,17 @@ async function carregarPautasReaisDoCofre() {
                     <span style="color:#007AFF;">COFRE NITROGÊNIO</span>
                 </div>
                 <div style="margin-bottom:12px;">
-                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">Propósito:</h4>
-                    <p style="font-size:14px; color:#333; margin:4px 0; font-weight:500;">
-                        ${pauta.description || "Ação técnica de governança"}
+                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">Propósito da Comunidade:</h4>
+                    <p style="font-size:15px; color:#1a1a1a; margin:4px 0; font-weight:700; line-height:1.4;">
+                        ${textoFinal}
                     </p>
                 </div>
                 <button class="btn-votar" onclick="abrirModalVotacao(event)" 
-                        style="width:100%; background:#007AFF; color:white; border:none; padding:10px; border-radius:50px; font-size:12px; font-weight:bold; cursor:pointer;">
+                        style="width:100%; background:#007AFF; color:white; border:none; padding:12px; border-radius:50px; font-size:13px; font-weight:bold; cursor:pointer;">
                     VOTAR
                 </button>
                 <div style="text-align:center; margin-top:10px;">
-                    <a href="https://bscscan.com/tx/${pauta.safeTxHash}" target="_blank" style="font-size:10px; color:#007AFF; text-decoration:none;">
+                    <a href="https://bscscan.com/tx/${pauta.safeTxHash}" target="_blank" style="font-size:10px; color:#8e8e93; text-decoration:none;">
                         <i class="fa-solid fa-magnifying-glass"></i> Auditar no BSCScan
                     </a>
                 </div>
