@@ -231,22 +231,30 @@ async function carregarPautasReaisDoCofre() {
         pautas.forEach(pauta => {
             if (pauta.nonce === null) return;
             let textoNota = "Ação técnica de governança";
-            if (pauta.origin) {
-                try {
-                    const obj = JSON.parse(pauta.origin);
-                    textoNota = obj.description || obj.name || pauta.origin;
-                } catch(e) { textoNota = pauta.origin; }
-            }
-            // Limpeza "Hakuna Matata" para o texto ficar perfeito
-            textoNota = textoNota.replace(/^note:\s*/i, "");
-            try {
-                // Converte códigos como \u00e7 em letras reais (ç, ã, etc)
-                textoNota = JSON.parse('"' + textoNota.replace(/"/g, '\\"') + '"');
-            } catch (e) {
-                textoNota = textoNota.replace(/[\\"{}]/g, "");
-            }
-            textoNota = textoNota.trim();
 
+if (pauta.origin) {
+    try {
+        // Tenta converter o JSON da origem
+        const obj = JSON.parse(pauta.origin);
+        textoNota = obj.description || obj.name || pauta.origin;
+    } catch(e) { 
+        textoNota = pauta.origin; 
+    }
+}
+
+// 1. Remove o prefixo "note:" (independente de maiúscula/minúscula)
+textoNota = textoNota.replace(/^note:\s*/i, "");
+
+// 2. Decodifica os caracteres Unicode (transforma \u00e7 em ç, etc.)
+try {
+    textoNota = decodeURIComponent(JSON.parse('"' + textoNota.replace(/"/g, '\\"') + '"'));
+} catch (e) {
+    // Caso falhe, apenas remove as aspas e chaves sobrando
+    textoNota = textoNota.replace(/[\\"{}]/g, "");
+}
+
+textoNota = textoNota.trim();
+            
             const card = document.createElement('div');
             card.className = 'card-pauta'; 
             card.innerHTML = `
