@@ -70,8 +70,6 @@ function updateUI() {
             const formatBal = parseFloat(ethers.formatEther(bal)).toFixed(4);
             if (balanceDisplay) balanceDisplay.innerText = `${formatBal} BNB`;
             
-            // Aqui as pazes: O card da Raposa ganha um texto elegante em vez do saldo bruto
-            if (nftBalanceDisplay) nftBalanceDisplay.innerText = "Credencial Alpha Ativa";
         }).catch(err => console.error(err));
     }
 }
