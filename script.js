@@ -383,25 +383,31 @@ async function carregarPautasReaisDoCofre() {
             // Se não tiver nonce, ignoramos (evita rascunhos e simulações locais)
             if (pauta.nonce === null || pauta.nonce === undefined) return;
 
-            // --- LÓGICA DE IGNIÇÃO (TEXTO DO SAFE) ---
+            // --- LÓGICA DE IGNIÇÃO (BUSCA PROFUNDA) ---
             let textoFinal = "Ação técnica de governança";
 
-            if (pauta.origin) {
+            // 1. Tenta pegar a nota manual (campo origin)
+            if (pauta.origin && pauta.origin !== "{}") {
                 try {
                     const originData = JSON.parse(pauta.origin);
                     if (originData.description) {
-                        // Extrai o texto e limpa links (mantendo o card clean)
-                        textoFinal = originData.description.split('http')[0].trim();
+                        textoFinal = originData.description;
+                    } else if (originData.name) {
+                        textoFinal = originData.name;
                     }
                 } catch(e) {
-                    // Se o origin for string pura (não JSON), tentamos usá-la
-                    if(typeof pauta.origin === 'string') {
-                        textoFinal = pauta.origin.split('http')[0].trim();
-                    }
+                    if(typeof pauta.origin === 'string') textoFinal = pauta.origin;
                 }
-            } else if (pauta.description && !pauta.description.includes("governança")) {
-                textoFinal = pauta.description;
+            } 
+            
+            // 2. Se a nota falhou, mas é uma transferência, o JS gera o texto automaticamente
+            if (textoFinal.includes("técnica") && pauta.dataDecoded?.method === "transfer") {
+                const valor = pauta.value ? ethers.formatEther(pauta.value) : "0";
+                textoFinal = `Transferência de ${valor} BNB para fins operacionais`;
             }
+
+            // 3. Limpeza final (Corta links e espaços)
+            textoFinal = textoFinal.split('http')[0].trim();
 
             // --- RENDERIZAÇÃO DO CARD ---
             const card = document.createElement('div');
