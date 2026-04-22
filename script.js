@@ -237,23 +237,39 @@ async function carregarPautasReaisDoCofre() {
                     textoNota = obj.description || obj.name || pauta.origin;
                 } catch(e) { textoNota = pauta.origin; }
             }
-            textoNota = textoNota.replace(/[{}"]/g, "").trim();
+            // Limpeza "Hakuna Matata" para o texto ficar perfeito
+            textoNota = textoNota.replace(/^note:\s*/i, "");
+            try {
+                // Converte códigos como \u00e7 em letras reais (ç, ã, etc)
+                textoNota = JSON.parse('"' + textoNota.replace(/"/g, '\\"') + '"');
+            } catch (e) {
+                textoNota = textoNota.replace(/[\\"{}]/g, "");
+            }
+            textoNota = textoNota.trim();
 
             const card = document.createElement('div');
             card.className = 'card-pauta'; 
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:bold; color:#8e8e93; margin-bottom:10px;">
-                    <span>#${pauta.nonce}</span><span style="color:#007AFF;">COFRE NITROGÊNIO</span>
+                    <span>#${pauta.nonce}</span>
+                    <span style="color:#007AFF;">COFRE NITROGÊNIO</span>
                 </div>
                 <div style="margin-bottom:12px;">
-                    <h4 style="font-size:11px; color:#8e8e93; margin:0;">PROPÓSITO DA COMUNIDADE:</h4>
-                    <p style="font-size:15px; color:#1a1a1a; margin:4px 0; font-weight:700;">${textoNota}</p>
+                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">PROPÓSITO DA COMUNIDADE:</h4>
+                    <p style="font-size:15px; color:#1a1a1a; margin:4px 0; font-weight:700; line-height:1.4;">
+                        ${textoNota}
+                    </p>
                 </div>
-                <button class="btn-votar" onclick="abrirModalVotacao(event)" style="width:100%; background:#007AFF; color:white; border:none; padding:14px; border-radius:50px; font-size:14px; font-weight:bold;">VOTAR</button>
+                <button class="btn-votar" onclick="abrirModalVotacao(event)" 
+                        style="width:100%; background:#007AFF; color:white; border:none; padding:14px; border-radius:50px; font-size:14px; font-weight:bold; cursor:pointer;">
+                    VOTAR
+                </button>
             `;
             container.appendChild(card);
         });
-    } catch (e) { console.error(e); }
+    } catch (e) {
+        console.error("Erro Safe:", e);
+    }
 }
 
 function motorGovernançaNitrogenio() {
