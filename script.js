@@ -281,42 +281,35 @@ textoNota = textoNota.trim();
 }
 
 function motorGovernançaNitrogenio() {
-    const agora = new Date();
-    const diaSemana = agora.getDay(); 
     const crono = document.getElementById('cronometro-da-dao');
     const displayTempo = document.getElementById('tempo-restante');
     
-    // 1. Lógica do Cronômetro Real
     function atualizarRelogio() {
         const agoraRelogio = new Date();
-        // Próxima Segunda-feira às 00:00:00
-        const proximaSegunda = new Date();
-        proximaSegunda.setDate(agoraRelogio.getDate() + (7 - agoraRelogio.getDay() + 1) % 7);
-        proximaSegunda.setHours(0, 0, 0, 0);
+        
+        // LÓGICA DE TESTE: Pauta vence sempre na próxima meia-noite (Ciclo de 24h)
+        const vencimento = new Date();
+        vencimento.setHours(24, 0, 0, 0); // Define para 00:00 do dia seguinte
 
-        const diff = proximaSegunda - agoraRelogio;
+        const diff = vencimento - agoraRelogio;
 
         if (diff > 0) {
-            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const horas = Math.floor(diff / (1000 * 60 * 60));
             const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diff % (1000 * 60)) / 1000);
             
             if (displayTempo) {
-                displayTempo.innerText = `${dias}d ${horas}h ${minutos}m`;
+                // Adicionamos segundos para dar sensação de urgência no teste
+                displayTempo.innerText = `${horas}h ${minutos}m ${segundos}s`;
             }
         }
     }
 
-    // Atualiza o relógio a cada minuto
-    setInterval(atualizarRelogio, 60000);
+    setInterval(atualizarRelogio, 1000); // Atualiza a cada segundo
     atualizarRelogio();
 
-    // 2. Lógica das Pautas
-    if (!crono) return;
-    
-    if (diaSemana === 1 || diaSemana === 2) {
-        crono.innerHTML = `<p style="text-align:center; padding:20px; color:#666;">Votação Finalizada. Em análise pelos Guardiões.</p>`;
-    } else {
+    // REMOVEMOS a trava de Segunda/Terça para os testes
+    if (crono) {
         carregarPautasReaisDoCofre();
     }
 }
