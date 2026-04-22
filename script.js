@@ -273,11 +273,40 @@ async function carregarPautasReaisDoCofre() {
 }
 
 function motorGovernançaNitrogenio() {
-    const dia = new Date().getDay();
+    const agora = new Date();
+    const diaSemana = agora.getDay(); 
     const crono = document.getElementById('cronometro-da-dao');
+    const displayTempo = document.getElementById('tempo-restante');
+    
+    // 1. Lógica do Cronômetro Real
+    function atualizarRelogio() {
+        const agoraRelogio = new Date();
+        // Próxima Segunda-feira às 00:00:00
+        const proximaSegunda = new Date();
+        proximaSegunda.setDate(agoraRelogio.getDate() + (7 - agoraRelogio.getDay() + 1) % 7);
+        proximaSegunda.setHours(0, 0, 0, 0);
+
+        const diff = proximaSegunda - agoraRelogio;
+
+        if (diff > 0) {
+            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (displayTempo) {
+                displayTempo.innerText = `${dias}d ${horas}h ${minutos}m`;
+            }
+        }
+    }
+
+    // Atualiza o relógio a cada minuto
+    setInterval(atualizarRelogio, 60000);
+    atualizarRelogio();
+
+    // 2. Lógica das Pautas
     if (!crono) return;
     
-    if (dia === 1 || dia === 2) {
+    if (diaSemana === 1 || diaSemana === 2) {
         crono.innerHTML = `<p style="text-align:center; padding:20px; color:#666;">Votação Finalizada. Em análise pelos Guardiões.</p>`;
     } else {
         carregarPautasReaisDoCofre();
