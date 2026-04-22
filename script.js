@@ -360,7 +360,7 @@ motorGovernançaNitrogenio();
 async function carregarPautasReaisDoCofre() {
     const enderecoCofre = ENDERECO_COFRE_SAFE; // Usa a variável que você já tem no topo
     const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${enderecoCofre}/multisig-transactions/`;
-    const containerComunidade = document.getElementById('cronometro-da-dao')?.parentElement;
+    const containerComunidade = document.getElementById('cronometro-da-dao');
 
     if (!containerComunidade) return;
 
