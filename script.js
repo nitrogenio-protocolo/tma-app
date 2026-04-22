@@ -358,7 +358,7 @@ motorGovernançaNitrogenio();
  * Chamamos isso na Quarta-feira (quando abre a votação na comunidade).
  */
 async function carregarPautasReaisDoCofre() {
-    const enderecoCofre = ENDERECO_COFRE_SAFE; // Usa a variável que você já tem no topo
+    const enderecoCofre = ENDERECO_COFRE_SAFE;
     const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${enderecoCofre}/multisig-transactions/`;
     const containerComunidade = document.getElementById('cronometro-da-dao');
 
@@ -367,49 +367,40 @@ async function carregarPautasReaisDoCofre() {
     try {
         const resposta = await fetch(urlAPI);
         const dados = await resposta.json();
-
-        // Filtramos apenas pautas pendentes (não executadas)
         const pautasPendentes = dados.results.filter(tx => !tx.isExecuted);
 
         if (pautasPendentes.length === 0) {
-            containerComunidade.innerHTML = "<p style='text-align:center; color:#8e8e93;'>Nenhuma pauta pendente no cofre.</p>";
+            containerComunidade.innerHTML = "<p style='text-align:center; color:#8e8e93;'>Nenhuma pauta pendente.</p>";
             return;
         }
 
-        containerComunidade.innerHTML = ""; // Limpa o "placeholder"
+        containerComunidade.innerHTML = ""; 
 
         pautasPendentes.forEach(pauta => {
-            // --- FILTRO DE SIMULAÇÕES ---
-            // Se não tiver nonce, ignoramos (evita rascunhos e simulações locais)
-            if (pauta.nonce === null || pauta.nonce === undefined) return;
+            if (pauta.nonce === null) return;
 
-            // --- LÓGICA DE IGNIÇÃO (BUSCA PROFUNDA) ---
-            let textoFinal = "Ação técnica de governança";
-
-            // 1. Tenta pegar a nota manual (campo origin)
-            if (pauta.origin && pauta.origin !== "{}") {
-                try {
-                    const originData = JSON.parse(pauta.origin);
-                    if (originData.description) {
-                        textoFinal = originData.description;
-                    } else if (originData.name) {
-                        textoFinal = originData.name;
-                    }
-                } catch(e) {
-                    if(typeof pauta.origin === 'string') textoFinal = pauta.origin;
-                }
-            } 
+            // --- BUSCA DIRETA PELA "NOTE" DO SAFE ---
+            let textoNota = "";
             
-            // 2. Se a nota falhou, mas é uma transferência, o JS gera o texto automaticamente
-            if (textoFinal.includes("técnica") && pauta.dataDecoded?.method === "transfer") {
-                const valor = pauta.value ? ethers.formatEther(pauta.value) : "0";
-                textoFinal = `Transferência de ${valor} BNB para fins operacionais`;
+            if (pauta.origin) {
+                try {
+                    // O Safe muitas vezes guarda a nota como um JSON string no 'origin'
+                    const originObj = JSON.parse(pauta.origin);
+                    textoNota = originObj.description || originObj.name || pauta.origin;
+                } catch(e) {
+                    // Se não for JSON, o texto da nota costuma estar puramente no campo origin
+                    textoNota = pauta.origin;
+                }
             }
 
-            // 3. Limpeza final (Corta links e espaços)
-            textoFinal = textoFinal.split('http')[0].trim();
+            // Fallback caso a nota venha vazia ou como objeto vazio "{}"
+            if (!textoNota || textoNota === "{}" || textoNota === "null") {
+                textoNota = "Ação técnica de governança";
+            }
 
-            // --- RENDERIZAÇÃO DO CARD ---
+            // Limpeza de caracteres extras que o Safe às vezes adiciona
+            textoNota = textoNota.replace(/[{}"]/g, "").trim();
+
             const card = document.createElement('div');
             card.className = 'card-pauta'; 
             card.style = "background:#fff; border-radius:20px; padding:15px; margin-bottom:15px; border:1px solid #f2f2f7; box-shadow:0 4px 12px rgba(0,0,0,0.05);";
@@ -420,23 +411,24 @@ async function carregarPautasReaisDoCofre() {
                     <span style="color:#007AFF;">COFRE NITROGÊNIO</span>
                 </div>
                 <div style="margin-bottom:12px;">
-                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">Propósito da Comunidade:</h4>
+                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">PROPÓSITO DA COMUNIDADE:</h4>
                     <p style="font-size:15px; color:#1a1a1a; margin:4px 0; font-weight:700; line-height:1.4;">
-                        ${textoFinal}
+                        ${textoNota}
                     </p>
                 </div>
                 <button class="btn-votar" onclick="abrirModalVotacao(event)" 
-                        style="width:100%; background:#007AFF; color:white; border:none; padding:12px; border-radius:50px; font-size:13px; font-weight:bold; cursor:pointer;">
+                        style="width:100%; background:#007AFF; color:white; border:none; padding:14px; border-radius:50px; font-size:14px; font-weight:bold; cursor:pointer;">
                     VOTAR
                 </button>
-                <div style="text-align:center; margin-top:10px;">
-                    <a href="https://bscscan.com/tx/${pauta.safeTxHash}" target="_blank" style="font-size:10px; color:#8e8e93; text-decoration:none;">
-                        <i class="fa-solid fa-magnifying-glass"></i> Auditar no BSCScan
-                    </a>
-                </div>
-            `;
+            `; // Note que o link do BSCScan e a div de auditoria foram removidos aqui
+            
             containerComunidade.appendChild(card);
         });
+
+    } catch (erro) {
+        console.error("Erro Safe:", erro);
+    }
+}
 
     } catch (erro) {
         console.error("Erro ao carregar Safe:", erro);
