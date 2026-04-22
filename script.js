@@ -314,3 +314,47 @@ function motorGovernançaNitrogenio() {
 }
 
 motorGovernançaNitrogenio();
+
+// 9. Execução de Pagamento (O que estava faltando)
+async function executarPagamento() {
+    if (!signer) {
+        alert("Por favor, conecte sua carteira primeiro.");
+        return;
+    }
+
+    const valor = valorPagarInput.value.replace(',', '.');
+    const destino = addrInput.value.trim();
+
+    try {
+        // Mostra um feedback visual de "processando"
+        const btn = document.getElementById('btn-confirmar-pagar');
+        const textoOriginal = btn.innerText;
+        btn.innerText = "PROCESSANDO...";
+        btn.disabled = true;
+
+        // Monta a transação
+        const tx = await signer.sendTransaction({
+            to: destino,
+            value: ethers.parseEther(valor)
+        });
+
+        console.log("Transação enviada:", tx.hash);
+        
+        // Aguarda a confirmação na rede
+        await tx.wait();
+        
+        alert("Pagamento realizado com sucesso!");
+        fecharPagar(); // Limpa os campos e volta para a home
+
+    } catch (err) {
+        console.error("Erro ao pagar:", err);
+        alert("Erro na transação: " + (err.reason || "Usuário cancelou ou saldo insuficiente"));
+    } finally {
+        const btn = document.getElementById('btn-confirmar-pagar');
+        btn.innerText = "CONFIRMAR PAGAMENTO";
+        btn.disabled = false;
+    }
+}
+
+// Vincula a função ao clique do botão
+document.getElementById('btn-confirmar-pagar')?.addEventListener('click', executarPagamento);
