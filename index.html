@@ -83,20 +83,10 @@
         <div class="carousel-wrapper">
             <div class="room-carousel">
 
-                <div class="room-card" onclick="expandRoom(this)">
+                <div class="room-card" onclick="abrirPainel('comunidade')">
     <div class="room-icon"><i class="fa-solid fa-users"></i></div>
     <h3>COMUNIDADE</h3>
     <p>Área de exercícios</p>
-    <div class="full-content">
-        <div id="display-tempo" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
-            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
-        </div>
-
-        <div id="cronometro-da-dao">
-             <p style="text-align:center; color:#8e8e93; font-size:12px;">Buscando pautas no cofre...</p>
-        </div>
-    </div>
 </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
@@ -223,3 +213,25 @@
     <script src="script.js?v=2.1"></script>
 </body>
 </html>
+
+    <div id="painel-comunidade" class="painel-folha">
+    <div class="barra-fechar" onclick="fecharPainel('comunidade')">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('comunidade')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Comunidade</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div id="display-tempo" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
+            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
+        </div>
+
+        <div id="cronometro-da-dao">
+             <p style="text-align:center; color:#8e8e93; font-size:12px;">Buscando pautas no cofre...</p>
+        </div>
+    </div>
+</div>            
