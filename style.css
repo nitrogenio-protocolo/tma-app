@@ -115,11 +115,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 }
 
 .room-card {
-    flex: 0 0 80vw;
-    /* Travas de segurança para evitar o movimento elástico */
-    min-width: 80vw;
-    max-width: 80vw;
-    
+    flex: 0 0 80vw; /* Largura de 80% da tela do celular */
     margin-right: 15px;
     background: #ffffff;
     border: 1px solid #f0f0f0;
@@ -127,9 +123,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     padding: 30px 20px;
     text-align: center;
     scroll-snap-align: center;
-    
-    /* Removemos o 'all' para a transição não afetar o tamanho durante o scroll */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
