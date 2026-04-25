@@ -325,7 +325,8 @@ function motorGovernançaNitrogenio() {
                 const m = minutos.toString().padStart(2, '0');
                 const s = segundos.toString().padStart(2, '0');
 
-                displayTempo.innerText = `${h}h ${m}s ${s}s`;
+                // CORREÇÃO: Trocamos o primeiro 's' por 'm' (horas, minutos, segundos)
+                displayTempo.innerText = `${h}h ${m}m ${s}s`;
             }
         }
     }
@@ -334,6 +335,9 @@ function motorGovernançaNitrogenio() {
     atualizarRelogio();
     carregarPautasReaisDoCofre();
 }
+
+// A CHAVE NA IGNIÇÃO: Esta linha abaixo faz tudo o que está acima começar a funcionar
+motorGovernançaNitrogenio();
 
 // 9. Execução de Pagamento (O que estava faltando)
 async function executarPagamento() {
