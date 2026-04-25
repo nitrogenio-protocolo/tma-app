@@ -304,15 +304,14 @@ textoNota = textoNota.trim();
 }
 
 function motorGovernançaNitrogenio() {
-    const crono = document.getElementById('cronometro-da-dao');
-    const displayTempo = document.getElementById('tempo-restante');
-    
     function atualizarRelogio() {
+        // Buscamos o elemento aqui dentro para garantir que ele seja encontrado quando o painel subir
+        const displayTempo = document.getElementById('tempo-restante');
+        if (!displayTempo) return;
+
         const agoraRelogio = new Date();
-        
-        // LÓGICA DE TESTE: Pauta vence sempre na próxima meia-noite (Ciclo de 24h)
         const vencimento = new Date();
-        vencimento.setHours(24, 0, 0, 0); // Define para 00:00 do dia seguinte
+        vencimento.setHours(24, 0, 0, 0); 
 
         const diff = vencimento - agoraRelogio;
 
@@ -321,23 +320,21 @@ function motorGovernançaNitrogenio() {
             const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const segundos = Math.floor((diff % (1000 * 60)) / 1000);
             
-            if (displayTempo) {
-                // Adicionamos segundos para dar sensação de urgência no teste
-                displayTempo.innerText = `${horas}h ${minutos}m ${segundos}s`;
-            }
+            // Formatação com 2 dígitos para ficar profissional (ex: 09s)
+            const h = horas.toString().padStart(2, '0');
+            const m = minutos.toString().padStart(2, '0');
+            const s = segundos.toString().padStart(2, '0');
+
+            displayTempo.innerText = `${h}h ${m}m ${s}s`;
         }
     }
 
-    setInterval(atualizarRelogio, 1000); // Atualiza a cada segundo
+    // O relógio vai "bater" a cada 1 segundo
+    setInterval(atualizarRelogio, 1000);
     atualizarRelogio();
 
-    // REMOVEMOS a trava de Segunda/Terça para os testes
-    if (crono) {
-        carregarPautasReaisDoCofre();
-    }
+    carregarPautasReaisDoCofre();
 }
-
-motorGovernançaNitrogenio();
 
 // 9. Execução de Pagamento (O que estava faltando)
 async function executarPagamento() {
