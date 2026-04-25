@@ -167,9 +167,21 @@ async function fecharPagar() {
     fecharView('area-pagar');
 }
 
-function expandRoom(card) {
-    card.classList.toggle('expanded');
-    document.body.style.overflow = card.classList.contains('expanded') ? 'hidden' : 'auto';
+// CONTROLE DE PAINÉIS (SHEETS)
+function abrirPainel(id) {
+    const painel = document.getElementById('painel-' + id);
+    if (painel) {
+        painel.classList.add('aberto');
+        document.body.style.overflow = 'hidden'; // Trava o scroll da home
+    }
+}
+
+function fecharPainel(id) {
+    const painel = document.getElementById('painel-' + id);
+    if (painel) {
+        painel.classList.remove('aberto');
+        document.body.style.overflow = 'auto'; // Libera o scroll
+    }
 }
 
 // 7. Termos
