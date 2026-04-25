@@ -167,12 +167,30 @@ async function fecharPagar() {
     fecharView('area-pagar');
 }
 
-// CONTROLE DE PAINÉIS (SHEETS)
+// CONTROLE DE PAINÉIS (SHEETS) - ATUALIZADO
 function abrirPainel(id) {
     const painel = document.getElementById('painel-' + id);
     if (painel) {
         painel.classList.add('aberto');
-        document.body.style.overflow = 'hidden'; // Trava o scroll da home
+        document.body.style.overflow = 'hidden'; 
+
+        // Se abrir a comunidade, força a atualização das pautas e relógio
+        if (id === 'comunidade') {
+            carregarPautasReaisDoCofre();
+        }
+        
+        // Se abrir o cofre, atualiza o saldo real na hora
+        if (id === 'cofre') {
+            atualizarSaldoRealCofre();
+        }
+    }
+}
+
+function fecharPainel(id) {
+    const painel = document.getElementById('painel-' + id);
+    if (painel) {
+        painel.classList.remove('aberto');
+        document.body.style.overflow = 'auto'; 
     }
 }
 
