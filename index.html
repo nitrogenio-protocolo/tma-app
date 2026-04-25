@@ -107,17 +107,11 @@
     <p>Distribuição de Ativos</p>
 </div>
 
-                <div class="room-card" onclick="expandRoom(this)">
-                    <div class="room-icon"><i class="fa-solid fa-file-shield"></i></div>
-                    <h3>PROTOCOLO</h3>
-                    <p>Regras e Diretrizes</p>
-                    <div class="full-content">
-                        <div style="background: #f5f5f7; padding: 15px; border-radius: 12px; font-size: 13px; text-align: left;">
-                            <p><strong>Governança:</strong> Atuação múltipla técnica e comercial.</p>
-                            <p><strong>Apoio Social:</strong> Distribuição via blockchain para a comunidade.</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="room-card" onclick="abrirPainel('protocolo')">
+    <div class="room-icon"><i class="fa-solid fa-file-shield"></i></div>
+    <h3>PROTOCOLO</h3>
+    <p>Regras e Diretrizes</p>
+</div>
 
                    <div class="room-card" onclick="expandRoom(this)">
                     <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
@@ -278,3 +272,31 @@
         </button>
     </div>
 </div>        
+
+   <div id="painel-protocolo" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('protocolo')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Protocolo</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #007AFF;">
+            <strong style="display:block; color:#007AFF; margin-bottom:5px;">Governança:</strong>
+            <p style="font-size: 14px; color:#555; margin:0;">Atuação múltipla técnica e comercial para garantir a estabilidade do Token N.</p>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #007AFF;">
+            <strong style="display:block; color:#007AFF; margin-bottom:5px;">Apoio Social:</strong>
+            <p style="font-size: 14px; color:#555; margin:0;">Distribuição via blockchain para a comunidade de forma transparente.</p>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 4px solid #007AFF;">
+            <strong style="display:block; color:#007AFF; margin-bottom:5px;">Segurança:</strong>
+            <p style="font-size: 14px; color:#555; margin:0;">Todas as decisões passam pelo conselho de 21 Guardiões.</p>
+        </div>
+    </div>
+</div>     
