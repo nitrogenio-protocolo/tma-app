@@ -302,18 +302,18 @@ textoNota = textoNota.trim();
         console.error("Erro Safe:", e);
     }
 }
-// --- ÁREA NFT ALPHA (NAVEGAÇÃO LATERAL) ---
+// --- ÁREA NFT ALPHA (NAVEGAÇÃO SEGURA - ACENDER/APAGAR) ---
 function abrirNFT() {
-    // Faz a Sala NFT deslizar da direita para o centro
-    document.getElementById('area-nft').style.transform = 'translateX(0)';
+    // Usa a mesma lógica das salas de Pagar/Receber para não travar
+    abrirView('area-nft');
 }
 
 function fecharNFT() {
-    // Faz a Sala NFT deslizar de volta para a direita (escondendo-a)
-    document.getElementById('area-nft').style.transform = 'translateX(100%)';
+    // Usa a mesma lógica de fechamento padrão do seu app
+    fecharView('area-nft');
 }
+
 function iniciarMint() {
-    // Alerta de segurança enquanto o contrato não é vinculado
     alert("Conectando ao contrato Alpha para o Mint...");
 }
 
