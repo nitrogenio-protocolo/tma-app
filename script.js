@@ -174,7 +174,7 @@ function abrirPainel(id) {
         painel.classList.add('aberto');
         document.body.style.overflow = 'hidden'; 
 
-        // Se abrir a comunidade, força a atualização das pautas e relógio
+        // Se abrir a comunidade, força a atualização das pautas
         if (id === 'comunidade') {
             carregarPautasReaisDoCofre();
         }
@@ -194,13 +194,6 @@ function fecharPainel(id) {
     }
 }
 
-function fecharPainel(id) {
-    const painel = document.getElementById('painel-' + id);
-    if (painel) {
-        painel.classList.remove('aberto');
-        document.body.style.overflow = 'auto'; // Libera o scroll
-    }
-}
 
 // 7. Termos
 function validarTermos() {
