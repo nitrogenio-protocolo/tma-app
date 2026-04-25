@@ -95,14 +95,10 @@
     <p>Decisões Coletivas</p>
 </div>
 
-                <div class="room-card" onclick="expandRoom(this)">
-    <div class="room-icon"><i class="fa-solid fa-chalkboard"></i></div>
+                <div class="room-card" onclick="abrirPainel('mural')">
+    <div class="room-icon"><i class="fa-solid fa-desktop"></i></div>
     <h3>MURAL</h3>
     <p>Avisos e Transparência</p>
-    <div class="full-content">
-        <div id="historico-mural">
-            </div>
-    </div>
 </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
@@ -244,3 +240,22 @@
         <p style="text-align:center; color:#888;">Nenhuma pauta para votação no momento.</p>
     </div>
 </div>       
+
+<div id="painel-mural" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Mural</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div class="card-pauta" style="border-left: 4px solid #007AFF;">
+            <small style="color: #8e8e93;">AVISO DO PROTOCOLO</small>
+            <h4 style="margin: 10px 0;">Atualização v2.0 Estável</h4>
+            <p style="font-size: 14px; color: #333;">O efeito de subida dos cards foi implementado com sucesso para melhorar a navegação.</p>
+        </div>
+    </div>
+</div>
