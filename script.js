@@ -304,17 +304,14 @@ textoNota = textoNota.trim();
 }
 // --- ÁREA NFT ALPHA (NAVEGAÇÃO LATERAL) ---
 function abrirNFT() {
-    // Esconde a Home e mostra a Sala NFT (Efeito de autoridade)
-    document.getElementById('home-app').style.display = 'none';
-    document.getElementById('area-nft').style.display = 'block';
+    // Faz a Sala NFT deslizar da direita para o centro
+    document.getElementById('area-nft').style.transform = 'translateX(0)';
 }
 
 function fecharNFT() {
-    // Esconde a Sala NFT e volta para a Home
-    document.getElementById('area-nft').style.display = 'none';
-    document.getElementById('home-app').style.display = 'block';
+    // Faz a Sala NFT deslizar de volta para a direita (escondendo-a)
+    document.getElementById('area-nft').style.transform = 'translateX(100%)';
 }
-
 function iniciarMint() {
     // Alerta de segurança enquanto o contrato não é vinculado
     alert("Conectando ao contrato Alpha para o Mint...");
