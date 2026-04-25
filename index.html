@@ -113,20 +113,13 @@
     <p>Regras e Diretrizes</p>
 </div>
 
-                   <div class="room-card" onclick="expandRoom(this)">
-                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-                    <h3>COFRE</h3>
-                    <p>Gestão e Liquidez</p>
-                    <div class="full-content">
-                        <div style="background: #eef6ff; padding: 20px; border-radius: 18px; text-align: center; margin-bottom: 15px; border: 1px solid #007AFF;">
-                            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 5px;">SALDO ATUAL NO SAFE:</small>
-                            <span id="saldo-safe-real" style="font-size: 24px; font-weight: 800; color: #333;">0.0000 BNB</span>
-                        </div>
-                        <div style="background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px dashed #ccc; margin-top: 10px;">
-                            <code style="display: block; word-break: break-all; color: #666; font-size: 11px;">0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219</code>
-                        </div>
-                        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="display: block; background: #007AFF; color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px;">AUDITAR NO BSCSCAN</a>
-                    </div>
+                   <<div class="room-card" onclick="abrirPainel('cofre')">
+    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+    <h3>COFRE</h3>
+    <p>Gestão e Liquidez</p>
+</div>
+
+                        
                 </div> </div> </div> <nav class="nav-bar">
             <div class="nav-item active" onclick="location.reload()">
                 <i class="fa-solid fa-house"></i>
@@ -300,3 +293,32 @@
         </div>
     </div>
 </div>     
+
+   <div id="painel-cofre" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('cofre')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Cofre</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="background: #f0f7ff; border: 1px solid #007AFF; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px;">
+            <small style="color: #007AFF; font-weight: bold; text-transform: uppercase; font-size: 11px;">Saldo Atual no Safe:</small>
+            <div id="saldo-safe-real" style="font-size: 28px; font-weight: 800; color: #333; margin: 10px 0;">0.0000 BNB</div>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 12px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #eee;">
+            <p style="font-size: 10px; color: #8e8e93; margin-bottom: 5px; word-break: break-all; text-align: center;">
+                0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219
+            </p>
+        </div>
+
+        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" 
+           style="display: block; width: 100%; background: #007AFF; color: white; text-align: center; padding: 16px; border-radius: 50px; font-size: 14px; font-weight: bold; text-decoration: none;">
+            AUDITAR NO BSCSCAN
+        </a>
+    </div>
+</div> 
