@@ -305,34 +305,33 @@ textoNota = textoNota.trim();
 
 function motorGovernançaNitrogenio() {
     function atualizarRelogio() {
-        // Buscamos o elemento aqui dentro para garantir que ele seja encontrado quando o painel subir
+        // ESSA LINHA É A CHAVE: Procure o ID toda vez que o segundo mudar
         const displayTempo = document.getElementById('tempo-restante');
-        if (!displayTempo) return;
+        
+        if (displayTempo) {
+            const agoraRelogio = new Date();
+            const vencimento = new Date();
+            vencimento.setHours(24, 0, 0, 0); 
 
-        const agoraRelogio = new Date();
-        const vencimento = new Date();
-        vencimento.setHours(24, 0, 0, 0); 
+            const diff = vencimento - agoraRelogio;
 
-        const diff = vencimento - agoraRelogio;
+            if (diff > 0) {
+                const horas = Math.floor(diff / (1000 * 60 * 60));
+                const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                // Formatação bonita com 2 dígitos
+                const h = horas.toString().padStart(2, '0');
+                const m = minutos.toString().padStart(2, '0');
+                const s = segundos.toString().padStart(2, '0');
 
-        if (diff > 0) {
-            const horas = Math.floor(diff / (1000 * 60 * 60));
-            const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const segundos = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            // Formatação com 2 dígitos para ficar profissional (ex: 09s)
-            const h = horas.toString().padStart(2, '0');
-            const m = minutos.toString().padStart(2, '0');
-            const s = segundos.toString().padStart(2, '0');
-
-            displayTempo.innerText = `${h}h ${m}m ${s}s`;
+                displayTempo.innerText = `${h}h ${m}s ${s}s`;
+            }
         }
     }
 
-    // O relógio vai "bater" a cada 1 segundo
-    setInterval(atualizarRelogio, 1000);
+    setInterval(atualizarRelogio, 1000); // Faz o motor girar a cada segundo
     atualizarRelogio();
-
     carregarPautasReaisDoCofre();
 }
 
