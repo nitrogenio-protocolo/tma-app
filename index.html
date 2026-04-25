@@ -89,14 +89,10 @@
     <p>Área de exercícios</p>
 </div>
 
-                <div class="room-card" onclick="expandRoom(this)">
+                <div class="room-card" onclick="abrirPainel('governo')">
     <div class="room-icon"><i class="fa-solid fa-building-columns"></i></div>
     <h3>GOVERNO</h3>
     <p>Decisões Coletivas</p>
-    <div class="full-content">
-        <div id="lista-pautas-governo">
-            </div>
-    </div>
 </div>
 
                 <div class="room-card" onclick="expandRoom(this)">
@@ -235,3 +231,16 @@
         </div>
     </div>
 </div>            
+
+     <div id="painel-governo" class="painel-folha">
+    <div class="barra-fechar" onclick="fecharPainel('governo')">
+        <div class="indicador-puxar"></div>
+    </div>
+    <div class="area-header">
+        <button onclick="fecharPainel('governo')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
+        <h2>Governo</h2>
+    </div>
+    <div class="conteudo-interno" style="padding: 20px;">
+        <p style="text-align:center; color:#888;">Nenhuma pauta para votação no momento.</p>
+    </div>
+</div>       
