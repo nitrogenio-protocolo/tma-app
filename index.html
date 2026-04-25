@@ -187,14 +187,15 @@
     
     <<div style="padding: 40px 25px; text-align: center; overflow-y: auto; height: calc(100% - 80px);">
     
-    <div id="area-nft" class="area-interna" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #007AFF; z-index: 9999; font-family: sans-serif;">
+    <div id="area-nft" class="area-interna" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #007AFF; z-index: 9999; font-family: sans-serif; overflow: hidden;">
     
-    <div style="height: 20%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
-        <i class="fa-solid fa-angle-left" onclick="fecharNFT()" style="position: absolute; left: 20px; top: 20px; color: white; font-size: 22px;"></i>
-        <img src="raposa.png" alt="Logo" style="width: 45px; filter: brightness(0) invert(1);">
+    <div style="height: 25%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+        <i class="fa-solid fa-angle-left" onclick="fecharNFT()" style="position: absolute; left: 20px; top: 25px; color: white; font-size: 24px; cursor: pointer;"></i>
+        
+        <img src="raposa.png" alt="Logo" style="width: 50px; height: auto; filter: brightness(0) invert(1);">
     </div>
 
-    <div style="height: 80%; background: white; border-radius: 45px 45px 0 0; padding: 40px 30px; box-sizing: border-box;">
+    <div style="height: 75%; background: white; border-radius: 45px 45px 0 0; padding: 40px 30px; box-sizing: border-box; overflow-y: auto;">
         
         <h2 style="font-size: 26px; font-weight: 700; color: #000; margin: 0 0 20px 0;">Card da Sala NFT</h2>
         
@@ -202,7 +203,7 @@
             Este é o card de governança para a sua sala de NFT. Use as opções abaixo para interagir de forma segura. Nenhuma garantia de lucro é feita, e você é totalmente responsável.
         </p>
 
-        <div style="margin-bottom: 40px;">
+        <div style="margin-bottom: 40px; text-align: left;">
             <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; cursor: pointer;">
                 <input type="checkbox" style="width: 22px; height: 22px; margin-top: 2px;">
                 <span style="font-size: 15px; color: #1a1a1a;">Li e aceito os termos técnicos da sala NFT.</span>
@@ -217,11 +218,10 @@
         <div style="text-align: center;">
             <p style="color: #999; font-size: 14px; margin-bottom: 20px;">Aguardando confirmação...</p>
             
-            <button style="width: 100%; background: #d1d1d6; color: white; border: none; padding: 20px; border-radius: 40px; font-size: 18px; font-weight: 600; cursor: pointer;">
+            <button style="width: 100%; background: #ccc; color: white; border: none; padding: 18px; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer;">
                 Continuar
             </button>
         </div>
-
     </div>
 </div>
 
