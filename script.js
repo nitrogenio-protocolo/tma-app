@@ -130,6 +130,7 @@ function gerarCobranca() {
 function fecharReceber() {
     if(bnbReceberInput) bnbReceberInput.value = "";
     document.getElementById('qrcode-container').innerHTML = "";
+    validateReceber(); 
     fecharView('area-receber');
 }
 
@@ -164,6 +165,7 @@ async function fecharPagar() {
     await pararScanner();
     if(valorPagarInput) valorPagarInput.value = "";
     if(addrInput) addrInput.value = "";
+    validatePagar(); 
     fecharView('area-pagar');
 }
 
