@@ -84,34 +84,52 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
 .btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
-/* 3. SALDO E AÇÕES - BOTÕES REDONDOS */
+/* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
+.balance-section { 
+    padding: 10px 25px 20px; /* O 25px é o que afasta o saldo da borda esquerda */
+    text-align: left; 
+}
+
+.balance-label { 
+    font-size: 11px; 
+    color: #86868b; 
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.balance-amount { 
+    font-size: 28px; 
+    font-weight: 700;
+    color: #1d1d1f;
+    display: block;
+}
+
 .action-bar { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
-    background: transparent; /* Removido o fundo do bloco para destacar os círculos */
+    background: transparent; 
     margin: 0 20px 20px; 
     padding: 10px; 
     text-align: center; 
-    gap: 15px; /* Espaço entre os círculos */
+    gap: 15px; 
 }
 
 .action-item { 
     display: flex; 
     flex-direction: column; 
-    align-items: center; /* Centraliza o ícone/texto horizontalmente */
-    justify-content: center; /* Centraliza o conteúdo verticalmente */
+    align-items: center; 
+    justify-content: center; 
     color: #007AFF; 
-    font-size: 10px; 
+    font-size: 11px; 
     font-weight: 600; 
     cursor: pointer;
-    
-    /* Transformando em Círculo */
-    background: #f5f5f7; /* Fundo cinza claro original */
-    width: 85px;  /* Ajuste o tamanho conforme preferir */
+    background: #f5f5f7; 
+    width: 85px;  
     height: 85px; 
-    border-radius: 50%; /* Faz ficar redondo */
-    margin: 0 auto; /* Centraliza na coluna da grid */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra leve para dar profundidade */
+    border-radius: 50%; 
+    margin: 0 auto; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
 }
 
 /* Ajuste para o ícone ou texto interno não ficarem colados */
