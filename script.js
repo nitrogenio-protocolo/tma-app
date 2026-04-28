@@ -304,15 +304,21 @@ textoNota = textoNota.trim();
         console.error("Erro Safe:", e);
     }
 }
-// --- ÁREA NFT ALPHA (NAVEGAÇÃO SEGURA - ACENDER/APAGAR) ---
+// --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
 function abrirNFT() {
-    // Usa a mesma lógica das salas de Pagar/Receber para não travar
-    abrirView('area-nft');
+    const painelNFT = document.getElementById('area-nft');
+    if (painelNFT) {
+        painelNFT.classList.add('ativa'); // Adiciona a classe que faz subir
+        document.body.style.overflow = 'hidden'; // Evita que a home role lá atrás
+    }
 }
 
 function fecharNFT() {
-    // Usa a mesma lógica de fechamento padrão do seu app
-    fecharView('area-nft');
+    const painelNFT = document.getElementById('area-nft');
+    if (painelNFT) {
+        painelNFT.classList.remove('ativa'); // Remove a classe e o painel desce
+        document.body.style.overflow = 'auto'; // Devolve o scroll para a home
+    }
 }
 
 function iniciarMint() {
