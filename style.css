@@ -115,7 +115,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     gap: 15px; 
 }
 
-..action-item { 
+.action-item { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
