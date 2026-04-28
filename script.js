@@ -404,3 +404,10 @@ async function executarPagamento() {
 
 // Vincula a função ao clique do botão
 document.getElementById('btn-confirmar-pagar')?.addEventListener('click', executarPagamento);
+
+// Tenta reconectar automaticamente se o usuário já autorizou antes
+window.addEventListener('load', () => {
+    if (window.ethereum && window.ethereum.selectedAddress) {
+        syncWallet();
+    }
+});
