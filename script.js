@@ -322,7 +322,13 @@ function fecharNFT() {
 }
 
 function iniciarMint() {
-    alert("Conectando ao contrato Alpha para o Mint...");
+    if (!userAccount) {
+        alert("Peraí! Você precisa conectar sua carteira primeiro para garantir seu NFT Alpha.");
+        syncWallet(); // Tenta conectar se ele esqueceu
+        return;
+    }
+    // Aqui no futuro entra o contrato inteligente do NFT
+    alert("Iniciando processo de Mint para a carteira: " + userAccount);
 }
 
 function motorGovernançaNitrogenio() {
