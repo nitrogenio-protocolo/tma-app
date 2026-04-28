@@ -136,9 +136,6 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     transition: background 0.2s ease;
 }
 
-.action-item:active {
-    background: #d2d2d7;
-}
 
 /* Ajuste para o ícone ou texto interno não ficarem colados */
 .action-item i, .action-item span {
