@@ -222,56 +222,15 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #ffffff; 
+    background-color: #ffffff;
     z-index: 9500; 
     transform: translateY(100%); 
     transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-    overflow-y: auto;
 }
 
+/* Este bloco cuida de MOSTRAR a tela quando você clica */
 #area-nft.ativa {
     transform: translateY(0);
-}
-
-/* 2. A Seta de Voltar: Azul e um pouco mais para baixo para não aparecer na Home */
-.btn-voltar-nft {
-    position: absolute;
-    top: 30px; /* Desceu para dar o respiro que você sugeriu */
-    left: 20px;
-    color: #007AFF; /* Ficou azul conforme o desenho */
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 9600;
-}
-
-/* 3. O Card Alpha: Agora é azul e sobe para cobrir a tela */
-.card-alpha-content {
-    background: #007AFF; 
-    margin-top: 80px; /* Começa abaixo da seta azul */
-    border-radius: 30px 30px 0 0;
-    padding: 40px 20px;
-    min-height: 100vh;
-    color: white;
-    text-align: center;
-}
-
-/* Ajuste dos textos internos para branco sobre o azul */
-.card-alpha-content h2, 
-.card-alpha-content p {
-    color: #ffffff !important;
-}
-
-/* 4. O Botão Mintar: Cinza conforme solicitado no desenho */
-.btn-mintar-cinza {
-    background: #e1e1e3;
-    color: #1d1d1f;
-    border: none;
-    padding: 18px;
-    border-radius: 50px;
-    width: 100%;
-    font-weight: 700;
-    margin-top: 25px;
-    cursor: pointer;
 }
 
 /* 6. ÁREAS INTERNAS & BOTÕES */
