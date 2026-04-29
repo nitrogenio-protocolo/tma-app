@@ -277,19 +277,20 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     z-index: 6000 !important; /* O rei da montanha, fica por cima de tudo */
 }
 
-/* --- CORREÇÃO TELA BRANCA PAGAR/RECEBER (VERSÃO FINAL) --- */
+/* --- CORREÇÃO TELA BRANCA PAGAR/RECEBER --- */
 .area-interna {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;   /* Ocupa a largura total da janela visual */
-    height: 100vh;  /* Ocupa a altura total da janela visual */
+    width: 100%;   /* Estabilidade total */
+    height: 100%;  
     background-color: #ffffff !important;
-    z-index: 8000;  /* Acima de qualquer card ou carrossel */
+    z-index: 8000;
     overflow-y: auto;
-    padding-bottom: 60px; /* Margem de segurança para os botões no fundo */
-    -webkit-overflow-scrolling: touch; /* Deixa o scroll suave no iPhone */
+    box-sizing: border-box;
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-overflow-scrolling: touch;
 }
 
 
