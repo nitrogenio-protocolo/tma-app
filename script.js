@@ -87,6 +87,7 @@ function fecharView(viewId) {
     const view = document.getElementById(viewId);
     if (view) {
         view.style.display = 'none';
+        view.scrollTop = 0; 
         // Devolve o scroll para a Home
         document.body.style.overflow = 'auto';
     }
