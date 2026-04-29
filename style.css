@@ -1,20 +1,8 @@
 /* RESET & BASE */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #ffffff; color: #1d1d1f; font-family: -apple-system, system-ui, sans-serif; overflow-x: hidden; }
 
-body { 
-    margin: 0; 
-    padding: 0; 
-    width: 100%; 
-    min-height: 100vh; 
-    background: #ffffff; 
-    color: #1d1d1f; 
-    font-family: -apple-system, system-ui, sans-serif; 
-    overflow-x: hidden;
-    /* A CHAVE PARA O CHROME: */
-    overscroll-behavior-y: none; 
-}
-
-/* 1. SPLASH SCREEN */
+/* 1. SPLASH SCREEN (Sequencial) */
 #splash-screen {
     position: fixed; inset: 0; background-color: #007AFF;
     display: flex; justify-content: center; align-items: center; z-index: 10000;
@@ -23,12 +11,14 @@ body {
 .splash-text { font-size: 38px; font-weight: 800; opacity: 0; transition: opacity 0.5s ease; }
 #splash-logo { width: 180px; height: auto; opacity: 0; transition: opacity 0.5s ease; margin-top: 15px; }
 
+/* Animações de Fade-In controladas pelo JS */
 .fade-in { opacity: 1 !important; }
 
+ /* Estilo da Cortina Azul Blueberry */
 .modal-cortina {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: #007AFF; 
+    background: #007AFF; /* Azul Blueberry */
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -37,7 +27,7 @@ body {
 
 .cortina-content {
     background: white;
-    margin-top: auto;
+    margin-top: auto; /* Faz o efeito de subir do fundo ou ficar no card */
     height: 85%;
     border-radius: 30px 30px 0 0;
     padding: 20px;
@@ -48,7 +38,7 @@ body {
 .raposa-topo {
     width: 80px;
     position: absolute;
-    top: -40px;
+    top: -40px; /* Sobe a raposa para o topo do card branco */
     left: 50%;
     transform: translateX(-50%);
 }
@@ -60,22 +50,29 @@ body {
     max-height: 50%;
 }
 
+/* --- Ajuste da Pílula Vermelha --- */
 .btn-pilula-termos {
-    width: 150px;
-    height: 50px;
+    width: 150px; /* Definimos uma largura fixa para não esticar na tela toda */
+    height: 50px; /* Mantém a altura de pílula */
     border-radius: 25px;
     border: none;
-    background: #ccc;
+    background: #ccc; /* Cinza inicial */
     color: white;
     font-weight: bold;
     transition: all 0.3s ease;
     cursor: pointer;
-    display: block;
-    margin: 20px auto;
+    display: block;   /* Ajuda no alinhamento */
+    margin: 20px auto; /* Centraliza a pílula na tela */
+}
+
+/* Quando ela "acorda" (fica ativa) */
+.btn-pilula-termos.ativo {
+    background: #ff4444; /* Vermelho Matrix */
+    box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
 .btn-pilula-termos.ativo {
-    background: #ff4444;
+    background: #ff4444; /* Vermelho Matrix */
     box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
@@ -87,56 +84,156 @@ body {
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
 .btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
-/* 3. SALDO E AÇÕES */
-.balance-section { padding: 10px 25px 20px; text-align: left; }
-.balance-label { font-size: 11px; color: #86868b; text-transform: uppercase; display: block; margin-bottom: 2px; }
-.balance-amount { font-size: 28px; font-weight: 700; color: #1d1d1f; display: block; }
-
-.action-bar { display: grid; grid-template-columns: repeat(3, 1fr); background: transparent; margin: 0 20px 20px; padding: 10px; text-align: center; gap: 15px; }
-.action-item { 
-    display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    color: #007AFF; font-size: 11px; font-weight: 600; cursor: pointer;
-    background: #e1e1e3; width: 75px; height: 75px; border-radius: 50%; margin: 0 auto; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: background 0.2s ease;
+/* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
+.balance-section { 
+    padding: 10px 25px 20px; /* O 25px é o que afasta o saldo da borda esquerda */
+    text-align: left; 
 }
-.action-item:active { background: #d2d2d7; }
 
-/* 4. CARD NFT */
+.balance-label { 
+    font-size: 11px; 
+    color: #86868b; 
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.balance-amount { 
+    font-size: 28px; 
+    font-weight: 700;
+    color: #1d1d1f;
+    display: block;
+}
+
+.action-bar { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    background: transparent; 
+    margin: 0 20px 20px; 
+    padding: 10px; 
+    text-align: center; 
+    gap: 15px; 
+}
+
+.action-item { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    color: #007AFF; 
+    font-size: 11px; 
+    font-weight: 600; 
+    cursor: pointer;
+    
+    background: #e1e1e3; 
+    
+    width: 75px;  
+    height: 75px; 
+    border-radius: 50%; 
+    margin: 0 auto; 
+    
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+    transition: background 0.2s ease;
+}
+
+.action-item:active {
+    background: #d2d2d7;
+}
+
+/* Ajuste para o ícone ou texto interno não ficarem colados */
+.action-item i, .action-item span {
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* 4. CARD NFT (Ajustado) */
 .banner-nft { margin: 0 20px 20px; background: #f0f7ff; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; padding: 20px; border: 1px solid #e1efff; }
 .nft-info { display: flex; flex-direction: column; color: #007AFF; }
 .nft-info strong { font-size: 18px; font-weight: 800; }
 #nft-balance { font-size: 14px; font-weight: 600; margin-top: 5px; opacity: 0.8; }
 .raposa-no-card { max-height: 50px; width: auto; }
 
-/* 5. CARROSSEL DE SALAS */
-.carousel-wrapper { width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 20px 0; display: flex; }
-.room-carousel { display: flex; padding: 0 10%; }
-.room-card { 
-    flex: 0 0 80vw; margin-right: 15px; background: #ffffff; border: 1px solid #f0f0f0; 
-    border-radius: 20px; padding: 30px 20px; text-align: center; scroll-snap-align: center; 
-    transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-}
-.room-card .room-icon { font-size: 32px; margin-bottom: 10px; color: #666; }
-.room-card h3 { color: #007AFF; font-size: 18px; margin-bottom: 5px; }
-.room-card p { color: #888; font-size: 13px; margin: 0; }
-
-/* 6. ÁREAS INTERNAS */
-#area-nft.area-interna {
-    display: block !important; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background-color: #ffffff; z-index: 9500; transform: translateY(100%); 
-    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-    contain: paint;
-}
-#area-nft.ativa { transform: translateY(0); }
-
-.area-interna {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;  
-    background-color: #ffffff !important; z-index: 8000; overflow-y: auto;
-    box-sizing: border-box; padding-bottom: env(safe-area-inset-bottom);
+/* 5. CARROSSEL DE SALAS (Substituindo a Grid) */
+.carousel-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    contain: paint;
+    padding: 20px 0;
+    display: flex;
 }
 
+.room-carousel {
+    display: flex;
+    padding: 0 10%; /* Deixa os vizinhos aparecerem nas pontas */
+}
+
+.room-card {
+    flex: 0 0 80vw; /* Largura de 80% da tela do celular */
+    margin-right: 15px;
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    scroll-snap-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.room-card .room-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #666; /* Cor suave em repouso */
+}
+
+.room-card h3 {
+    color: #007AFF; /* Nosso azul principal */
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.room-card p {
+    color: #888;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* Estilo para quando a sala expandir */
+.room-card.expanded {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 4000;
+    border-radius: 0;
+    margin: 0;
+    padding: 40px 20px;
+    overflow-y: auto;
+}
+
+.full-content { display: none; margin-top: 20px; }
+.room-card.expanded .full-content { display: block; }
+
+/* Este bloco cuida de ESCONDER a tela do NFT lá embaixo */
+#area-nft.area-interna {
+    display: block !important; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 9500; 
+    transform: translateY(100%); 
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Este bloco cuida de MOSTRAR a tela quando você clica */
+#area-nft.ativa {
+    transform: translateY(0);
+}
+
+/* 6. ÁREAS INTERNAS & BOTÕES */
 .area-header { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f2f2f7; gap: 15px; }
 .area-header h2 { font-size: 18px; margin: 0; }
 .conversion-card { background: #f5f5f7; padding: 20px; border-radius: 20px; margin: 20px; }
@@ -149,35 +246,125 @@ body {
 .btn-pilula { flex: 1; padding: 16px; border-radius: 50px; border: none; font-weight: 700; text-transform: uppercase; font-size: 14px; cursor: pointer; }
 .btn-cancelar { background: #f2f2f7; color: #8e8e93; }
 .btn-acao { background: #d2d2d7; color: #fff; transition: background 0.3s; }
-.btn-acao.active { background: #007AFF !important; color: #ffffff !important; }
+.btn-acao.active { 
+    background: #007AFF !important; 
+    color: #ffffff !important; 
+}
+
 
 #qrcode-container { display: flex; justify-content: center; margin-top: 20px; }
 #reader { margin-top: 15px; border-radius: 12px; overflow: hidden; }
 
-/* 7. NAV BAR & MODAL */
-.nav-bar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; display: flex; justify-content: space-around; align-items: center; background: white; border-top: 1px solid #eee; padding: 10px 0; z-index: 5000; margin: 0; }
+/* 7. NAV BAR FIXA */
+.nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0; /* Adicione isso para centralizar */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: white;
+    border-top: 1px solid #eee;
+    padding: 10px 0;
+    z-index: 5000;
+    margin: 0; /* Garante que não tenha margem lateral */
+}
 
-.modal-votacao-sheet { z-index: 6000 !important; }
+/* Ajuste no Modal de Votação (Bottom Sheet) */
+.modal-votacao-sheet {
+    z-index: 6000 !important; /* O rei da montanha, fica por cima de tudo */
+}
 
-.card-pauta { background: #ffffff; border-radius: 20px; padding: 16px; margin-bottom: 15px; border: 1px solid #f2f2f7; box-shadow: 0 4px 12px rgba(0,0,0,0.04); text-align: left; }
-.btn-votar:active { transform: scale(0.96); background: #005ecb; }
+/* --- CORREÇÃO TELA BRANCA PAGAR/RECEBER --- */
+.area-interna {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;   /* Estabilidade total */
+    height: 100%;  
+    background-color: #ffffff !important;
+    z-index: 8000;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding-bottom: env(safe-area-inset-bottom);
+    -webkit-overflow-scrolling: touch;
+}
 
-/* 8. PAINÉIS (SHEETS) */
+
+/* --- ESTILO DOS MINI-CARDS REAIS DO NITROGÊNIO --- */
+.card-pauta {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 15px;
+    border: 1px solid #f2f2f7;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    text-align: left; /* Garante o alinhamento profissional */
+}
+
+.card-pauta h4 {
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.card-pauta p {
+    font-family: sans-serif;
+    line-height: 1.4;
+}
+
+.btn-votar {
+    transition: all 0.3s ease;
+}
+
+.btn-votar:active {
+    transform: scale(0.96); /* Efeito de pílula sendo apertada */
+    background: #005ecb;
+}
+
+/* Ajuste para o link do BSCScan ficar subliminar */
+.card-pauta a {
+    transition: opacity 0.2s;
+}
+
+.card-pauta a:hover {
+    opacity: 0.7;
+}
+
+/* Efeito de Subida para as Salas */
 .painel-folha {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background-color: #ffffff; z-index: 9000; transform: translateY(100%); 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 9000;
+    transform: translateY(100%); /* Começa escondido no rodapé */
     transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-    display: flex; flex-direction: column;
-    contain: paint;
+    display: flex;
+    flex-direction: column;
 }
 
-.painel-folha.aberto { transform: translateY(0); }
-
-.tela-nft { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #007bff; z-index: 9000; overflow-y: auto;
-    contain: paint;
+.painel-folha.aberto {
+    transform: translateY(0); /* Sobe para o topo */
 }
 
-.barra-fechar { width: 100%; height: 30px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
-.indicador-puxar { width: 40px; height: 5px; background: #e5e5e7; border-radius: 10px; }
+/* Barra de puxar/fechar no topo do painel */
+.barra-fechar {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.indicador-puxar {
+    width: 40px;
+    height: 5px;
+    background: #e5e5e7;
+    border-radius: 10px;
+}
