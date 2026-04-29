@@ -71,21 +71,37 @@ function updateUI() {
 }
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
-// 3. Navegação
+// 3. Navegação Melhorada (Sem esconder a Home)
 function abrirView(viewId) {
-    document.getElementById('home-app').style.display = 'none';
-    document.querySelectorAll('.area-interna').forEach(a => a.style.display = 'none');
-    document.getElementById(viewId).style.display = 'block';
+    // Apenas mostramos a nova tela por cima da Home
+    const view = document.getElementById(viewId);
+    if (view) {
+        view.style.display = 'block';
+        // Trava o scroll da Home ao fundo
+        document.body.style.overflow = 'hidden'; 
+    }
 }
 
 function fecharView(viewId) {
     if (scannerAtivo) pararScanner();
-    document.getElementById(viewId).style.display = 'none';
-    document.getElementById('home-app').style.display = 'block';
+    const view = document.getElementById(viewId);
+    if (view) {
+        view.style.display = 'none';
+        // Devolve o scroll para a Home
+        document.body.style.overflow = 'auto';
+    }
 }
 
+// Garanta que as funções específicas usem a nova lógica
 function abrirPagar() { abrirView('area-pagar'); }
 function abrirReceber() { abrirView('area-receber'); }
+
+function fecharReceber() {
+    if(bnbReceberInput) bnbReceberInput.value = "";
+    document.getElementById('qrcode-container').innerHTML = "";
+    validateReceber(); 
+    fecharView('area-receber');
+}
 
 // 4. Validações
 const valorPagarInput = document.getElementById('valor-pagar');
