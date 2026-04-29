@@ -87,7 +87,6 @@ function fecharView(viewId) {
     const view = document.getElementById(viewId);
     if (view) {
         view.style.display = 'none';
-        view.scrollTop = 0; 
         // Devolve o scroll para a Home
         document.body.style.overflow = 'auto';
     }
@@ -333,12 +332,8 @@ function abrirNFT() {
 function fecharNFT() {
     const painelNFT = document.getElementById('area-nft');
     if (painelNFT) {
-        painelNFT.classList.remove('ativa'); 
-        
-        // ADICIONE ESTA LINHA: Faz a tela azul voltar para o topo ao fechar
-        painelNFT.scrollTop = 0; 
-
-        document.body.style.overflow = 'auto'; 
+        painelNFT.classList.remove('ativa'); // Remove a classe e o painel desce
+        document.body.style.overflow = 'auto'; // Devolve o scroll para a home
     }
 }
 
