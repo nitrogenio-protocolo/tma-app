@@ -184,50 +184,39 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); /* Dá profundidade à logo */
 }
 
-/* 5. CARROSSEL DE SALAS (Substituindo a Grid) */
-.carousel-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 20px 0;
-    display: flex;
-}
-
-.room-carousel {
-    display: flex;
-    padding: 0 10%; /* Deixa os vizinhos aparecerem nas pontas */
-}
-
+/* 5. CARROSSEL DE SALAS (Estilo Antarctic Clean Unificado) */
 .room-card {
-    flex: 0 0 80vw; /* Largura de 80% da tela do celular */
+    flex: 0 0 80vw;
     margin-right: 15px;
-    background: #ffffff;
-    border: 1px solid #f0f0f0;
+    background: #f5f7fa; /* O cinza gelo que você adorou */
+    border: none;        /* Removemos a bordinha para ficar mais moderno */
     border-radius: 20px;
     padding: 30px 20px;
     text-align: center;
     scroll-snap-align: center;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03); /* Sombra bem leve */
 }
 
+/* Garante que os ícones e textos fiquem visíveis no fundo cinza */
 .room-card .room-icon {
     font-size: 32px;
     margin-bottom: 10px;
-    color: #666; /* Cor suave em repouso */
+    color: #007AFF; /* Ícones em Azul Nitrogênio */
 }
 
 .room-card h3 {
-    color: #007AFF; /* Nosso azul principal */
+    color: #007AFF; /* Títulos em Azul Nitrogênio */
     font-size: 18px;
     margin-bottom: 5px;
+    font-weight: 800;
 }
 
 .room-card p {
-    color: #888;
+    color: #1d1d1f; /* Subtítulos em Preto Apple para leitura clara */
     font-size: 13px;
     margin: 0;
+    font-weight: 600;
 }
 
 /* Estilo para quando a sala expandir */
