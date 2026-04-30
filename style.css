@@ -202,8 +202,8 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .raposa-azul-card {
     max-height: 50px;
     width: auto;
-    /* Este filtro transforma o branco no azul Blueberry #007AFF */
-    filter: invert(31%) sepia(94%) saturate(4000%) hue-rotate(210deg) brightness(100%) contrast(105%);
+    /* Ajustado para Azul Blueberry (#007AFF) partindo de um PNG branco */
+    filter: invert(31%) sepia(94%) saturate(4000%) hue-rotate(195deg) brightness(100%) contrast(105%);
     margin-bottom: 10px;
     display: block;
     margin-left: auto;
