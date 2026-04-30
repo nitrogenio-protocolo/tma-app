@@ -178,15 +178,15 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .nft-info strong { 
     font-size: 18px; 
     font-weight: 800; 
-    color: #007AFF; /* Título em Azul Nitrogênio */
+    color: #007AFF; 
 }
 
 #nft-balance { 
     font-size: 14px; 
     font-weight: 600; 
     margin-top: 5px; 
-    color: #1d1d1f; /* Subtítulo (Mintar Identidade) em Preto Apple */
-    opacity: 1; /* Removi a opacidade para o preto ficar nítido */
+    color: #1d1d1f; 
+    opacity: 1; 
 }
 
 .raposa-no-card { 
@@ -208,8 +208,8 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 .room-card {
     flex: 0 0 80vw;
-    min-width: 280px;    /* Garante que o card não esmague */
-    background: #f5f7fa; /* O cinza gelo que você escolheu */
+    min-width: 280px;    
+    background: #f5f7fa; 
     border: none;        
     border-radius: 20px;
     padding: 30px 20px;
