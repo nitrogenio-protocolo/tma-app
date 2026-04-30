@@ -185,6 +185,14 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 }
 
 /* 5. CARROSSEL DE SALAS (Estilo Antarctic Clean Unificado) */
+    .room-carousel {
+    display: flex;          /* Coloca os cards lado a lado */
+    flex-wrap: nowrap;      /* Impede que eles pulem para a linha de baixo */
+    padding: 0 10%;         /* Mantém o alinhamento que você já usava */
+    gap: 15px;              /* Cria o espaçamento entre os cards */
+    -webkit-overflow-scrolling: touch; /* Deixa o deslize suave no iPhone/Android */
+}
+
 .room-card {
     flex: 0 0 80vw;
     margin-right: 15px;
