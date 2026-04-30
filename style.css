@@ -18,36 +18,36 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .modal-cortina {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: #007AFF; /* Azul Blueberry */
+    background: #007AFF; 
     z-index: 9999;
     display: flex;
     flex-direction: column;
-    transition: transform 0.6s ease-in-out;
+    /* Mudamos de transform para opacity para o efeito de 'luz' */
+    transition: opacity 0.8s ease-in-out, visibility 0.8s;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Classe para 'apagar' a cortina e 'acender' o app */
+.modal-cortina.esconder {
+    opacity: 0;
+    visibility: hidden;
 }
 
 .cortina-content {
     background: white;
-    margin-top: auto; /* Faz o efeito de subir do fundo ou ficar no card */
+    margin-top: auto; 
     height: 85%;
     border-radius: 30px 30px 0 0;
     padding: 20px;
     text-align: center;
     position: relative;
+    /* Efeito de subida suave acompanhando o fade */
+    transition: transform 0.6s ease-out;
 }
 
-.raposa-topo {
-    width: 80px;
-    position: absolute;
-    top: -40px; /* Sobe a raposa para o topo do card branco */
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.texto-termos {
-    margin-top: 50px;
-    text-align: left;
-    overflow-y: auto;
-    max-height: 50%;
+.modal-cortina.esconder .cortina-content {
+    transform: translateY(100px); /* O card desce um pouco enquanto some */
 }
 
 /* --- Ajuste da Pílula Vermelha --- */
