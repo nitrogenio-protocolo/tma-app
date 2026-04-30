@@ -198,6 +198,18 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); /* Dá profundidade à logo */
 }
 
+/* Nova classe exclusiva para a raposa azul do carrossel */
+.raposa-azul-card {
+    max-height: 50px;
+    width: auto;
+    /* Este filtro transforma o branco no azul Blueberry #007AFF */
+    filter: invert(31%) sepia(94%) saturate(4000%) hue-rotate(210deg) brightness(100%) contrast(105%);
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* 5. CARROSSEL DE SALAS (Estilo Antarctic Clean Unificado) */
 .room-carousel {
     display: flex;          
