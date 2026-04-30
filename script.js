@@ -324,19 +324,16 @@ textoNota = textoNota.trim();
 function abrirNFT() {
     const painelNFT = document.getElementById('area-nft');
     if (painelNFT) {
-        painelNFT.classList.add('ativa');
-        document.body.style.overflow = 'hidden'; // Trava a home
+        painelNFT.classList.add('ativa'); // Adiciona a classe que faz subir
+        document.body.style.overflow = 'hidden'; // Evita que a home role lá atrás
     }
 }
 
 function fecharNFT() {
     const painelNFT = document.getElementById('area-nft');
     if (painelNFT) {
-        painelNFT.classList.remove('ativa');
-        // Espera a animação acabar para destravar o scroll
-        setTimeout(() => {
-            document.body.style.overflow = 'auto';
-        }, 400);
+        painelNFT.classList.remove('ativa'); // Remove a classe e o painel desce
+        document.body.style.overflow = 'auto'; // Devolve o scroll para a home
     }
 }
 
