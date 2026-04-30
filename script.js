@@ -320,21 +320,20 @@ textoNota = textoNota.trim();
         console.error("Erro Safe:", e);
     }
 }
-// --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
-function abrirNFT() {
-    const painelNFT = document.getElementById('area-nft');
-    if (painelNFT) {
-        painelNFT.classList.add('ativa'); // Adiciona a classe que faz subir
-        document.body.style.overflow = 'hidden'; // Evita que a home role lá atrás
+// Exemplo de como aplicar ao clicar no botão
+document.querySelector('.btn-pilula-termos').addEventListener('click', function() {
+    if(this.classList.contains('ativo')) {
+        const cortina = document.querySelector('.modal-cortina');
+        
+        // Efeito de 'apagar a luz' (fade out da cortina)
+        cortina.classList.add('esconder');
+        
+        // Remove do DOM após a animação para não consumir memória
+        setTimeout(() => {
+            cortina.style.display = 'none';
+        }, 800); 
     }
-}
-
-function fecharNFT() {
-    const painelNFT = document.getElementById('area-nft');
-    if (painelNFT) {
-        painelNFT.classList.remove('ativa'); // Remove a classe e o painel desce
-        document.body.style.overflow = 'auto'; // Devolve o scroll para a home
-    }
+});
 }
 
 function iniciarMint() {
