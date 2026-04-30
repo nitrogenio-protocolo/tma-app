@@ -111,10 +111,11 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
     background: transparent; 
-    margin: 0 20px 20px; 
-    padding: 10px; 
+    margin: 0 20px 0; 
+    padding: 10px 10px 30px; 
     text-align: center; 
-    gap: 15px; 
+    gap: 15px;
+    position: relative; 
 }
 
 .action-item { 
