@@ -214,22 +214,44 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .full-content { display: none; margin-top: 20px; }
 .room-card.expanded .full-content { display: block; }
 
-/* Este bloco cuida de ESCONDER a tela do NFT lá embaixo */
+/* --- TRANSFORMANDO EM OVERLAY ESTILO PÍLULA --- */
 #area-nft.area-interna {
     display: block !important; 
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff;
+    inset: 0; /* Ocupa a tela toda */
+    background-color: rgba(0, 122, 255, 0.5); /* Fundo azul transparente (Overlay) */
+    backdrop-filter: blur(5px); /* Efeito de vidro desfocado atrás */
     z-index: 9500; 
-    transform: translateY(100%); 
-    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Empurra o card para o rodapé */
 }
 
-/* Este bloco cuida de MOSTRAR a tela quando você clica */
+/* Quando o Overlay ativa, ele escurece o fundo */
 #area-nft.ativa {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* O Card Branco dentro do Overlay */
+#area-nft .cortina-content {
+    background: white;
+    width: 95%; /* Não encosta nas laterais, vira uma pílula */
+    margin: 0 auto 15px; /* 15px de margem no rodapé ELIMINA a sensação de rebarba */
+    height: auto;
+    max-height: 85vh;
+    border-radius: 40px; /* Arredondamento total estilo seus botões */
+    padding: 30px 20px;
+    transform: translateY(100%); /* Começa lá embaixo */
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+}
+
+/* Quando ativa, o card sobe */
+#area-nft.ativa .cortina-content {
     transform: translateY(0);
 }
 
