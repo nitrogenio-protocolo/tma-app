@@ -71,6 +71,108 @@ function updateUI() {
 }
 document.getElementById('connect-trigger')?.addEventListener('click', syncWallet);
 
+// ==========================================
+// 2.1 SEGURANÇA & ACESSO (GUARDIÕES)
+// ==========================================
+const SENHA_MESTRA = "2026"; 
+let senhaDigitada = "";
+let salaDestino = ""; 
+
+// Simulação de verificação de NFT (Retorna false para forçar o teclado por enquanto)
+async function verificarPossuiNFT(conta) {
+    return false; 
+}
+
+function abrirPainel(id) {
+    const salasRestritas = ['comunidade', 'governo', 'mural', 'coleta', 'protocolo', 'cofre'];
+
+    if (salasRestritas.includes(id)) {
+        salaDestino = id;
+        verificarPossuiNFT(userAccount).then(temNFT => {
+            if (temNFT) {
+                concederAcesso(id);
+            } else {
+                // Abre o teclado de OURO
+                document.getElementById('modal-acesso').style.display = 'flex';
+                senhaDigitada = "";
+                atualizarDots();
+            }
+        });
+    } else {
+        concederAcesso(id); // Áreas públicas (Pagar/Receber)
+    }
+}
+
+function fecharPainel(id) {
+    const painel = document.getElementById('painel-' + id);
+    if (painel) {
+        painel.classList.remove('aberto');
+        document.body.style.overflow = 'auto'; 
+    }
+}
+
+function concederAcesso(id) {
+    const painel = document.getElementById('painel-' + id);
+    if (painel) {
+        painel.classList.add('aberto');
+        document.body.style.overflow = 'hidden';
+        if (id === 'comunidade') carregarPautasReaisDoCofre();
+        if (id === 'cofre') atualizarSaldoRealCofre();
+    }
+}
+
+// LÓGICA DO TECLADO INDUSTRIAL
+function digitar(num) {
+    if (senhaDigitada.length < 4) {
+        senhaDigitada += num;
+        atualizarDots();
+    }
+    if (senhaDigitada.length === 4) {
+        validarSenhaMestra();
+    }
+}
+
+function validarSenhaMestra() {
+    const status = document.getElementById('status-acesso');
+    if (senhaDigitada === SENHA_MESTRA) {
+        status.innerText = "✅ IDENTIDADE CONFIRMADA";
+        status.style.color = "#D4AF37"; 
+        setTimeout(() => {
+            document.getElementById('modal-acesso').style.display = 'none';
+            concederAcesso(salaDestino);
+        }, 600);
+    } else {
+        status.innerText = "❌ CHAVE INVÁLIDA";
+        status.style.color = "#FF3B30";
+        senhaDigitada = "";
+        setTimeout(() => { 
+            atualizarDots(); 
+            status.innerText = "VALIDANDO NFT ALPHA...";
+            status.style.color = "#8e8e93";
+        }, 1000);
+    }
+}
+
+function atualizarDots() {
+    const spans = document.querySelectorAll('#display-senha span');
+    spans.forEach((span, i) => {
+        span.className = i < senhaDigitada.length ? 'preenchido' : '';
+    });
+}
+
+function cancelarAcesso() {
+    document.getElementById('modal-acesso').style.display = 'none';
+    senhaDigitada = "";
+}
+
+function apagarDigitado() {
+    if (senhaDigitada.length > 0) {
+        senhaDigitada = senhaDigitada.slice(0, -1);
+        atualizarDots();
+    }
+}
+// ==========================================
+
 // 3. Navegação Melhorada (Sem esconder a Home)
 function abrirView(viewId) {
     // Apenas mostramos a nova tela por cima da Home
