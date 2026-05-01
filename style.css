@@ -86,58 +86,54 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
 .btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
-/* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
-.balance-section { 
-    padding: 10px 25px 20px; /* O 25px é o que afasta o saldo da borda esquerda */
-    text-align: left; 
-}
-
-.balance-label { 
-    font-size: 11px; 
-    color: #86868b; 
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 2px;
-}
-
-.balance-amount { 
-    font-size: 28px; 
-    font-weight: 700;
-    color: #1d1d1f;
-    display: block;
-}
-
+/* 3. SALDO E AÇÕES (VERSÃO AJUSTADA) */
 .action-bar { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
+    display: flex; /* Mudamos de grid para flex para melhor controle */
+    justify-content: space-around; 
+    align-items: flex-start;
     background: transparent; 
-    margin: 0 20px 0; 
-    padding: 10px 10px 30px; 
+    margin: 50px 20px 0; /* Aumentamos a margem para dar respiro */
+    padding: 10px;
     text-align: center; 
-    gap: 15px;
-    position: relative; 
 }
 
 .action-item { 
     display: flex; 
-    flex-direction: column; 
+    flex-direction: column; /* Faz o texto ficar em baixo do ícone */
     align-items: center; 
-    justify-content: center; 
-    color: #007AFF; /* Azul Nitrogênio */
-    font-size: 11px; 
-    font-weight: 600; 
     cursor: pointer;
-    
-    background: #f5f7fa; /* A cor "gelo" igual a do carrossel */
-    
-    width: 75px;  
-    height: 75px; 
+    flex: 1;
+}
+
+/* O Círculo agora contém apenas o ícone */
+.action-item i {
+    background: #f5f7fa; 
+    width: 65px;  
+    height: 65px; 
     border-radius: 50%; 
-    margin: 0 auto; 
-    
-    /* Sombra bem leve para combinar com os cards */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #007AFF; /* Ícone Azul */
+    font-size: 22px;
+    margin-bottom: 10px; /* Espaço entre o círculo e o texto */
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
     transition: all 0.2s ease;
+}
+
+/* O Texto (span) agora é preto e fica fora do círculo */
+.action-item span {
+    color: #000000; /* Preto total como você pediu */
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: lowercase;
+    border: none; /* Sem bordas */
+}
+
+/* Efeito de clique apenas no círculo */
+.action-item:active i {
+    background: #ebedf0;
+    transform: scale(0.95);
 }
 
 /* Efeito de "apertar" o botão ao clicar */
