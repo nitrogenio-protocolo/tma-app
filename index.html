@@ -5,9 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nitrogênio Protocolo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style-base.css">
-    <link rel="stylesheet" href="style-salas.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        /* DESIGN CYBER-INDUSTRIAL */
+        :root {
+            --blue-nitrogen: #007bff;
+            --gold-accent: #ffd700;
+            --clean-white: #ffffff;
+            --soft-gray: #f4f7f6;
+            --dark-text: #1a1a1a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--soft-gray); color: var(--dark-text); overflow-x: hidden; }
+
+        /* SPLASH SCREEN */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--blue-nitrogen); display: flex; justify-content: center;
+            align-items: center; z-index: 9999; transition: opacity 0.8s ease;
+        }
+        .splash-content { text-align: center; color: white; }
+        .splash-text { font-size: 24pt; font-weight: bold; display: none; margin-bottom: 20px; }
+        #splash-logo { width: 120px; filter: brightness(0) invert(1); }
+        .fade-in { display: block; animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* HEADER & BALANCE */
+        .header-app { background: var(--clean-white); padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; }
+        .logo-text { font-size: 18pt; font-weight: bold; color: var(--blue-nitrogen); }
+        .btn-connect { background: var(--blue-nitrogen); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 10pt; }
+
+        .balance-section { padding: 40px 20px; text-align: center; }
+        .balance-label { font-size: 11pt; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .balance-amount { font-size: 32pt; font-weight: 800; display: block; margin-top: 10px; }
+
+        /* ACTION BAR */
+        .action-bar { display: flex; justify-content: space-around; padding: 20px; }
+        .action-container { text-align: center; cursor: pointer; }
+        .action-item { width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 8px; color: var(--blue-nitrogen); font-size: 18pt; }
+        .action-label { font-size: 10pt; font-weight: bold; color: var(--blue-nitrogen); text-transform: lowercase; }
+
+        /* CARROSSEL */
+        .carousel-wrapper { padding: 20px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .room-carousel { display: inline-flex; padding: 0 20px; gap: 15px; }
+        .room-card { min-width: 160px; background: white; padding: 25px 20px; border-radius: 20px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.03); cursor: pointer; }
+        .room-card i { font-size: 24pt; color: #444; margin-bottom: 15px; display: block; }
+        .raposa-azul-card { width: 40px; margin-bottom: 15px; }
+        .room-card h3 { font-size: 12pt; margin-bottom: 5px; color: var(--blue-nitrogen); }
+        .room-card p { font-size: 9pt; color: #888; }
+
+        /* MODAL TECLADO DE OURO */
+        .modal-blueprint { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: none; align-items: center; justify-content: center; }
+        .painel-seguranca { width: 90%; max-width: 350px; background: #111; padding: 30px; border: 2px solid var(--gold-accent); border-radius: 20px; text-align: center; }
+        .header-seguranca h3 { color: var(--gold-accent); letter-spacing: 2px; }
+        .header-seguranca p { color: #555; font-size: 9pt; margin-bottom: 20px; }
+        .dots-senha { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .dots-senha span { width: 15px; height: 15px; border: 2px solid var(--gold-accent); border-radius: 50%; }
+        .dots-senha span.preenchido { background: var(--gold-accent); box-shadow: 0 0 10px var(--gold-accent); }
+        .teclado-numerico { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .teclado-numerico button { background: transparent; border: 1px solid #333; color: white; font-size: 20pt; padding: 15px; border-radius: 10px; }
+        .teclado-numerico button:active { background: var(--gold-accent); color: black; }
+        .btn-cancel { color: #ff4444 !important; }
+
+        /* PAINÉIS DESLIZANTES */
+        .painel-folha { position: fixed; bottom: -100%; left: 0; width: 100%; height: 85%; background: white; border-radius: 30px 30px 0 0; z-index: 5000; transition: bottom 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); box-shadow: 0 -10px 40px rgba(0,0,0,0.1); padding: 20px; }
+        .painel-folha.aberto { bottom: 0; }
+        .indicador-puxar { width: 40px; height: 5px; background: #ddd; border-radius: 10px; margin: 0 auto 20px; }
+    </style>
 </head>
 <body>
 
@@ -19,9 +86,9 @@
         </div>
     </div>
 
-    <div id="modal-acesso" class="modal-blueprint" style="display:none;">
+    <div id="modal-acesso" class="modal-blueprint">
         <div class="painel-seguranca">
-            <div class="header-seguranca"><h3>PROTOCOLO NITROGÊNIO</h3><p>SALA RESTRITA</p></div>
+            <div class="header-seguranca"><h3>PROTOCOLO</h3><p>SALA RESTRITA</p></div>
             <div id="display-senha" class="dots-senha"><span></span><span></span><span></span><span></span></div>
             <div class="teclado-numerico">
                 <button onclick="digitar(1)">1</button><button onclick="digitar(2)">2</button><button onclick="digitar(3)">3</button>
@@ -29,14 +96,13 @@
                 <button onclick="digitar(7)">7</button><button onclick="digitar(8)">8</button><button onclick="digitar(9)">9</button>
                 <button class="btn-cancel" onclick="cancelarAcesso()">X</button><button onclick="digitar(0)">0</button><button class="btn-back" onclick="apagarDigitado()">⌫</button>
             </div>
-            <div class="status-msg" id="status-acesso">VALIDANDO IDENTIDADE...</div>
         </div>
     </div>
 
     <div id="home-app">
         <header class="header-app">
             <div class="logo-text">Nitrogênio</div>
-            <button id="connect-trigger" class="btn-connect">CONECTAR</button>
+            <button id="connect-trigger" class="btn-connect" onclick="syncWallet()">CONECTAR</button>
         </header>
 
         <div class="balance-section">
@@ -45,14 +111,14 @@
         </div>
 
         <div class="action-bar">
-            <div class="action-container" onclick="abrirPagar()"><div class="action-item"><i class="fa-solid fa-arrow-up"></i></div><span class="action-label">pagar</span></div>
-            <div class="action-container" onclick="abrirReceber()"><div class="action-item"><i class="fa-solid fa-arrow-down"></i></div><span class="action-label">receber</span></div>
+            <div class="action-container" onclick="alert('Scanner em breve')"><div class="action-item"><i class="fa-solid fa-arrow-up"></i></div><span class="action-label">pagar</span></div>
+            <div class="action-container" onclick="alert('Seu endereço: ' + userAccount)"><div class="action-item"><i class="fa-solid fa-arrow-down"></i></div><span class="action-label">receber</span></div>
             <div class="action-container"><div class="action-item"><i class="fa-solid fa-right-left"></i></div><span class="action-label">trocar</span></div>
         </div>
 
         <div class="carousel-wrapper">
             <div class="room-carousel">
-                <div class="room-card" onclick="abrirNFT()"><img src="raposa.png" class="raposa-azul-card"><h3>NFT ALPHA</h3><p>Mintar Identidade</p></div>
+                <div class="room-card" onclick="abrirPainel('nft')"><img src="raposa.png" class="raposa-azul-card"><h3>NFT ALPHA</h3><p>Mintar Identidade</p></div>
                 <div class="room-card" onclick="abrirPainel('comunidade')"><i class="fa-solid fa-users"></i><h3>COMUNIDADE</h3><p>Exercícios</p></div>
                 <div class="room-card" onclick="abrirPainel('governo')"><i class="fa-solid fa-building-columns"></i><h3>GOVERNO</h3><p>Decisões</p></div>
                 <div class="room-card" onclick="abrirPainel('cofre')"><i class="fa-solid fa-vault"></i><h3>COFRE</h3><p>Gestão</p></div>
@@ -60,21 +126,88 @@
         </div>
     </div>
 
-    <div id="painel-comunidade" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('comunidade')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Comunidade</h2></div>
-        <div class="conteudo-interno" id="cronometro-da-dao"></div>
+    <div id="painel-nft" class="painel-folha">
+        <div onclick="fecharPainel('nft')"><div class="indicador-puxar"></div></div>
+        <h2>NFT Alpha</h2><p>Área de Mintagem em breve.</p>
     </div>
 
     <div id="painel-cofre" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('cofre')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Cofre</h2></div>
-        <div id="saldo-safe-real">0.0000 BNB</div>
+        <div onclick="fecharPainel('cofre')"><div class="indicador-puxar"></div></div>
+        <h2>Cofre Safe</h2>
+        <div id="saldo-safe-real">Auditando...</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-    <script src="motor-web3.js"></script>
-    <script src="ui-logic.js"></script>
+    <script>
+        // --- LÓGICA DE INTERFACE ---
+        const SENHA_MESTRA = "2026";
+        let senhaDigitada = "", salaDestino = "";
+
+        window.onload = () => {
+            setTimeout(() => { document.getElementById('text-dao').classList.add('fade-in'); }, 500);
+            setTimeout(() => { 
+                document.getElementById('text-dao').style.display = 'none';
+                document.getElementById('text-nitrogenio').classList.add('fade-in'); 
+            }, 1500);
+            setTimeout(() => { 
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800);
+            }, 3000);
+        };
+
+        function abrirPainel(id) {
+            salaDestino = id;
+            document.getElementById('modal-acesso').style.display = 'flex';
+            senhaDigitada = "";
+            atualizarDots();
+        }
+
+        function fecharPainel(id) { document.getElementById('painel-' + id).classList.remove('aberto'); }
+        function cancelarAcesso() { document.getElementById('modal-acesso').style.display = 'none'; }
+        
+        function digitar(num) {
+            if (senhaDigitada.length < 4) {
+                senhaDigitada += num;
+                atualizarDots();
+                if (senhaDigitada.length === 4) {
+                    if (senhaDigitada === SENHA_MESTRA) {
+                        document.getElementById('modal-acesso').style.display = 'none';
+                        document.getElementById('painel-' + salaDestino).classList.add('aberto');
+                    } else {
+                        alert("Incorreto");
+                        senhaDigitada = "";
+                        atualizarDots();
+                    }
+                }
+            }
+        }
+
+        function atualizarDots() {
+            const spans = document.querySelectorAll('#display-senha span');
+            spans.forEach((s, i) => s.className = i < senhaDigitada.length ? 'preenchido' : '');
+        }
+
+        function apagarDigitado() { senhaDigitada = senhaDigitada.slice(0, -1); atualizarDots(); }
+
+        // --- LÓGICA WEB3 ---
+        let provider, signer, userAccount;
+        const COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+
+        async function syncWallet() {
+            if (!window.ethereum) return alert("Use a MetaMask");
+            provider = new ethers.BrowserProvider(window.ethereum);
+            const accounts = await provider.send("eth_requestAccounts", []);
+            userAccount = accounts[0];
+            signer = await provider.getSigner();
+            document.getElementById('connect-trigger').innerText = userAccount.substring(0,6) + "...";
+            atualizarSaldos();
+        }
+
+        async function atualizarSaldos() {
+            const b = await provider.getBalance(userAccount);
+            document.querySelector('.balance-amount').innerText = parseFloat(ethers.formatEther(b)).toFixed(4) + " BNB";
+            const s = await provider.getBalance(COFRE_SAFE);
+            document.getElementById('saldo-safe-real').innerText = "Saldo no Cofre: " + parseFloat(ethers.formatEther(s)).toFixed(4) + " BNB";
+        }
+    </script>
 </body>
 </html>
