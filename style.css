@@ -88,7 +88,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 /* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
 .balance-section { 
-    padding: 10px 25px 20px; /* O 25px é o que afasta o saldo da borda esquerda */
+    padding: 10px 25px 20px;
     text-align: left; 
 }
 
@@ -107,37 +107,56 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     display: block;
 }
 
+/* Container do Grid */
 .action-bar { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
     background: transparent; 
-    margin: 0 20px 0; 
+    margin: 0 20px; 
     padding: 10px 10px 30px; 
-    text-align: center; 
     gap: 15px;
-    position: relative; 
 }
 
+/* NOVO: Container que alinha círculo e texto */
+.action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Espaço entre o botão e a legenda */
+    cursor: pointer;
+}
+
+/* O Círculo do Botão */
 .action-item { 
     display: flex; 
-    flex-direction: column; 
     align-items: center; 
     justify-content: center; 
-    color: #007AFF; /* Azul Nitrogênio */
-    font-size: 11px; 
-    font-weight: 600; 
-    cursor: pointer;
-    
-    background: #f5f7fa; /* A cor "gelo" igual a do carrossel */
-    
-    width: 75px;  
-    height: 75px; 
+    color: #007AFF; 
+    background: #f5f7fa; 
+    width: 70px;  /* Ajustado para caber melhor em telas menores */
+    height: 70px; 
     border-radius: 50%; 
-    margin: 0 auto; 
-    
-    /* Sombra bem leve para combinar com os cards */
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
     transition: all 0.2s ease;
+}
+
+.action-item:active {
+    background: #ebedf0;
+    transform: scale(0.95);
+}
+
+/* Tamanho do ícone/seta dentro do círculo */
+.action-item i, .action-item span {
+    font-size: 22px;
+    line-height: 1;
+}
+
+/* Legenda abaixo do círculo */
+.action-label {
+    color: #007AFF;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: lowercase;
 }
 
 /* Efeito de "apertar" o botão ao clicar */
