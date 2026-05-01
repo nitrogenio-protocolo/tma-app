@@ -1,1 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
 
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div id="text-dao" class="splash-text">DAO</div>
+            <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
+            <img src="raposa.png" alt="Logo" id="splash-logo">
+        </div>
+    </div>
+
+      <div id="modal-termos" class="modal-cortina">
+    <div class="cortina-content">
+        <img src="raposa.png" alt="Logo" class="raposa-topo">
+        
+        <div class="texto-termos">
+            <h3>Protocolo Nitrogênio</h3>
+            <p>*Este software é uma interface de governança descentralizada sem promessas de lucro.</p>
+            
+            <label class="check-container">
+                <input type="checkbox" id="check-tecnico" onchange="validarTermos()">
+                <span class="checkmark"></span>
+                Li e aceito os termos técnicos.
+            </label>
+
+            <label class="check-container">
+                <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()">
+                <span class="checkmark"></span>
+                Sou responsável por minhas transações.
+            </label>
+        </div>
+
+        <div class="rodape-termos">
+            <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
+            <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled></button>
+        </div>
+    </div>
+</div>
+    
+    <div id="home-app">
+        <header class="header-app">
+            <div class="logo-text">Nitrogênio</div>
+            <button id="connect-trigger" class="btn-connect">CONECTAR</button>
+        </header>
+
+        <div class="balance-section"style="margin-top: 30px;">
+            <div class="balance-label">Saldo em Conta</div>
+            <div class="balance-main">
+                <span class="balance-amount">0.00 BNB</span>
+            </div>
+        </div>
+
+        <div class="action-bar"style="margin-top: 50px;">
+            <div class="action-item" onclick="event.preventDefault(); abrirPagar()">
+                <i class="fa-solid fa-arrow-up"></i>
+                <span>pagar</span>
+            </div>
+            <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
+                <i class="fa-solid fa-arrow-down"></i>
+                <span>receber</span>
+            </div>
+            <div class="action-item" onclick="event.preventDefault();">
+                <i class="fa-solid fa-right-left"></i>
+                <span>trocar</span>
+            </div>
+        </div>
+
+        <div class="carousel-wrapper" style="margin-top: 20px;">
+            <div class="room-carousel">
+
+                <div class="room-card" onclick="abrirNFT()" style="min-width: 160px; background: #f5f7fa; border: none;">
+    <div class="room-icon">
+    <img src="raposa.png" class="raposa-azul-card" style="max-height: 50px; width: auto;">
+</div>
+    <h3 style="color: #007AFF; margin-top: 10px;">NFT ALPHA</h3>
+    <p style="color: #1d1d1f; font-weight: 600;">Mintar Identidade</p>
+</div>
+                    
+                <div class="room-card" onclick="abrirPainel('comunidade')">
+    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
+    <h3>COMUNIDADE</h3>
+    <p>Área de exercícios</p>
+</div>
+
+                <div class="room-card" onclick="abrirPainel('governo')">
+    <div class="room-icon"><i class="fa-solid fa-building-columns"></i></div>
+    <h3>GOVERNO</h3>
+    <p>Decisões Coletivas</p>
+</div>
+
+                <div class="room-card" onclick="abrirPainel('mural')">
+    <div class="room-icon"><i class="fa-solid fa-desktop"></i></div>
+    <h3>MURAL</h3>
+    <p>Avisos e Transparência</p>
+</div>
+
+                <div class="room-card" onclick="abrirPainel('coleta')">
+    <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
+    <h3>COLETA</h3>
+    <p>Distribuição de Ativos</p>
+</div>
+
+                <div class="room-card" onclick="abrirPainel('protocolo')">
+    <div class="room-icon"><i class="fa-solid fa-file-shield"></i></div>
+    <h3>PROTOCOLO</h3>
+    <p>Regras e Diretrizes</p>
+</div>
+
+                   <div class="room-card" onclick="abrirPainel('cofre')">
+    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
+    <h3>COFRE</h3>
+    <p>Gestão e Liquidez</p>
+</div>
+
+                        
+  
+    </div> 
+    </div> 
+
+    <div style="height: 140px; width: 100%; pointer-events: none;"></div>
+
+</div> 
+
+<nav class="nav-bar">
+    <div class="nav-item active" onclick="location.reload()">
+        <i class="fa-solid fa-house"></i>
+    </div>
+    <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')">
+        <i class="fa-brands fa-telegram"></i>
+    </div>
+    <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'">
+        <i class="fa-solid fa-circle-question"></i>
+    </div>
+</nav>    
+                    
+     </div> <div id="area-receber" class="area-interna">
+        <header class="area-header">
+            <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
+            <h2>RECEBER</h2>
+        </header>
+        <div class="conversion-card">
+            <div class="balance-label">Valor a receber (BNB)</div>
+            <div class="input-group"><input type="number" id="bnb-receber" placeholder="0.00" step="0.0001"></div>
+        </div>
+        <div class="grupo-botoes">
+            <button class="btn-pilula btn-cancelar" onclick="fecharReceber()">CANCELAR</button>
+            <button id="btn-gerar-qr" class="btn-pilula btn-acao" onclick="gerarCobranca()" disabled>GERAR QR</button>
+        </div>
+        <div id="qrcode-container"></div>
+    </div>
+
+    <div id="area-pagar" class="area-interna">
+        <header class="area-header">
+            <i class="fa-solid fa-angle-left" onclick="fecharPagar()"></i>
+            <h2>PAGAR</h2>
+        </header>
+        <div class="conversion-card">
+            <div class="balance-label">VALOR EM BNB</div>
+            <div class="input-group"><input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001"></div>
+            <div class="balance-label">DESTINO (CARTEIRA)</div>
+            <div class="address-container">
+                <input type="text" id="wallet-address" placeholder="0x...">
+                <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
+            </div>
+            <div id="reader" style="display:none;"></div>
+        </div>
+        <div class="grupo-botoes">
+            <button class="btn-pilula btn-cancelar" onclick="fecharPagar()">CANCELAR</button>
+            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao" disabled>CONFIRMAR PAGAMENTO</button>
+        </div>
+    </div>
+  </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    
+    <div id="modal-votacao" class="modal-votacao-sheet" style="position: fixed; bottom: -100%; left: 0; width: 100%; background: white; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); transition: bottom 0.4s ease-out; z-index: 9500; padding: 20px; text-align: center; box-sizing: border-box;">
+        <div style="width: 40px; height: 5px; background: #ddd; border-radius: 10px; margin: 0 auto 15px;"></div>
+        <h3 style="color: #333; margin-bottom: 5px; font-family: sans-serif;">Confirmar Voto</h3>
+        <p style="color: #666; font-size: 14px; margin-bottom: 20px; font-family: sans-serif;">Deseja confirmar sua participação nesta pauta?</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="processarVoto('NAO')" style="flex:1; padding: 15px; border-radius: 12px; border: none; background: #f5f5f7; font-weight: bold;">NÃO</button>
+            <button onclick="processarVoto('SIM')" style="flex:1; padding: 15px; border-radius: 12px; border: none; background: #007AFF; color: white; font-weight: bold;">SIM</button>
+        </div>
+        <button onclick="fecharModalVotacao()" style="margin-top: 15px; background: none; border: none; color: #999; font-size: 12px; text-decoration: underline;">Cancelar</button>
+    </div>
+
+    <script src="script.js?v=2.1"></script>
+    
+    <div style="padding: 40px 25px; text-align: center; overflow-y: auto; height: calc(100% - 80px);">
+    
+    <div id="area-nft" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #007AFF !important; z-index: 9999; margin: 0; padding: 0;">
+    
+    <div style="height: 15%; width: 100%; display: flex; align-items: center; position: relative; background-color: #007AFF;">
+        <i class="fa-solid fa-angle-left" onclick="fecharNFT()" style="position: absolute; left: 25px; color: white; font-size: 24px; cursor: pointer;"></i>
+    </div>
+
+    <div style="height: 85%; width: 100%; background-color: white !important; border-radius: 40px 40px 0 0; padding: 40px 25px; box-sizing: border-box; position: relative; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); overflow-y: auto;">
+        
+        <h2 style="font-size: 24px; font-weight: 800; color: #333; margin-top: 10px; text-align: center; text-transform: uppercase; letter-spacing: 1px;">NFT ALPHA</h2>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <p style="color: #666; line-height: 1.6;">Identidade Digital Nitrogênio Protocolo</p>
+        </div>
+
+        <div style="margin-top: 50px; text-align: center;">
+            <button onclick="iniciarMint()" style="width: 100%; background: #007AFF; color: white; border: none; padding: 20px; border-radius: 50px; font-weight: 800; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,122,255,0.2);">
+                MINTAR AGORA
+            </button>
+            <p style="font-size: 12px; color: #999; margin-top: 15px;">Conecte sua carteira para prosseguir</p>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+    <div id="painel-comunidade" class="painel-folha">
+    <div class="barra-fechar" onclick="fecharPainel('comunidade')">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('comunidade')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Comunidade</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div id="display-tempo" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
+            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
+        </div>
+
+        <div id="cronometro-da-dao">
+             <p style="text-align:center; color:#8e8e93; font-size:12px;">Buscando pautas no cofre...</p>
+        </div>
+    </div>
+</div>            
+
+     <div id="painel-governo" class="painel-folha">
+    <div class="barra-fechar" onclick="fecharPainel('governo')">
+        <div class="indicador-puxar"></div>
+    </div>
+    <div class="area-header">
+        <button onclick="fecharPainel('governo')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
+        <h2>Governo</h2>
+    </div>
+    <div class="conteudo-interno" style="padding: 20px;">
+        <p style="text-align:center; color:#888;">Nenhuma pauta para votação no momento.</p>
+    </div>
+</div>       
+
+<div id="painel-mural" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Mural</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div class="card-pauta" style="border-left: 4px solid #007AFF;">
+            <small style="color: #8e8e93;">AVISO DO PROTOCOLO</small>
+            <h4 style="margin: 10px 0;">Atualização</h4>
+            <p style="font-size: 14px; color: #333;">NITROGÊNIO</p>
+        </div>
+    </div>
+</div>
+
+    <div id="painel-coleta" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('coleta')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Coleta</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="background: #e8f5e9; color: #2e7d32; padding: 12px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: bold;">
+            <span>🌱</span> Benefício Alpha Ativo
+        </div>
+
+        <p style="color: #666; font-size: 14px; text-align: center; margin-bottom: 25px;">
+            Você possui ativos disponíveis para resgate neste ciclo.
+        </p>
+
+        <button class="btn-acao active" style="width: 100%; background: #28a745 !important; color: white; border: none; padding: 16px; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer;">
+            EFETUAR RESGATE (CLAIM)
+        </button>
+    </div>
+</div>        
+
+   <div id="painel-protocolo" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('protocolo')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Protocolo</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #007AFF;">
+            <strong style="display:block; color:#007AFF; margin-bottom:5px;">Governança:</strong>
+            <p style="font-size: 14px; color:#555; margin:0;">Atuação múltipla técnica e comercial para garantir a estabilidade do Token N.</p>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #007AFF;">
+            <strong style="display:block; color:#007AFF; margin-bottom:5px;">Apoio Social:</strong>
+            <p style="font-size: 14px; color:#555; margin:0;">Distribuição via blockchain para a comunidade de forma transparente.</p>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 4px solid #007AFF;">
+            <strong style="display:block; color:#007AFF; margin-bottom:5px;">Segurança:</strong>
+            <p style="font-size: 14px; color:#555; margin:0;">Todas as decisões passam pelo conselho de 21 Guardiões.</p>
+        </div>
+    </div>
+</div>     
+
+   <div id="painel-cofre" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
+    
+    <div class="area-header">
+        <button onclick="fecharPainel('cofre')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <h2>Cofre</h2>
+    </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="background: #f0f7ff; border: 1px solid #007AFF; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px;">
+            <small style="color: #007AFF; font-weight: bold; text-transform: uppercase; font-size: 11px;">Saldo Atual no Safe:</small>
+            <div id="saldo-safe-real" style="font-size: 28px; font-weight: 800; color: #333; margin: 10px 0;">0.0000 BNB</div>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 12px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #eee;">
+            <p style="font-size: 10px; color: #8e8e93; margin-bottom: 5px; word-break: break-all; text-align: center;">
+                0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219
+            </p>
+        </div>
+
+        <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" 
+           style="display: block; width: 100%; background: #007AFF; color: white; text-align: center; padding: 16px; border-radius: 50px; font-size: 14px; font-weight: bold; text-decoration: none;">
+            AUDITAR NO BSCSCAN
+        </a>
+    </div>
+</div>
