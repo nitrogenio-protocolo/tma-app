@@ -209,48 +209,75 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     margin-right: auto;
 }
 
-/* 5. CARROSSEL DE SALAS 
+/* 5. CARROSSEL DE SALAS */
 .room-carousel {
     display: flex;          
     flex-wrap: nowrap;      
-    padding: 0 20px;        
+    padding: 20px;        
     gap: 15px;              
     overflow-x: auto;       
     scroll-snap-type: x mandatory; 
-    -webkit-overflow-scrolling: touch; 
+    -webkit-overflow-scrolling: touch;
+    /* Esconde a barra de rolagem para manter o visual limpo */
+    scrollbar-width: none; 
+}
+
+.room-carousel::-webkit-scrollbar {
+    display: none;
 }
 
 .room-card {
-    flex: 0 0 80vw;
-    min-width: 280px;    
+    /* Medidas Fixas: Agora o card é um bloco sólido de 160px */
+    flex: 0 0 160px;
+    width: 160px;
+    height: 180px; 
+    
     background: #f5f7fa; 
     border: none;        
-    border-radius: 20px;
-    padding: 30px 20px;
+    border-radius: 24px;
+    padding: 20px;
     text-align: center;
     scroll-snap-align: center;
+    
+    /* Centralização do conteúdo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
 }
 
+/* Efeito de apertar ao clicar (igual aos botões redondos) */
+.room-card:active {
+    transform: scale(0.96);
+    background: #ebedf0;
+}
+
 .room-card .room-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 32px; /* Ícone em destaque no centro */
+    margin-bottom: 12px;
     color: #007AFF; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .room-card h3 {
     color: #007AFF; 
-    font-size: 18px;
-    margin-bottom: 5px;
+    font-size: 15px; /* Ajustado para a nova largura */
+    margin-bottom: 4px;
     font-weight: 800;
+    text-transform: uppercase;
 }
 
 .room-card p {
     color: #1d1d1f; 
-    font-size: 13px;
+    font-size: 11px; /* Legenda compacta */
     margin: 0;
     font-weight: 600;
+    line-height: 1.2;
 }
 
 .full-content { display: none; margin-top: 20px; }
