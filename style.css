@@ -159,6 +159,22 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     margin: 0;
     line-height: 1.2;
 }
+.action-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #007AFF;
+    text-transform: lowercase;
+    margin-top: 8px; /* Espaço entre a bola e o texto */
+    text-align: center;
+}
+
+/* Container para agrupar Bola + Texto */
+.action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* 4. CARD NFT (Ajustado para o novo padrão Clean) */
 .banner-nft { 
