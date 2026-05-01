@@ -50,3 +50,18 @@ function atualizarDots() {
 
 function cancelarAcesso() { document.getElementById('modal-acesso').style.display = 'none'; }
 function apagarDigitado() { senhaDigitada = senhaDigitada.slice(0, -1); atualizarDots(); }
+
+
+function abrirPagar() { 
+    alert("Função Pagar: O scanner será integrado aqui."); 
+}
+
+function abrirReceber() { 
+    if(!userAccount) return alert("Conecte a carteira para ver seu endereço.");
+    alert("Seu endereço de recebimento:\n" + userAccount); 
+}
+
+function abrirNFT() {
+    // Aqui ele abre o Teclado de Ouro antes de entrar na área de NFT
+    abrirPainel('nft'); 
+}
