@@ -133,15 +133,10 @@
                 </div>
             </div>
         </div>
-
-        <div style="height: 140px; width: 100%;"></div>
     </div>
 
     <div id="area-receber" class="area-interna">
-        <header class="area-header">
-            <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
-            <h2>RECEBER</h2>
-        </header>
+        <header class="area-header"><i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i><h2>RECEBER</h2></header>
         <div class="conversion-card">
             <div class="balance-label">Valor a receber (BNB)</div>
             <div class="input-group"><input type="number" id="bnb-receber" placeholder="0.00" step="0.0001"></div>
@@ -154,18 +149,12 @@
     </div>
 
     <div id="area-pagar" class="area-interna">
-        <header class="area-header">
-            <i class="fa-solid fa-angle-left" onclick="fecharPagar()"></i>
-            <h2>PAGAR</h2>
-        </header>
+        <header class="area-header"><i class="fa-solid fa-angle-left" onclick="fecharPagar()"></i><h2>PAGAR</h2></header>
         <div class="conversion-card">
             <div class="balance-label">VALOR EM BNB</div>
             <div class="input-group"><input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001"></div>
             <div class="balance-label">DESTINO (CARTEIRA)</div>
-            <div class="address-container">
-                <input type="text" id="wallet-address" placeholder="0x...">
-                <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
-            </div>
+            <div class="address-container"><input type="text" id="wallet-address" placeholder="0x..."><i class="fas fa-qrcode" onclick="toggleScanner()"></i></div>
             <div id="reader" style="display:none;"></div>
         </div>
         <div class="grupo-botoes">
@@ -175,9 +164,7 @@
     </div>
 
     <div id="area-nft" class="area-interna" style="display:none; background-color: #007AFF !important;">
-        <header class="area-header" style="background: transparent; border: none;">
-            <i class="fa-solid fa-angle-left" onclick="fecharNFT()" style="color: white;"></i>
-        </header>
+        <header class="area-header" style="background: transparent; border: none;"><i class="fa-solid fa-angle-left" onclick="fecharNFT()" style="color: white;"></i></header>
         <div style="background: white; border-radius: 40px 40px 0 0; padding: 40px 25px; height: 100%;">
             <h2 style="text-align: center;">NFT ALPHA</h2>
             <p style="text-align: center; color: #666;">Identidade Digital Nitrogênio</p>
@@ -202,7 +189,7 @@
         <div class="area-header"><h2>Cofre</h2></div>
         <div class="conteudo-interno">
             <div id="saldo-safe-real">0.0000 BNB</div>
-            <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank">AUDITAR NO BSCSCAN</a>
+            <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" style="color:#007AFF; font-size:12px; font-weight:bold; text-decoration:none;">AUDITAR NO BSCSCAN</a>
         </div>
     </div>
 
@@ -214,6 +201,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-    <script src="script.js?v=2.1"></script>
+    <script src="script.js?v=3.0"></script>
 </body>
 </html>
