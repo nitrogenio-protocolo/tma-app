@@ -52,17 +52,21 @@
             <button id="connect-trigger" class="btn-connect">CONECTAR</button>
         </header>
 
-        <div class="balance-section"style="margin-top: 30px;">
-            <div class="balance-label">Saldo em Conta</div>
-            <div class="balance-main">
-                <span class="balance-amount">0.00 BNB</span>
+        <div class="balance-section" style="margin-top: 30px; padding-left: 45px;">
+    <div class="balance-label">Saldo em Conta</div>
+    <div class="balance-main">
+        <span class="balance-amount">0.00 BNB</span>
+    </div>
+</div>
+            <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
+                <i class="fa-solid fa-arrow-down"></i>
+                <span style="margin-top: 15px; color: #000; display: block;">receber</span>
             </div>
-        </div>
-
-        <div class="action-bar" style="margin-top: 50px;">
-            <div class="action-item" onclick="event.preventDefault(); abrirPagar()">
-                <i class="fa-solid fa-arrow-up"></i>
-                <span style="margin-top: 15px; color: #000; display: block;">pagar</span>
+            <div class="action-item" onclick="event.preventDefault();">
+                <i class="fa-solid fa-right-left"></i>
+                <span style="margin-top: 15px; color: #000; display: block;">trocar</span>
+            </div>
+        </div>p: 15px; color: #000; display: block;">pagar</span>
             </div>
             <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
                 <i class="fa-solid fa-arrow-down"></i>
