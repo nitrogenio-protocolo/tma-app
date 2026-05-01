@@ -432,3 +432,71 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     background: #e5e5e7;
     border-radius: 10px;
 }
+
+.modal-blueprint {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 10, 30, 0.95); /* Blueberry Profundo */
+    display: none; /* Começa escondido */
+    justify-content: center; align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+}
+
+.painel-seguranca {
+    background: #001a33;
+    border: 2px solid #D4AF37; /* Cor Ouro */
+    border-radius: 20px;
+    padding: 30px;
+    width: 85%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.header-seguranca h3 {
+    color: #D4AF37; /* Ouro */
+    font-size: 18px;
+    margin: 10px 0 5px;
+    letter-spacing: 2px;
+}
+
+.dots-senha {
+    display: flex; justify-content: center; gap: 15px; margin: 25px 0;
+}
+
+.dots-senha span {
+    width: 15px; height: 15px;
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.dots-senha span.preenchido {
+    background: #D4AF37;
+    box-shadow: 0 0 10px #D4AF37;
+}
+
+.teclado-numerico {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+}
+
+.teclado-numerico button {
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #D4AF37;
+    font-size: 24px;
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.teclado-numerico button:active {
+    background: #D4AF37;
+    color: #001a33;
+    transform: scale(0.95);
+}
+
+.btn-cancel { color: #ff4444 !important; border-color: rgba(255, 68, 68, 0.3) !important; }
+.status-msg { margin-top: 20px; font-size: 12px; color: #8e8e93; letter-spacing: 1px; }
