@@ -10,6 +10,7 @@
 </head>
 <body>
 
+    <body>
     <div id="splash-screen">
         <div class="splash-content">
             <div id="text-dao" class="splash-text">DAO</div>
@@ -18,121 +19,97 @@
         </div>
     </div>
 
-     <div id="splash-screen"> ... </div>
-
-<div id="modal-acesso" class="modal-blueprint">
-    <div class="painel-seguranca">
-        <div class="header-seguranca">
-            <div class="escudo-ouro"></div>
-            <h3>PROTOCOLO NITROGÊNIO</h3>
-            <p>SALA RESTRITA: IDENTIFIQUE-SE</p>
-        </div>
-        
-        <div id="display-senha" class="dots-senha">
-            <span></span><span></span><span></span><span></span>
-        </div>
-
-        <div class="teclado-numerico">
-            <button onclick="digitar(1)">1</button>
-            <button onclick="digitar(2)">2</button>
-            <button onclick="digitar(3)">3</button>
-            <button onclick="digitar(4)">4</button>
-            <button onclick="digitar(5)">5</button>
-            <button onclick="digitar(6)">6</button>
-            <button onclick="digitar(7)">7</button>
-            <button onclick="digitar(8)">8</button>
-            <button onclick="digitar(9)">9</button>
-            <button class="btn-cancel" onclick="cancelarAcesso()">X</button>
-            <button onclick="digitar(0)">0</button>
-            <button class="btn-back" onclick="apagarDigitado()">⌫</button>
-        </div>
-        
-        <div class="status-msg" id="status-acesso">VALIDANDO NFT ALPHA...</div>
-    </div>
-</div>
-
-<div id="home-app"> ... </div>
-    
-      <div id="modal-termos" class="modal-cortina">
-    <div class="cortina-content">
-        <img src="raposa.png" alt="Logo" class="raposa-topo">
-        
-        <div class="texto-termos">
-            <h3>Protocolo Nitrogênio</h3>
-            <p>*Este software é uma interface de governança descentralizada sem promessas de lucro.</p>
-            
-            <label class="check-container">
-                <input type="checkbox" id="check-tecnico" onchange="validarTermos()">
-                <span class="checkmark"></span>
-                Li e aceito os termos técnicos.
-            </label>
-
-            <label class="check-container">
-                <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()">
-                <span class="checkmark"></span>
-                Sou responsável por minhas transações.
-            </label>
-        </div>
-
-        <div class="rodape-termos">
-            <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
-            <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled></button>
+    <div id="modal-acesso" class="modal-blueprint" style="display:none;">
+        <div class="painel-seguranca">
+            <div class="header-seguranca">
+                <div class="escudo-ouro"></div>
+                <h3>PROTOCOLO NITROGÊNIO</h3>
+                <p>SALA RESTRITA: IDENTIFIQUE-SE</p>
+            </div>
+            <div id="display-senha" class="dots-senha">
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="teclado-numerico">
+                <button onclick="digitar(1)">1</button>
+                <button onclick="digitar(2)">2</button>
+                <button onclick="digitar(3)">3</button>
+                <button onclick="digitar(4)">4</button>
+                <button onclick="digitar(5)">5</button>
+                <button onclick="digitar(6)">6</button>
+                <button onclick="digitar(7)">7</button>
+                <button onclick="digitar(8)">8</button>
+                <button onclick="digitar(9)">9</button>
+                <button class="btn-cancel" onclick="cancelarAcesso()">X</button>
+                <button onclick="digitar(0)">0</button>
+                <button class="btn-back" onclick="apagarDigitado()">⌫</button>
+            </div>
+            <div class="status-msg" id="status-acesso">VALIDANDO NFT ALPHA...</div>
         </div>
     </div>
-</div>
-    
+
+    <div id="modal-termos" class="modal-cortina">
+        <div class="cortina-content">
+            <img src="raposa.png" alt="Logo" class="raposa-topo">
+            <div class="texto-termos">
+                <h3>Protocolo Nitrogênio</h3>
+                <p>*Este software é uma interface de governança descentralizada.</p>
+                <label class="check-container">
+                    <input type="checkbox" id="check-tecnico" onchange="validarTermos()"> Li e aceito os termos técnicos.
+                </label>
+                <label class="check-container">
+                    <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()"> Sou responsável por minhas transações.
+                </label>
+            </div>
+            <div class="rodape-termos">
+                <p id="msg-convite">Aguardando aceite...</p>
+                <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled>ENTRAR</button>
+            </div>
+        </div>
+    </div>
+
     <div id="home-app">
         <header class="header-app">
             <div class="logo-text">Nitrogênio</div>
             <button id="connect-trigger" class="btn-connect">CONECTAR</button>
         </header>
 
-        <div class="balance-section"style="margin-top: 30px;">
+        <div class="balance-section">
             <div class="balance-label">Saldo em Conta</div>
             <div class="balance-main">
                 <span class="balance-amount">0.00 BNB</span>
             </div>
         </div>
 
-        <div class="action-bar" style="margin-top: 50px;">
-    <div class="action-container">
-        <div class="action-item" onclick="event.preventDefault(); abrirPagar()">
-            <i class="fa-solid fa-arrow-up"></i>
+        <div class="action-bar">
+            <div class="action-container" onclick="abrirPagar()">
+                <div class="action-item"><i class="fa-solid fa-arrow-up"></i></div>
+                <span class="action-label">pagar</span>
+            </div>
+            <div class="action-container" onclick="abrirReceber()">
+                <div class="action-item"><i class="fa-solid fa-arrow-down"></i></div>
+                <span class="action-label">receber</span>
+            </div>
+            <div class="action-container">
+                <div class="action-item"><i class="fa-solid fa-right-left"></i></div>
+                <span class="action-label">trocar</span>
+            </div>
         </div>
-        <span class="action-label">pagar</span>
-    </div>
 
-    <div class="action-container">
-        <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
-            <i class="fa-solid fa-arrow-down"></i>
-        </div>
-        <span class="action-label">receber</span>
-    </div>
-
-    <div class="action-container">
-        <div class="action-item" onclick="event.preventDefault();">
-            <i class="fa-solid fa-right-left"></i>
-        </div>
-        <span class="action-label">trocar</span>
-    </div>
-</div>
-
-        <div class="carousel-wrapper" style="margin-top: 80px;">
+        <div class="carousel-wrapper">
             <div class="room-carousel">
-
-                <div class="room-card" onclick="abrirNFT()" style="min-width: 160px; background: #f5f7fa; border: none;">
-    <div class="room-icon">
-    <img src="raposa.png" class="raposa-azul-card" style="max-height: 50px; width: auto;">
-</div>
-    <h3 style="color: #007AFF; margin-top: 10px;">NFT ALPHA</h3>
-    <p style="color: #1d1d1f; font-weight: 600;">Mintar Identidade</p>
-</div>
-                    
+                <div class="room-card" onclick="abrirNFT()">
+                    <div class="room-icon"><img src="raposa.png" class="raposa-azul-card"></div>
+                    <h3>NFT ALPHA</h3>
+                    <p>Mintar Identidade</p>
+                </div>
                 <div class="room-card" onclick="abrirPainel('comunidade')">
-    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
-    <h3>COMUNIDADE</h3>
-    <p>Área de exercícios</p>
-</div>
+                    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>COMUNIDADE</h3>
+                    <p>Área de exercícios</p>
+                </div>
+                </div>
+        </div>
+    </div>
 
                 <div class="room-card" onclick="abrirPainel('governo')">
     <div class="room-icon"><i class="fa-solid fa-building-columns"></i></div>
