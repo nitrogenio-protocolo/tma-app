@@ -209,7 +209,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     margin-right: auto;
 }
 
-/* 5. CARROSSEL DE SALAS (Estilo Antarctic Clean Unificado) */
+/* 5. CARROSSEL DE SALAS 
 .room-carousel {
     display: flex;          
     flex-wrap: nowrap;      
@@ -233,7 +233,6 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
 }
 
-/* Ícones e Textos em Azul Nitrogênio e Preto Apple */
 .room-card .room-icon {
     font-size: 32px;
     margin-bottom: 10px;
