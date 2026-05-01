@@ -123,11 +123,13 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 /* O Texto (span) agora é preto e fica fora do círculo */
 .action-item span {
-    color: #000000; /* Preto total como você pediu */
+    display: block;    
+    margin-top: 15px;  
+    color: #000000;    
     font-size: 13px;
     font-weight: 600;
     text-transform: lowercase;
-    border: none; /* Sem bordas */
+    border: none;
 }
 
 /* Efeito de clique apenas no círculo */
