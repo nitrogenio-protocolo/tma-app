@@ -86,9 +86,9 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
 .btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
-/* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
+/* 3. SALDO E AÇÕES (VERSÃO LIMPA) */
 .balance-section { 
-    padding: 10px 25px 20px; /* O 25px é o que afasta o saldo da borda esquerda */
+    padding: 10px 25px 20px; 
     text-align: left; 
 }
 
@@ -111,70 +111,53 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
     background: transparent; 
-    margin: 0 20px 0; 
+    margin: 0 20px; 
     padding: 10px 10px 30px; 
     text-align: center; 
     gap: 15px;
-    position: relative; 
+}
+
+.action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .action-item { 
     display: flex; 
-    flex-direction: column; 
     align-items: center; 
     justify-content: center; 
-    color: #007AFF; /* Azul Nitrogênio */
-    font-size: 24px; 
-    font-weight: 600; 
-    cursor: pointer;
-    
-    background: #f5f7fa; /* A cor "gelo" igual a do carrossel */
-    
+    color: #007AFF; 
+    background: #f5f7fa; 
     width: 75px;  
     height: 75px; 
     border-radius: 50%; 
     margin: 0 auto; 
-    
-    /* Sombra bem leve para combinar com os cards */
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
-/* Efeito de "apertar" o botão ao clicar */
+.action-item i {
+    font-size: 24px; /* Ícone maior e centralizado */
+}
+
 .action-item:active {
     background: #ebedf0;
     transform: scale(0.95);
-}
-    
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-    transition: background 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.action-item:active {
-    background: #d2d2d7;
-}
-
-/* Ajuste para o ícone ou texto interno não ficarem colados */
-.action-item i, .action-item span {
-    margin: 0;
-    line-height: 1.2;
-}
 .action-label {
     display: block;
     font-size: 11px;
     font-weight: 700;
     color: #007AFF;
     text-transform: lowercase;
-    margin-top: 8px; /* Espaço entre a bola e o texto */
+    margin-top: 8px;
     text-align: center;
 }
-
-/* Container para agrupar Bola + Texto */
-.action-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    
 
 /* 4. CARD NFT (Ajustado para o novo padrão Clean) */
 .banner-nft { 
