@@ -59,20 +59,29 @@
             </div>
         </div>
 
-        <div class="action-bar"style="margin-top: 50px;">
-            <div class="action-item" onclick="event.preventDefault(); abrirPagar()">
-                <i class="fa-solid fa-arrow-up"></i>
-                <span>pagar</span>
-            </div>
-            <div class="action-item" onclick="event.preventDefault(); abrirReceber()">
-                <i class="fa-solid fa-arrow-down"></i>
-                <span>receber</span>
-            </div>
-            <div class="action-item" onclick="event.preventDefault();">
-                <i class="fa-solid fa-right-left"></i>
-                <span>trocar</span>
-            </div>
+        <div class="action-bar" style="margin-top: 10px;">
+    <div class="action-container" onclick="/* sua função de pagar aqui */">
+        <div class="action-item">
+            <i class="fa-solid fa-arrow-up"></i>
         </div>
+        <span class="action-label">pagar</span>
+    </div>
+
+    <div class="action-container" onclick="/* sua função de receber aqui */">
+        <div class="action-item">
+            <i class="fa-solid fa-arrow-down"></i>
+        </div>
+        <span class="action-label">receber</span>
+    </div>
+
+    <div class="action-container" onclick="/* sua função de trocar aqui */">
+        <div class="action-item">
+            <i class="fa-solid fa-arrow-right-left"></i>
+        </div>
+        <span class="action-label">trocar</span>
+    </div>
+</div>
+        
 
         <div class="carousel-wrapper" style="margin-top: 80px;">
             <div class="room-carousel">
