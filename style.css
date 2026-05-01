@@ -92,7 +92,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     justify-content: space-around; 
     align-items: flex-start;
     background: transparent; 
-    margin: 50px 20px 0; /* Aumentamos a margem para dar respiro */
+    margin: 50px 20px  12px; /* Aumentamos a margem para dar respiro */
     padding: 10px;
     text-align: center; 
 }
