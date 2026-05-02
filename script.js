@@ -435,3 +435,28 @@ window.addEventListener('load', () => {
         syncWallet();
     }
 });
+
+// 10. Assinatura de Governança via Safe
+async function assinarNoSafe(safeTxHash) {
+    if (!signer) {
+        alert("Conecte sua carteira de Guardião primeiro.");
+        return syncWallet();
+    }
+
+    try {
+        // O pop-up da MetaMask vai subir aqui
+        console.log("Solicitando assinatura para:", safeTxHash);
+        
+        // Na Safe, a assinatura é uma mensagem assinada (Personal Sign)
+        const assinatura = await signer.signMessage(ethers.getBytes(safeTxHash));
+
+        if (assinatura) {
+            alert("Assinatura enviada com sucesso! Aguardando sincronização da rede.");
+            // Atualiza a tela para mostrar o novo contador (ex: 1/11, 2/11...)
+            setTimeout(() => carregarPautasReaisDoCofre(), 3000);
+        }
+    } catch (err) {
+        console.error("Erro ao assinar:", err);
+        alert("Assinatura cancelada ou erro técnico: " + (err.reason || "Verifique sua conexão"));
+    }
+}
