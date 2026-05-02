@@ -120,11 +120,12 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 .action-item { 
     display: flex; 
+    flex-direction: column; /* Coloca ícone em cima e texto embaixo */
     align-items: center; 
     justify-content: center; 
-    color: #007AFF; /* Azul Nitrogênio */
+    color: #007AFF;
     cursor: pointer;
-    background: #f5f7fa; /* Cor Gelo */
+    background: #f5f7fa; 
     width: 75px;  
     height: 75px; 
     border-radius: 50%; 
@@ -133,12 +134,21 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     transition: all 0.2s ease;
 }
 
-/* Ajuste do tamanho do ícone para compensar a falta do texto */
+/* Estilo do Ícone */
 .action-item i {
-    font-size: 26px;
+    font-size: 18px;
+    margin-bottom: 2px;
 }
 
-/* Efeito de clique */
+/* Estilo do Texto (Apenas Visual) */
+.action-item span {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: lowercase;
+    pointer-events: none; /* Isso faz o clique "atravessar" o texto e ir direto para o botão */
+}
+
+/* Efeito de apertar o botão */
 .action-item:active {
     background: #ebedf0;
     transform: scale(0.95);
