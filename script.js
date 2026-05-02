@@ -192,12 +192,12 @@ function abrirPainel(id) {
         painel.classList.add('aberto');
         document.body.style.overflow = 'hidden'; 
 
-        // Se abrir a comunidade, força a atualização das pautas
-        if (id === 'comunidade') {
+        // Agora apenas Governo e Mural buscam dados do Cofre (Nonce)
+        if (id === 'governo' || id === 'mural') {
             carregarPautasReaisDoCofre();
         }
         
-        // Se abrir o cofre, atualiza o saldo real na hora
+        // Sala Cofre continua apenas mostrando o saldo real de BNB
         if (id === 'cofre') {
             atualizarSaldoRealCofre();
         }
