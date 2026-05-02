@@ -255,71 +255,79 @@ function fecharModalVotacao() {
 
 async function carregarPautasReaisDoCofre() {
     const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${ENDERECO_COFRE_SAFE}/multisig-transactions/`;
-    const container = document.getElementById('cronometro-da-dao');
-    if (!container) return;
+    
+    // Seleciona os novos containers que criamos no HTML
+    const containerGoverno = document.getElementById('lista-pautas-governo');
+    const containerMural = document.getElementById('lista-mural-automatica');
+    const displayContador = document.getElementById('contador-assinaturas');
+    const avisoGas = document.getElementById('aviso-gas');
 
     try {
         const resposta = await fetch(urlAPI);
         const dados = await resposta.json();
-        const pautas = dados.results.filter(tx => !tx.isExecuted);
+        
+        // Separa o que é pendente do que já foi executado
+        const pautasPendentes = dados.results.filter(tx => !tx.isExecuted);
+        const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
 
-        if (pautas.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#8e8e93;'>Nenhuma pauta pendente.</p>";
-            return;
+        // --- LÓGICA DA SALA GOVERNO ---
+        if (containerGoverno) {
+            if (pautasPendentes.length === 0) {
+                containerGoverno.innerHTML = "<p style='text-align:center; color:#8e8e93; font-size:12px;'>Nenhuma pauta para execução no momento.</p>";
+            } else {
+                containerGoverno.innerHTML = "";
+                pautasPendentes.forEach(tx => {
+                    const confirmacoes = tx.confirmations ? tx.confirmations.length : 0;
+                    
+                    // Atualiza o contador global se for a pauta mais recente
+                    if(displayContador) displayContador.innerText = `${confirmacoes} de 11 Assinaturas`;
+                    
+                    // Alerta de Gás para o 11º Guardião
+                    if(confirmacoes === 10 && avisoGas) {
+                        avisoGas.style.display = 'block';
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'card-pauta';
+                    card.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:8px;">
+                            <span style="color:#8e8e93;">NONCE #${tx.nonce}</span>
+                            <span style="color:#007AFF;">${confirmacoes}/11 ASSINATURAS</span>
+                        </div>
+                        <p style="font-size:14px; font-weight:700; margin:10px 0;">${tx.description || "Transação de Protocolo"}</p>
+                        <button class="btn-votar" onclick="assinarNoSafe('${tx.safeTxHash}')" 
+                                style="width:100%; background:#007AFF; color:white; border:none; padding:12px; border-radius:50px; font-weight:bold;">
+                            ${confirmacoes >= 10 ? 'EXECUTAR (PAGAR GÁS)' : 'ASSINAR AGORA'}
+                        </button>
+                    `;
+                    containerGoverno.appendChild(card);
+                });
+            }
         }
 
-        container.innerHTML = ""; 
-        pautas.forEach(pauta => {
-            if (pauta.nonce === null) return;
-            let textoNota = "Ação técnica de governança";
+        // --- LÓGICA DO MURAL (HISTÓRICO) ---
+        if (containerMural) {
+            containerMural.innerHTML = "";
+            pautasExecutadas.slice(0, 10).forEach(tx => { // Mostra as últimas 10
+                const cardMural = document.createElement('div');
+                cardMural.className = 'card-pauta';
+                cardMural.style.borderLeft = "4px solid #34C759";
+                cardMural.innerHTML = `
+                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+                    <p style="font-size:13px; margin:5px 0;">${tx.description || "Execução concluída"}</p>
+                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+                        Ver comprovante na Blockchain ↗
+                    </a>
+                `;
+                containerMural.appendChild(cardMural);
+            });
+        }
 
-if (pauta.origin) {
-    try {
-        // Tenta converter o JSON da origem
-        const obj = JSON.parse(pauta.origin);
-        textoNota = obj.description || obj.name || pauta.origin;
-    } catch(e) { 
-        textoNota = pauta.origin; 
-    }
-}
-
-// 1. Remove o prefixo "note:" (independente de maiúscula/minúscula)
-textoNota = textoNota.replace(/^note:\s*/i, "");
-
-// 2. Decodifica os caracteres Unicode (transforma \u00e7 em ç, etc.)
-try {
-    textoNota = decodeURIComponent(JSON.parse('"' + textoNota.replace(/"/g, '\\"') + '"'));
-} catch (e) {
-    // Caso falhe, apenas remove as aspas e chaves sobrando
-    textoNota = textoNota.replace(/[\\"{}]/g, "");
-}
-
-textoNota = textoNota.trim();
-            
-            const card = document.createElement('div');
-            card.className = 'card-pauta'; 
-            card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:bold; color:#8e8e93; margin-bottom:10px;">
-                    <span>#${pauta.nonce}</span>
-                    <span style="color:#007AFF;">COFRE NITROGÊNIO</span>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <h4 style="font-size:11px; color:#8e8e93; margin:0; text-transform:uppercase;">PROPÓSITO DA COMUNIDADE:</h4>
-                    <p style="font-size:15px; color:#1a1a1a; margin:4px 0; font-weight:700; line-height:1.4;">
-                        ${textoNota}
-                    </p>
-                </div>
-                <button class="btn-votar" onclick="abrirModalVotacao(event)" 
-                        style="width:100%; background:#007AFF; color:white; border:none; padding:14px; border-radius:50px; font-size:14px; font-weight:bold; cursor:pointer;">
-                    VOTAR
-                </button>
-            `;
-            container.appendChild(card);
-        });
     } catch (e) {
-        console.error("Erro Safe:", e);
+        console.error("Erro ao conectar com o Cofre:", e);
     }
 }
+
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
 function abrirNFT() {
     document.getElementById('home-app').style.display = 'none';
