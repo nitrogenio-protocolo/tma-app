@@ -88,7 +88,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 /* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
 .balance-section { 
-    padding: 10px 25px 20px; /* O 25px é o que afasta o saldo da borda esquerda */
+    padding: 10px 25px 20px; 
     text-align: left; 
 }
 
@@ -120,44 +120,28 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 .action-item { 
     display: flex; 
-    flex-direction: column; 
     align-items: center; 
     justify-content: center; 
     color: #007AFF; /* Azul Nitrogênio */
-    font-size: 11px; 
-    font-weight: 600; 
     cursor: pointer;
-    
-    background: #f5f7fa; /* A cor "gelo" igual a do carrossel */
-    
+    background: #f5f7fa; /* Cor Gelo */
     width: 75px;  
     height: 75px; 
     border-radius: 50%; 
     margin: 0 auto; 
-    
-    /* Sombra bem leve para combinar com os cards */
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
     transition: all 0.2s ease;
 }
 
-/* Efeito de "apertar" o botão ao clicar */
+/* Ajuste do tamanho do ícone para compensar a falta do texto */
+.action-item i {
+    font-size: 26px;
+}
+
+/* Efeito de clique */
 .action-item:active {
     background: #ebedf0;
     transform: scale(0.95);
-}
-    
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-    transition: background 0.2s ease;
-}
-
-.action-item:active {
-    background: #d2d2d7;
-}
-
-/* Ajuste para o ícone ou texto interno não ficarem colados */
-.action-item i, .action-item span {
-    margin: 0;
-    line-height: 1.2;
 }
 
 /* 4. CARD NFT (Ajustado para o novo padrão Clean) */
