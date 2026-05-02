@@ -147,7 +147,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 /* O Texto (Rótulo Visual)
 .label-visual {
-    margin-top: 20px;     
+    margin-top: 25px;     
     font-size: 12px;      
     font-weight: 800;     
     color: #1d1d1f;       
