@@ -296,7 +296,7 @@
 </div>    
 
 <div id="painel-mural" class="painel-folha">
-    <div class="barra-fechar">
+    <div class="barra-fechar" onclick="fecharPainel('mural')">
         <div class="indicador-puxar"></div>
     </div>
     
@@ -304,6 +304,30 @@
         <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
         <h2>Mural</h2>
     </div>
+
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="margin-bottom: 25px; text-align: center;">
+            <small style="color: #8e8e93; font-weight: bold; letter-spacing: 1px;">TRANSPARÊNCIA NITROGÊNIO</small>
+            <p style="font-size: 13px; color: #666; margin-top: 5px;">Histórico de execuções confirmadas na rede BSC.</p>
+        </div>
+
+        <div class="card-pauta" style="border-left: 4px solid #007AFF; margin-bottom: 20px; background: #fafafa;">
+            <small style="color: #007AFF; font-weight: bold;">AVISO DO PROTOCOLO</small>
+            <h4 style="margin: 10px 0; font-size: 16px;">Auditoria em Tempo Real</h4>
+            <p style="font-size: 13px; color: #333; line-height: 1.4;">
+                Todas as transações abaixo foram aprovadas pelo conselho e já estão registradas na blockchain.
+            </p>
+        </div>
+
+        <div style="height: 1px; background: #eee; margin: 20px 0;"></div>
+
+        <div id="lista-mural-automatica">
+            <p style="text-align:center; color:#8e8e93; font-size:12px; padding: 20px;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Sincronizando recibos...
+            </p>
+        </div>
+    </div>
+</div>
 
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
         <div class="card-pauta" style="border-left: 4px solid #007AFF;">
