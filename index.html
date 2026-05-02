@@ -244,15 +244,25 @@
 
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
         <div id="display-tempo" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">PRÓXIMO CICLO EM:</small>
+            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">RENOVAÇÃO DO CICLO EM:</small>
             <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">00h 00m 00s</span>
         </div>
 
-        <div id="cronometro-da-dao">
-             <p style="text-align:center; color:#8e8e93; font-size:12px;">Sincronizando pautas da comunidade...</p>
+        <div id="lista-pautas-comunidade">
+             <div class="card-pauta" style="border-left: 4px solid #34C759;">
+                <small style="color: #34C759; font-weight: bold;">DISCUSSÃO ABERTA</small>
+                <h4 style="margin: 8px 0; font-size: 16px;">Ideias para o Próximo Ciclo</h4>
+                <p style="font-size: 13px; color: #666; line-height: 1.4;">
+                    Utilize os canais oficiais para sugerir novas pautas. O que for aprovado aqui, seguirá para execução no Governo.
+                </p>
+                <button onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')" 
+                        style="width:100%; background:#f5f5f7; color:#007AFF; border:none; padding:10px; border-radius:8px; font-size:12px; font-weight:bold; margin-top:10px; cursor:pointer;">
+                    PARTICIPAR NO TELEGRAM
+                </button>
+             </div>
         </div>
     </div>
-</div>        
+</div>  
 
      <div id="painel-governo" class="painel-folha">
     <div class="barra-fechar" onclick="fecharPainel('governo')">
