@@ -211,11 +211,11 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     margin-right: auto;
 }
 
-/* 5. CARROSSEL DE SALAS (Estilo Antarctic Clean Unificado) */
+/* 5. CARROSSEL DE SALAS (Estilo Quadrado Fixo - Anti-Tapete) */
 .room-carousel {
     display: flex;          
     flex-wrap: nowrap;      
-    padding: 0 20px;        
+    padding: 20px;        
     gap: 15px;              
     overflow-x: auto;       
     scroll-snap-type: x mandatory; 
@@ -223,37 +223,46 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 }
 
 .room-card {
-    flex: 0 0 80vw;
-    min-width: 280px;    
+    /* Mantém o card quadrado com 160px independente da largura da tela */
+    flex: 0 0 160px;
+    height: 160px;   
     background: #f5f7fa; 
     border: none;        
     border-radius: 20px;
-    padding: 30px 20px;
+    padding: 15px;
     text-align: center;
     scroll-snap-align: center;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+    
+    /* Centraliza ícone e texto dentro do quadrado */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Ícones e Textos em Azul Nitrogênio e Preto Apple */
+/* Ícones e Textos ajustados para o formato quadrado */
 .room-card .room-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 28px;
+    margin-bottom: 8px;
     color: #007AFF; 
 }
 
 .room-card h3 {
     color: #007AFF; 
-    font-size: 18px;
-    margin-bottom: 5px;
+    font-size: 14px; /* Diminuído para caber no quadrado */
+    margin: 5px 0;
     font-weight: 800;
+    text-transform: uppercase;
 }
 
 .room-card p {
     color: #1d1d1f; 
-    font-size: 13px;
+    font-size: 11px;
     margin: 0;
     font-weight: 600;
+    line-height: 1.2;
 }
 
 .full-content { display: none; margin-top: 20px; }
