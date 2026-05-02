@@ -223,7 +223,6 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 }
 
 .room-card {
-    /* Mantém o card quadrado com 160px independente da largura da tela */
     flex: 0 0 160px;
     height: 160px;   
     background: #f5f7fa; 
@@ -235,24 +234,28 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
     
-    /* Centraliza ícone e texto dentro do quadrado */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* Mudamos para space-between para forçar os textos para a mesma posição */
+    justify-content: space-between; 
     align-items: center;
 }
 
-/* Ícones e Textos ajustados para o formato quadrado */
+/* NOVO: Trava a altura do ícone para o texto não desalinhada */
 .room-card .room-icon {
+    height: 60px; /* Altura fixa para todos os ícones/imagens */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    color: #007AFF;
     font-size: 28px;
-    margin-bottom: 8px;
-    color: #007AFF; 
 }
 
 .room-card h3 {
     color: #007AFF; 
-    font-size: 14px; /* Diminuído para caber no quadrado */
-    margin: 5px 0;
+    font-size: 14px; 
+    margin: 0; /* Removemos margens para o flex cuidar do espaço */
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -260,7 +263,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 .room-card p {
     color: #1d1d1f; 
     font-size: 11px;
-    margin: 0;
+    margin-bottom: 10px; /* Garante um respiro no fundo do card */
     font-weight: 600;
     line-height: 1.2;
 }
