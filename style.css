@@ -147,9 +147,9 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 /* O Texto (Rótulo Visual) - 15px abaixo do botão */
 .label-visual {
-    margin-top: 15px; 
+    margin-top: 20px; 
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 800;
     color: #007AFF;
     text-transform: lowercase;
     pointer-events: none; /* Garante que o clique ignore o texto */
