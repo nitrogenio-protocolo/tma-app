@@ -78,40 +78,13 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 
 .check-container { display: block; margin-bottom: 15px; font-size: 14px; }
 
-//* 2. ESTRUTURA HOME - AGORA COM O BEGE */
-#home-app { 
-    width: 100%; 
-    display: flex; 
-    flex-direction: column; 
-    min-height: 100vh; 
-    padding-bottom: 90px; 
-    isolation: isolate; 
+/* 2. ESTRUTURA HOME */
+#home-app { width: 100%; display: flex; flex-direction: column; min-height: 100vh; padding-bottom: 90px; isolation: isolate; 
     contain: content;
-    
-    /* A COR DO MAPA AQUI */
-    background-color: #E8DCC4 !important; 
 }
-
-.header-app { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 20px; 
-    /* Garante que o topo também acompanhe a cor */
-    background-color: transparent; 
-}
-
+.header-app { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
-
-.btn-connect { 
-    background: #007AFF; 
-    color: #fff; 
-    border: none; 
-    padding: 8px 16px; 
-    border-radius: 10px; 
-    font-weight: 600; 
-    font-size: 12px; 
-}
+.btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
 /* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
 .balance-section { 
