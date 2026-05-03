@@ -382,6 +382,49 @@ function motorGovernançaNitrogenio() {
     carregarPautasReaisDoCofre();
 }
 
+// --- BLOCO INTEGRADO: GOVERNANÇA DE PRODUTO (JAQUETAS) ---
+
+// Dados simulados (no futuro virão do Snapshot.org via API)
+const pautasComunidade = [
+    { id: 1, autor: "Guardião 01", titulo: "Jaqueta Corta-Vento Azul", votos: 12 },
+    { id: 2, autor: "Guardião 02", titulo: "Modelo Refletivo Total", votos: 8 },
+    { id: 3, autor: "Sidnei", titulo: "Colete de Proteção Alpha", votos: 15 }
+];
+
+async function carregarVotacaoComunidade() {
+    console.log("Buscando pautas da comunidade...");
+    // Aqui simulamos a chamada da API do Snapshot
+    renderizarPautas();
+}
+
+function renderizarPautas() {
+    const sala = document.getElementById('lista-pautas-comunidade');
+    if (!sala) return;
+
+    // Ordena: Mais votados no topo
+    pautasComunidade.sort((a, b) => b.votos - a.votos);
+    
+    sala.innerHTML = pautasComunidade.map(p => `
+        <div class="card-pauta" style="border-left: 4px solid #007AFF; margin-bottom: 12px; padding: 15px; background: #fff; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <small style="color: #8e8e93; font-weight: bold;">SUGESTÃO: ${p.autor}</small>
+                <span style="background: #e5f1ff; color: #007AFF; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold;">${p.votos} VOTOS</span>
+            </div>
+            <h3 style="font-size: 16px; margin: 8px 0; color: #1c1c1e;">${p.titulo}</h3>
+            <button class="btn-votar" onclick="votarNaPauta(${p.id})" 
+                    style="width:100%; background:#f2f2f7; color:#007AFF; border:none; padding:10px; border-radius:8px; font-weight:600; cursor:pointer;">
+                APOIAR ESTA IDEIA
+            </button>
+        </div>
+    `).join('');
+}
+
+function votarNaPauta(id) {
+    if(!userAccount) return alert("Conecte a carteira para votar!");
+    alert("Voto registrado para a pauta #" + id + " via carteira " + userAccount.substring(0,6));
+    // Aqui entraria a chamada de contrato ou API do Snapshot
+}
+
 // A CHAVE NA IGNIÇÃO: Esta linha abaixo faz tudo o que está acima começar a funcionar
 motorGovernançaNitrogenio();
 
