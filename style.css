@@ -84,7 +84,7 @@ body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #fffff
 }
 .header-app { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
-.btn-connect { background: #EFEDE8; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
+.btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
 /* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
 .balance-section { 
