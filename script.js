@@ -185,19 +185,24 @@ async function fecharPagar() {
     fecharView('area-pagar');
 }
 
-// CONTROLE DE PAINÉIS (SHEETS) - ATUALIZADO
+/// CONTROLE DE PAINÉIS (SHEETS) - INTEGRADO COM COMUNIDADE
 function abrirPainel(id) {
     const painel = document.getElementById('painel-' + id);
     if (painel) {
         painel.classList.add('aberto');
         document.body.style.overflow = 'hidden'; 
 
-        // Agora apenas Governo e Mural buscam dados do Cofre (Nonce)
+        // Se abrir Governo ou Mural -> Busca pautas de execução (Blockchain)
         if (id === 'governo' || id === 'mural') {
             carregarPautasReaisDoCofre();
         }
         
-        // Sala Cofre continua apenas mostrando o saldo real de BNB
+        // Se abrir Sala da Comunidade -> Busca as votações de sugestões (Jaquetas/Ideias)
+        if (id === 'comunidade') {
+            carregarVotacaoComunidade();
+        }
+        
+        // Se abrir Sala Cofre -> Atualiza apenas o saldo de BNB
         if (id === 'cofre') {
             atualizarSaldoRealCofre();
         }
