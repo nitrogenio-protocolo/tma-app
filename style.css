@@ -32,7 +32,7 @@ body { width: 100%; height: 100vh; overflow: hidden; background-color: #fff; fon
 i { font-size: 24px; color: var(--azul-blueberry); margin-bottom: 8px; }
 span, p { font-size: 10px; font-weight: 800; text-transform: uppercase; }
 
-#footer-app { position: fixed; bottom: 0; width: 100%; height: 75px; background: #fff; display: flex; justify-content: space-around; align-items: center; solid #f2f2f7; z-index: 1000; }
+#footer-app { position: fixed; bottom: 0; width: 100%; height: 75px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: none;1px solid #f2f2f7; z-index: 1000; }
 .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: var(--cinza-suave); text-decoration: none; }
 .nav-btn.active { color: var(--azul-blueberry); }
 
