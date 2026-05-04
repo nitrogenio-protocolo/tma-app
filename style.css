@@ -1,58 +1,79 @@
-/* Travamento do Viewport */
-body {
-    overflow: hidden; /* Impede scroll na página toda */
-    height: 100vh;
-}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
 
-.main-content {
-    height: calc(100vh - 140px); /* Desconta header e footer */
-    overflow-y: auto; /* Scroll apenas aqui dentro */
-    padding-bottom: 20px;
-}
+<header id="header-app">
+    <div class="header-content">
+        <span class="brand-name">NITROGÊNIO</span>
+        <div class="header-actions">
+            <button id="btn-eye" class="btn-icon"><i class="fa-solid fa-eye"></i></button>
+            <button id="connect-trigger" class="btn-wallet">CONECTAR</button>
+        </div>
+    </div>
+</header>
 
-/* Estilo dos Carrosséis */
-.hub-carousel {
-    width: 100%;
-    overflow-x: auto;
-    padding: 15px 20px;
-    scrollbar-width: none; /* Esconde barra no Firefox */
-}
+<main class="main-content">
+    
+    <section class="hub-carousel">
+        <div class="carousel-track">
+            <div class="item-alpha"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
+            <div class="item-alpha"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
+            <div class="item-alpha"><i class="fa-solid fa-qrcode"></i><span>QR CODE</span></div>
+            <div class="item-alpha"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
+            <div class="item-alpha"><i class="fa-solid fa-id-card"></i><span>NFT</span></div>
+        </div>
+    </section>
 
-.hub-carousel::-webkit-scrollbar { display: none; } /* Esconde no Chrome */
+    <section class="hub-carousel secondary">
+        <div class="carousel-track">
+            <div class="item-dao">
+                <i class="fa-solid fa-users"></i>
+                <p>COMUNIDADE</p>
+            </div>
+            <div class="item-dao">
+                <i class="fa-solid fa-building-columns"></i>
+                <p>GOVERNO</p>
+            </div>
+            <div class="item-dao">
+                <i class="fa-solid fa-chalkboard"></i>
+                <p>MURAL</p>
+            </div>
+        </div>
+    </section>
 
-.carousel-track {
-    display: flex;
-    gap: 15px;
-    width: max-content; /* O trilho estica conforme os itens */
-}
+    <section class="hub-carousel tertiary">
+        <div class="carousel-track">
+            <div class="item-op">
+                <i class="fa-solid fa-file-shield"></i>
+                <span>PROTOCOLO</span>
+            </div>
+            <div class="item-op">
+                <i class="fa-solid fa-vault"></i>
+                <span>COFRE</span>
+            </div>
+            <div class="item-op">
+                <i class="fa-solid fa-couch"></i>
+                <span>LAZER</span>
+            </div>
+        </div>
+    </section>
 
-/* Itens do Hub 2 (DAO) - Maiores e mais robustos */
-.item-dao {
-    width: 140px;
-    height: 100px;
-    background: #fff;
-    border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid #f2f2f7;
-}
+</main>
 
-.item-dao i { font-size: 24px; color: #007AFF; margin-bottom: 8px; }
-.item-dao p { font-size: 11px; font-weight: 800; margin: 0; }
+<footer id="footer-app">
+    <button class="nav-btn active"><i class="fa-solid fa-house"></i><span>HOME</span></button>
+    <a href="#" class="nav-btn"><i class="fa-brands fa-telegram"></i><span>OFICIAL</span></a>
+    <button class="nav-btn"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
+</footer>
 
-/* Rodapé Fixo */
-#footer-app {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 70px;
-    background: #fff;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid #f2f2f7;
-    z-index: 1000;
-}
+</body>
+</html>
