@@ -236,25 +236,23 @@
     <div class="barra-fechar" onclick="fecharPainel('comunidade')">
         <div class="indicador-puxar"></div>
     </div>
-    
     <div class="area-header">
-        <button onclick="fecharPainel('comunidade')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <button onclick="fecharPainel('comunidade')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
         <h2>Comunidade</h2>
     </div>
-
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
         <div id="display-tempo" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
-            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
+            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">PRÓXIMA SESSÃO EM:</small>
+            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">00h 00m 00s</span>
         </div>
 
-        <div id="cronometro-da-dao">
-             <p style="text-align:center; color:#8e8e93; font-size:12px;">Buscando pautas no cofre...</p>
+        <div id="lista-pautas-comunidade">
+             <p style="text-align:center; color:#8e8e93; font-size:12px;">Buscando sugestões da comunidade...</p>
         </div>
     </div>
-</div>            
+</div>
 
-     <div id="painel-governo" class="painel-folha">
+<div id="painel-governo" class="painel-folha">
     <div class="barra-fechar" onclick="fecharPainel('governo')">
         <div class="indicador-puxar"></div>
     </div>
@@ -262,20 +260,37 @@
         <button onclick="fecharPainel('governo')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
         <h2>Governo</h2>
     </div>
-    <div class="conteudo-interno" style="padding: 20px;">
-        <p style="text-align:center; color:#888;">Nenhuma pauta para votação no momento.</p>
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <span id="contador-assinaturas" style="font-weight: bold; color: #007AFF;">0 de 11 Assinaturas</span>
+        </div>
+        
+        <div id="lista-pautas-governo">
+            <p style="text-align:center; color:#888;">Nenhuma pauta para execução no momento.</p>
+        </div>
+
+        <p id="aviso-gas" style="display:none; font-size:11px; color: #ff4444; text-align: center; margin-top: 10px;">
+            ⚠️ Você é o último assinante. Esta ação executará a transação na rede.
+        </p>
     </div>
-</div>       
+</div>
 
 <div id="painel-mural" class="painel-folha">
-    <div class="barra-fechar">
+    <div class="barra-fechar" onclick="fecharPainel('mural')">
         <div class="indicador-puxar"></div>
     </div>
-    
     <div class="area-header">
-        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
         <h2>Mural</h2>
     </div>
+    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
+        <div id="lista-mural-automatica">
+            <div class="card-pauta" style="border-left: 4px solid #007AFF;">
+                <p style="font-size: 14px; color: #333;">Carregando histórico do protocolo...</p>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
         <div class="card-pauta" style="border-left: 4px solid #007AFF;">
