@@ -1,228 +1,48 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nitrogênio Protocolo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/html5-qrcode"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-</head>
-<body>
-
-    <div id="splash-screen">
-        <div class="splash-content">
-            <div id="text-dao" class="splash-text">DAO</div>
-            <div id="text-nitrogenio" class="splash-text">Nitrogênio</div>
-            <img src="raposa.png" alt="Logo" id="splash-logo">
-        </div>
-    </div>
-
-    <div id="modal-termos" class="modal-cortina">
-        <div class="cortina-content">
-            <img src="raposa.png" alt="Logo" class="raposa-topo">
-            <div class="texto-termos">
-                <h3>Protocolo Nitrogênio</h3>
-                <p>*Este software é uma interface de governança descentralizada sem promessas de lucro.</p>
-                <label class="check-container">
-                    <input type="checkbox" id="check-tecnico" onchange="validarTermos()">
-                    <span class="checkmark"></span> Li e aceito os termos técnicos.
-                </label>
-                <label class="check-container">
-                    <input type="checkbox" id="check-responsabilidade" onchange="validarTermos()">
-                    <span class="checkmark"></span> Sou responsável por minhas transações.
-                </label>
-            </div>
-            <div class="rodape-termos">
-                <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
-                <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled>avançar</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="home-app">
-        <header class="header-app">
-            <div class="logo-text">Nitrogênio</div>
+<header id="header-app">
+    <div class="header-content">
+        <span class="brand-name">NITROGÊNIO</span>
+        <div class="header-actions">
+            <button id="toggle-privacy" class="btn-eye"><i class="fa-solid fa-eye"></i></button>
             <button id="connect-trigger" class="btn-connect">CONECTAR</button>
-        </header>
-
-        <div class="balance-section" style="margin-top: 30px;">
-            <div class="balance-label">Saldo em Conta</div>
-            <div class="balance-main">
-                <span class="balance-amount">0.00 BNB</span>
-            </div>
-        </div>
-
-        <div class="action-bar" style="margin-top: 50px;">
-            <div class="btn-wrapper" onclick="abrirPagar()">
-                <div class="action-item"><i class="fa-solid fa-arrow-up"></i></div>
-                <span class="label-visual">pagar</span>
-            </div>
-            <div class="btn-wrapper" onclick="abrirReceber()">
-                <div class="action-item"><i class="fa-solid fa-arrow-down"></i></div>
-                <span class="label-visual">receber</span>
-            </div>
-            <div class="btn-wrapper">
-                <div class="action-item"><i class="fa-solid fa-right-left"></i></div>
-                <span class="label-visual">trocar</span>
-            </div>
-        </div>
-
-        <div class="carousel-wrapper" style="margin-top: 80px;">
-            <div class="room-carousel">
-                <div class="room-card" onclick="abrirNFT()">
-                    <div class="room-icon"><img src="raposa.png" style="height: 40px;"></div>
-                    <h3>NFT ALPHA</h3><p>Identidade</p>
-                </div>
-                <div class="room-card" onclick="abrirPainel('comunidade')">
-                    <div class="room-icon"><i class="fa-solid fa-users"></i></div>
-                    <h3>COMUNIDADE</h3><p>Exercícios</p>
-                </div>
-                <div class="room-card" onclick="abrirPainel('governo')">
-                    <div class="room-icon"><i class="fa-solid fa-building-columns"></i></div>
-                    <h3>GOVERNO</h3><p>Decisões</p>
-                </div>
-                <div class="room-card" onclick="abrirPainel('mural')">
-                    <div class="room-icon"><i class="fa-solid fa-desktop"></i></div>
-                    <h3>MURAL</h3><p>Transparência</p>
-                </div>
-                <div class="room-card" onclick="abrirPainel('coleta')">
-                    <div class="room-icon"><i class="fa-solid fa-leaf"></i></div>
-                    <h3>COLETA</h3><p>Ativos</p>
-                </div>
-                <div class="room-card" onclick="abrirPainel('protocolo')">
-                    <div class="room-icon"><i class="fa-solid fa-file-shield"></i></div>
-                    <h3>PROTOCOLO</h3><p>Regras</p>
-                </div>
-                <div class="room-card" onclick="abrirPainel('cofre')">
-                    <div class="room-icon"><i class="fa-solid fa-vault"></i></div>
-                    <h3>COFRE</h3><p>Liquidez</p>
-                </div>
-            </div> 
-        </div>
-
-        <nav class="nav-bar">
-            <div class="nav-item active" onclick="location.reload()"><i class="fa-solid fa-house"></i></div>
-            <div class="nav-item" onclick="window.open('https://t.me/ProtocoloNitrogenio')"><i class="fa-brands fa-telegram"></i></div>
-            <div class="nav-item" onclick="location.href='mailto:nitrogenioprotocolo@gmail.com'"><i class="fa-solid fa-circle-question"></i></div>
-        </nav>
-    </div>
-
-    <div id="area-receber" class="area-interna">
-        <header class="area-header">
-            <i class="fa-solid fa-angle-left" onclick="fecharReceber()"></i>
-            <h2>RECEBER</h2>
-        </header>
-        <div class="conversion-card">
-            <div class="balance-label">Valor a receber (BNB)</div>
-            <input type="number" id="bnb-receber" placeholder="0.00" step="0.0001">
-        </div>
-        <div class="grupo-botoes">
-            <button class="btn-pilula btn-cancelar" onclick="fecharReceber()">CANCELAR</button>
-            <button id="btn-gerar-qr" class="btn-pilula btn-acao" onclick="gerarCobranca()" disabled>GERAR QR</button>
-        </div>
-        <div id="qrcode-container"></div>
-    </div>
-
-    <div id="area-pagar" class="area-interna">
-        <header class="area-header">
-            <i class="fa-solid fa-angle-left" onclick="fecharPagar()"></i>
-            <h2>PAGAR</h2>
-        </header>
-        <div class="conversion-card">
-            <div class="balance-label">VALOR EM BNB</div>
-            <input type="number" id="valor-pagar" placeholder="0.0000" step="0.0001">
-            <div class="balance-label">DESTINO (CARTEIRA)</div>
-            <div class="address-container">
-                <input type="text" id="wallet-address" placeholder="0x...">
-                <i class="fas fa-qrcode" onclick="toggleScanner()"></i>
-            </div>
-            <div id="reader" style="display:none;"></div>
-        </div>
-        <div class="grupo-botoes">
-            <button class="btn-pilula btn-cancelar" onclick="fecharPagar()">CANCELAR</button>
-            <button id="btn-confirmar-pagar" class="btn-pilula btn-acao" disabled>CONFIRMAR</button>
         </div>
     </div>
+</header>
 
-    <div id="area-nft" class="area-interna" style="background-color: #007AFF !important;">
-        <header class="area-header" style="background: transparent;">
-            <i class="fa-solid fa-angle-left" onclick="fecharNFT()" style="color: white;"></i>
-            <h2 style="color: white;">NFT ALPHA</h2>
-        </header>
-        <div style="height: 85%; background: white; border-radius: 40px 40px 0 0; padding: 40px 25px; margin-top: 20px;">
-            <h2 style="text-align: center; color: #333;">IDENTIDADE ALPHA</h2>
-            <p style="text-align: center; color: #666; margin-top: 20px;">Identidade Digital do Protocolo Nitrogênio.</p>
-            <button onclick="iniciarMint()" class="btn-acao active" style="width: 100%; margin-top: 40px;">MINTAR AGORA</button>
+<main class="main-content">
+    
+    <section class="carousel-rail alpha-actions">
+        <div class="carousel-inner">
+            <div class="action-item" onclick="abrirPagar()"><div class="icon-circle"><i class="fa-solid fa-arrow-up"></i></div><span>PAGAR</span></div>
+            <div class="action-item" onclick="abrirReceber()"><div class="icon-circle"><i class="fa-solid fa-arrow-down"></i></div><span>RECEBER</span></div>
+            <div class="action-item" onclick="toggleScanner()"><div class="icon-circle"><i class="fa-solid fa-qrcode"></i></div><span>QR CODE</span></div>
+            <div class="action-item"><div class="icon-circle"><i class="fa-solid fa-repeat"></i></div><span>TROCAR</span></div>
+            <div class="action-item" onclick="abrirNFT()"><div class="icon-circle"><i class="fa-solid fa-id-card"></i></div><span>NFT</span></div>
+            <div class="action-item"><div class="icon-circle"><i class="fa-solid fa-rotate"></i></div><span>GIRO</span></div>
         </div>
-    </div>
+    </section>
 
-    <div id="painel-comunidade" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('comunidade')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Comunidade</h2></div>
-        <div class="conteudo-interno">
-            <div id="display-tempo" style="background:#f0f7ff; padding:15px; border-radius:12px; text-align:center;">
-                <small style="color:#007AFF;">PRÓXIMA SESSÃO EM:</small>
-                <div id="tempo-restante" style="font-size:22px; font-weight:800;">00h 00m 00s</div>
-            </div>
-            <div id="lista-pautas-comunidade"></div>
+    <section class="carousel-rail dao-management">
+        <div class="carousel-inner">
+            <div class="card-management" onclick="abrirPainel('comunidade')"><h3>COMUNIDADE</h3><p>Votos e Sugestões</p></div>
+            <div class="card-management" onclick="abrirPainel('governo')"><h3>GOVERNO</h3><p>Pautas da Safe</p></div>
+            <div class="card-management" onclick="abrirPainel('mural')"><h3>MURAL</h3><p>Histórico Alpha</p></div>
         </div>
-    </div>
+    </section>
 
-    <div id="painel-governo" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('governo')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Governo</h2></div>
-        <div class="conteudo-interno">
-            <div id="contador-assinaturas" style="text-align:center; color:#007AFF; font-weight:bold; margin-bottom:15px;">0 de 11 Assinaturas</div>
-            <div id="lista-pautas-governo"></div>
-            <p id="aviso-gas" style="display:none; color:red; font-size:11px; text-align:center;">⚠️ Você é o último assinante.</p>
+    <section class="carousel-rail ops-lifestyle">
+        <div class="carousel-inner">
+            <div class="card-lifestyle" onclick="abrirPainel('protocolo')"><h3>PROTOCOLO</h3></div>
+            <div class="card-lifestyle" onclick="abrirPainel('cofre')"><h3>COFRE</h3></div>
+            <div class="card-lifestyle" onclick="abrirPainel('lazer')"><h3>LAZER</h3></div>
         </div>
-    </div>
+    </section>
 
-    <div id="painel-mural" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('mural')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Mural</h2></div>
-        <div class="conteudo-interno"><div id="lista-mural-automatica"></div></div>
-    </div>
+</main>
 
-    <div id="painel-coleta" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('coleta')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Coleta</h2></div>
-        <div class="conteudo-interno">
-            <button class="btn-acao active" style="width:100%; background:#28a745 !important;">EFETUAR RESGATE (CLAIM)</button>
-        </div>
-    </div>
-
-    <div id="painel-protocolo" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('protocolo')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Protocolo</h2></div>
-        <div class="conteudo-interno">
-            <div class="card-pauta" style="border-left:4px solid #007AFF;"><p>Decisões via conselho de 21 Guardiões.</p></div>
-        </div>
-    </div>
-
-    <div id="painel-cofre" class="painel-folha">
-        <div class="barra-fechar" onclick="fecharPainel('cofre')"><div class="indicador-puxar"></div></div>
-        <div class="area-header"><h2>Cofre</h2></div>
-        <div class="conteudo-interno">
-            <div style="background:#f0f7ff; padding:20px; border-radius:16px; text-align:center;">
-                <div id="saldo-safe-real" style="font-size:28px; font-weight:800;">0.0000 BNB</div>
-            </div>
-            <a href="https://bscscan.com/address/0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219" target="_blank" class="btn-acao active" style="text-decoration:none; display:block; text-align:center;">AUDITAR NO BSCSCAN</a>
-        </div>
-    </div>
-
-    <div id="modal-votacao" class="modal-votacao-sheet">
-        <div style="width:40px; height:5px; background:#ddd; margin: 0 auto 15px; border-radius:10px;"></div>
-        <h3>Confirmar Voto</h3>
-        <div style="display:flex; gap:10px; margin-top:20px;">
-            <button onclick="fecharModalVotacao()" style="flex:1; padding:15px; border-radius:12px; border:none;">NÃO</button>
-            <button onclick="processarVoto('SIM')" style="flex:1; padding:15px; border-radius:12px; border:none; background:#007AFF; color:white;">SIM</button>
-        </div>
-    </div>
-
-    <script src="script.js?v=2.2"></script>
-</body>
-</html>
+<footer id="footer-app">
+    <nav class="footer-nav">
+        <button onclick="window.location.reload()"><i class="fa-solid fa-house"></i><span>HOME</span></button>
+        <button onclick="window.open('https://t.me/seuchanal')"><i class="fa-brands fa-telegram"></i><span>CANAL</span></button>
+        <button onclick="location.href='mailto:suporte@exemplo.com'"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
+    </nav>
+</footer>
