@@ -93,9 +93,3 @@ div {
     padding-top: 10px;
 }
 
-/* Deixa o card do NFT em espera, totalmente limpo */
-.nft-special {
-    border: 2px solid var(--azul-blueberry);
-    background: #ffffff;
-    box-shadow: none !important;
-}
