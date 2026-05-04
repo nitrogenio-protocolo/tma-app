@@ -2,47 +2,62 @@
     <div class="header-content">
         <span class="brand-name">NITROGÊNIO</span>
         <div class="header-actions">
-            <button id="toggle-privacy" class="btn-eye"><i class="fa-solid fa-eye"></i></button>
-            <button id="connect-trigger" class="btn-connect">CONECTAR</button>
+            <button id="btn-eye" onclick="togglePrivacy()"><i class="fa-solid fa-eye"></i></button>
+            <button id="connect-trigger" class="btn-wallet">CONECTAR</button>
         </div>
     </div>
 </header>
 
 <main class="main-content">
     
-    <section class="carousel-rail alpha-actions">
-        <div class="carousel-inner">
-            <div class="action-item" onclick="abrirPagar()"><div class="icon-circle"><i class="fa-solid fa-arrow-up"></i></div><span>PAGAR</span></div>
-            <div class="action-item" onclick="abrirReceber()"><div class="icon-circle"><i class="fa-solid fa-arrow-down"></i></div><span>RECEBER</span></div>
-            <div class="action-item" onclick="toggleScanner()"><div class="icon-circle"><i class="fa-solid fa-qrcode"></i></div><span>QR CODE</span></div>
-            <div class="action-item"><div class="icon-circle"><i class="fa-solid fa-repeat"></i></div><span>TROCAR</span></div>
-            <div class="action-item" onclick="abrirNFT()"><div class="icon-circle"><i class="fa-solid fa-id-card"></i></div><span>NFT</span></div>
-            <div class="action-item"><div class="icon-circle"><i class="fa-solid fa-rotate"></i></div><span>GIRO</span></div>
+    <section class="hub-carousel">
+        <div class="carousel-track">
+            <div class="item-alpha" onclick="abrirPagar()"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
+            <div class="item-alpha" onclick="abrirReceber()"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
+            <div class="item-alpha" onclick="toggleScanner()"><i class="fa-solid fa-qrcode"></i><span>QR CODE</span></div>
+            <div class="item-alpha"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
+            <div class="item-alpha" onclick="abrirNFT()"><i class="fa-solid fa-id-card"></i><span>NFT</span></div>
         </div>
     </section>
 
-    <section class="carousel-rail dao-management">
-        <div class="carousel-inner">
-            <div class="card-management" onclick="abrirPainel('comunidade')"><h3>COMUNIDADE</h3><p>Votos e Sugestões</p></div>
-            <div class="card-management" onclick="abrirPainel('governo')"><h3>GOVERNO</h3><p>Pautas da Safe</p></div>
-            <div class="card-management" onclick="abrirPainel('mural')"><h3>MURAL</h3><p>Histórico Alpha</p></div>
+    <section class="hub-carousel secondary">
+        <div class="carousel-track">
+            <div class="item-dao" onclick="abrirPainel('comunidade')">
+                <i class="fa-solid fa-users"></i>
+                <p>COMUNIDADE</p>
+            </div>
+            <div class="item-dao" onclick="abrirPainel('governo')">
+                <i class="fa-solid fa-building-columns"></i>
+                <p>GOVERNO</p>
+            </div>
+            <div class="item-dao" onclick="abrirPainel('mural')">
+                <i class="fa-solid fa-chalkboard"></i>
+                <p>MURAL</p>
+            </div>
         </div>
     </section>
 
-    <section class="carousel-rail ops-lifestyle">
-        <div class="carousel-inner">
-            <div class="card-lifestyle" onclick="abrirPainel('protocolo')"><h3>PROTOCOLO</h3></div>
-            <div class="card-lifestyle" onclick="abrirPainel('cofre')"><h3>COFRE</h3></div>
-            <div class="card-lifestyle" onclick="abrirPainel('lazer')"><h3>LAZER</h3></div>
+    <section class="hub-carousel tertiary">
+        <div class="carousel-track">
+            <div class="item-op" onclick="abrirPainel('protocolo')">
+                <i class="fa-solid fa-file-shield"></i>
+                <span>PROTOCOLO</span>
+            </div>
+            <div class="item-op" onclick="abrirPainel('cofre')">
+                <i class="fa-solid fa-vault"></i>
+                <span>COFRE</span>
+            </div>
+            <div class="item-op" onclick="abrirPainel('lazer')">
+                <i class="fa-solid fa-couch"></i>
+                <span>LAZER</span>
+            </div>
         </div>
     </section>
 
 </main>
 
 <footer id="footer-app">
-    <nav class="footer-nav">
-        <button onclick="window.location.reload()"><i class="fa-solid fa-house"></i><span>HOME</span></button>
-        <button onclick="window.open('https://t.me/seuchanal')"><i class="fa-brands fa-telegram"></i><span>CANAL</span></button>
-        <button onclick="location.href='mailto:suporte@exemplo.com'"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
-    </nav>
+    <button class="nav-btn active" onclick="location.reload()"><i class="fa-solid fa-house"></i><span>HOME</span></button>
+    <a href="https://t.me/seucanal" target="_blank" class="nav-btn"><i class="fa-brands fa-telegram"></i><span>OFICIAL</span></a>
+    <button class="nav-btn" onclick="abrirSuporte()"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
 </footer>
