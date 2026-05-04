@@ -29,7 +29,7 @@
                 <span class="symbol">N</span>
             </div>
             <div class="conversion">
-                <p>≈ R$ 5.420,00</p>
+                <p>Carregando carteira...</p>
             </div>
         </div>
     </section>
@@ -78,29 +78,113 @@
 
 <div id="container-salas">
     
+    <div id="sala-pagar" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-pagar')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>PAGAR</h2>
+        </div>
+        <div class="sala-body">Escaneie o QR Code ou cole a chave para pagar.</div>
+    </div>
+
+    <div id="sala-receber" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-receber')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>RECEBER</h2>
+        </div>
+        <div class="sala-body">Seu endereço ou QR Code para recebimento.</div>
+    </div>
+
+    <div id="sala-coletar" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-coletar')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>COLETAR</h2>
+        </div>
+        <div class="sala-body">Coleta de Token N e recompensas diárias.</div>
+    </div>
+
+    <div id="sala-trocar" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-trocar')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>TROCAR</h2>
+        </div>
+        <div class="sala-body">Troque Token N por BNB ou outros ativos.</div>
+    </div>
+
+    <div id="sala-nft" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-nft')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>NFT ALPHA</h2>
+        </div>
+        <div class="sala-body">Mint seu NFT de fundador do protocolo.</div>
+    </div>
+
+    <div id="sala-comunidade" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-comunidade')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>COMUNIDADE</h2>
+        </div>
+        <div class="sala-body">Espaço de discussão e pautas da DAO.</div>
+    </div>
+
+    <div id="sala-governo" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-governo')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>GOVERNO</h2>
+        </div>
+        <div class="sala-body">Votações e decisões dos 21 Guardiões.</div>
+    </div>
+
+    <div id="sala-mural" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-mural')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>MURAL</h2>
+        </div>
+        <div class="sala-body">Transparência e avisos oficiais do Nitrogênio.</div>
+    </div>
+
     <div id="sala-protocolo" class="sala-card">
         <div class="sala-handle"></div>
         <div class="sala-header">
             <button class="btn-fechar" onclick="fecharSala('sala-protocolo')"><i class="fa-solid fa-xmark"></i></button>
             <h2>PROTOCOLO</h2>
         </div>
-        <div class="sala-body">
-            <div class="doc-item">
-                <h4>§ 1. O Contrato Safe</h4>
-                <p>A tesouraria é regida por 21 guardiões, exigindo 11 assinaturas para qualquer saída de capital.</p>
-            </div>
-            <div class="doc-item">
-                <h4>§ 2. Token N</h4>
-                <p>O suprimento é fixo em 1 bilhão de unidades, sem funções de cunhagem pós-implantação.</p>
-            </div>
-        </div>
+        <div class="sala-body">Manual de governança e regras fundamentais.</div>
     </div>
 
-    <div id="sala-pagar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-pagar')"><i class="fa-solid fa-xmark"></i></button><h2>PAGAR</h2></div><div class="sala-body" id="corpo-pagar"></div></div>
-    
-    <div id="sala-comunidade" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-comunidade')"><i class="fa-solid fa-xmark"></i></button><h2>COMUNIDADE</h2></div><div class="sala-body" id="lista-pautas-comunidade"></div></div>
+    <div id="sala-cofre" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-cofre')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>COFRE</h2>
+        </div>
+        <div class="sala-body">Tesouraria Safe e gestão de ativos bloqueados.</div>
+    </div>
 
-    <div id="sala-governo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-governo')"><i class="fa-solid fa-xmark"></i></button><h2>GOVERNO</h2></div><div class="sala-body" id="lista-pautas-governo"></div></div>
+    <div id="sala-lazer" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-lazer')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>LAZER</h2>
+        </div>
+        <div class="sala-body">Benefícios e diversão para a comunidade.</div>
+    </div>
+
+    <div id="sala-suporte" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-suporte')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>SUPORTE</h2>
+        </div>
+        <div class="sala-body">Ajuda técnica e contato direto.</div>
+    </div>
 
 </div>
 
