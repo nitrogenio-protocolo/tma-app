@@ -312,14 +312,42 @@ async function carregarPautasReaisDoCofre() {
 
         // --- LÓGICA DO MURAL (HISTÓRICO) ---
         if (containerMural) {
+            // LIMPEZA CRÍTICA: Garante que o mural comece vazio antes de desenhar
             containerMural.innerHTML = "";
-            pautasExecutadas.slice(0, 10).forEach(tx => { // Mostra as últimas 10
+
+            // Filtra apenas as executadas e remove duplicatas por Nonce
+            const únicas = [];
+            const mapa = new Set();
+            for (const tx of pautasExecutadas) {
+                if (!mapa.has(tx.nonce)) {
+                    mapa.add(tx.nonce);
+                    únicas.push(tx);
+                }
+            }
+
+            // Mostra as últimas 10 transações reais
+            únicas.slice(0, 10).forEach(tx => {
                 const cardMural = document.createElement('div');
                 cardMural.className = 'card-pauta';
                 cardMural.style.borderLeft = "4px solid #34C759";
+                
+                // Trata o texto para não aparecer "Execução concluída" se houver descrição
+                let textoFinal = tx.description || "Ação de Governança Nitrogênio";
+                
+                // Se o texto for um JSON (com chaves {}), tenta limpar
+                if (textoFinal.includes('{')) {
+                   try {
+                       const d = JSON.parse(textoFinal);
+                       textoFinal = d.description || d.name || textoFinal;
+                   } catch(e) { /* mantém o original se der erro */ }
+                }
+
                 cardMural.innerHTML = `
-                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-                    <p style="font-size:13px; margin:5px 0;">${tx.description || "Execução concluída"}</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+                        <span style="font-size:10px; color:#8e8e93;">NONCE #${tx.nonce}</span>
+                    </div>
+                    <p style="font-size:14px; font-weight:700; margin:8px 0; color:#1c1c1e;">${textoFinal}</p>
                     <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
                         Ver comprovante na Blockchain ↗
                     </a>
@@ -327,11 +355,6 @@ async function carregarPautasReaisDoCofre() {
                 containerMural.appendChild(cardMural);
             });
         }
-
-    } catch (e) {
-        console.error("Erro ao conectar com o Cofre:", e);
-    }
-}
 
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
 function abrirNFT() {
