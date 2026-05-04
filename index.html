@@ -268,42 +268,25 @@
     <div class="barra-fechar" onclick="fecharPainel('governo')">
         <div class="indicador-puxar"></div>
     </div>
-    
     <div class="area-header">
-        <button onclick="fecharPainel('governo')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <button onclick="fecharPainel('governo')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
         <h2>Governo</h2>
     </div>
-
-    <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
-        <div id="status-quorum" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 5px;">PROGRESSO DA PAUTA</small>
-            <div id="contador-assinaturas" style="font-size: 20px; font-weight: 800; color: #333;">Aguardando dados...</div>
-            
-            <div id="aviso-gas" style="display: none; margin-top: 10px; color: #cc0000; font-size: 11px; font-weight: bold;">
-                ⚠️ Você é o assinante final. Certifique-se de ter BNB para o gás.
-            </div>
-        </div>
-
-        <div id="lista-pautas-governo">
-            </div>
-
-        <div style="margin-top: 20px; padding: 15px; background: #fdf6ec; border-radius: 10px; border: 1px solid #faecd8;">
-            <p style="font-size: 11px; color: #e6a23c; margin: 0; line-height: 1.4;">
-                <strong>Nota Técnica:</strong> A execução na blockchain ocorre automaticamente após a 11ª assinatura confirmada.
-            </p>
-        </div>
-    </div>
-</div>    
+    <div class="conteudo-interno" style="padding: 20px;">
+        <div id="contador-assinaturas" style="display:none;"></div> <div id="aviso-gas" style="display:none;">⚠️ Atenção: Gás necessário</div> <div id="lista-pautas-governo"></div> </div>
+</div>
 
 <div id="painel-mural" class="painel-folha">
     <div class="barra-fechar" onclick="fecharPainel('mural')">
         <div class="indicador-puxar"></div>
     </div>
-    
     <div class="area-header">
-        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
+        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
         <h2>Mural</h2>
     </div>
+    <div class="conteudo-interno" style="padding: 20px;">
+        <div id="lista-mural-automatica"></div> </div>
+</div>
 
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
         <div style="margin-bottom: 25px; text-align: center;">
