@@ -310,28 +310,33 @@ async function carregarPautasReaisDoCofre() {
             }
         }
 
-        // --- LÓGICA DO MURAL (HISTÓRICO) ---
-        if (containerMural) {
-            containerMural.innerHTML = "";
-            pautasExecutadas.slice(0, 10).forEach(tx => { // Mostra as últimas 10
-                const cardMural = document.createElement('div');
-                cardMural.className = 'card-pauta';
-                cardMural.style.borderLeft = "4px solid #34C759";
-                cardMural.innerHTML = `
-                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-                    <p style="font-size:13px; margin:5px 0;">${tx.description || "Execução concluída"}</p>
+        // --- LÓGICA DO MURAL (FILTRADA E LIMPA) ---
+if (containerMural) {
+    containerMural.innerHTML = "";
+    
+    // 1. Filtramos para garantir que só apareçam pautas com descrição ou valor
+    // 2. Usamos o slice para garantir que, no futuro, nunca passe de 10
+    pautasExecutadas
+        .filter(tx => tx.description && tx.description !== "") // Ignora pautas sem nome
+        .slice(0, 10) 
+        .forEach(tx => {
+            const cardMural = document.createElement('div');
+            cardMural.className = 'card-pauta';
+            cardMural.style.borderLeft = "4px solid #34C759";
+            cardMural.innerHTML = `
+                <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+                <p style="font-size:13px; margin:5px 0; font-weight:600;">${tx.description}</p>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10px; color:#8e8e93;">Nonce #${tx.nonce}</span>
                     <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
-                        Ver comprovante na Blockchain ↗
+                        Ver na Blockchain ↗
                     </a>
-                `;
-                containerMural.appendChild(cardMural);
-            });
-        }
-
-    } catch (e) {
-        console.error("Erro ao conectar com o Cofre:", e);
-    }
+                </div>
+            `;
+            containerMural.appendChild(cardMural);
+        });
 }
+        
 
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
 function abrirNFT() {
