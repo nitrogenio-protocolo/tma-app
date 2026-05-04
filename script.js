@@ -261,82 +261,64 @@ function fecharModalVotacao() {
 async function carregarPautasReaisDoCofre() {
     const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${ENDERECO_COFRE_SAFE}/multisig-transactions/`;
     
-    // Seleciona os novos containers que criamos no HTML
     const containerGoverno = document.getElementById('lista-pautas-governo');
     const containerMural = document.getElementById('lista-mural-automatica');
-    const displayContador = document.getElementById('contador-assinaturas');
-    const avisoGas = document.getElementById('aviso-gas');
 
     try {
         const resposta = await fetch(urlAPI);
         const dados = await resposta.json();
-        
-        // Separa o que é pendente do que já foi executado
-        const pautasPendentes = dados.results.filter(tx => !tx.isExecuted);
-        const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
+        if (!dados || !dados.results) return;
 
-        // --- LÓGICA DA SALA GOVERNO ---
+        // --- LÓGICA DA SALA GOVERNO (PENDENTES) ---
         if (containerGoverno) {
-            if (pautasPendentes.length === 0) {
-                containerGoverno.innerHTML = "<p style='text-align:center; color:#8e8e93; font-size:12px;'>Nenhuma pauta para execução no momento.</p>";
-            } else {
-                containerGoverno.innerHTML = "";
-                pautasPendentes.forEach(tx => {
-                    const confirmacoes = tx.confirmations ? tx.confirmations.length : 0;
-                    
-                    // Atualiza o contador global se for a pauta mais recente
-                    if(displayContador) displayContador.innerText = `${confirmacoes} de 11 Assinaturas`;
-                    
-                    // Alerta de Gás para o 11º Guardião
-                    if(confirmacoes === 10 && avisoGas) {
-                        avisoGas.style.display = 'block';
-                    }
+            const pautasPendentes = dados.results.filter(tx => !tx.isExecuted);
+            containerGoverno.innerHTML = pautasPendentes.length === 0 ? 
+                "<p style='text-align:center; font-size:12px; color:#8e8e93;'>Nenhuma pauta pendente.</p>" : "";
 
-                    const card = document.createElement('div');
-                    card.className = 'card-pauta';
-                    card.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:8px;">
-                            <span style="color:#8e8e93;">NONCE #${tx.nonce}</span>
-                            <span style="color:#007AFF;">${confirmacoes}/11 ASSINATURAS</span>
+            pautasPendentes.forEach(tx => {
+                const confs = tx.confirmations ? tx.confirmations.length : 0;
+                containerGoverno.innerHTML += `
+                    <div class="card-pauta">
+                        <div style="display:flex; justify-content:space-between; font-size:10px;">
+                            <span>NONCE #${tx.nonce}</span>
+                            <span style="color:#007AFF;">${confs}/11 ASSINATURAS</span>
                         </div>
-                        <p style="font-size:14px; font-weight:700; margin:10px 0;">${tx.description || "Transação de Protocolo"}</p>
-                        <button class="btn-votar" onclick="assinarNoSafe('${tx.safeTxHash}')" 
-                                style="width:100%; background:#007AFF; color:white; border:none; padding:12px; border-radius:50px; font-weight:bold;">
-                            ${confirmacoes >= 10 ? 'EXECUTAR (PAGAR GÁS)' : 'ASSINAR AGORA'}
+                        <p style="font-size:14px; font-weight:bold; margin:10px 0;">${tx.description || "Transação de Protocolo"}</p>
+                        <button class="btn-votar" onclick="assinarNoSafe('${tx.safeTxHash}')" style="width:100%; background:#007AFF; color:white; border:none; padding:12px; border-radius:50px;">
+                            ${confs >= 10 ? 'EXECUTAR (PAGAR GÁS)' : 'ASSINAR AGORA'}
                         </button>
-                    `;
-                    containerGoverno.appendChild(card);
-                });
-            }
-        }
-
-        /// --- LÓGICA DO MURAL (VERSÃO ANTI-TRAVAMENTO) ---
-if (containerMural) {
-    try {
-        containerMural.innerHTML = "";
-        if (pautasExecutadas && pautasExecutadas.length > 0) {
-            pautasExecutadas.slice(0, 10).forEach(tx => {
-                const cardMural = document.createElement('div');
-                cardMural.className = 'card-pauta';
-                cardMural.style.borderLeft = "4px solid #34C759";
-                
-                // Texto simples para não ter erro de processamento no celular
-                let desc = tx.description || "Execução concluída";
-                
-                cardMural.innerHTML = `
-                    <div style="display:flex; justify-content:space-between;">
-                        <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-                        <span style="font-size:10px; color:#8e8e93;">#${tx.nonce}</span>
-                    </div>
-                    <p style="font-size:13px; margin:5px 0; font-weight:bold;">${desc}</p>
-                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF;">Ver no Blockchain ↗</a>
-                `;
-                containerMural.appendChild(cardMural);
+                    </div>`;
             });
         }
-    } catch (err) {
-        console.log("Erro no mural, mas mantendo app vivo.");
-        containerMural.innerHTML = "<p>Erro ao carregar histórico.</p>";
+
+        // --- LÓGICA DO MURAL (EXECUTADAS) ---
+        if (containerMural) {
+            const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
+            containerMural.innerHTML = ""; // Limpa antes de desenhar
+
+            // Filtra para não repetir Nonce
+            const filtradas = [];
+            const idsVistos = new Set();
+            for (const t of pautasExecutadas) {
+                if (!idsVistos.has(t.nonce)) {
+                    idsVistos.add(t.nonce);
+                    filtradas.push(t);
+                }
+            }
+
+            filtradas.slice(0, 10).forEach(tx => {
+                containerMural.innerHTML += `
+                    <div class="card-pauta" style="border-left: 4px solid #34C759; margin-bottom:12px;">
+                        <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅ (Nonce #${tx.nonce})</small>
+                        <p style="font-size:13px; margin:5px 0; font-weight:bold;">${tx.description || "Execução Concluída"}</p>
+                        <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+                            Ver comprovante na Blockchain ↗
+                        </a>
+                    </div>`;
+            });
+        }
+    } catch (e) {
+        console.error("Erro na sincronização:", e);
     }
 }
 
