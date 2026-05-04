@@ -35,13 +35,25 @@
     </section>
     
     <section class="hub-carousel">
-        <div class="carousel-track">
-            <div class="item-round" onclick="abrirSala('sala-pagar')"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
-            <div class="item-round" onclick="abrirSala('sala-receber')"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
-            <div class="item-round" onclick="abrirSala('sala-coletar')"><div class="n-simbolo">N</div><span>COLETAR</span></div>
-            <div class="item-round" onclick="abrirSala('sala-trocar')"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
+    <div class="carousel-track">
+        <div class="item-wrapper" onclick="abrirSala('sala-pagar')">
+            <div class="item-round"><i class="fa-solid fa-arrow-up"></i></div>
+            <span>PAGAR</span>
         </div>
-    </section>
+        <div class="item-wrapper" onclick="abrirSala('sala-receber')">
+            <div class="item-round"><i class="fa-solid fa-arrow-down"></i></div>
+            <span>RECEBER</span>
+        </div>
+        <div class="item-wrapper" onclick="abrirSala('sala-coletar')">
+            <div class="item-round"><div class="n-simbolo">N</div></div>
+            <span>COLETAR</span>
+        </div>
+        <div class="item-wrapper" onclick="abrirSala('sala-trocar')">
+            <div class="item-round"><i class="fa-solid fa-repeat"></i></div>
+            <span>TROCAR</span>
+        </div>
+    </div>
+</section>
 
     <section class="hub-carousel">
         <div class="carousel-track">
