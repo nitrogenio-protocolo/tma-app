@@ -365,18 +365,21 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-
 /* --- ESTILO DOS MINI-CARDS REAIS DO NITROGÊNIO --- */
 .card-pauta {
     background: #ffffff;
     border-radius: 20px;
     padding: 16px;
-    margin: 0 15px 15px 15px; 
+    /* Ajuste de margem para o card não bater na parede do celular */
+    margin: 10px 20px; 
+    /* O width: auto é a chave para ele não vazar */
     width: auto; 
     border: 1px solid #f2f2f7;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     text-align: left;
-    word-wrap: break-word;
+    /* Isso aqui mata o vazamento de texto se o título for grande */
+    word-wrap: break-word; 
+    overflow: hidden;
 }
 
 .card-pauta h4 {
