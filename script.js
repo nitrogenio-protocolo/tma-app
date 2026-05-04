@@ -1,71 +1,128 @@
-// --- 9. NOVOS ESPAÇOS E FUNÇÕES V2.2 ---
+/**
+ * NITROGÊNIO PROTOCOLO - v3.5 Stable
+ * Motor: Web3, Governança & Sistema de Salas (Bottom Sheets)
+ */
 
-// Função do Olho (Privacidade)
+// --- 1. CONFIGURAÇÕES E ESTADO GLOBAL ---
+const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; 
+let provider, signer, userAccount;
 let privacidadeAtiva = false;
+
+// --- 2. SISTEMA DE SALAS (CARDS QUE SOBEM) ---
+function abrirSala(id) {
+    const sala = document.getElementById(id);
+    if (sala) {
+        sala.classList.add('ativa');
+        document.body.style.overflow = 'hidden'; // Trava a home ao fundo
+        
+        // Gatilhos específicos ao abrir cada sala
+        if (id === 'sala-governo' || id === 'sala-mural') carregarPautasReaisDoCofre();
+        if (id === 'sala-comunidade') carregarVotacaoComunidade();
+        if (id === 'sala-cofre') atualizarSaldoRealCofre();
+    }
+}
+
+function fecharSala(id) {
+    const sala = document.getElementById(id);
+    if (sala) {
+        sala.classList.remove('ativa');
+        document.body.style.overflow = 'auto'; // Libera o scroll da home
+    }
+}
+
+// O "Giro Home" - Reseta tudo e volta ao topo
+function giroHome() {
+    const salas = document.querySelectorAll('.sala-card');
+    salas.forEach(s => s.classList.remove('ativa'));
+    document.body.style.overflow = 'auto';
+    
+    const mainContent = document.querySelector('.main-content');
+    if(mainContent) {
+        mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    console.log("Nitrogênio: Giro Home Executado");
+}
+
+// --- 3. PRIVACIDADE (OLHO PRETO) ---
 function togglePrivacy() {
     privacidadeAtiva = !privacidadeAtiva;
-    const btnOlho = document.querySelector('#btn-eye i');
-    const saldos = document.querySelectorAll('.balance-amount, #saldo-safe-real');
+    const btnIcon = document.querySelector('.btn-eye-black i');
+    const valorSaldo = document.querySelector('.currency');
+    const valorFiat = document.querySelector('.conversion p');
     
     if (privacidadeAtiva) {
-        btnOlho.classList.replace('fa-eye', 'fa-eye-slash');
-        saldos.forEach(el => {
-            el.dataset.valorOriginal = el.innerText; // Guarda o valor
-            el.innerText = '•••• BNB'; // Esconde
-        });
+        btnIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        valorSaldo.dataset.original = valorSaldo.innerText;
+        valorFiat.dataset.original = valorFiat.innerText;
+        valorSaldo.innerText = '••••'; 
+        valorFiat.innerText = '≈ R$ ••••';
     } else {
-        btnOlho.classList.replace('fa-eye-slash', 'fa-eye');
-        saldos.forEach(el => {
-            el.innerText = el.dataset.valorOriginal || '0.0000 BNB'; // Restaura
+        btnIcon.classList.replace('fa-eye-slash', 'fa-eye');
+        valorSaldo.innerText = valorSaldo.dataset.original || '1.000,00';
+        valorFiat.innerText = valorFiat.dataset.original || '≈ R$ 5.420,00';
+    }
+}
+
+// --- 4. WEB3: CONEXÃO E CARTEIRA ---
+async function syncWallet() {
+    if (!window.ethereum) return alert("Por favor, use o navegador da MetaMask.");
+    try {
+        const browserProvider = new ethers.BrowserProvider(window.ethereum);
+        const accounts = await browserProvider.send("eth_requestAccounts", []);
+        userAccount = accounts[0];
+        provider = browserProvider;
+        signer = await browserProvider.getSigner();
+        
+        updateUI();
+        atualizarSaldoRealCofre();
+    } catch (err) { 
+        console.error("Erro na conexão:", err); 
+    }
+}
+
+function updateUI() {
+    const btnConectar = document.querySelector('.btn-wallet');
+    const displaySaldo = document.querySelector('.currency');
+
+    if (userAccount && btnConectar) {
+        btnConectar.innerText = `${userAccount.substring(0, 4)}...${userAccount.substring(38)}`;
+        provider.getBalance(userAccount).then(bal => {
+            const formatBal = parseFloat(ethers.formatEther(bal)).toFixed(2);
+            if (displaySaldo) displaySaldo.innerText = formatBal;
         });
     }
 }
 
-// Espaço Lazer (Conteúdo Inexistente - Placeholder)
-function carregarConteudoLazer() {
-    const container = document.getElementById('conteudo-lazer');
-    if (!container) return;
-    
-    // Simulação de conteúdo para o futuro
-    container.innerHTML = `
-        <div class="card-lazer" style="background: #f8fafc; padding: 20px; border-radius: 15px; text-align: center;">
-            <i class="fa-solid fa-gamepad" style="font-size: 40px; color: #007AFF; margin-bottom: 10px;"></i>
-            <h3>Área de Descompressão</h3>
-            <p>Em breve: Games Alpha e Rádio Nitrogênio.</p>
-            <span class="status-tag">BREVE</span>
-        </div>
-    `;
+async function atualizarSaldoRealCofre() {
+    if (!provider) return;
+    try {
+        const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
+        const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
+        console.log("Saldo no Cofre dos Guardiões:", formatado, "BNB");
+    } catch (err) { console.error("Erro ao ler Safe:", err); }
 }
 
-// Espaço Protocolo (Conteúdo Inexistente - Placeholder)
-function carregarDocumentacaoProtocolo() {
-    const container = document.getElementById('conteudo-protocolo');
-    if (!container) return;
+// --- 5. INICIALIZAÇÃO E ESCUTA DE EVENTOS ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Evento do Olho de Privacidade
+    document.querySelector('.btn-eye-black')?.addEventListener('click', togglePrivacy);
     
-    container.innerHTML = `
-        <div class="doc-item" style="border-bottom: 1px solid #eee; padding: 15px 0;">
-            <h4 style="margin:0">§ 1. O Contrato Safe</h4>
-            <p style="font-size: 12px; color: #666;">A tesouraria é regida por 21 guardiões, exigindo 11 assinaturas para qualquer saída de capital.</p>
-        </div>
-        <div class="doc-item" style="padding: 15px 0;">
-            <h4 style="margin:0">§ 2. Token N</h4>
-            <p style="font-size: 12px; color: #666;">O suprimento é fixo em 1 bilhão de unidades, sem funções de cunhagem (mint) pós-implantação.</p>
-        </div>
-    `;
-}
+    // Evento de Conectar Carteira
+    document.querySelector('.btn-wallet')?.addEventListener('click', syncWallet);
 
-// Função para Resetar/Voltar Home (O "Giro")
-function giroHome() {
-    // Fecha todos os painéis e views abertos
-    const paineis = document.querySelectorAll('.painel-lateral.aberto, .view-full');
-    paineis.forEach(p => p.classList.remove('aberto'));
-    const views = ['area-pagar', 'area-receber', 'area-nft'];
-    views.forEach(v => fecharView(v));
-    
-    // Scroll suave para o topo
-    document.querySelector('.main-content').scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Feedback visual de atualização
-    console.log("Sistema Nitrogênio Reiniciado (Giro OK)");
-    atualizarSaldoRealCofre();
+    // Motor de Governança (Relógios e Pautas)
+    if (typeof motorGovernançaNitrogenio === "function") {
+        motorGovernançaNitrogenio();
+    }
+
+    // Reconexão Automática
+    if (window.ethereum && window.ethereum.selectedAddress) {
+        syncWallet();
+    }
+});
+
+// Exemplo de carregamento de pautas para a Sala Governo
+async function carregarPautasReaisDoCofre() {
+    console.log("Conectando ao oráculo da Safe...");
+    // A lógica de fetch que você já tem será inserida aqui conforme as salas forem povoadas
 }
