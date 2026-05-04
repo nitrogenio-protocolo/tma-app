@@ -1,67 +1,58 @@
-/* Travamento de Viewport */
+/* Travamento do Viewport */
 body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Proíbe o vazamento horizontal do site todo */
-    background: #f4f7f9;
+    overflow: hidden; /* Impede scroll na página toda */
+    height: 100vh;
 }
 
-/* Header e Footer Fixos */
-#header-app, #footer-app {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background: #ffffff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+.main-content {
+    height: calc(100vh - 140px); /* Desconta header e footer */
+    overflow-y: auto; /* Scroll apenas aqui dentro */
+    padding-bottom: 20px;
 }
 
-#header-app { top: 0; height: 70px; padding: 10px 20px; }
-#footer-app { bottom: 0; height: 65px; border-top: 1px solid #eee; }
-
-/* O Trilho Mestre (Carrossel) */
-.carousel-rail {
+/* Estilo dos Carrosséis */
+.hub-carousel {
     width: 100%;
-    overflow-x: auto; /* Permite o scroll só dentro do trilho */
+    overflow-x: auto;
     padding: 15px 20px;
-    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Esconde barra no Firefox */
 }
 
-.carousel-rail::-webkit-scrollbar { display: none; } /* Esconde a barra feia */
+.hub-carousel::-webkit-scrollbar { display: none; } /* Esconde no Chrome */
 
-.carousel-inner {
+.carousel-track {
     display: flex;
     gap: 15px;
-    width: max-content; /* Faz o trilho se esticar conforme os itens */
+    width: max-content; /* O trilho estica conforme os itens */
 }
 
-/* Estilo dos Itens Alpha (Redondos) */
-.icon-circle {
-    width: 65px;
-    height: 65px;
-    background: #007AFF;
-    border-radius: 50%;
+/* Itens do Hub 2 (DAO) - Maiores e mais robustos */
+.item-dao {
+    width: 140px;
+    height: 100px;
+    background: #fff;
+    border-radius: 18px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 22px;
-    margin-bottom: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #f2f2f7;
 }
 
-/* Estilo dos Cards de Gestão */
-.card-management {
-    width: 160px;
-    height: 100px;
-    background: white;
-    border-radius: 15px;
-    padding: 15px;
-    border-left: 5px solid #007AFF;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-}
+.item-dao i { font-size: 24px; color: #007AFF; margin-bottom: 8px; }
+.item-dao p { font-size: 11px; font-weight: 800; margin: 0; }
 
-/* Ajuste da Main para não ficar atrás do Header/Footer */
-.main-content {
-    padding-top: 85px;
-    padding-bottom: 80px;
+/* Rodapé Fixo */
+#footer-app {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #f2f2f7;
+    z-index: 1000;
 }
