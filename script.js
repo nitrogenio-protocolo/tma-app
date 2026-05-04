@@ -258,7 +258,7 @@ function fecharModalVotacao() {
     if (modal) modal.style.bottom = "-100%";
 }
 
-aasync function carregarPautasReaisDoCofre() {
+async function carregarPautasReaisDoCofre() {
     const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${ENDERECO_COFRE_SAFE}/multisig-transactions/`;
     const containerGoverno = document.getElementById('lista-pautas-governo');
     const containerMural = document.getElementById('lista-mural-automatica');
