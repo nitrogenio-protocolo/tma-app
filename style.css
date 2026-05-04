@@ -28,6 +28,9 @@ body { width: 100%; height: 100%; min-height: 100vh; overflow-x: hidden; backgro
 
 .item-round { width: 88px; height: 88px; background: var(--branco-gelo); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: none; }
 .nft-special { border: 2px solid var(--azul-blueberry); background: #fff; }
+
+.n-simbolo { font-size: 18px; font-weight: 900; color: var(--azul-blueberry); margin-bottom: 4px; }
+
 .item-dao, .item-op { 
     width: 115px; 
     height: 105px; 
@@ -44,7 +47,7 @@ body { width: 100%; height: 100%; min-height: 100vh; overflow-x: hidden; backgro
     color: var(--azul-blueberry);
     font-size: 28px;
     margin-bottom: 10px;
-    filter: drop-shadow(0 2px 4px rgba(0, 122, 255, 0.2));
+    filter: drop-shadow(0 2px 5px rgba(0, 122, 255, 0.4)); /* Brilho azul nos ícones */
 }
 
 .item-dao p, .item-op span {
@@ -63,5 +66,5 @@ body { width: 100%; height: 100%; min-height: 100vh; overflow-x: hidden; backgro
 .sala-handle { width: 45px; height: 5px; background: #e5e5ea; border-radius: 10px; margin: 12px auto; }
 .sala-header { display: flex; align-items: center; padding: 15px 20px; border-bottom: 1px solid #f2f2f7; }
 .btn-fechar { background: #f2f2f7; border: none; width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-.btn-fechar i { margin: 0; color: #000; font-size: 16px; }
+.btn-fechar i { margin: 0; color: #000 !important; font-size: 16px; filter: none !important; }
 .sala-body { padding: 25px; overflow-y: auto; flex: 1; }
