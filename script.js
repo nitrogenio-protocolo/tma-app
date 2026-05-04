@@ -310,36 +310,34 @@ async function carregarPautasReaisDoCofre() {
             }
         }
 
-        // --- LÓGICA DO MURAL (HISTÓRICO) ---
+    // --- LÓGICA DO MURAL (HISTÓRICO) ---
 if (containerMural) {
     containerMural.innerHTML = "";
     
-    // Filtra e garante que pautasExecutadas existe
-    const lista = pautasExecutadas || [];
+    // Se não houver dados, para aqui sem dar erro
+    if (!pautasExecutadas || pautasExecutadas.length === 0) {
+        containerMural.innerHTML = "<p style='text-align:center; font-size:12px; color:#8e8e93;'>Nenhum registro encontrado.</p>";
+    } else {
+        pautasExecutadas.slice(0, 10).forEach(tx => {
+            const cardMural = document.createElement('div');
+            cardMural.className = 'card-pauta';
+            cardMural.style.borderLeft = "4px solid #34C759";
+            cardMural.style.marginBottom = "10px";
+            cardMural.style.padding = "15px";
 
-    lista.slice(0, 10).forEach(tx => {
-        const cardMural = document.createElement('div');
-        cardMural.className = 'card-pauta';
-        cardMural.style.borderLeft = "4px solid #34C759";
-        
-        // PROTEÇÃO: Tenta pegar a descrição. 
-        // Se não existir, tenta o método com segurança (usando o ?. )
-        // Se nada funcionar, usa o texto padrão com o Nonce.
-        const textoExibicao = tx.description || 
-                             tx.dataDecoded?.method || 
-                             `Execução de Protocolo (Nonce #${tx.nonce})`;
+            // Tenta pegar a descrição. Se não tiver, usa o Nonce.
+            const texto = tx.description || `Execução Automática (Nonce #${tx.nonce})`;
 
-        cardMural.innerHTML = `
-            <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-            <p style="font-size:14px; font-weight:700; margin:5px 0; color:#1c1c1e;">${textoExibicao}</p>
-            <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none; display:block; margin-top:5px;">
-                Ver comprovante na Blockchain ↗
-            </a>
-        `;
-        
-        // DICA: Use prepend para o Nonce mais novo aparecer em cima
-        containerMural.appendChild(cardMural);
-    });
+            cardMural.innerHTML = `
+                <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+                <p style="font-size:14px; font-weight:700; margin:5px 0;">${texto}</p>
+                <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+                    Ver comprovante na Blockchain ↗
+                </a>
+            `;
+            containerMural.appendChild(cardMural);
+        });
+    }
 }
         
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
