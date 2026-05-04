@@ -259,8 +259,15 @@ function fecharModalVotacao() {
     if (modal) modal.style.bottom = "-100%";
 }
 
-async function carregarPautasReaisDoCofre() {
-    const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${ENDERECO_COFRE_SAFE}/multisig-transactions/`;
+aasync function carregarPautasReaisDoCofre() {
+    const containerGoverno = document.getElementById('lista-pautas-governo');
+    const containerMural = document.getElementById('lista-mural-automatica');
+    
+    // Se não achar os containers, para a execução aqui e não trava o app
+    if (!containerGoverno || !containerMural) return; 
+
+    // ... restante do código
+}
     
     // Seleciona os novos containers que criamos no HTML
     const containerGoverno = document.getElementById('lista-pautas-governo');
