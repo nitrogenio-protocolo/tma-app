@@ -310,29 +310,38 @@ async function carregarPautasReaisDoCofre() {
             }
         }
 
-        // --- LÓGICA DO MURAL (HISTÓRICO) ---
-        if (containerMural) {
-            containerMural.innerHTML = "";
-            pautasExecutadas.slice(0, 10).forEach(tx => { // Mostra as últimas 10
-                const cardMural = document.createElement('div');
-                cardMural.className = 'card-pauta';
-                cardMural.style.borderLeft = "4px solid #34C759";
-                cardMural.innerHTML = `
-                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-                    <p style="font-size:13px; margin:5px 0;">${tx.description || "Execução concluída"}</p>
-                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
-                        Ver comprovante na Blockchain ↗
-                    </a>
-                `;
-                containerMural.appendChild(cardMural);
-            });
+        /// --- LÓGICA DO MURAL (HISTÓRICO) ---
+if (containerMural) {
+    containerMural.innerHTML = "";
+    pautasExecutadas.slice(0, 10).forEach(tx => {
+        
+        // Tenta pegar a descrição, se não tiver, tenta pegar o nome da função chamada (ex: transfer)
+        // Se for a das jaquetas, ele vai tentar buscar nos dados decodificados
+        let resumoDescricao = tx.description;
+
+        if (!resumoDescricao && tx.dataDecoded) {
+            // Se for uma transferência, ele mostra "Transfer"
+            resumoDescricao = tx.dataDecoded.method; 
         }
 
-    } catch (e) {
-        console.error("Erro ao conectar com o Cofre:", e);
-    }
-}
+        // Se ainda assim for nulo, usamos o seu padrão, mas agora ele tentará ler o que vem do Safe
+        const textoExibicao = resumoDescricao || "Execução de Protocolo Confirmada";
 
+        const cardMural = document.createElement('div');
+        cardMural.className = 'card-pauta';
+        cardMural.style.borderLeft = "4px solid #34C759";
+        cardMural.innerHTML = `
+            <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+            <p style="font-size:13px; font-weight:700; margin:5px 0;">${textoExibicao}</p>
+            <p style="font-size:11px; color:#8e8e93; margin-bottom:8px;">Nonce #${tx.nonce}</p>
+            <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+                Ver comprovante na Blockchain ↗
+            </a>
+        `;
+        containerMural.appendChild(cardMural);
+    });
+}
+        
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
 function abrirNFT() {
     document.getElementById('home-app').style.display = 'none';
