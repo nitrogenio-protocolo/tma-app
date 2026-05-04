@@ -291,34 +291,27 @@ async function carregarPautasReaisDoCofre() {
             });
         }
 
-        // --- LÓGICA DO MURAL (EXECUTADAS) ---
-        if (containerMural) {
-            const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
-            containerMural.innerHTML = ""; // Limpa antes de desenhar
-
-            // Filtra para não repetir Nonce
-            const filtradas = [];
-            const idsVistos = new Set();
-            for (const t of pautasExecutadas) {
-                if (!idsVistos.has(t.nonce)) {
-                    idsVistos.add(t.nonce);
-                    filtradas.push(t);
-                }
-            }
-
-            filtradas.slice(0, 10).forEach(tx => {
-                containerMural.innerHTML += `
-                    <div class="card-pauta" style="border-left: 4px solid #34C759; margin-bottom:12px;">
-                        <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅ (Nonce #${tx.nonce})</small>
-                        <p style="font-size:13px; margin:5px 0; font-weight:bold;">${tx.description || "Execução Concluída"}</p>
-                        <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
-                            Ver comprovante na Blockchain ↗
-                        </a>
-                    </div>`;
-            });
-        }
-    } catch (e) {
-        console.error("Erro na sincronização:", e);
+        // --- LÓGICA DO MURAL (COM TRAVA DE VISIBILIDADE) ---
+if (containerMural) {
+    const painelMural = document.getElementById('painel-mural');
+    
+    // SÓ DESENHA SE O PAINEL ESTIVER ABERTO (estilo 'block' ou classe 'aberto')
+    if (painelMural && (painelMural.style.display === 'block' || painelMural.classList.contains('aberto'))) {
+        
+        containerMural.innerHTML = ""; // Limpa para não acumular
+        
+        // Filtra e desenha os cards (mesma lógica anterior)
+        const executadas = dados.results.filter(tx => tx.isExecuted);
+        executadas.slice(0, 10).forEach(tx => {
+            containerMural.innerHTML += `
+                <div class="card-pauta" style="border-left: 4px solid #34C759; margin-bottom:12px;">
+                    <small>RECURSO LIBERADO ✅ (Nonce #${tx.nonce})</small>
+                    <p><strong>${tx.description || "Execução Concluída"}</strong></p>
+                </div>`;
+        });
+    } else {
+        // Se o painel estiver fechado, limpamos o container para não vazar nada
+        containerMural.innerHTML = "";
     }
 }
 
