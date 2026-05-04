@@ -1,6 +1,19 @@
 /* RESET & BASE */
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #ffffff; color: #1d1d1f; font-family: -apple-system, system-ui, sans-serif; overflow-x: hidden; }
+* { 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+body { 
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    min-height: 100vh; 
+    background: #ffffff; 
+    color: #1d1d1f; 
+    font-family: -apple-system, system-ui, sans-serif; 
+    overflow-x: hidden; /* Isso impede o vazamento horizontal */
+}
 
 /* 1. SPLASH SCREEN (Sequencial) */
 #splash-screen {
