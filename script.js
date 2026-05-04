@@ -258,9 +258,8 @@ function fecharModalVotacao() {
     if (modal) modal.style.bottom = "-100%";
 }
 
-async function carregarPautasReaisDoCofre() {
+aasync function carregarPautasReaisDoCofre() {
     const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${ENDERECO_COFRE_SAFE}/multisig-transactions/`;
-    
     const containerGoverno = document.getElementById('lista-pautas-governo');
     const containerMural = document.getElementById('lista-mural-automatica');
 
@@ -269,7 +268,7 @@ async function carregarPautasReaisDoCofre() {
         const dados = await resposta.json();
         if (!dados || !dados.results) return;
 
-        // --- LÓGICA DA SALA GOVERNO (PENDENTES) ---
+        // 1. LÓGICA GOVERNO
         if (containerGoverno) {
             const pautasPendentes = dados.results.filter(tx => !tx.isExecuted);
             containerGoverno.innerHTML = pautasPendentes.length === 0 ? 
@@ -285,46 +284,37 @@ async function carregarPautasReaisDoCofre() {
                         </div>
                         <p style="font-size:14px; font-weight:bold; margin:10px 0;">${tx.description || "Transação de Protocolo"}</p>
                         <button class="btn-votar" onclick="assinarNoSafe('${tx.safeTxHash}')" style="width:100%; background:#007AFF; color:white; border:none; padding:12px; border-radius:50px;">
-                            ${confs >= 10 ? 'EXECUTAR (PAGAR GÁS)' : 'ASSINAR AGORA'}
+                            ${confs >= 10 ? 'EXECUTAR' : 'ASSINAR'}
                         </button>
                     </div>`;
             });
         }
 
-        // --- LÓGICA DO MURAL DENTRO DA FUNÇÃO carregarPautasReaisDoCofre ---
-if (containerMural) {
-    const painelMural = document.getElementById('painel-mural');
-    
-    // TRAVA: Só executa se o painel estiver com a classe 'aberto'
-    if (painelMural && painelMural.classList.contains('aberto')) {
-        
-        containerMural.innerHTML = ""; // Limpa o "Carregando..."
-        
-        const filtradas = [];
-        const idsVistos = new Set();
-        const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
+        // 2. LÓGICA MURAL (COM TRAVA ANTI-VAZAMENTO)
+        if (containerMural) {
+            const painelMural = document.getElementById('painel-mural');
+            if (painelMural && painelMural.classList.contains('aberto')) {
+                containerMural.innerHTML = "";
+                const idsVistos = new Set();
+                const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
 
-        for (const t of pautasExecutadas) {
-            if (!idsVistos.has(t.nonce)) {
-                idsVistos.add(t.nonce);
-                filtradas.push(t);
+                pautasExecutadas.forEach(t => {
+                    if (!idsVistos.has(t.nonce)) {
+                        idsVistos.add(t.nonce);
+                        containerMural.innerHTML += `
+                            <div class="card-pauta" style="border-left: 4px solid #34C759; margin-bottom:12px;">
+                                <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅ (#${t.nonce})</small>
+                                <p style="font-size:13px; margin:5px 0; font-weight:bold;">${t.description || "Execução Concluída"}</p>
+                                <a href="https://bscscan.com/tx/${t.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">Ver Prova ↗</a>
+                            </div>`;
+                    }
+                });
+            } else {
+                containerMural.innerHTML = ""; 
             }
         }
-
-        filtradas.slice(0, 10).forEach(tx => {
-            containerMural.innerHTML += `
-                <div class="card-pauta" style="border-left: 4px solid #34C759; margin-bottom:12px;">
-                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅ (Nonce #${tx.nonce})</small>
-                    <p style="font-size:13px; margin:5px 0; font-weight:bold;">${tx.description || "Execução Concluída"}</p>
-                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
-                        Ver comprovante na Blockchain ↗
-                    </a>
-                </div>`;
-        });
-    } else {
-        // Se o painel estiver fechado, mantém o container vazio ou com o "Carregando"
-        // Isso evita que o conteúdo vaze para a Home
-        containerMural.innerHTML = "";
+    } catch (e) {
+        console.error("Erro técnico:", e);
     }
 }
 
