@@ -36,16 +36,16 @@
     
     <section class="hub-carousel">
         <div class="carousel-track">
-            <div class="item-round"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
-            <div class="item-round"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
-            <div class="item-round"><div class="n-simbolo">N</div><span>COLETAR</span></div>
-            <div class="item-round"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
+            <div class="item-round" onclick="abrirSala('sala-pagar')"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
+            <div class="item-round" onclick="abrirSala('sala-receber')"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
+            <div class="item-round" onclick="abrirSala('sala-coletar')"><div class="n-simbolo">N</div><span>COLETAR</span></div>
+            <div class="item-round" onclick="abrirSala('sala-trocar')"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
         </div>
     </section>
 
     <section class="hub-carousel">
         <div class="carousel-track">
-            <div class="item-round nft-special">
+            <div class="item-round nft-special" onclick="abrirSala('sala-nft')">
                 <i class="fa-solid fa-id-card"></i>
                 <span>NFT</span>
             </div>
@@ -54,27 +54,57 @@
 
     <section class="hub-carousel secondary">
         <div class="carousel-track">
-            <div class="item-dao"><i class="fa-solid fa-users"></i><p>COMUNIDADE</p></div>
-            <div class="item-dao"><i class="fa-solid fa-building-columns"></i><p>GOVERNO</p></div>
-            <div class="item-dao"><i class="fa-solid fa-chalkboard"></i><p>MURAL</p></div>
+            <div class="item-dao" onclick="abrirSala('sala-comunidade')"><i class="fa-solid fa-users"></i><p>COMUNIDADE</p></div>
+            <div class="item-dao" onclick="abrirSala('sala-governo')"><i class="fa-solid fa-building-columns"></i><p>GOVERNO</p></div>
+            <div class="item-dao" onclick="abrirSala('sala-mural')"><i class="fa-solid fa-chalkboard"></i><p>MURAL</p></div>
         </div>
     </section>
 
     <section class="hub-carousel tertiary">
         <div class="carousel-track">
-            <div class="item-op"><i class="fa-solid fa-gavel"></i><span>PROTOCOLO</span></div>
-            <div class="item-op"><i class="fa-solid fa-vault"></i><span>COFRE</span></div>
-            <div class="item-op"><i class="fa-solid fa-couch"></i><span>LAZER</span></div>
+            <div class="item-op" onclick="abrirSala('sala-protocolo')"><i class="fa-solid fa-gavel"></i><span>PROTOCOLO</span></div>
+            <div class="item-op" onclick="abrirSala('sala-cofre')"><i class="fa-solid fa-vault"></i><span>COFRE</span></div>
+            <div class="item-op" onclick="abrirSala('sala-lazer')"><i class="fa-solid fa-couch"></i><span>LAZER</span></div>
         </div>
     </section>
 
 </main>
 
 <footer id="footer-app">
-    <button class="nav-btn active"><i class="fa-solid fa-house"></i><span>HOME</span></button>
-    <a href="#" class="nav-btn"><i class="fa-brands fa-telegram"></i><span>OFICIAL</span></a>
-    <button class="nav-btn"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
+    <button class="nav-btn active" onclick="giroHome()"><i class="fa-solid fa-house"></i><span>HOME</span></button>
+    <a href="https://t.me/nitrogenioprotocolo" target="_blank" class="nav-btn"><i class="fa-brands fa-telegram"></i><span>OFICIAL</span></a>
+    <button class="nav-btn" onclick="abrirSala('sala-suporte')"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
 </footer>
 
+<div id="container-salas">
+    
+    <div id="sala-protocolo" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-protocolo')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>PROTOCOLO</h2>
+        </div>
+        <div class="sala-body">
+            <div class="doc-item">
+                <h4>§ 1. O Contrato Safe</h4>
+                <p>A tesouraria é regida por 21 guardiões, exigindo 11 assinaturas para qualquer saída de capital.</p>
+            </div>
+            <div class="doc-item">
+                <h4>§ 2. Token N</h4>
+                <p>O suprimento é fixo em 1 bilhão de unidades, sem funções de cunhagem pós-implantação.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="sala-pagar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-pagar')"><i class="fa-solid fa-xmark"></i></button><h2>PAGAR</h2></div><div class="sala-body" id="corpo-pagar"></div></div>
+    
+    <div id="sala-comunidade" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-comunidade')"><i class="fa-solid fa-xmark"></i></button><h2>COMUNIDADE</h2></div><div class="sala-body" id="lista-pautas-comunidade"></div></div>
+
+    <div id="sala-governo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-governo')"><i class="fa-solid fa-xmark"></i></button><h2>GOVERNO</h2></div><div class="sala-body" id="lista-pautas-governo"></div></div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
