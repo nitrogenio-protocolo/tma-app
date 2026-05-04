@@ -261,23 +261,36 @@ async function carregarPautasReaisDoCofre() {
     } catch (e) { console.error("Erro Safe:", e); }
 }
 
-// 7. Motor de Governança e Relógio
-function motorGovernançaNitrogenio() {
-    function atualizarRelogio() {
-        const displayTempo = document.getElementById('tempo-restante');
-        if (displayTempo) {
-            const agora = new Date();
-            const vencimento = new Date();
-            vencimento.setHours(24, 0, 0, 0); 
-            const diff = vencimento - agora;
-            if (diff > 0) {
-                const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                displayTempo.innerText = `${h}h ${m}m ${s}s`;
-            }
+// 7. Termos (Versão Corrigida para Destravar)
+function validarTermos() {
+    const check1 = document.getElementById('check-tecnico');
+    const check2 = document.getElementById('check-responsabilidade');
+    const btn = document.getElementById('btn-entrar');
+    const msg = document.getElementById('msg-convite');
+
+    if (check1 && check2 && btn) {
+        if (check1.checked && check2.checked) {
+            btn.disabled = false;
+            btn.classList.add('ativo'); // Garante que ele fique azul/clicável
+            if(msg) msg.innerText = "Tudo pronto!";
+        } else {
+            btn.disabled = true;
+            btn.classList.remove('ativo');
+            if(msg) msg.innerText = "Aceite os termos para prosseguir";
         }
     }
+}
+
+// Essa função faz a tela sumir quando você clica em Avançar
+function aceitarTermos() {
+    const modal = document.getElementById('modal-termos');
+    if(modal) {
+        modal.style.transform = 'translateY(-100%)';
+        setTimeout(() => { modal.style.display = 'none'; }, 500);
+    }
+    localStorage.setItem('termosAceitos', 'true');
+}
+
     setInterval(atualizarRelogio, 1000);
     atualizarRelogio();
 }
