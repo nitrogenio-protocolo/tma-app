@@ -41,7 +41,7 @@
 
         <div class="rodape-termos">
             <p id="msg-convite" style="font-size: 12px; margin-bottom: 10px; color: #666;">Aguardando aceite...</p>
-            <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled>avançar</button>
+            <button id="btn-entrar" class="btn-pilula-termos" onclick="aceitarTermos()" disabled></button>
         </div>
     </div>
 </div>
@@ -244,25 +244,15 @@
 
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
         <div id="display-tempo" style="background: #f0f7ff; border: 1px solid #007AFF; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">RENOVAÇÃO DO CICLO EM:</small>
-            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">00h 00m 00s</span>
+            <small style="color: #007AFF; font-weight: bold; font-size: 10px; display: block; margin-bottom: 4px;">VOTAÇÃO ENCERRA EM:</small>
+            <span id="tempo-restante" style="font-size: 22px; font-weight: 800; color: #333;">02d 08h 34m</span>
         </div>
 
-        <div id="lista-pautas-comunidade">
-             <div class="card-pauta" style="border-left: 4px solid #34C759;">
-                <small style="color: #34C759; font-weight: bold;">DISCUSSÃO ABERTA</small>
-                <h4 style="margin: 8px 0; font-size: 16px;">Ideias para o Próximo Ciclo</h4>
-                <p style="font-size: 13px; color: #666; line-height: 1.4;">
-                    Utilize os canais oficiais para sugerir novas pautas. O que for aprovado aqui, seguirá para execução no Governo.
-                </p>
-                <button onclick="window.open('https://t.me/ProtocoloNitrogenio', '_blank')" 
-                        style="width:100%; background:#f5f5f7; color:#007AFF; border:none; padding:10px; border-radius:8px; font-size:12px; font-weight:bold; margin-top:10px; cursor:pointer;">
-                    PARTICIPAR NO TELEGRAM
-                </button>
-             </div>
+        <div id="cronometro-da-dao">
+             <p style="text-align:center; color:#8e8e93; font-size:12px;">Buscando pautas no cofre...</p>
         </div>
     </div>
-</div>  
+</div>            
 
      <div id="painel-governo" class="painel-folha">
     <div class="barra-fechar" onclick="fecharPainel('governo')">
@@ -273,50 +263,33 @@
         <h2>Governo</h2>
     </div>
     <div class="conteudo-interno" style="padding: 20px;">
-        <div id="contador-assinaturas" style="display:none;"></div> <div id="aviso-gas" style="display:none;">⚠️ Atenção: Gás necessário</div> <div id="lista-pautas-governo"></div> </div>
-</div>
+        <p style="text-align:center; color:#888;">Nenhuma pauta para votação no momento.</p>
+    </div>
+</div>       
 
 <div id="painel-mural" class="painel-folha">
-    <div class="barra-fechar" onclick="fecharPainel('mural')">
+    <div class="barra-fechar">
         <div class="indicador-puxar"></div>
     </div>
+    
     <div class="area-header">
-        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px;">✕</button>
+        <button onclick="fecharPainel('mural')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
         <h2>Mural</h2>
     </div>
-    <div class="conteudo-interno" style="padding: 20px;">
-        <div id="lista-mural-automatica"></div> </div>
-</div>
 
     <div class="conteudo-interno" style="padding: 20px; overflow-y: auto;">
-        <div style="margin-bottom: 25px; text-align: center;">
-            <small style="color: #8e8e93; font-weight: bold; letter-spacing: 1px;">TRANSPARÊNCIA NITROGÊNIO</small>
-            <p style="font-size: 13px; color: #666; margin-top: 5px;">Histórico de execuções confirmadas na rede BSC.</p>
-        </div>
-
-        <div class="card-pauta" style="border-left: 4px solid #007AFF; margin-bottom: 20px; background: #fafafa;">
-            <small style="color: #007AFF; font-weight: bold;">AVISO DO PROTOCOLO</small>
-            <h4 style="margin: 10px 0; font-size: 16px;">Auditoria em Tempo Real</h4>
-            <p style="font-size: 13px; color: #333; line-height: 1.4;">
-                Todas as transações abaixo foram aprovadas pelo conselho e já estão registradas na blockchain.
-            </p>
-        </div>
-
-        <div style="height: 1px; background: #eee; margin: 20px 0;"></div>
-
-        <div id="lista-mural-automatica">
-            <p style="text-align:center; color:#8e8e93; font-size:12px; padding: 20px;">
-                <i class="fa-solid fa-spinner fa-spin"></i> Sincronizando recibos...
-            </p>
-        </div>
-
         <div class="card-pauta" style="border-left: 4px solid #007AFF;">
             <small style="color: #8e8e93;">AVISO DO PROTOCOLO</small>
             <h4 style="margin: 10px 0;">Atualização</h4>
             <p style="font-size: 14px; color: #333;">NITROGÊNIO</p>
         </div>
+    </div>
+</div>
 
-    </div> </div> <div id="painel-coleta" class="painel-folha">
+    <div id="painel-coleta" class="painel-folha">
+    <div class="barra-fechar">
+        <div class="indicador-puxar"></div>
+    </div>
     
     <div class="area-header">
         <button onclick="fecharPainel('coleta')" style="border:none; background:none; color:#007AFF; font-size:24px; padding: 10px;">✕</button>
