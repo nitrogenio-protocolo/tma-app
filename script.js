@@ -311,26 +311,27 @@ async function carregarPautasReaisDoCofre() {
         }
 
         // --- LÓGICA DO MURAL (HISTÓRICO) ---
-        if (containerMural) {
-            containerMural.innerHTML = "";
-            pautasExecutadas.slice(0, 10).forEach(tx => { // Mostra as últimas 10
-                const cardMural = document.createElement('div');
-                cardMural.className = 'card-pauta';
-                cardMural.style.borderLeft = "4px solid #34C759";
-                cardMural.innerHTML = `
-                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-                    <p style="font-size:13px; margin:5px 0;">${tx.description || "Execução concluída"}</p>
-                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
-                        Ver comprovante na Blockchain ↗
-                    </a>
-                `;
-                containerMural.appendChild(cardMural);
-            });
-        }
-
-    } catch (e) {
-        console.error("Erro ao conectar com o Cofre:", e);
-    }
+if (containerMural) {
+    containerMural.innerHTML = "";
+    
+    // MUDANÇA AQUI: Pegamos apenas as 3 últimas (slice 0, 3) 
+    // e garantimos que são as 'pautasExecutadas'
+    pautasExecutadas.slice(0, 3).forEach(tx => { 
+        const cardMural = document.createElement('div');
+        cardMural.className = 'card-pauta';
+        cardMural.style.borderLeft = "4px solid #34C759";
+        cardMural.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+                <small style="color:#8e8e93; font-size:10px;">NONCE #${tx.nonce}</small>
+            </div>
+            <p style="font-size:13px; margin:5px 0; font-weight:600;">${tx.description || "Execução concluída"}</p>
+            <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none; font-weight:700;">
+                VER COMPROVANTE ↗
+            </a>
+        `;
+        containerMural.appendChild(cardMural);
+    });
 }
 
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
