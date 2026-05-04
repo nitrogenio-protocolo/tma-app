@@ -310,34 +310,34 @@ async function carregarPautasReaisDoCofre() {
             }
         }
 
-        /// --- LÓGICA DO MURAL (HISTÓRICO) ---
+        // --- LÓGICA DO MURAL (HISTÓRICO) ---
 if (containerMural) {
     containerMural.innerHTML = "";
-    pautasExecutadas.slice(0, 10).forEach(tx => {
-        
-        // Tenta pegar a descrição, se não tiver, tenta pegar o nome da função chamada (ex: transfer)
-        // Se for a das jaquetas, ele vai tentar buscar nos dados decodificados
-        let resumoDescricao = tx.description;
+    
+    // Filtra e garante que pautasExecutadas existe
+    const lista = pautasExecutadas || [];
 
-        if (!resumoDescricao && tx.dataDecoded) {
-            // Se for uma transferência, ele mostra "Transfer"
-            resumoDescricao = tx.dataDecoded.method; 
-        }
-
-        // Se ainda assim for nulo, usamos o seu padrão, mas agora ele tentará ler o que vem do Safe
-        const textoExibicao = resumoDescricao || "Execução de Protocolo Confirmada";
-
+    lista.slice(0, 10).forEach(tx => {
         const cardMural = document.createElement('div');
         cardMural.className = 'card-pauta';
         cardMural.style.borderLeft = "4px solid #34C759";
+        
+        // PROTEÇÃO: Tenta pegar a descrição. 
+        // Se não existir, tenta o método com segurança (usando o ?. )
+        // Se nada funcionar, usa o texto padrão com o Nonce.
+        const textoExibicao = tx.description || 
+                             tx.dataDecoded?.method || 
+                             `Execução de Protocolo (Nonce #${tx.nonce})`;
+
         cardMural.innerHTML = `
             <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-            <p style="font-size:13px; font-weight:700; margin:5px 0;">${textoExibicao}</p>
-            <p style="font-size:11px; color:#8e8e93; margin-bottom:8px;">Nonce #${tx.nonce}</p>
-            <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+            <p style="font-size:14px; font-weight:700; margin:5px 0; color:#1c1c1e;">${textoExibicao}</p>
+            <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none; display:block; margin-top:5px;">
                 Ver comprovante na Blockchain ↗
             </a>
         `;
+        
+        // DICA: Use prepend para o Nonce mais novo aparecer em cima
         containerMural.appendChild(cardMural);
     });
 }
