@@ -1,63 +1,141 @@
-<header id="header-app">
-    <div class="header-content">
-        <span class="brand-name">NITROGÊNIO</span>
-        <div class="header-actions">
-            <button id="btn-eye" onclick="togglePrivacy()"><i class="fa-solid fa-eye"></i></button>
-            <button id="connect-trigger" class="btn-wallet">CONECTAR</button>
-        </div>
-    </div>
-</header>
+/* 1. CORES E BASE (Estilo Nitrogênio) */
+:root {
+    --azul-blueberry: #007AFF;
+    --branco-gelo: #f5f7fa; /* Antarctic Clean */
+    --texto-escuro: #1d1d1f;
+    --cinza-suave: #86868b;
+}
 
-<main class="main-content">
-    
-    <section class="hub-carousel">
-        <div class="carousel-track">
-            <div class="item-alpha" onclick="abrirPagar()"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
-            <div class="item-alpha" onclick="abrirReceber()"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
-            <div class="item-alpha" onclick="toggleScanner()"><i class="fa-solid fa-qrcode"></i><span>QR CODE</span></div>
-            <div class="item-alpha"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
-            <div class="item-alpha" onclick="abrirNFT()"><i class="fa-solid fa-id-card"></i><span>NFT</span></div>
-        </div>
-    </section>
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: -apple-system, system-ui, sans-serif;
+    color: var(--texto-escuro);
+}
 
-    <section class="hub-carousel secondary">
-        <div class="carousel-track">
-            <div class="item-dao" onclick="abrirPainel('comunidade')">
-                <i class="fa-solid fa-users"></i>
-                <p>COMUNIDADE</p>
-            </div>
-            <div class="item-dao" onclick="abrirPainel('governo')">
-                <i class="fa-solid fa-building-columns"></i>
-                <p>GOVERNO</p>
-            </div>
-            <div class="item-dao" onclick="abrirPainel('mural')">
-                <i class="fa-solid fa-chalkboard"></i>
-                <p>MURAL</p>
-            </div>
-        </div>
-    </section>
+/* 2. HEADER TÉCNICO */
+#header-app {
+    padding: 20px;
+    background: #fff;
+}
 
-    <section class="hub-carousel tertiary">
-        <div class="carousel-track">
-            <div class="item-op" onclick="abrirPainel('protocolo')">
-                <i class="fa-solid fa-file-shield"></i>
-                <span>PROTOCOLO</span>
-            </div>
-            <div class="item-op" onclick="abrirPainel('cofre')">
-                <i class="fa-solid fa-vault"></i>
-                <span>COFRE</span>
-            </div>
-            <div class="item-op" onclick="abrirPainel('lazer')">
-                <i class="fa-solid fa-couch"></i>
-                <span>LAZER</span>
-            </div>
-        </div>
-    </section>
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-</main>
+.brand-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--azul-blueberry);
+    letter-spacing: -0.5px;
+}
 
-<footer id="footer-app">
-    <button class="nav-btn active" onclick="location.reload()"><i class="fa-solid fa-house"></i><span>HOME</span></button>
-    <a href="https://t.me/seucanal" target="_blank" class="nav-btn"><i class="fa-brands fa-telegram"></i><span>OFICIAL</span></a>
-    <button class="nav-btn" onclick="abrirSuporte()"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
-</footer>
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-wallet {
+    background: var(--azul-blueberry);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* 3. ESTRUTURA DOS CARROSSEIS (Hubs) */
+.main-content {
+    padding: 10px 0 100px 0; /* Espaço para o footer */
+}
+
+.hub-carousel {
+    margin-bottom: 25px;
+}
+
+.carousel-track {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 20px;
+    gap: 15px;
+    scrollbar-width: none; /* Esconde scroll no Firefox */
+}
+
+.carousel-track::-webkit-scrollbar { display: none; } /* Esconde scroll no Chrome/Safari */
+
+/* 4. ESTILO DOS ITENS (BOTÕES) */
+.item-alpha, .item-dao, .item-op {
+    flex: 0 0 100px; /* Largura fixa para os itens */
+    height: 100px;
+    background: var(--branco-gelo);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.item-alpha:active, .item-dao:active, .item-op:active {
+    transform: scale(0.92);
+    background: #ebedf0;
+}
+
+/* Cores e Ícones específicos */
+.item-alpha i, .item-dao i, .item-op i {
+    font-size: 24px;
+    color: var(--azul-blueberry);
+    margin-bottom: 8px;
+}
+
+.item-alpha span, .item-dao p, .item-op span {
+    font-size: 10px;
+    font-weight: 800;
+    margin: 0;
+    text-transform: uppercase;
+    color: var(--texto-escuro);
+}
+
+/* Diferenciação sutil para o grupo de Governança (DAO) */
+.item-dao {
+    background: #fff;
+    border: 1.5px solid var(--branco-gelo);
+}
+
+/* 5. FOOTER (NAV BAR) */
+#footer-app {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0 env(safe-area-inset-bottom);
+    z-index: 1000;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--cinza-suave);
+    text-decoration: none;
+    gap: 4px;
+}
+
+.nav-btn i { font-size: 20px; }
+.nav-btn span { font-size: 10px; font-weight: 600; }
+
+.nav-btn.active {
+    color: var(--azul-blueberry);
+}
