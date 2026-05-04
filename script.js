@@ -1,4 +1,3 @@
-
 /**
  * NITROGÊNIO PROTOCOLO - v2.0 stable
  * Lógica: Web3 Flow & UI Integration
@@ -259,15 +258,8 @@ function fecharModalVotacao() {
     if (modal) modal.style.bottom = "-100%";
 }
 
-aasync function carregarPautasReaisDoCofre() {
-    const containerGoverno = document.getElementById('lista-pautas-governo');
-    const containerMural = document.getElementById('lista-mural-automatica');
-    
-    // Se não achar os containers, para a execução aqui e não trava o app
-    if (!containerGoverno || !containerMural) return; 
-
-    // ... restante do código
-}
+async function carregarPautasReaisDoCofre() {
+    const urlAPI = `https://safe-transaction-bsc.safe.global/api/v1/safes/${ENDERECO_COFRE_SAFE}/multisig-transactions/`;
     
     // Seleciona os novos containers que criamos no HTML
     const containerGoverno = document.getElementById('lista-pautas-governo');
@@ -318,40 +310,27 @@ aasync function carregarPautasReaisDoCofre() {
             }
         }
 
-        /// --- LÓGICA DO MURAL (HISTÓRICO) ---
-if (containerMural) {
-    containerMural.innerHTML = "";
-    
-    pautasExecutadas.slice(0, 10).forEach(tx => {
-        const cardMural = document.createElement('div');
-        cardMural.className = 'card-pauta';
-        cardMural.style.borderLeft = "4px solid #34C759";
-        
-        // LÓGICA DE RECUPERAÇÃO DE TEXTO:
-        // Prioridade 1: Descrição da transação
-        // Prioridade 2: Se for a Nonce 3, força o texto das jaquetas
-        // Prioridade 3: Texto genérico de sucesso
-        let textoExibicao = tx.description || "Execução de Protocolo Concluída";
-        
-        if (tx.nonce == 3) {
-            textoExibicao = "Produção Iniciada: Jaquetas Alpha Nitrogênio - Lote Naná";
+        // --- LÓGICA DO MURAL (HISTÓRICO) ---
+        if (containerMural) {
+            containerMural.innerHTML = "";
+            pautasExecutadas.slice(0, 10).forEach(tx => { // Mostra as últimas 10
+                const cardMural = document.createElement('div');
+                cardMural.className = 'card-pauta';
+                cardMural.style.borderLeft = "4px solid #34C759";
+                cardMural.innerHTML = `
+                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
+                    <p style="font-size:13px; margin:5px 0;">${tx.description || "Execução concluída"}</p>
+                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+                        Ver comprovante na Blockchain ↗
+                    </a>
+                `;
+                containerMural.appendChild(cardMural);
+            });
         }
 
-        cardMural.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅</small>
-                <small style="color:#8e8e93; font-weight:bold;">NONCE #${tx.nonce}</small>
-            </div>
-            <p style="font-size:14px; font-weight:700; margin:10px 0; color:#1c1c1e;">${textoExibicao}</p>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none; font-weight:600;">
-                    Ver Recibo Blockchain ↗
-                </a>
-                <span style="font-size:10px; color:#8e8e93;">${new Date(tx.executionDate).toLocaleDateString('pt-BR')}</span>
-            </div>
-        `;
-        containerMural.appendChild(cardMural);
-    });
+    } catch (e) {
+        console.error("Erro ao conectar com o Cofre:", e);
+    }
 }
 
 // --- ÁREA NFT ALPHA (EFEITO SUBIDA - SUBSTITUÍDO) ---
