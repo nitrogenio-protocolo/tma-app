@@ -291,26 +291,39 @@ async function carregarPautasReaisDoCofre() {
             });
         }
 
-        // --- LÓGICA DO MURAL (COM TRAVA DE VISIBILIDADE) ---
+        // --- LÓGICA DO MURAL DENTRO DA FUNÇÃO carregarPautasReaisDoCofre ---
 if (containerMural) {
     const painelMural = document.getElementById('painel-mural');
     
-    // SÓ DESENHA SE O PAINEL ESTIVER ABERTO (estilo 'block' ou classe 'aberto')
-    if (painelMural && (painelMural.style.display === 'block' || painelMural.classList.contains('aberto'))) {
+    // TRAVA: Só executa se o painel estiver com a classe 'aberto'
+    if (painelMural && painelMural.classList.contains('aberto')) {
         
-        containerMural.innerHTML = ""; // Limpa para não acumular
+        containerMural.innerHTML = ""; // Limpa o "Carregando..."
         
-        // Filtra e desenha os cards (mesma lógica anterior)
-        const executadas = dados.results.filter(tx => tx.isExecuted);
-        executadas.slice(0, 10).forEach(tx => {
+        const filtradas = [];
+        const idsVistos = new Set();
+        const pautasExecutadas = dados.results.filter(tx => tx.isExecuted);
+
+        for (const t of pautasExecutadas) {
+            if (!idsVistos.has(t.nonce)) {
+                idsVistos.add(t.nonce);
+                filtradas.push(t);
+            }
+        }
+
+        filtradas.slice(0, 10).forEach(tx => {
             containerMural.innerHTML += `
                 <div class="card-pauta" style="border-left: 4px solid #34C759; margin-bottom:12px;">
-                    <small>RECURSO LIBERADO ✅ (Nonce #${tx.nonce})</small>
-                    <p><strong>${tx.description || "Execução Concluída"}</strong></p>
+                    <small style="color:#34C759; font-weight:bold;">RECURSO LIBERADO ✅ (Nonce #${tx.nonce})</small>
+                    <p style="font-size:13px; margin:5px 0; font-weight:bold;">${tx.description || "Execução Concluída"}</p>
+                    <a href="https://bscscan.com/tx/${tx.transactionHash}" target="_blank" style="font-size:11px; color:#007AFF; text-decoration:none;">
+                        Ver comprovante na Blockchain ↗
+                    </a>
                 </div>`;
         });
     } else {
-        // Se o painel estiver fechado, limpamos o container para não vazar nada
+        // Se o painel estiver fechado, mantém o container vazio ou com o "Carregando"
+        // Isso evita que o conteúdo vaze para a Home
         containerMural.innerHTML = "";
     }
 }
