@@ -371,10 +371,12 @@ body {
     background: #ffffff;
     border-radius: 20px;
     padding: 16px;
-    margin-bottom: 15px;
+    margin: 0 15px 15px 15px; 
+    width: auto; 
     border: 1px solid #f2f2f7;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    text-align: left; /* Garante o alinhamento profissional */
+    text-align: left;
+    word-wrap: break-word;
 }
 
 .card-pauta h4 {
