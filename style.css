@@ -24,12 +24,14 @@ body { width: 100%; height: 100%; min-height: 100vh; overflow-x: hidden; backgro
 .conversion p { font-size: 14px; font-weight: 700; color: var(--cinza-suave); }
 
 .hub-carousel { padding: 15px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.carousel-track { display: flex; gap: 16px; width: max-content; }
+.carousel-track { display: flex; gap: 16px; width: max-content; align-items: flex-start; }
 
-.item-round { width: 88px; height: 88px; background: var(--branco-gelo); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: none; }
-.nft-special { border: 2px solid var(--azul-blueberry); background: #fff; }
+.item-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 88px; }
+.item-round { width: 72px; height: 72px; background: var(--branco-gelo); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+.item-round i { font-size: 24px; color: var(--azul-blueberry); }
+.item-wrapper span { font-size: 10px; font-weight: 800; color: var(--texto-escuro); text-transform: uppercase; text-align: center; }
 
-.n-simbolo { font-size: 18px; font-weight: 900; color: var(--azul-blueberry); margin-bottom: 4px; }
+.n-simbolo { font-size: 22px; font-weight: 900; color: var(--azul-blueberry); }
 
 .item-dao, .item-op { 
     width: 115px; 
@@ -47,7 +49,7 @@ body { width: 100%; height: 100%; min-height: 100vh; overflow-x: hidden; backgro
     color: var(--azul-blueberry);
     font-size: 28px;
     margin-bottom: 10px;
-    filter: drop-shadow(0 2px 5px rgba(0, 122, 255, 0.4)); /* Brilho azul nos ícones */
+    filter: drop-shadow(0 2px 5px rgba(0, 122, 255, 0.4));
 }
 
 .item-dao p, .item-op span {
@@ -57,9 +59,10 @@ body { width: 100%; height: 100%; min-height: 100vh; overflow-x: hidden; backgro
     text-transform: uppercase;
 }
 
-#footer-app { position: fixed; bottom: 0; width: 100%; height: 75px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #f2f2f7; z-index: 1000; box-shadow: none; }
-.nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: var(--cinza-suave); text-decoration: none; }
-.nav-btn.active { color: var(--azul-blueberry); }
+#footer-app { position: fixed; bottom: 0; width: 100%; height: 75px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #f2f2f7; z-index: 1000; }
+.nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: var(--cinza-suave); text-decoration: none; outline: none; }
+.nav-btn i { font-size: 20px; color: var(--cinza-suave); margin-bottom: 5px; }
+.nav-btn span { font-size: 10px; font-weight: 700; color: var(--cinza-suave); }
 
 .sala-card { position: fixed; bottom: -100%; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; transition: bottom 0.4s ease; display: flex; flex-direction: column; }
 .sala-card.ativa { bottom: 0; }
