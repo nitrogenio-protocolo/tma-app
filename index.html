@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nitrogênio Protocolo</title>
-    
     <link rel="stylesheet" href="style.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -15,22 +13,33 @@
     <div class="header-content">
         <span class="brand-name">NITROGÊNIO</span>
         <div class="header-actions">
-            <button id="btn-eye" class="btn-icon"><i class="fa-solid fa-eye"></i></button>
-            <button id="connect-trigger" class="btn-wallet">CONECTAR</button>
+            <button class="btn-icon-top"><i class="fa-solid fa-eye"></i></button>
+            <button class="btn-wallet">CONECTAR</button>
         </div>
     </div>
 </header>
 
 <main class="main-content">
+
+    <section class="balance-container">
+        <div class="balance-card">
+            <div class="balance-info">
+                <span>Saldo Disponível</span>
+                <div class="amount-row">
+                    <h1>1.000,00 <span>N</span></h1>
+                </div>
+            </div>
+            <div class="balance-footer">
+                <p>≈ R$ 5.420,00</p>
+            </div>
+        </div>
+    </section>
     
     <section class="hub-carousel">
         <div class="carousel-track">
             <div class="item-round"><i class="fa-solid fa-arrow-up"></i><span>PAGAR</span></div>
             <div class="item-round"><i class="fa-solid fa-arrow-down"></i><span>RECEBER</span></div>
-            <div class="item-round">
-                <div class="n-simbolo">N</div>
-                <span>COLETAR</span>
-            </div>
+            <div class="item-round"><div class="n-simbolo">N</div><span>COLETAR</span></div>
             <div class="item-round"><i class="fa-solid fa-repeat"></i><span>TROCAR</span></div>
         </div>
     </section>
@@ -46,35 +55,17 @@
 
     <section class="hub-carousel secondary">
         <div class="carousel-track">
-            <div class="item-dao">
-                <i class="fa-solid fa-users"></i>
-                <p>COMUNIDADE</p>
-            </div>
-            <div class="item-dao">
-                <i class="fa-solid fa-building-columns"></i>
-                <p>GOVERNO</p>
-            </div>
-            <div class="item-dao">
-                <i class="fa-solid fa-chalkboard"></i>
-                <p>MURAL</p>
-            </div>
+            <div class="item-dao"><i class="fa-solid fa-users"></i><p>COMUNIDADE</p></div>
+            <div class="item-dao"><i class="fa-solid fa-building-columns"></i><p>GOVERNO</p></div>
+            <div class="item-dao"><i class="fa-solid fa-chalkboard"></i><p>MURAL</p></div>
         </div>
     </section>
 
     <section class="hub-carousel tertiary">
         <div class="carousel-track">
-            <div class="item-op">
-                <i class="fa-solid fa-gavel"></i>
-                <span>PROTOCOLO</span>
-            </div>
-            <div class="item-op">
-                <i class="fa-solid fa-vault"></i>
-                <span>COFRE</span>
-            </div>
-            <div class="item-op">
-                <i class="fa-solid fa-couch"></i>
-                <span>LAZER</span>
-            </div>
+            <div class="item-op"><i class="fa-solid fa-gavel"></i><span>PROTOCOLO</span></div>
+            <div class="item-op"><i class="fa-solid fa-vault"></i><span>COFRE</span></div>
+            <div class="item-op"><i class="fa-solid fa-couch"></i><span>LAZER</span></div>
         </div>
     </section>
 
