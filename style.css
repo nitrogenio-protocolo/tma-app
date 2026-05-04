@@ -1,46 +1,60 @@
-/* RESET & BASE */
+/* ============================================================
+   1. RESET & BASE (O Chassi do App)
+   ============================================================ */
 * { 
     box-sizing: border-box; 
     -webkit-tap-highlight-color: transparent; 
+    margin: 0;
+    padding: 0;
 }
 
 body { 
-    margin: 0; 
-    padding: 0; 
     width: 100%; 
     min-height: 100vh; 
     background: #ffffff; 
     color: #1d1d1f; 
     font-family: -apple-system, system-ui, sans-serif; 
-    overflow-x: hidden; /* Isso impede o vazamento horizontal */
+    overflow-x: hidden;
+    line-height: 1.4;
 }
 
-/* 1. SPLASH SCREEN (Sequencial) */
+/* ============================================================
+   2. OVERLAYS (Splash Screen & Termos)
+   ============================================================ */
 #splash-screen {
-    position: fixed; inset: 0; background-color: #007AFF;
-    display: flex; justify-content: center; align-items: center; z-index: 10000;
+    position: fixed; inset: 0; 
+    background-color: #007AFF;
+    display: flex; justify-content: center; align-items: center; 
+    z-index: 10000;
 }
-.splash-content { text-align: center; color: #fff; }
-.splash-text { font-size: 38px; font-weight: 800; opacity: 0; transition: opacity 0.5s ease; }
-#splash-logo { width: 180px; height: auto; opacity: 0; transition: opacity 0.5s ease; margin-top: 15px; }
 
-/* Animações de Fade-In controladas pelo JS */
+.splash-content { text-align: center; color: #fff; }
+
+.splash-text { 
+    font-size: 38px; font-weight: 800; 
+    opacity: 0; transition: opacity 0.5s ease; 
+}
+
+#splash-logo { 
+    width: 180px; height: auto; 
+    opacity: 0; transition: opacity 0.5s ease; 
+    margin-top: 15px; 
+}
+
 .fade-in { opacity: 1 !important; }
 
- /* Estilo da Cortina Azul Blueberry */
+/* Modal de Termos (Cortina) */
 .modal-cortina {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #007AFF; /* Azul Blueberry */
+    position: fixed; inset: 0;
+    background: #007AFF; 
     z-index: 9999;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     transition: transform 0.6s ease-in-out;
 }
 
 .cortina-content {
     background: white;
-    margin-top: auto; /* Faz o efeito de subir do fundo ou ficar no card */
+    margin-top: auto;
     height: 85%;
     border-radius: 30px 30px 0 0;
     padding: 20px;
@@ -50,9 +64,7 @@ body {
 
 .raposa-topo {
     width: 80px;
-    position: absolute;
-    top: -40px; /* Sobe a raposa para o topo do card branco */
-    left: 50%;
+    position: absolute; top: -40px; left: 50%;
     transform: translateX(-50%);
 }
 
@@ -60,388 +72,201 @@ body {
     margin-top: 50px;
     text-align: left;
     overflow-y: auto;
-    max-height: 50%;
+    max-height: 55%;
+    padding: 0 10px;
 }
 
-/* --- Ajuste da Pílula Vermelha --- */
+/* Botão Pílula (Estilo Matrix) */
 .btn-pilula-termos {
-    width: 150px; /* Definimos uma largura fixa para não esticar na tela toda */
-    height: 50px; /* Mantém a altura de pílula */
-    border-radius: 25px;
-    border: none;
-    background: #ccc; /* Cinza inicial */
-    color: white;
-    font-weight: bold;
+    width: 180px; height: 50px;
+    border-radius: 25px; border: none;
+    background: #ccc; color: white;
+    font-weight: bold; font-size: 14px;
     transition: all 0.3s ease;
+    margin: 20px auto;
+    display: block;
     cursor: pointer;
-    display: block;   /* Ajuda no alinhamento */
-    margin: 20px auto; /* Centraliza a pílula na tela */
-}
-
-/* Quando ela "acorda" (fica ativa) */
-.btn-pilula-termos.ativo {
-    background: #ff4444; /* Vermelho Matrix */
-    box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
 .btn-pilula-termos.ativo {
-    background: #ff4444; /* Vermelho Matrix */
+    background: #ff4444; 
     box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
-.check-container { display: block; margin-bottom: 15px; font-size: 14px; }
-
-/* 2. ESTRUTURA HOME */
-#home-app { width: 100%; display: flex; flex-direction: column; min-height: 100vh; padding-bottom: 90px; isolation: isolate; 
-    contain: content;
+/* ============================================================
+   3. HOME APP (Interface Principal)
+   ============================================================ */
+#home-app { 
+    width: 100%; display: flex; flex-direction: column; 
+    padding-bottom: 100px;
 }
-.header-app { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+
+.header-app { 
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 20px; 
+}
+
 .logo-text { font-size: 22px; font-weight: 800; color: #007AFF; }
-.btn-connect { background: #007AFF; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; font-size: 12px; }
 
-/* 3. SALDO E AÇÕES (VERSÃO ATUALIZADA) */
-.balance-section { 
-    padding: 10px 25px 20px; 
-    text-align: left; 
+.btn-connect { 
+    background: #007AFF; color: #fff; border: none; 
+    padding: 8px 20px; border-radius: 10px; 
+    font-weight: 600; font-size: 12px; 
 }
+
+/* Seção de Saldo */
+.balance-section { padding: 20px 25px; }
 
 .balance-label { 
-    font-size: 11px; 
-    color: #86868b; 
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 2px;
+    font-size: 11px; color: #86868b; 
+    text-transform: uppercase; letter-spacing: 1px;
 }
 
 .balance-amount { 
-    font-size: 28px; 
-    font-weight: 700;
-    color: #1d1d1f;
-    display: block;
+    font-size: 32px; font-weight: 700; color: #1d1d1f; 
 }
 
+/* Barra de Ações (Pagar, Receber, Trocar) */
 .action-bar { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    background: transparent; 
-    margin: 0 20px 0; 
-    padding: 10px 10px 30px; 
-    text-align: center; 
-    gap: 15px;
-    position: relative; 
+    display: grid; grid-template-columns: repeat(3, 1fr); 
+    margin: 20px; gap: 15px; 
 }
 
-/* NOVO: Container para alinhar o círculo e o texto embaixo */
-.btn-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+.btn-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
 .action-item { 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: #007AFF;
-    cursor: pointer;
-    background: #f5f7fa; 
-    width: 75px;  
-    height: 75px; 
-    border-radius: 50%; 
-    margin: 0 auto; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-    transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center; 
+    background: #f5f7fa; color: #007AFF;
+    width: 70px; height: 70px; border-radius: 50%; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
 }
 
-/* Estilo do Ícone */
-.action-item i {
-    font-size: 24px; /* Aumentei um pouco para destaque */
-}
+.action-item:active { transform: scale(0.9); background: #e8eaed; }
 
-/* O Texto (Rótulo Visual)
-.label-visual {
-   display: block; 
-    margin-top: 20px;     
-    font-size: 12px;      
-    font-weight: 800;     
-    color: #1d1d1f;       
-    text-transform: lowercase;
-    pointer-events: none; 
-    display: block;       
-}
+.label-visual { font-size: 12px; font-weight: 700; color: #1d1d1f; }
 
-/* Efeito de apertar o botão redondo */
-.action-item:active {
-    background: #ebedf0;
-    transform: scale(0.92);
-}
-
-/* 4. CARD NFT (Ajustado para o novo padrão Clean) */
-.banner-nft { 
-    margin: 0 20px 20px; 
-    background: #f5f7fa; /* Cinza claro frio (Antarctic Clean) */
-    border-radius: 20px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    padding: 20px; 
-    border: none; /* Remove a borda para fluidez */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03); /* Sombra subliminar */
-}
-
-.nft-info { 
-    display: flex; 
-    flex-direction: column; 
-}
-
-.nft-info strong { 
-    font-size: 18px; 
-    font-weight: 800; 
-    color: #007AFF; 
-}
-
-#nft-balance { 
-    font-size: 14px; 
-    font-weight: 600; 
-    margin-top: 5px; 
-    color: #1d1d1f; 
-    opacity: 1; 
-}
-
-.raposa-no-card { 
-    max-height: 50px; 
-    width: auto; 
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); /* Dá profundidade à logo */
-}
-
-/* Nova classe exclusiva para a raposa azul do carrossel */
-.raposa-azul-card {
-    max-height: 50px;
-    width: auto;
-    /* Ajustado para Azul Blueberry (#007AFF) partindo de um PNG branco */
-    filter: invert(31%) sepia(94%) saturate(4000%) hue-rotate(195deg) brightness(100%) contrast(105%);
-    margin-bottom: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* 5. CARROSSEL DE SALAS (Estilo Quadrado Fixo - Anti-Tapete) */
+/* ============================================================
+   4. CARROSSEL & CARDS (O Coração da DAO)
+   ============================================================ */
 .room-carousel {
-    display: flex;          
-    flex-wrap: nowrap;      
-    padding: 20px;        
-    gap: 15px;              
-    overflow-x: auto;       
-    scroll-snap-type: x mandatory; 
-    -webkit-overflow-scrolling: touch; 
-}
-
-.room-card {
-    flex: 0 0 160px;
-    height: 160px;   
-    background: #f5f7fa; 
-    border: none;        
-    border-radius: 20px;
-    padding: 15px;
-    text-align: center;
-    scroll-snap-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-    
-    display: flex;
-    flex-direction: column;
-    /* Mudamos para space-between para forçar os textos para a mesma posição */
-    justify-content: space-between; 
-    align-items: center;
-}
-
-/* NOVO: Trava a altura do ícone para o texto não desalinhada */
-.room-card .room-icon {
-    height: 60px; /* Altura fixa para todos os ícones/imagens */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    color: #007AFF;
-    font-size: 28px;
-}
-
-.room-card h3 {
-    color: #007AFF; 
-    font-size: 14px; 
-    margin: 0; /* Removemos margens para o flex cuidar do espaço */
-    font-weight: 800;
-    text-transform: uppercase;
-}
-
-.room-card p {
-    color: #1d1d1f; 
-    font-size: 11px;
-    margin-bottom: 10px; /* Garante um respiro no fundo do card */
-    font-weight: 600;
-    line-height: 1.2;
-}
-
-.full-content { display: none; margin-top: 20px; }
-.room-card.expanded .full-content { display: block; }
-
-/* Este bloco cuida de ESCONDER a tela do NFT lá embaixo */
-#area-nft.area-interna {
-    display: block !important; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 9500; 
-    transform: translateY(100%); 
-    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-/* Este bloco cuida de MOSTRAR a tela quando você clica */
-#area-nft.ativa {
-    transform: translateY(0);
-}
-
-/* 6. ÁREAS INTERNAS & BOTÕES */
-.area-header { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f2f2f7; gap: 15px; }
-.area-header h2 { font-size: 18px; margin: 0; }
-.conversion-card { background: #f5f5f7; padding: 20px; border-radius: 20px; margin: 20px; }
-.input-group { display: flex; align-items: center; margin: 10px 0; font-size: 32px; font-weight: 700; }
-.input-group input { border: none; background: transparent; width: 100%; outline: none; font-size: inherit; font-weight: inherit; }
-.address-container { display: flex; align-items: center; gap: 10px; margin-top: 10px; border: 1px solid #d2d2d7; padding: 10px; border-radius: 10px; }
-.address-container input { border: none; width: 100%; outline: none; }
-
-.grupo-botoes { display: flex; gap: 15px; padding: 20px; }
-.btn-pilula { flex: 1; padding: 16px; border-radius: 50px; border: none; font-weight: 700; text-transform: uppercase; font-size: 14px; cursor: pointer; }
-.btn-cancelar { background: #f2f2f7; color: #8e8e93; }
-.btn-acao { background: #d2d2d7; color: #fff; transition: background 0.3s; }
-.btn-acao.active { 
-    background: #007AFF !important; 
-    color: #ffffff !important; 
-}
-
-
-#qrcode-container { display: flex; justify-content: center; margin-top: 20px; }
-#reader { margin-top: 15px; border-radius: 12px; overflow: hidden; }
-
-/* 7. NAV BAR FIXA */
-.nav-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0; /* Adicione isso para centralizar */
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: white;
-    border-top: 1px solid #eee;
-    padding: 10px 0;
-    z-index: 5000;
-    margin: 0; /* Garante que não tenha margem lateral */
-}
-
-/* Ajuste no Modal de Votação (Bottom Sheet) */
-.modal-votacao-sheet {
-    z-index: 6000 !important; /* O rei da montanha, fica por cima de tudo */
-}
-
-/* --- CORREÇÃO TELA BRANCA PAGAR/RECEBER --- */
-.area-interna {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;   /* Estabilidade total */
-    height: 100%;  
-    background-color: #ffffff !important;
-    z-index: 8000;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding-bottom: env(safe-area-inset-bottom);
+    display: flex; overflow-x: auto; 
+    padding: 20px; gap: 15px;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
 }
 
-/* --- ESTILO DOS MINI-CARDS REAIS DO NITROGÊNIO --- */
+.room-carousel::-webkit-scrollbar { display: none; } /* Esconde scrollbar */
+
+.room-card {
+    flex: 0 0 160px; height: 160px;
+    background: #f5f7fa; border-radius: 24px;
+    padding: 20px; text-align: center;
+    scroll-snap-align: center;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.room-card .room-icon { 
+    font-size: 28px; color: #007AFF; margin-bottom: 12px; 
+}
+
+.room-card h3 { 
+    font-size: 13px; font-weight: 800; color: #007AFF; 
+    text-transform: uppercase; margin-bottom: 4px;
+}
+
+.room-card p { font-size: 11px; font-weight: 600; color: #86868b; }
+
+/* Raposa Azul Customizada para o Card NFT */
+.raposa-azul-card {
+    max-height: 45px; width: auto; margin-bottom: 10px;
+    filter: invert(31%) sepia(94%) saturate(4000%) hue-rotate(195deg) brightness(100%) contrast(105%);
+}
+
+/* ============================================================
+   5. ÁREAS INTERNAS (Pagar, Receber, NFT)
+   ============================================================ */
+.area-interna {
+    display: none; position: fixed; inset: 0;
+    background-color: #ffffff !important;
+    z-index: 8000; overflow-y: auto;
+}
+
+.area-header { 
+    display: flex; align-items: center; padding: 20px; 
+    border-bottom: 1px solid #f2f2f7; gap: 15px; 
+}
+
+.area-header i { font-size: 20px; color: #007AFF; cursor: pointer; }
+
+.conversion-card { 
+    background: #f5f5f7; padding: 25px; 
+    border-radius: 24px; margin: 20px; 
+}
+
+.input-group input { 
+    border: none; background: transparent; width: 100%; 
+    outline: none; font-size: 32px; font-weight: 700; 
+}
+
+.grupo-botoes { display: flex; gap: 12px; padding: 20px; }
+
+.btn-pilula { 
+    flex: 1; padding: 18px; border-radius: 50px; 
+    border: none; font-weight: 800; font-size: 13px; 
+}
+
+.btn-cancelar { background: #f2f2f7; color: #8e8e93; }
+
+.btn-acao.active { background: #007AFF !important; color: #fff !important; }
+
+/* ============================================================
+   6. PAINÉIS DE GOVERNANÇA (Bottom Sheets)
+   ============================================================ */
+.painel-folha {
+    position: fixed; inset: 0;
+    background-color: #ffffff; z-index: 9000;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    display: flex; flex-direction: column;
+}
+
+.painel-folha.aberto { transform: translateY(0); }
+
+.barra-fechar { 
+    width: 100%; height: 40px; 
+    display: flex; justify-content: center; align-items: center; 
+}
+
+.indicador-puxar { 
+    width: 40px; height: 5px; background: #e5e5e7; border-radius: 10px; 
+}
+
 .card-pauta {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 16px;
-    /* Ajuste de margem para o card não bater na parede do celular */
-    margin: 10px 20px; 
-    /* O width: auto é a chave para ele não vazar */
-    width: auto; 
+    background: #ffffff; border-radius: 20px;
+    padding: 18px; margin: 10px 20px;
     border: 1px solid #f2f2f7;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    text-align: left;
-    /* Isso aqui mata o vazamento de texto se o título for grande */
-    word-wrap: break-word; 
-    overflow: hidden;
 }
 
-.card-pauta h4 {
-    font-family: sans-serif;
-    letter-spacing: 0.5px;
+/* ============================================================
+   7. NAV BAR & UTILITÁRIOS
+   ============================================================ */
+.nav-bar {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-around; padding: 15px 0;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+    border-top: 1px solid #f2f2f7; z-index: 5000;
 }
 
-.card-pauta p {
-    font-family: sans-serif;
-    line-height: 1.4;
+.nav-item { font-size: 22px; color: #8e8e93; cursor: pointer; }
+.nav-item.active { color: #007AFF; }
+
+/* Modal de Votação (Topo de tudo) */
+.modal-votacao-sheet {
+    z-index: 9999 !important;
 }
 
-.btn-votar {
-    transition: all 0.3s ease;
-}
-
-.btn-votar:active {
-    transform: scale(0.96); /* Efeito de pílula sendo apertada */
-    background: #005ecb;
-}
-
-/* Ajuste para o link do BSCScan ficar subliminar */
-.card-pauta a {
-    transition: opacity 0.2s;
-}
-
-.card-pauta a:hover {
-    opacity: 0.7;
-}
-
-/* Efeito de Subida para as Salas */
-.painel-folha {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 9000;
-    transform: translateY(100%); /* Começa escondido no rodapé */
-    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-    display: flex;
-    flex-direction: column;
-}
-
-.painel-folha.aberto {
-    transform: translateY(0); /* Sobe para o topo */
-}
-
-/* Barra de puxar/fechar no topo do painel */
-.barra-fechar {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.indicador-puxar {
-    width: 40px;
-    height: 5px;
-    background: #e5e5e7;
-    border-radius: 10px;
-}
+#qrcode-container { margin: 20px auto; text-align: center; }
