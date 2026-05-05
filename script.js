@@ -183,3 +183,85 @@ document.getElementById('btn-confirmar-receber').onclick = function() {
         console.log("Teclado recolhido e QR Code gerado para R$", valor);
     }
 };
+
+// --- CONFIGURAÇÕES GLOBAIS ---
+let precoBNB = 0;
+const enderecoWallet = "0x71ca...d87a"; // Sua carteira Nitrogen
+
+// --- FUNÇÃO PARA BUSCAR PREÇO REAL (API BINANCE) ---
+async function atualizarPrecoBNB() {
+    try {
+        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
+        const data = await response.json();
+        precoBNB = parseFloat(data.price);
+        console.log("Preço BNB Atualizado: R$", precoBNB);
+    } catch (error) {
+        console.error("Erro ao buscar preço:", error);
+        precoBNB = 3300; // Valor de segurança caso a API falhe
+    }
+}
+
+// Inicia a busca do preço ao abrir o app
+atualizarPrecoBNB();
+
+// --- LÓGICA DA SALA RECEBER ---
+const inputBRL = document.getElementById('valor-brl');
+const conversaoPreview = document.getElementById('conversao-preview');
+const btnConfirmarReceber = document.getElementById('btn-confirmar-receber');
+const imgQRCode = document.getElementById('img-qrcode');
+const placeholderQR = document.getElementById('placeholder-qr');
+
+inputBRL.addEventListener('input', (e) => {
+    let valor = e.target.value;
+    
+    if (valor > 0 && precoBNB > 0) {
+        // Cálculo com preço real
+        let bnb = (valor / precoBNB).toFixed(6);
+        conversaoPreview.innerText = `≈ ${bnb} BNB`;
+        
+        btnConfirmarReceber.disabled = false;
+        btnConfirmarReceber.style.background = 'var(--azul-blueberry)';
+    } else {
+        conversaoPreview.innerText = '≈ 0.0000 BNB';
+        btnConfirmarReceber.disabled = true;
+        btnConfirmarReceber.style.background = '#ddd';
+    }
+});
+
+btnConfirmarReceber.onclick = () => {
+    const valor = inputBRL.value;
+    const bnbValue = (valor / precoBNB).toFixed(6);
+    
+    // Gera QR Code de pagamento real (padrão EIP-681 para carteiras crypto)
+    const qrData = `ethereum:${enderecoWallet}@56?value=${bnbValue}`;
+    const googleChartsAPI = `https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=${encodeURIComponent(qrData)}`;
+    
+    imgQRCode.src = googleChartsAPI;
+    imgQRCode.style.display = 'block';
+    imgQRCode.style.opacity = '1';
+    placeholderQR.style.display = 'none';
+};
+
+// --- LÓGICA DA SALA PAGAR ---
+const btnConfirmarPagar = document.getElementById('btn-confirmar-pagar');
+const inputChave = document.getElementById('chave-pagamento');
+
+btnConfirmarPagar.onclick = () => {
+    const chave = inputChave.value;
+    if(chave.length > 10) {
+        alert("Processando pagamento para: " + chave);
+    } else {
+        alert("Insira uma chave ou endereço válido.");
+    }
+};
+
+// Função para fechar salas (Geral)
+function fecharSala(id) {
+    document.getElementById(id).classList.remove('active');
+    // Limpa o QR Code ao fechar para a próxima vez
+    if(id === 'sala-receber') {
+        imgQRCode.style.display = 'none';
+        placeholderQR.style.display = 'flex';
+        inputBRL.value = '';
+    }
+}
