@@ -34,7 +34,7 @@
         </div>
     </section>
     
-    <<section class="hub-carousel">
+    <section class="hub-carousel">
     <div class="carousel-track">
         <div class="item-wrapper" onclick="abrirSala('sala-pagar')">
             <div class="item-round"><i class="fa-solid fa-arrow-up"></i></div>
@@ -91,18 +91,53 @@
 </footer>
 
 <div id="container-salas">
-    <div id="sala-pagar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-pagar')"><i class="fa-solid fa-xmark"></i></button><h2>PAGAR</h2></div><div class="sala-body">Escaneie o QR Code ou cole a chave para pagar.</div></div>
-    <div id="sala-receber" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-receber')"><i class="fa-solid fa-xmark"></i></button><h2>RECEBER</h2></div><div class="sala-body">Seu endereço ou QR Code para recebimento.</div></div>
+    <div id="sala-pagar" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-pagar')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>PAGAR</h2>
+        </div>
+        <div class="sala-body">Escaneie o QR Code ou cole a chave para pagar.</div>
+    </div>
+
+    <div id="sala-receber" class="sala-card">
+        <div class="sala-handle"></div>
+        <div class="sala-header">
+            <button class="btn-fechar" onclick="fecharSala('sala-receber')"><i class="fa-solid fa-xmark"></i></button>
+            <h2>RECEBER</h2>
+        </div>
+        <div class="sala-body" style="text-align: center; padding: 15px 25px;">
+            <div style="margin-bottom: 20px;">
+                <label style="font-size: 12px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 8px;">VALOR DA COBRANÇA</label>
+                <div style="display: flex; align-items: center; justify-content: center; background: var(--cor-fundo-camuflagem); padding: 15px; border-radius: 18px;">
+                    <span style="font-size: 24px; font-weight: 900; color: var(--texto-escuro); margin-right: 5px;">R$</span>
+                    <input type="number" id="valor-brl" placeholder="0,00" step="0.01" inputmode="decimal" style="background: none; border: none; font-size: 32px; font-weight: 900; width: 100%; outline: none; color: var(--texto-escuro);">
+                </div>
+                <p id="conversao-preview" style="font-size: 12px; color: var(--azul-blueberry); font-weight: 700; margin-top: 8px;">≈ 0.0000 BNB</p>
+            </div>
+            <div id="qrcode-area" style="background: #fff; padding: 15px; border-radius: 20px; display: inline-block; border: 2px solid var(--cor-fundo-camuflagem);">
+                <img id="img-qrcode" src="" alt="QR Code" style="width: 180px; height: 180px; display: none; opacity: 0.3;">
+                <div id="placeholder-qr" style="width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; color: #ddd;">
+                    <i class="fa-solid fa-qrcode fa-4x"></i>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button onclick="fecharSala('sala-receber')" style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #eee; color: #666; font-weight: 800; font-size: 14px;">CANCELAR</button>
+                <button id="btn-confirmar-receber" disabled style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #ddd; color: #fff; font-weight: 800; font-size: 14px; transition: 0.3s;">CONFIRMAR</button>
+            </div>
+        </div>
+    </div>
+
     <div id="sala-coletar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-coletar')"><i class="fa-solid fa-xmark"></i></button><h2>COLETAR</h2></div><div class="sala-body">Coleta de Token N e recompensas diárias.</div></div>
     <div id="sala-trocar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-trocar')"><i class="fa-solid fa-xmark"></i></button><h2>TROCAR</h2></div><div class="sala-body">Troque Token N por BNB ou outros ativos.</div></div>
-    <div id="sala-nft" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-nft')"><i class="fa-solid fa-xmark"></i></button><h2>NFT ALPHA</h2></div><div class="sala-body">Mint seu NFT de fundador do protocolo.</div></div>
-    <div id="sala-comunidade" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-comunidade')"><i class="fa-solid fa-xmark"></i></button><h2>COMUNIDADE</h2></div><div class="sala-body">Espaço de discussão e pautas da DAO.</div></div>
-    <div id="sala-governo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-governo')"><i class="fa-solid fa-xmark"></i></button><h2>GOVERNO</h2></div><div class="sala-body">Votações e decisões dos 21 Guardiões.</div></div>
-    <div id="sala-mural" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-mural')"><i class="fa-solid fa-xmark"></i></button><h2>MURAL</h2></div><div class="sala-body">Transparência e avisos oficiais do Nitrogênio.</div></div>
-    <div id="sala-protocolo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-protocolo')"><i class="fa-solid fa-xmark"></i></button><h2>PROTOCOLO</h2></div><div class="sala-body">Manual de governança e regras fundamentais.</div></div>
-    <div id="sala-cofre" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-cofre')"><i class="fa-solid fa-xmark"></i></button><h2>COFRE</h2></div><div class="sala-body">Tesouraria Safe e gestão de ativos bloqueados.</div></div>
-    <div id="sala-lazer" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-lazer')"><i class="fa-solid fa-xmark"></i></button><h2>LAZER</h2></div><div class="sala-body">Benefícios e diversão para a comunidade.</div></div>
-    <div id="sala-suporte" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-suporte')"><i class="fa-solid fa-xmark"></i></button><h2>SUPORTE</h2></div><div class="sala-body">Ajuda técnica e contato direto.</div></div>
+    <div id="sala-nft" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-nft')"><i class="fa-solid fa-xmark"></i></button><h2>NFT ALPHA</h2></div><div class="sala-body">Mint seu NFT.</div></div>
+    <div id="sala-comunidade" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-comunidade')"><i class="fa-solid fa-xmark"></i></button><h2>COMUNIDADE</h2></div><div class="sala-body">Espaço da DAO.</div></div>
+    <div id="sala-governo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-governo')"><i class="fa-solid fa-xmark"></i></button><h2>GOVERNO</h2></div><div class="sala-body">Votações.</div></div>
+    <div id="sala-mural" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-mural')"><i class="fa-solid fa-xmark"></i></button><h2>MURAL</h2></div><div class="sala-body">Avisos oficiais.</div></div>
+    <div id="sala-protocolo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-protocolo')"><i class="fa-solid fa-xmark"></i></button><h2>PROTOCOLO</h2></div><div class="sala-body">Regras.</div></div>
+    <div id="sala-cofre" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-cofre')"><i class="fa-solid fa-xmark"></i></button><h2>COFRE</h2></div><div class="sala-body">Tesouraria.</div></div>
+    <div id="sala-lazer" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-lazer')"><i class="fa-solid fa-xmark"></i></button><h2>LAZER</h2></div><div class="sala-body">Benefícios.</div></div>
+    <div id="sala-suporte" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-suporte')"><i class="fa-solid fa-xmark"></i></button><h2>SUPORTE</h2></div><div class="sala-body">Ajuda técnica.</div></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
