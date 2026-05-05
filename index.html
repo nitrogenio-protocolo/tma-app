@@ -1,1 +1,76 @@
 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo | DAO</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/index.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <h1 class="logo-text">NITROGÊNIO<span>N</span></h1>
+            <div id="status-rede" class="status-badge">BSC MAINNET</div>
+        </div>
+        <button id="btn-conectar" class="btn-wallet">CONECTAR CARTEIRA</button>
+    </header>
+
+    <main>
+        <section class="card-master">
+            <div class="balance-info">
+                <p class="label">SALDO EM CARTEIRA</p>
+                <h2 id="saldo-bnb">0.0000 <span>BNB</span></h2>
+                <h3 id="saldo-n">0.00 <span>N</span></h3>
+            </div>
+            <div class="nft-badge" id="nft-status">
+                <img src="https://img.icons8.com/ios-filled/50/007BFF/identity-theft.png" alt="NFT">
+                <span>SEM ACESSO ALPHA</span>
+            </div>
+        </section>
+
+        <nav class="quick-actions">
+            <button onclick="abrirSala('sala-pagar')"><i>↑</i>PAGAR</button>
+            <button onclick="abrirSala('sala-receber')"><i>↓</i>RECEBER</button>
+            <button onclick="abrirSala('sala-coleta')"><i>N</i>COLETAR</button>
+            <button onclick="abrirSala('sala-trocar')"><i>⇄</i>TROCAR</button>
+        </nav>
+
+        <section class="grid-dao">
+            <div class="sala-card" onclick="abrirSala('sala-governo')">
+                <img src="https://img.icons8.com/ios/50/007BFF/government.png" alt="Gov">
+                <p>GOVERNO</p>
+            </div>
+            <div class="sala-card" onclick="abrirSala('sala-mural')">
+                <img src="https://img.icons8.com/ios/50/007BFF/mural.png" alt="Mural">
+                <p>MURAL</p>
+            </div>
+            <div class="sala-card" onclick="abrirSala('sala-comunidade')">
+                <img src="https://img.icons8.com/ios/50/007BFF/conference-call.png" alt="Comu">
+                <p>COMUNIDADE</p>
+            </div>
+            <div class="sala-card" onclick="abrirSala('sala-tesouraria')">
+                <img src="https://img.icons8.com/ios/50/007BFF/safe-ok.png" alt="Tesou">
+                <p>TESOURARIA</p>
+            </div>
+        </section>
+
+        <section class="mint-area" id="area-mint">
+            <h3>MINT NFT ALPHA</h3>
+            <p>Acesso exclusivo aos 21 Guardiões e Membros.</p>
+            <input type="text" id="ref-padrinho" placeholder="Endereço do Padrinho (Opcional)">
+            <button id="btn-mint" class="btn-primary">MINTAR AGORA (0.1 BNB)</button>
+        </section>
+    </main>
+
+    <div id="overlay" class="overlay">
+        <div class="sala-content">
+            <button class="btn-fechar" onclick="fecharSala()">✕</button>
+            <div id="conteudo-sala"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
