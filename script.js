@@ -76,27 +76,48 @@ function abrirSala(id) {
     }
 }
 
-function fecharSala(id) {
+ffunction fecharSala(id) {
     const sala = document.getElementById(id);
-    if (sala) {
-        sala.classList.remove('ativa');
-        document.body.style.overflow = 'auto';
+    if (!sala) return; // Segurança extra: se a sala não existir, não faz nada
 
-        // Limpa campos da sala PAGAR
-        if (id === 'sala-pagar') {
-            pararScanner();
-            document.getElementById('chave-pagamento').value = '';
-            // Se você tiver um campo de valor na tela de pagar, limpe-o aqui também:
-            if(document.getElementById('valor-pagar-brl')) document.getElementById('valor-pagar-brl').value = '';
+    sala.classList.remove('ativa');
+    document.body.style.overflow = 'auto';
+
+    // --- LIMPEZA DA SALA PAGAR ---
+    if (id === 'sala-pagar') {
+        pararScanner();
+        
+        const inputChave = document.getElementById('chave-pagamento');
+        const inputValorPagar = document.getElementById('valor-pagar-brl');
+        
+        if (inputChave) inputChave.value = '';
+        if (inputValorPagar) inputValorPagar.value = '';
+    }
+
+    // --- LIMPEZA DA SALA RECEBER ---
+    if (id === 'sala-receber') {
+        const inputValorBRL = document.getElementById('valor-brl');
+        const previewBNB = document.getElementById('conversao-preview');
+        const btnConfirmar = document.getElementById('btn-confirmar-receber');
+        const imgQr = document.getElementById('img-qrcode');
+        const placeholder = document.getElementById('placeholder-qr');
+
+        if (inputValorBRL) inputValorBRL.value = '';
+        if (previewBNB) previewBNB.innerText = '≈ 0.0000 BNB';
+        
+        if (btnConfirmar) {
+            btnConfirmar.disabled = true;
+            // Opcional: resetar cor do botão se você não usar CSS :disabled
+            btnConfirmar.style.background = '#ddd'; 
         }
 
-        // Limpa campos da sala RECEBER
-        if (id === 'sala-receber') {
-            document.getElementById('valor-brl').value = '';
-            document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
-            document.getElementById('btn-confirmar-receber').disabled = true;
-            document.getElementById('img-qrcode').style.display = 'none';
-            document.getElementById('placeholder-qr').style.display = 'flex';
+        if (imgQr) {
+            imgQr.src = '';
+            imgQr.style.display = 'none';
+        }
+        
+        if (placeholder) {
+            placeholder.style.display = 'flex';
         }
     }
 }
