@@ -1,23 +1,35 @@
 let provider, signer, account, scanner;
 let destinoAtual = "";
 
-// --- FUNÇÃO 1: LIGAR O MOTOR (CONEXÃO) ---
+/// --- FUNÇÃO 1: LIGAR O MOTOR (CONEXÃO) ---
 async function conectar() {
+    console.log("Tentando ligar o motor...");
+    
     if (window.ethereum) {
         try {
+            // Cria a conexão com a carteira
             provider = new ethers.BrowserProvider(window.ethereum);
+            
+            // Pede para o usuário escolher a conta (abre o pop-up da carteira)
             const accs = await provider.send("eth_requestAccounts", []);
+            
             account = accs[0];
             signer = await provider.getSigner();
-            document.getElementById('btn-conectar').innerText = account.substring(0,6)+"...";
+            
+            // Muda o texto do botão para mostrar que deu certo
+            document.getElementById('btn-conectar').innerText = account.substring(0,6)+"..."+account.substring(38);
+            document.getElementById('btn-conectar').style.background = "#28a745"; // Fica verde (sucesso)
+            
+            console.log("Motor ligado: " + account);
             atualizarSaldo();
-            return true; // Sucesso na conexão
+            return true;
         } catch (e) {
-            console.error("Erro na conexão:", e);
+            alert("Você cancelou a conexão ou houve um erro: " + e.message);
             return false;
         }
     } else {
-        alert("Abra o app por dentro de uma carteira Web3 (MetaMask/Trust)!");
+        // Se cair aqui, é porque o usuário não abriu pelo navegador da carteira
+        alert("ALERTA: Para o botão funcionar, você deve abrir o site 'nitrogenio-protocolo.github.io' dentro do navegador da sua Trust Wallet ou MetaMask.");
         return false;
     }
 }
