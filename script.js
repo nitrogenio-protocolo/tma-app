@@ -25,7 +25,16 @@ function fecharSala(id) {
     const sala = document.getElementById(id);
     if (sala) {
         sala.classList.remove('ativa');
-        document.body.style.overflow = 'auto'; 
+        document.body.style.overflow = 'auto';
+
+        // LIMPEZA AUTOMÁTICA DO TERMINAL
+        if (id === 'sala-receber') {
+            document.getElementById('valor-brl').value = '';
+            document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
+            document.getElementById('btn-confirmar-receber').disabled = true;
+            document.getElementById('img-qrcode').style.display = 'none';
+            document.getElementById('placeholder-qr').style.display = 'flex';
+        }
     }
 }
 
@@ -135,3 +144,34 @@ document.addEventListener('DOMContentLoaded', () => {
         conectarCarteira();
     }
 });
+
+// Escuta a digitação para ativar o botão azul
+document.getElementById('valor-brl').addEventListener('input', function() {
+    const btn = document.getElementById('btn-confirmar-receber');
+    if (this.value > 0) {
+        btn.disabled = false;
+        btn.style.background = 'var(--azul-blueberry)';
+    } else {
+        btn.disabled = true;
+        btn.style.background = '#ddd';
+    }
+});
+
+// Ação de CONFIRMAR (Gera QR Code e esconde teclado)
+document.getElementById('btn-confirmar-receber').onclick = function() {
+    const valor = document.getElementById('valor-brl').value;
+    
+    // ABAIXA O TECLADO DO CELULAR
+    document.activeElement.blur(); 
+
+    // GERA O QR CODE (Usando seu endereço de carteira que vi no vídeo)
+    const minhaCarteira = "0x71ca...d87a"; // Coloque seu endereço completo aqui
+    const qrArea = document.getElementById('img-qrcode');
+    const placeholder = document.getElementById('placeholder-qr');
+
+    qrArea.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ethereum:${minhaCarteira}@56?value=${valor}`;
+    
+    placeholder.style.display = 'none';
+    qrArea.style.display = 'block';
+    qrArea.style.opacity = '1';
+};
