@@ -1,128 +1,120 @@
 /**
- * NITROGÊNIO PROTOCOLO - MOTOR WEB3 (CLASSE OFICIAL)
- * Organizado por classes para facilitar ajustes futuros.
+ * NITROGÊNIO PROTOCOLO - MOTOR WEB3 OFICIAL
+ * Foco: Botão Conectar e Pagar Funcional
  */
 
-const NitrogenApp = {
-    // 1. Peças do Motor (Estado)
-    data: {
-        provider: null,
-        signer: null,
-        account: null,
-        scanner: null,
-        destinoAtual: ""
-    },
+class NitrogenDAO {
+    constructor() {
+        this.provider = null;
+        this.signer = null;
+        this.account = null;
+        this.scanner = null;
+        this.destinoAtual = "";
+        
+        // Liga os botões ao carregar o arquivo
+        this.iniciarBotoes();
+    }
 
-    // 2. Ignição (Conexão com a Carteira)
+    // --- FUNÇÃO 1: CONECTAR (IGNIÇÃO) ---
     async conectar() {
-        if (typeof ethers === 'undefined') {
-            alert("Erro: Biblioteca Ethers não carregada. Verifique sua internet.");
+        // Verifica se a biblioteca carregou (Combustível)
+        if (typeof window.ethers === 'undefined') {
+            alert("Erro: Biblioteca Ethers não carregada. Recarregue a página.");
             return false;
         }
 
+        // Verifica se está no navegador da carteira
         if (!window.ethereum) {
-            alert("Abra o app dentro da MetaMask ou Trust Wallet!");
+            alert("Abra o app dentro da MetaMask ou Trust Wallet.");
             return false;
         }
 
         try {
-            // Inicializa Provider e Signer (Ethers v6)
-            this.data.provider = new ethers.BrowserProvider(window.ethereum);
-            const accounts = await this.data.provider.send("eth_requestAccounts", []);
-            
-            this.data.account = accounts[0];
-            this.data.signer = await this.data.provider.getSigner();
+            this.provider = new ethers.BrowserProvider(window.ethereum);
+            const accounts = await this.provider.send("eth_requestAccounts", []);
+            this.account = accounts[0];
+            this.signer = await this.provider.getSigner();
 
-            // Atualiza Interface do Botão
+            // Atualiza Interface
             const btn = document.getElementById('btn-conectar');
-            const curta = this.data.account;
-            btn.innerText = curta.substring(0,6) + "..." + curta.substring(38);
+            btn.innerText = this.account.substring(0,6) + "..." + this.account.substring(38);
             btn.style.background = "#28a745"; // Verde Sucesso
 
             this.atualizarSaldo();
             return true;
-        } catch (error) {
-            console.error("Erro na conexão:", error);
-            alert("Conexão cancelada.");
+        } catch (e) {
+            alert("Conexão cancelada pelo usuário.");
             return false;
         }
-    },
+    }
 
-    // 3. Painel (Saldo)
+    // --- FUNÇÃO 2: SALDO (PAINEL) ---
     async atualizarSaldo() {
-        if (!this.data.account) return;
+        if (!this.account) return;
         try {
-            const saldoWei = await this.data.provider.getBalance(this.data.account);
+            const saldoWei = await this.provider.getBalance(this.account);
             const saldoBnb = ethers.formatEther(saldoWei);
             document.getElementById('display-bnb').innerHTML = `${saldoBnb.substring(0, 6)} <span>BNB</span>`;
-        } catch (e) {
-            console.error("Erro ao ler saldo.");
-        }
-    },
+        } catch (e) { console.error("Erro no saldo."); }
+    }
 
-    // 4. Scanner (Pagar)
+    // --- FUNÇÃO 3: PAGAR (SCANNER) ---
     async abrirScanner() {
-        // Auto-conectar se estiver desligado
-        if (!this.data.account) {
+        if (!this.account) {
             const ok = await this.conectar();
             if (!ok) return;
         }
 
         document.getElementById('cam-overlay').style.display = 'block';
-        
-        this.data.scanner = new Html5Qrcode("reader");
-        this.data.scanner.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            (txt) => {
-                this.data.scanner.stop();
-                document.getElementById('cam-overlay').style.display = 'none';
-                
-                const partes = txt.split(':');
-                this.data.destinoAtual = partes[0];
-                
-                document.getElementById('modal-confirm').style.display = 'block';
-                document.getElementById('info-destino').innerText = "DESTINO: " + this.data.destinoAtual;
-                document.getElementById('valor-input').value = partes[1] || "";
+        this.scanner = new Html5Qrcode("reader");
 
-                if(!partes[1]) setTimeout(() => document.getElementById('valor-input').focus(), 400);
-            }
-        ).catch(err => alert("Erro na câmera."));
-    },
+        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            this.scanner.stop();
+            document.getElementById('cam-overlay').style.display = 'none';
+            
+            const partes = txt.split(':');
+            this.destinoAtual = partes[0];
+            
+            document.getElementById('modal-confirm').style.display = 'block';
+            document.getElementById('info-destino').innerText = "DESTINO: " + this.destinoAtual;
+            document.getElementById('valor-input').value = partes[1] || "";
 
-    // 5. O Gatilho (Executar Pagamento)
-    async executarPagamento() {
+            if(!partes[1]) setTimeout(() => document.getElementById('valor-input').focus(), 400);
+        }).catch(err => alert("Câmera não disponível."));
+    }
+
+    // --- FUNÇÃO 4: EXECUTAR (GATILHO) ---
+    async executar() {
         const valor = document.getElementById('valor-input').value;
-        if (!valor || valor <= 0) return alert("Digite o valor.");
+        if (!valor || valor <= 0) return alert("Digite um valor.");
 
         try {
-            const tx = await this.data.signer.sendTransaction({
-                to: this.data.destinoAtual,
+            const tx = await this.signer.sendTransaction({
+                to: this.destinoAtual,
                 value: ethers.parseEther(valor)
             });
-            alert("Pagamento enviado!");
+            alert("Enviado com sucesso!");
             this.fecharTudo();
             setTimeout(() => this.atualizarSaldo(), 4000);
-        } catch (e) {
-            alert("Falha na transação.");
-        }
-    },
+        } catch (e) { alert("Transação falhou."); }
+    }
 
-    // 6. Limpeza (Fechar Modais)
+    // --- FUNÇÃO 5: LIMPEZA ---
     fecharTudo() {
-        if (this.data.scanner) {
-            try { this.data.scanner.stop(); } catch(e) {}
-        }
+        if (this.scanner) { try { this.scanner.stop(); } catch(e) {} }
         document.getElementById('cam-overlay').style.display = 'none';
         document.getElementById('modal-confirm').style.display = 'none';
-        document.getElementById('valor-input').value = "";
     }
-};
 
-// --- MAPEAMENTO DOS BOTÕES (INTERFACE) ---
-// Usamos o NitrogenApp.função para chamar a lógica da classe
-document.getElementById('btn-conectar').onclick = () => NitrogenApp.conectar();
-document.getElementById('btn-pagar').onclick = () => NitrogenApp.abrirScanner();
-document.getElementById('confirmar-pagamento').onclick = () => NitrogenApp.executarPagamento();
-document.getElementById('cancelar-pagamento').onclick = () => NitrogenApp.fecharTudo();
-document.getElementById('fechar-cam').onclick = () => NitrogenApp.fecharTudo();
+    // --- MAPEAMENTO (FIAÇÃO) ---
+    iniciarBotoes() {
+        document.getElementById('btn-conectar').onclick = () => this.conectar();
+        document.getElementById('btn-pagar').onclick = () => this.abrirScanner();
+        document.getElementById('confirmar-pagamento').onclick = () => this.executar();
+        document.getElementById('cancelar-pagamento').onclick = () => this.fecharTudo();
+        document.getElementById('fechar-cam').onclick = () => this.fecharTudo();
+    }
+}
+
+// Inicia o App
+const App = new NitrogenDAO();
