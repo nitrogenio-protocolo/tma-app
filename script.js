@@ -76,49 +76,57 @@ function abrirSala(id) {
     }
 }
 
+fasync function updateUI() {
+    const btnWallet = document.querySelector('.btn-wallet');
+    const displayBalance = document.getElementById('display-balance');
+    const displaySymbol = document.getElementById('display-symbol');
+    const displayBRL = document.getElementById('balance-brl');
+
+    if (userAccount && provider) {
+        // Atualiza o botão da carteira
+        btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
+        
+        // Busca saldo real
+        const balanceWei = await provider.getBalance(userAccount);
+        const balanceBNB = parseFloat(ethers.formatEther(balanceWei));
+        
+        // Aplica no HTML
+        if(displayBalance) displayBalance.innerText = balanceBNB.toFixed(4);
+        if(displaySymbol) displaySymbol.innerText = "BNB";
+        
+        // Calcula valor em Reais (BRL)
+        if(displayBRL) {
+            const valorEmReais = (balanceBNB * precoBNB).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            displayBRL.innerText = `≈ ${valorEmReais}`;
+        }
+    }
+}
+
 function fecharSala(id) {
     const sala = document.getElementById(id);
-    if (!sala) return; // Segurança extra: se a sala não existir, não faz nada
+    if (!sala) return;
 
     sala.classList.remove('ativa');
     document.body.style.overflow = 'auto';
 
-    // --- LIMPEZA DA SALA PAGAR ---
+    // LIMPEZA AUTOMÁTICA AO FECHAR
+    const inputs = sala.querySelectorAll('input');
+    inputs.forEach(input => input.value = ''); // Limpa todos os campos de texto/número
+
     if (id === 'sala-pagar') {
         pararScanner();
-        
-        const inputChave = document.getElementById('chave-pagamento');
-        const inputValorPagar = document.getElementById('valor-pagar-brl');
-        
-        if (inputChave) inputChave.value = '';
-        if (inputValorPagar) inputValorPagar.value = '';
     }
 
-    // --- LIMPEZA DA SALA RECEBER ---
     if (id === 'sala-receber') {
-        const inputValorBRL = document.getElementById('valor-brl');
-        const previewBNB = document.getElementById('conversao-preview');
-        const btnConfirmar = document.getElementById('btn-confirmar-receber');
+        const preview = document.getElementById('conversao-preview');
         const imgQr = document.getElementById('img-qrcode');
         const placeholder = document.getElementById('placeholder-qr');
+        const btnConfirmar = document.getElementById('btn-confirmar-receber');
 
-        if (inputValorBRL) inputValorBRL.value = '';
-        if (previewBNB) previewBNB.innerText = '≈ 0.0000 BNB';
-        
-        if (btnConfirmar) {
-            btnConfirmar.disabled = true;
-            // Opcional: resetar cor do botão se você não usar CSS :disabled
-            btnConfirmar.style.background = '#ddd'; 
-        }
-
-        if (imgQr) {
-            imgQr.src = '';
-            imgQr.style.display = 'none';
-        }
-        
-        if (placeholder) {
-            placeholder.style.display = 'flex';
-        }
+        if(preview) preview.innerText = '≈ 0.0000 BNB';
+        if(imgQr) { imgQr.style.display = 'none'; imgQr.src = ''; }
+        if(placeholder) placeholder.style.display = 'flex';
+        if(btnConfirmar) btnConfirmar.disabled = true;
     }
 }
 
