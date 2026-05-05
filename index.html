@@ -3,65 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nitrogênio DAO</title>
+    <title>Nitrogênio Protocolo | DAO</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/index.umd.min.js"></script>
 </head>
 <body>
     <header>
         <div class="logo-area">
-            <h1 class="logo-text">NITROGÊNIO <span>N</span></h1>
-            <p style="font-size: 0.6rem; color: #888;">BSC MAINNET</p>
+            <h1>NITROGÊNIO <span>N</span></h1>
+            <p class="network">BSC MAINNET</p>
         </div>
         <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
     </header>
 
     <main>
         <section class="card-master">
-            <p style="font-size: 0.7rem; color: #666;">SALDO CARTEIRA</p>
-            <h2 id="saldo-bnb">0.0000 <span style="font-size: 0.8rem;">BNB</span></h2>
-            <p id="saldo-n" class="n-balance">0.00 N</p>
+            <p class="label">SALDO DISPONÍVEL</p>
+            <h2 id="saldo-bnb">0.0000 <span>BNB</span></h2>
+            <h3 id="saldo-n">0.00 N</h3>
         </section>
 
-        <nav class="quick-actions">
-            <button class="action-btn" onclick="abrirSala('sala-pagar')">
-                <div class="icon-wrap pagar">↑</div>
+        <nav class="actions-grid">
+            <button class="btn-action" onclick="abrir('pagar')">
+                <div class="icon red">↑</div>
                 <span>PAGAR</span>
             </button>
-            <button class="action-btn" onclick="abrirSala('sala-receber')">
-                <div class="icon-wrap receber">↓</div>
+            <button class="btn-action" onclick="abrir('receber')">
+                <div class="icon blue">↓</div>
                 <span>RECEBER</span>
             </button>
-            <button class="action-btn" onclick="abrirSala('sala-coleta')">
-                <div class="icon-wrap coletar">N</div>
+            <button class="btn-action" onclick="abrir('coleta')">
+                <div class="icon yellow">N</div>
                 <span>COLETAR</span>
             </button>
-            <button class="action-btn" onclick="abrirSala('sala-trocar')">
-                <div class="icon-wrap trocar">⇄</div>
+            <button class="btn-action" onclick="abrir('troca')">
+                <div class="icon blue">⇄</div>
                 <span>TROCAR</span>
             </button>
         </nav>
 
-        <section class="grid-gov">
-            <div class="gov-card" onclick="abrirSala('sala-governo')">GOVERNO</div>
-            <div class="gov-card" onclick="abrirSala('sala-mural')">MURAL</div>
-            <div class="gov-card" onclick="abrirSala('sala-comunidade')">COMUNIDADE</div>
-            <div class="gov-card" onclick="abrirSala('sala-tesouraria')">TESOURARIA</div>
+        <section class="dao-grid">
+            <div class="dao-card" onclick="abrir('governo')">GOVERNO</div>
+            <div class="dao-card" onclick="abrir('mural')">MURAL</div>
+            <div class="dao-card" onclick="abrir('comunidade')">COMUNIDADE</div>
+            <div class="dao-card" onclick="abrir('tesouraria')">TESOURARIA</div>
         </section>
 
-        <section class="mint-section">
-            <h3 style="font-size: 0.9rem;">MINT NFT ALPHA</h3>
-            <input type="text" id="ref-padrinho" placeholder="Carteira do Padrinho">
-            <button id="btn-mint" class="btn-mint-primary">MINTAR (0.1 BNB)</button>
+        <section class="mint-box">
+            <h3>MINT NFT ALPHA</h3>
+            <input type="text" id="padrinho" placeholder="Endereço do Padrinho">
+            <button id="btn-mint" class="btn-primary">MINTAR (0.1 BNB)</button>
         </section>
     </main>
 
-    <div id="overlay" class="overlay">
-        <div class="sala-body">
-            <button class="close-sala" onclick="fecharSala()">✕</button>
-            <div id="conteudo-sala"></div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="fechar()">✕</button>
+            <div id="modal-body"></div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
