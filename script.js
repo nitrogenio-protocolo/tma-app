@@ -6,7 +6,7 @@
 const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; 
 let precoBNB = 3300; 
 let provider, signer, userAccount;
-let html5QrCode;
+let html5QrCode = null; // Inicializado como null
 
 // --- 1. MOTOR DE PREÇO ---
 async function atualizarPrecoBNB() {
@@ -43,14 +43,11 @@ async function updateUI() {
     const displayBRL = document.getElementById('balance-brl');
 
     if (userAccount && provider) {
-        // Atualiza botão com endereço curto
         btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
         
-        // Busca saldo real na rede
         const balanceWei = await provider.getBalance(userAccount);
         const balanceBNB = parseFloat(ethers.formatEther(balanceWei));
         
-        // Atualiza Interface
         if(displayBalance) displayBalance.innerText = balanceBNB.toFixed(4);
         if(displaySymbol) displaySymbol.innerText = "BNB";
         
@@ -61,16 +58,13 @@ async function updateUI() {
     }
 }
 
-// --- 3. GESTÃO DE INTERFACE E LIMPEZA ---
+// --- 3. GESTÃO DE INTERFACE ---
 function abrirSala(id) {
     if (!userAccount && (id === 'sala-pagar' || id === 'sala-receber')) {
-        alert("Conecte sua carteira primeiro.");
+        alert("Conecte sua carteira para acessar esta função.");
         conectarCarteira();
         return;
     }
-
-    const salasAbertas = document.querySelectorAll('.sala-card.ativa');
-    salasAbertas.forEach(s => s.classList.remove('ativa'));
 
     const sala = document.getElementById(id);
     if (sala) {
@@ -87,60 +81,61 @@ function fecharSala(id) {
     sala.classList.remove('ativa');
     document.body.style.overflow = 'auto';
 
-    // --- LIMPEZA DE SEGURANÇA ---
+    // Limpeza de campos
+    const inputs = sala.querySelectorAll('input');
+    inputs.forEach(input => input.value = '');
+
     if (id === 'sala-pagar') {
-        document.getElementById('chave-pagamento').value = '';
-        document.getElementById('valor-pagar-brl').value = '';
         pararScanner();
     }
 
     if (id === 'sala-receber') {
-        document.getElementById('valor-brl').value = '';
-        document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
-        document.getElementById('img-qrcode').style.display = 'none';
-        document.getElementById('img-qrcode').src = '';
-        document.getElementById('placeholder-qr').style.display = 'flex';
+        const preview = document.getElementById('conversao-preview');
+        const imgQr = document.getElementById('img-qrcode');
+        const placeholder = document.getElementById('placeholder-qr');
+        if(preview) preview.innerText = '≈ 0.0000 BNB';
+        if(imgQr) { imgQr.style.display = 'none'; imgQr.src = ''; }
+        if(placeholder) placeholder.style.display = 'flex';
         document.getElementById('btn-confirmar-receber').disabled = true;
     }
 }
 
-// --- 4. SCANNER (PAGAR) ---
+// --- 4. SCANNER E PAGAMENTO ---
 function iniciarScanner() {
-    const btnCamera = document.querySelector('.btn-camera');
     const readerDiv = document.getElementById('reader');
+    const btnCamera = document.querySelector('.btn-camera');
     
-    btnCamera.style.display = 'none';
     readerDiv.style.display = 'block';
+    btnCamera.style.display = 'none';
 
     html5QrCode = new Html5Qrcode("reader");
     html5QrCode.start(
         { facingMode: "environment" },
-        { fps: 15, qrbox: 250 },
+        { fps: 10, qrbox: 250 },
         (decodedText) => {
             let endereco = decodedText;
             if (decodedText.includes('?value=')) {
                 const partes = decodedText.split('?value=');
                 endereco = partes[0].replace('ethereum:', '');
                 const valorBNB = partes[1];
-                const valorBRL = (parseFloat(valorBNB) * precoBNB).toFixed(2);
-                document.getElementById('valor-pagar-brl').value = valorBRL;
+                document.getElementById('valor-pagar-brl').value = (parseFloat(valorBNB) * precoBNB).toFixed(2);
             }
             document.getElementById('chave-pagamento').value = endereco.replace('ethereum:', '');
             pararScanner();
         }
-    ).catch(err => console.error(err));
+    ).catch(err => console.error("Erro na câmera", err));
 }
 
 function pararScanner() {
-    if (html5QrCode) {
+    if (html5QrCode && html5QrCode.isScanning) {
         html5QrCode.stop().then(() => {
             document.getElementById('reader').style.display = 'none';
             document.querySelector('.btn-camera').style.display = 'block';
-        });
+        }).catch(err => console.log(err));
     }
 }
 
-// --- 5. GERADOR (RECEBER) ---
+// --- 5. RECEBIMENTO ---
 function prepararSalaReceber() {
     const inputBRL = document.getElementById('valor-brl');
     const preview = document.getElementById('conversao-preview');
@@ -149,8 +144,7 @@ function prepararSalaReceber() {
     inputBRL.oninput = () => {
         const valor = parseFloat(inputBRL.value);
         if (valor > 0) {
-            const calculoBNB = (valor / precoBNB).toFixed(6);
-            preview.innerText = `≈ ${calculoBNB} BNB`;
+            preview.innerText = `≈ ${(valor / precoBNB).toFixed(6)} BNB`;
             btnConfirmar.disabled = false;
         } else {
             preview.innerText = '≈ 0.0000 BNB';
@@ -160,18 +154,38 @@ function prepararSalaReceber() {
 
     btnConfirmar.onclick = () => {
         const calculoBNB = (parseFloat(inputBRL.value) / precoBNB).toFixed(6);
-        const imgQr = document.getElementById('img-qrcode');
-        const placeholder = document.getElementById('placeholder-qr');
         const qrData = `ethereum:${userAccount}?value=${calculoBNB}`;
-        
+        const imgQr = document.getElementById('img-qrcode');
         imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
         imgQr.style.display = 'block';
-        placeholder.style.display = 'none';
+        document.getElementById('placeholder-qr').style.display = 'none';
     };
 }
 
-// --- 6. INICIALIZAÇÃO ---
+// --- 6. PROCESSAR PAGAMENTO ---
+async function processarPagamento() {
+    const endereco = document.getElementById('chave-pagamento').value;
+    const valorBRL = document.getElementById('valor-pagar-brl').value;
+    
+    if (!endereco || !valorBRL) return alert("Preencha todos os campos");
+
+    try {
+        const valorBNB = (parseFloat(valorBRL) / precoBNB).toFixed(18);
+        const tx = await signer.sendTransaction({
+            to: endereco,
+            value: ethers.parseEther(valorBNB)
+        });
+        alert("Pagamento enviado! Hash: " + tx.hash);
+        fecharSala('sala-pagar');
+    } catch (err) {
+        console.error(err);
+        alert("Erro ao processar pagamento.");
+    }
+}
+
+// --- 7. INICIALIZAÇÃO ---
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.btn-wallet')?.addEventListener('click', conectarCarteira);
+    document.getElementById('btn-confirmar-pagar')?.addEventListener('click', processarPagamento);
     if (window.ethereum && window.ethereum.selectedAddress) conectarCarteira();
 });
