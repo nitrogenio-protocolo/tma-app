@@ -1,90 +1,90 @@
+// --- VARIÁVEIS GLOBAIS (AS PEÇAS DO MOTOR) ---
 let provider, signer, account, scanner;
 let destinoAtual = "";
 
-/// --- FUNÇÃO 1: LIGAR O MOTOR (CONEXÃO) ---
+// --- FUNÇÃO 1: LIGAR O MOTOR (CONEXÃO) ---
 async function conectar() {
-    console.log("Tentando ligar o motor...");
-    
+    // Verifica se a biblioteca Ethers carregou corretamente
+    if (typeof ethers === 'undefined') {
+        alert("Erro: Biblioteca de conexão não carregada. Verifique sua internet.");
+        return;
+    }
+
     if (window.ethereum) {
         try {
-            // Cria a conexão com a carteira
+            // Sintaxe correta para a versão 6 do Ethers
             provider = new ethers.BrowserProvider(window.ethereum);
             
-            // Pede para o usuário escolher a conta (abre o pop-up da carteira)
+            // Abre o pop-up da carteira para o usuário autorizar
             const accs = await provider.send("eth_requestAccounts", []);
-            
             account = accs[0];
             signer = await provider.getSigner();
-            
-            // Muda o texto do botão para mostrar que deu certo
-            document.getElementById('btn-conectar').innerText = account.substring(0,6)+"..."+account.substring(38);
-            document.getElementById('btn-conectar').style.background = "#28a745"; // Fica verde (sucesso)
-            
-            console.log("Motor ligado: " + account);
+
+            // Atualiza o botão azul: mostra o início e o fim da carteira
+            const btn = document.getElementById('btn-conectar');
+            btn.innerText = account.substring(0,6) + "..." + account.substring(38);
+            btn.style.backgroundColor = "#28a745"; // Cor de "Motor Ligado" (Verde)
+
             atualizarSaldo();
             return true;
         } catch (e) {
-            alert("Você cancelou a conexão ou houve um erro: " + e.message);
+            alert("Conexão recusada ou erro: " + e.message);
             return false;
         }
     } else {
-        // Se cair aqui, é porque o usuário não abriu pelo navegador da carteira
-        alert("ALERTA: Para o botão funcionar, você deve abrir o site 'nitrogenio-protocolo.github.io' dentro do navegador da sua Trust Wallet ou MetaMask.");
+        alert("Abra o app pelo navegador da sua MetaMask ou Trust Wallet!");
         return false;
     }
 }
 
-// --- FUNÇÃO 2: PAINEL DE CONTROLE (SALDO) ---
+// --- FUNÇÃO 2: PAINEL DE CONTROLE (SALDO BNB) ---
 async function atualizarSaldo() {
-    if(!account) return;
+    if (!account || !provider) return;
     try {
-        const b = await provider.getBalance(account);
-        document.getElementById('display-bnb').innerHTML = ethers.formatEther(b).substring(0,6) + " <span>BNB</span>";
+        const saldoWei = await provider.getBalance(account);
+        const saldoBnb = ethers.formatEther(saldoWei);
+        document.getElementById('display-bnb').innerHTML = saldoBnb.substring(0,6) + " <span>BNB</span>";
     } catch (e) {
-        console.error("Erro ao buscar saldo:", e);
+        console.error("Falha ao ler saldo:", e);
     }
 }
 
-// --- FUNÇÃO 3: ROTA PAGAR (SCANNER + AUTO-CONECTAR) ---
+// --- FUNÇÃO 3: ROTA PAGAR (SCANNER + AUTO-CONEXÃO) ---
 async function abrirScanner() {
-    // Se não estiver conectado, tenta conectar primeiro sem dar erro (Estilo Banco)
-    if(!account) {
-        const conectadoAgora = await conectar();
-        if(!conectadoAgora) return; // Para se o usuário recusar a conexão
+    // Se não estiver conectado, tenta ligar o motor primeiro
+    if (!account) {
+        const conectado = await conectar();
+        if (!conectado) return;
     }
 
     document.getElementById('cam-overlay').style.display = 'block';
-    
     scanner = new Html5Qrcode("reader");
-    
+
     scanner.start(
-        { facingMode: "environment" }, 
-        { fps: 10, qrbox: 250 }, 
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
         (txt) => {
-            // SUCESSO NA LEITURA
             scanner.stop();
             document.getElementById('cam-overlay').style.display = 'none';
             
-            const p = txt.split(':');
-            destinoAtual = p[0];
+            const dados = txt.split(':');
+            destinoAtual = dados[0];
             
             document.getElementById('modal-confirm').style.display = 'block';
             document.getElementById('info-destino').innerText = "DESTINO: " + destinoAtual;
-            document.getElementById('valor-input').value = p[1] || "";
+            document.getElementById('valor-input').value = dados[1] || "";
 
-            // Se não houver valor no QR Code, abre o teclado automaticamente
-            if(!p[1]) {
-                setTimeout(() => {
-                    document.getElementById('valor-input').focus();
-                }, 400); 
+            // Foca no teclado se o valor estiver vazio
+            if (!dados[1]) {
+                setTimeout(() => document.getElementById('valor-input').focus(), 400);
             }
         }
-    ).catch(err => alert("Câmera não disponível ou permissão negada."));
+    ).catch(err => alert("Erro na câmera ou permissão negada."));
 }
 
-// --- FUNÇÃO 4: LIMPAR A SALA (RESET DE SEGURANÇA) ---
+// --- FUNÇÃO 4: LIMPAR A SALA (RESET/FECHAR TUDO) ---
 function fecharTudo() {
-    if(scanner) {
+    if (scanner) {
         try { scanner.stop(); } catch(e) {}
     }
     document.getElementById('cam-overlay').style.display = 'none';
@@ -93,29 +93,28 @@ function fecharTudo() {
     destinoAtual = "";
 }
 
-// --- FUNÇÃO 5: O GATILHO FINAL (TRANSAÇÃO REAL) ---
-async function executar() {
-    const v = document.getElementById('valor-input').value;
-    if(!v || v <= 0) return alert("Digite um valor válido!");
+// --- FUNÇÃO 5: O GATILHO FINAL (ENVIAR BNB) ---
+async function executarPagamento() {
+    const valor = document.getElementById('valor-input').value;
+    if (!valor || valor <= 0) return alert("Digite um valor válido!");
 
     try {
-        // Camada de segurança: Pede autorização biométrica na carteira
-        const tx = await signer.sendTransaction({ 
-            to: destinoAtual, 
-            value: ethers.parseEther(v) 
+        const tx = await signer.sendTransaction({
+            to: destinoAtual,
+            value: ethers.parseEther(valor)
         });
         
-        alert("Enviado com sucesso!");
+        alert("Transação enviada! Aguarde a confirmação na rede.");
         fecharTudo();
-        setTimeout(atualizarSaldo, 3000);
-    } catch(e) {
-        alert("Ação cancelada pelo usuário ou erro no envio.");
+        setTimeout(atualizarSaldo, 4000); // Atualiza saldo após 4 segundos
+    } catch (e) {
+        alert("Erro no envio ou ação cancelada.");
     }
 }
 
-// --- MAPEAMENTO DOS BOTÕES ---
+// --- MAPEAMENTO DOS BOTÕES (INTERFACE) ---
 document.getElementById('btn-conectar').onclick = conectar;
 document.getElementById('btn-pagar').onclick = abrirScanner;
-document.getElementById('confirmar-pagamento').onclick = executar;
+document.getElementById('confirmar-pagamento').onclick = executarPagamento;
 document.getElementById('cancelar-pagamento').onclick = fecharTudo;
 document.getElementById('fechar-cam').onclick = fecharTudo;
