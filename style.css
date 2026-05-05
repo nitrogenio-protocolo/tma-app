@@ -1,14 +1,25 @@
-:root { --blue: #007BFF; --bg: #F4F7FA; --white: #FFFFFF; }
+:root { --blue: #007BFF; --white: #FFFFFF; --bg: #F4F7FA; --red: #FF3B30; --gray: #888; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-body { background: var(--bg); color: #333; padding-bottom: 40px; }
-header { background: var(--white); padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #EEE; }
-header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
-.btn-wallet { background: var(--blue); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; }
-.card-master { background: var(--white); margin: 20px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
-.quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; }
-.quick-actions button { background: var(--white); border: 2px solid #EEE; padding: 15px 5px; border-radius: 12px; font-size: 0.7rem; color: var(--blue); font-weight: bold; }
-.grid-dao { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-.sala-card { background: var(--white); padding: 25px; border-radius: 15px; text-align: center; font-weight: bold; }
-.mint-area { background: var(--blue); color: white; margin: 20px; padding: 25px; border-radius: 20px; text-align: center; }
-.mint-area input { width: 100%; padding: 12px; border-radius: 8px; border: none; margin: 15px 0; }
-.btn-primary { background: white; color: var(--blue); border: none; padding: 15px; border-radius: 10px; font-weight: bold; width: 100%; }
+body { background: var(--bg); color: #1A1A1A; }
+
+header { background: var(--white); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EEE; }
+header h1 { font-size: 1.1rem; color: var(--blue); font-weight: 900; }
+.btn-wallet { background: var(--blue); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 0.75rem; }
+
+.card-master { background: var(--white); margin: 15px; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.balance { font-size: 1.8rem; font-weight: bold; }
+.balance span { font-size: 0.9rem; color: var(--blue); }
+.token-n { color: var(--blue); font-weight: bold; font-size: 0.8rem; margin-top: 5px; }
+
+.nav-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; }
+.btn-act { background: var(--white); border: 2px solid #F0F0F0; padding: 15px 5px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 0.6rem; font-weight: 900; color: var(--blue); }
+
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; }
+.scanner-container { width: 100%; flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+#reader { width: 100% !important; border: none !important; }
+
+.modal-bottom { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-radius: 25px 25px 0 0; padding: 30px; z-index: 1100; }
+.dest-text { font-size: 0.7rem; color: #666; word-break: break-all; margin-bottom: 10px; }
+input { width: 100%; padding: 15px; margin: 10px 0; border: 1.5px solid #EEE; border-radius: 10px; font-size: 1.2rem; }
+.btn-confirm { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; }
+.btn-cancel { background: none; border: none; color: var(--red); padding: 15px; width: 100%; font-weight: bold; }
