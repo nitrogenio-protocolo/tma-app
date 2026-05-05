@@ -1,13 +1,12 @@
 /**
  * NITROGÊNIO PROTOCOLO - Motor de Gestão Web3 e Interface Circular
- * Foco: Autonomia do entregador e Governança Descentralizada
  */
 
 // CONFIGURAÇÕES TÉCNICAS
 const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; 
+const PRECO_BNB_BRL = 3300; // Simulação: 1 BNB = R$ 3.300,00
 let provider, signer, userAccount;
 let modoPrivacidade = false;
-let saldoRealBNB = "0,00"; // Armazena o saldo para alternar privacidade
 
 // 1. GERENCIAMENTO DE INTERFACE (SISTEMA DE SALAS)
 function abrirSala(id) {
@@ -15,10 +14,10 @@ function abrirSala(id) {
     if (sala) {
         sala.classList.add('ativa');
         document.body.style.overflow = 'hidden'; 
-        console.log(`Nitrogênio: Acessando sala ${id.replace('sala-', '').toUpperCase()}`);
         
+        // Gatilhos específicos de abertura
+        if(id === 'sala-receber') prepararSalaReceber();
         if(id === 'sala-cofre') carregarDadosCofre();
-        if(id === 'sala-governo') carregarStatusGuardioes();
     }
 }
 
@@ -37,7 +36,7 @@ function giroHome() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 2. LÓGICA DE PRIVACIDADE (OLHO PRETO)
+// 2. LÓGICA DE PRIVACIDADE
 function alternarPrivacidade() {
     modoPrivacidade = !modoPrivacidade;
     const btnIcon = document.querySelector('.btn-eye-black i');
@@ -50,25 +49,21 @@ function alternarPrivacidade() {
         displaySub.innerText = "Saldo oculto";
     } else {
         btnIcon.classList.replace('fa-eye-slash', 'fa-eye');
-        updateUI(); // Restaura os valores reais
+        updateUI();
     }
 }
 
-// 3. MOTOR WEB3 (CONEXÃO E SALDOS REAIS)
+// 3. MOTOR WEB3 (CONEXÃO E SALDOS)
 async function conectarCarteira() {
-    if (!window.ethereum) return alert("Instale a MetaMask para operar o protocolo.");
-    
+    if (!window.ethereum) return alert("Instale a MetaMask.");
     try {
         const browserProvider = new ethers.BrowserProvider(window.ethereum);
         const accounts = await browserProvider.send("eth_requestAccounts", []);
         userAccount = accounts[0];
         provider = browserProvider;
         signer = await browserProvider.getSigner();
-        
         updateUI();
-    } catch (err) {
-        console.error("Erro na ignição do motor:", err);
-    }
+    } catch (err) { console.error("Erro na conexão:", err); }
 }
 
 async function updateUI() {
@@ -77,43 +72,65 @@ async function updateUI() {
     const displaySub = document.querySelector('.conversion p');
 
     if (userAccount && btnWallet) {
-        // Atualiza o botão com endereço reduzido
         btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
-        
-        // Busca o saldo real de BNB
         const bal = await provider.getBalance(userAccount);
-        saldoRealBNB = parseFloat(ethers.formatEther(bal)).toFixed(4);
+        const saldoRealBNB = parseFloat(ethers.formatEther(bal)).toFixed(4);
 
         if (!modoPrivacidade) {
-            // AQUI ESTÁ A MÁGICA: O saldo de BNB assume o lugar do Token N (sem ruído)
             displayN.innerText = saldoRealBNB; 
             displaySub.innerHTML = `Saldo real em rede (BNB Chain)`;
         }
     }
 }
 
-// 4. FUNÇÕES ESPECÍFICAS DAS SALAS
-async function carregarDadosCofre() {
-    if (!provider) return;
-    try {
-        const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
-        const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
-        console.log(`Monitorando Cofre: ${formatado} BNB em reserva.`);
-    } catch (e) {
-        console.log("Erro ao acessar dados do cofre.");
+// 4. TERMINAL DE RECEBIMENTO (COMERCIANTE)
+function prepararSalaReceber() {
+    const inputBRL = document.getElementById('valor-brl');
+    const preview = document.getElementById('conversao-preview');
+    const btnConfirmar = document.getElementById('btn-confirmar-receber');
+    const imgQr = document.getElementById('img-qrcode');
+    const placeholder = document.getElementById('placeholder-qr');
+    const endExibicao = document.getElementById('end-completo');
+
+    if (endExibicao && userAccount) endExibicao.innerText = userAccount;
+
+    inputBRL?.addEventListener('input', (e) => {
+        const valor = parseFloat(e.target.value);
+
+        if (valor > 0 && userAccount) {
+            const calculoBNB = (valor / PRECO_BNB_BRL).toFixed(6);
+            preview.innerText = `≈ ${calculoBNB} BNB`;
+
+            // QR Code com valor embutido
+            const qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=ethereum:${userAccount}?value=${calculoBNB}&choe=UTF-8`;
+            imgQr.src = qrUrl;
+            imgQr.style.display = 'inline-block';
+            imgQr.style.opacity = '1';
+            placeholder.style.display = 'none';
+
+            btnConfirmar.style.background = '#007AFF';
+            btnConfirmar.disabled = false;
+        } else {
+            preview.innerText = `≈ 0.0000 BNB`;
+            imgQr.style.opacity = '0.3';
+            btnConfirmar.style.background = '#ddd';
+            btnConfirmar.disabled = true;
+        }
+    });
+}
+
+function copiarEndereco() {
+    if (userAccount) {
+        navigator.clipboard.writeText(userAccount);
+        alert("Endereço copiado!");
     }
 }
 
-function carregarStatusGuardioes() {
-    console.log("Protocolo de Governança: Quórum exigido 11/21");
-}
-
-// 5. INICIALIZAÇÃO DO SISTEMA
+// 5. INICIALIZAÇÃO
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.btn-wallet')?.addEventListener('click', conectarCarteira);
     document.querySelector('.btn-eye-black')?.addEventListener('click', alternarPrivacidade);
 
-    // Auto-reconexão se já estiver logado
     if (window.ethereum && window.ethereum.selectedAddress) {
         conectarCarteira();
     }
