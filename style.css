@@ -1,64 +1,90 @@
 :root {
-    --blue: #007BFF;
-    --yellow: #FFC107;
-    --red: #FF3B30;
-    --bg: #F4F7FA;
-    --white: #FFFFFF;
+    --bg-white: #FFFFFF;
+    --blue-blueberry: #007BFF;
+    --text-dark: #1A1A1A;
+    --gray-light: #F4F7FA;
+    --red-alert: #FF4D4D;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
-body { background: var(--bg); color: #333; padding-bottom: 30px; }
+body { background-color: var(--gray-light); color: var(--text-dark); padding-bottom: 50px; }
 
 header { 
-    background: var(--white); padding: 20px; display: flex; 
-    justify-content: space-between; align-items: center; border-bottom: 1px solid #DDD;
+    background: var(--bg-white); padding: 20px; display: flex; 
+    justify-content: space-between; align-items: center;
+    border-bottom: 2px solid var(--gray-light);
 }
 
-header h1 { font-size: 1.2rem; color: var(--blue); font-weight: 900; }
-.network { font-size: 0.6rem; color: #999; }
+.logo-area h1 { font-size: 1.2rem; font-weight: 900; color: var(--blue-blueberry); }
+.logo-area h1 span { color: var(--text-dark); margin-left: 5px; }
+.status-badge { font-size: 0.6rem; color: #888; }
 
-.btn-wallet { 
-    background: var(--blue); color: white; border: none; 
-    padding: 10px 15px; border-radius: 8px; font-weight: bold; 
+.btn-wallet {
+    background: var(--blue-blueberry); color: white; border: none;
+    padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 0.8rem;
 }
 
-.card-master { 
-    background: var(--white); margin: 20px; padding: 25px; 
-    border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+.card-master {
+    background: var(--bg-white); margin: 20px; padding: 25px;
+    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    display: flex; justify-content: space-between; align-items: center;
 }
 
-.actions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; }
+.balance-info h2 { font-size: 2rem; margin: 5px 0; }
+.balance-info h2 span { font-size: 1rem; color: var(--blue-blueberry); }
+.balance-info h3 { color: var(--blue-blueberry); font-weight: bold; }
 
-.btn-action { 
-    background: var(--white); border: none; padding: 15px 5px; 
-    border-radius: 12px; display: flex; flex-direction: column; 
-    align-items: center; gap: 8px; font-size: 0.65rem; font-weight: bold;
+.nft-badge { text-align: center; font-size: 0.7rem; color: #666; }
+.nft-badge img { width: 40px; height: 40px; }
+
+.quick-actions {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px;
 }
 
-.icon { 
-    width: 40px; height: 40px; display: flex; align-items: center; 
-    justify-content: center; border-radius: 50%; font-size: 1.2rem; 
+.quick-actions button {
+    background: var(--bg-white); border: 2px solid var(--gray-light); padding: 15px;
+    border-radius: 12px; font-size: 0.7rem; font-weight: bold; color: var(--blue-blueberry);
+    display: flex; flex-direction: column; align-items: center; gap: 8px; transition: 0.2s;
 }
 
-.red { border: 2px solid var(--red); color: var(--red); }
-.blue { border: 2px solid var(--blue); color: var(--blue); }
-.yellow { border: 2px solid var(--yellow); color: var(--yellow); }
+.quick-actions button:active { background: var(--gray-light); border-color: var(--blue-blueberry); }
 
-.dao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-
-.dao-card { 
-    background: var(--white); padding: 25px; border-radius: 15px; 
-    text-align: center; font-weight: bold; font-size: 0.8rem; 
+.grid-dao {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px;
 }
 
-.mint-box { 
-    background: var(--blue); color: white; margin: 20px; 
-    padding: 25px; border-radius: 20px; text-align: center; 
+.sala-card {
+    background: var(--bg-white); padding: 20px; border-radius: 15px;
+    text-align: center; border: 1px solid transparent; transition: 0.3s;
 }
 
-.mint-box input { width: 100%; padding: 12px; border-radius: 8px; border: none; margin: 15px 0; }
-.btn-primary { background: white; color: var(--blue); border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; }
+.sala-card:active { border-color: var(--blue-blueberry); }
+.sala-card img { width: 35px; height: 35px; margin-bottom: 10px; }
+.sala-card p { font-weight: bold; font-size: 0.8rem; }
 
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: flex-end; }
-.modal-content { background: white; width: 100%; height: 70%; border-radius: 25px 25px 0 0; padding: 30px; position: relative; }
+.mint-area {
+    background: var(--blue-blueberry); color: white; margin: 20px;
+    padding: 25px; border-radius: 20px; text-align: center;
+}
+
+.mint-area input {
+    width: 100%; padding: 12px; border-radius: 8px; border: none; margin: 15px 0; color: #333;
+}
+
+.btn-primary {
+    background: white; color: var(--blue-blueberry); border: none;
+    padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%;
+}
+
+.overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end;
+}
+
+.sala-content {
+    background: white; width: 100%; height: 80%; border-radius: 25px 25px 0 0;
+    padding: 30px; position: relative; overflow-y: auto;
+}
+
+.btn-fechar { position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; }
