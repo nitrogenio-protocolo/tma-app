@@ -5,9 +5,9 @@
 
 // CONFIGURAÇÕES TÉCNICAS
 const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; 
-const TOTAL_SUPPLY_N = "1.000.000.000,00"; // 1 Bilhão de Token N fixos
 let provider, signer, userAccount;
 let modoPrivacidade = false;
+let saldoRealBNB = "0,00"; // Armazena o saldo para alternar privacidade
 
 // 1. GERENCIAMENTO DE INTERFACE (SISTEMA DE SALAS)
 function abrirSala(id) {
@@ -17,7 +17,6 @@ function abrirSala(id) {
         document.body.style.overflow = 'hidden'; 
         console.log(`Nitrogênio: Acessando sala ${id.replace('sala-', '').toUpperCase()}`);
         
-        // Carregamento dinâmico de dados conforme a sala
         if(id === 'sala-cofre') carregarDadosCofre();
         if(id === 'sala-governo') carregarStatusGuardioes();
     }
@@ -43,16 +42,15 @@ function alternarPrivacidade() {
     modoPrivacidade = !modoPrivacidade;
     const btnIcon = document.querySelector('.btn-eye-black i');
     const displayN = document.querySelector('.currency');
-    const displayBNB = document.querySelector('.conversion p');
+    const displaySub = document.querySelector('.conversion p');
 
     if (modoPrivacidade) {
         btnIcon.classList.replace('fa-eye', 'fa-eye-slash');
         displayN.innerText = "••••";
-        displayBNB.innerText = "≈ BNB ••••";
+        displaySub.innerText = "Saldo oculto";
     } else {
         btnIcon.classList.replace('fa-eye-slash', 'fa-eye');
-        displayN.innerText = "1.000,00"; // Saldo estático Nitrogenio
-        updateUI(); // Atualiza o BNB real
+        updateUI(); // Restaura os valores reais
     }
 }
 
@@ -73,42 +71,49 @@ async function conectarCarteira() {
     }
 }
 
-function updateUI() {
+async function updateUI() {
     const btnWallet = document.querySelector('.btn-wallet');
-    const displayBNB = document.querySelector('.conversion p');
+    const displayN = document.querySelector('.currency');
+    const displaySub = document.querySelector('.conversion p');
 
     if (userAccount && btnWallet) {
-        btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(38);
+        // Atualiza o botão com endereço reduzido
+        btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
         
-        provider.getBalance(userAccount).then(bal => {
-            const bnbFormatado = parseFloat(ethers.formatEther(bal)).toFixed(4);
-            if (displayBNB && !modoPrivacidade) {
-                displayBNB.innerHTML = `<span style="color: #007AFF; font-weight: 800;">${bnbFormatado} BNB</span>`;
-            }
-        });
+        // Busca o saldo real de BNB
+        const bal = await provider.getBalance(userAccount);
+        saldoRealBNB = parseFloat(ethers.formatEther(bal)).toFixed(4);
+
+        if (!modoPrivacidade) {
+            // AQUI ESTÁ A MÁGICA: O saldo de BNB assume o lugar do Token N (sem ruído)
+            displayN.innerText = saldoRealBNB; 
+            displaySub.innerHTML = `Saldo real em rede (BNB Chain)`;
+        }
     }
 }
 
 // 4. FUNÇÕES ESPECÍFICAS DAS SALAS
 async function carregarDadosCofre() {
     if (!provider) return;
-    const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
-    console.log("Monitorando Cofre dos Guardiões...");
-    // Aqui injetaremos a lista de ativos bloqueados na sala-cofre
+    try {
+        const saldoCofre = await provider.getBalance(ENDERECO_COFRE_SAFE);
+        const formatado = parseFloat(ethers.formatEther(saldoCofre)).toFixed(4);
+        console.log(`Monitorando Cofre: ${formatado} BNB em reserva.`);
+    } catch (e) {
+        console.log("Erro ao acessar dados do cofre.");
+    }
 }
 
 function carregarStatusGuardioes() {
-    // Foco: 11 de 21 assinaturas necessárias
     console.log("Protocolo de Governança: Quórum exigido 11/21");
 }
 
 // 5. INICIALIZAÇÃO DO SISTEMA
 document.addEventListener('DOMContentLoaded', () => {
-    // Eventos de botões fixos
     document.querySelector('.btn-wallet')?.addEventListener('click', conectarCarteira);
     document.querySelector('.btn-eye-black')?.addEventListener('click', alternarPrivacidade);
 
-    // Auto-reconexão
+    // Auto-reconexão se já estiver logado
     if (window.ethereum && window.ethereum.selectedAddress) {
         conectarCarteira();
     }
