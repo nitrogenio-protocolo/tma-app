@@ -23,13 +23,13 @@
 
     <section class="balance-container">
         <div class="balance-display">
-            <span class="label">SALDO DISPONÍVEL</span>
+            <span class="label">SALDO EM CARTEIRA</span>
             <div class="main-amount">
-                <span class="currency">1.000,00</span>
-                <span class="symbol">N</span>
+                <span class="currency">0.0000</span>
+                <span class="symbol">BNB</span>
             </div>
             <div class="conversion">
-                <p>Carregando carteira...</p>
+                <p id="balance-brl">Aguardando conexão...</p>
             </div>
         </div>
     </section>
@@ -55,38 +55,7 @@
         </div>
     </section>
 
-    <section class="hub-carousel">
-        <div class="carousel-track">
-            <div class="item-round nft-special" onclick="abrirSala('sala-nft')">
-                <i class="fa-solid fa-id-card"></i>
-                <span>NFT</span>
-            </div>
-        </div>
-    </section>
-
-    <section class="hub-carousel">
-        <div class="carousel-track">
-            <div class="item-dao" onclick="abrirSala('sala-comunidade')"><i class="fa-solid fa-users"></i><p>COMUNIDADE</p></div>
-            <div class="item-dao" onclick="abrirSala('sala-governo')"><i class="fa-solid fa-building-columns"></i><p>GOVERNO</p></div>
-            <div class="item-dao" onclick="abrirSala('sala-mural')"><i class="fa-solid fa-chalkboard"></i><p>MURAL</p></div>
-        </div>
-    </section>
-
-    <section class="hub-carousel">
-        <div class="carousel-track">
-            <div class="item-op" onclick="abrirSala('sala-protocolo')"><i class="fa-solid fa-gavel"></i><span>PROTOCOLO</span></div>
-            <div class="item-op" onclick="abrirSala('sala-cofre')"><i class="fa-solid fa-vault"></i><span>COFRE</span></div>
-            <div class="item-op" onclick="abrirSala('sala-lazer')"><i class="fa-solid fa-couch"></i><span>LAZER</span></div>
-        </div>
-    </section>
-
-</main>
-
-<footer id="footer-app">
-    <button class="nav-btn active" onclick="giroHome()"><i class="fa-solid fa-house"></i><span>HOME</span></button>
-    <a href="https://t.me/nitrogenioprotocolo" target="_blank" class="nav-btn"><i class="fa-brands fa-telegram"></i><span>OFICIAL</span></a>
-    <button class="nav-btn" onclick="abrirSala('sala-suporte')"><i class="fa-solid fa-headset"></i><span>SUPORTE</span></button>
-</footer>
+    </main>
 
 <div id="container-salas">
     <div id="sala-pagar" class="sala-card">
@@ -96,7 +65,6 @@
             <h2>PAGAR</h2>
         </div>
         <div class="sala-body" style="text-align: center; padding: 15px 25px;">
-            
             <div style="margin-bottom: 20px;">
                 <button class="btn-camera" onclick="iniciarScanner()" style="width: 100%; padding: 30px 20px; border-radius: 24px; border: 3px dashed var(--azul-blueberry); background: var(--cor-fundo-camuflagem); color: var(--azul-blueberry); font-weight: 800;">
                     <i class="fa-solid fa-qrcode fa-3x" style="display: block; margin-bottom: 10px;"></i>
@@ -105,17 +73,21 @@
                 <div id="reader" style="width: 100%; border-radius: 20px; overflow: hidden; display: none; margin-top: 10px;"></div>
             </div>
 
-            <div style="margin-bottom: 20px; background: var(--cor-fundo-camuflagem); padding: 15px; border-radius: 18px;">
-                <label style="font-size: 10px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 5px;">ENDEREÇO DA CARTEIRA</label>
+            <div style="margin-bottom: 15px; background: var(--cor-fundo-camuflagem); padding: 12px; border-radius: 18px;">
+                <label style="font-size: 10px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 5px;">CARTEIRA DESTINO</label>
                 <input type="text" id="chave-pagamento" placeholder="0x..." 
                     style="background: none; border: none; font-size: 14px; font-weight: 600; width: 100%; outline: none; color: var(--texto-escuro); text-align: center;">
             </div>
 
+            <div style="margin-bottom: 20px; background: var(--cor-fundo-camuflagem); padding: 12px; border-radius: 18px;">
+                <label style="font-size: 10px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 5px;">VALOR EM R$</label>
+                <input type="number" id="valor-pagar-brl" placeholder="0,00" step="0.01" inputmode="decimal"
+                    style="background: none; border: none; font-size: 20px; font-weight: 800; width: 100%; outline: none; color: var(--texto-escuro); text-align: center;">
+            </div>
+
             <div style="display: flex; gap: 15px;">
-                <button onclick="fecharSala('sala-pagar')" 
-                    style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #eee; color: #666; font-weight: 800; font-size: 14px;">CANCELAR</button>
-                <button id="btn-confirmar-pagar" 
-                    style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: var(--azul-blueberry); color: #fff; font-weight: 800; font-size: 14px;">CONTINUAR</button>
+                <button onclick="fecharSala('sala-pagar')" class="btn-cancelar">CANCELAR</button>
+                <button id="btn-confirmar-pagar" class="btn-confirmar">CONFIRMAR</button>
             </div>
         </div>
     </div>
@@ -128,7 +100,7 @@
         </div>
         <div class="sala-body" style="text-align: center; padding: 15px 25px;">
             <div style="margin-bottom: 20px;">
-                <label style="font-size: 12px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 8px;">VALOR DA COBRANÇA</label>
+                <label style="font-size: 12px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 8px;">VALOR DA COBRANÇA (R$)</label>
                 <div style="display: flex; align-items: center; justify-content: center; background: var(--cor-fundo-camuflagem); padding: 15px; border-radius: 18px;">
                     <span style="font-size: 24px; font-weight: 900; color: var(--texto-escuro); margin-right: 5px;">R$</span>
                     <input type="number" id="valor-brl" placeholder="0,00" step="0.01" inputmode="decimal" 
@@ -138,32 +110,20 @@
             </div>
 
             <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-                <button onclick="fecharSala('sala-receber')" 
-                    style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #eee; color: #666; font-weight: 800; font-size: 14px;">CANCELAR</button>
-                <button id="btn-confirmar-receber" disabled 
-                    style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #ddd; color: #fff; font-weight: 800; font-size: 14px; transition: 0.3s;">CONFIRMAR</button>
+                <button onclick="fecharSala('sala-receber')" class="btn-cancelar">CANCELAR</button>
+                <button id="btn-confirmar-receber" disabled class="btn-confirmar">GERAR QR</button>
             </div>
 
-            <div id="qrcode-area" style="background: #fff; padding: 15px; border-radius: 20px; display: inline-block; border: 2px solid var(--cor-fundo-camuflagem);">
-                <img id="img-qrcode" src="" alt="QR Code" style="width: 180px; height: 180px; display: none; opacity: 0.3;">
+            <div id="qrcode-area" class="qr-container">
+                <img id="img-qrcode" src="" alt="QR Code" style="width: 180px; height: 180px; display: none;">
                 <div id="placeholder-qr" style="width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; color: #ddd;">
                     <i class="fa-solid fa-qrcode fa-4x"></i>
                 </div>
             </div>
         </div>
     </div>
-        
-    <div id="sala-coletar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-coletar')"><i class="fa-solid fa-xmark"></i></button><h2>COLETAR</h2></div><div class="sala-body">Coleta de recompensas.</div></div>
-    <div id="sala-trocar" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-trocar')"><i class="fa-solid fa-xmark"></i></button><h2>TROCAR</h2></div><div class="sala-body">Troca de ativos.</div></div>
-    <div id="sala-nft" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-nft')"><i class="fa-solid fa-xmark"></i></button><h2>NFT ALPHA</h2></div><div class="sala-body">Mint seu NFT.</div></div>
-    <div id="sala-comunidade" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-comunidade')"><i class="fa-solid fa-xmark"></i></button><h2>COMUNIDADE</h2></div><div class="sala-body">DAO.</div></div>
-    <div id="sala-governo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-governo')"><i class="fa-solid fa-xmark"></i></button><h2>GOVERNO</h2></div><div class="sala-body">Votações.</div></div>
-    <div id="sala-mural" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-mural')"><i class="fa-solid fa-xmark"></i></button><h2>MURAL</h2></div><div class="sala-body">Avisos.</div></div>
-    <div id="sala-protocolo" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-protocolo')"><i class="fa-solid fa-xmark"></i></button><h2>PROTOCOLO</h2></div><div class="sala-body">Regras.</div></div>
-    <div id="sala-cofre" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-cofre')"><i class="fa-solid fa-xmark"></i></button><h2>COFRE</h2></div><div class="sala-body">Tesouraria.</div></div>
-    <div id="sala-lazer" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-lazer')"><i class="fa-solid fa-xmark"></i></button><h2>LAZER</h2></div><div class="sala-body">Benefícios.</div></div>
-    <div id="sala-suporte" class="sala-card"><div class="sala-handle"></div><div class="sala-header"><button class="btn-fechar" onclick="fecharSala('sala-suporte')"><i class="fa-solid fa-xmark"></i></button><h2>SUPORTE</h2></div><div class="sala-body">Ajuda.</div></div>
-</div>
+    
+    </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode"></script>
