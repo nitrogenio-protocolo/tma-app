@@ -1,61 +1,57 @@
 /**
- * NITROGÊNIO PROTOCOLO - Versão Manual por Clique
+ * NITROGÊNIO PROTOCOLO - Versão Recuperação Total
  */
 
 let precoBNB = 3300; 
 let provider, signer, userAccount;
 let html5QrCode = null;
 
-// 1. Cotação (Pode rodar no fundo, não afeta o saldo)
+// 1. Motor de Cotação
 async function atualizarPrecoBNB() {
     try {
         const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
         const data = await response.json();
         if(data.price) precoBNB = parseFloat(data.price);
-    } catch (e) { console.log("Erro cotação"); }
+    } catch (e) { console.log("Cotação offline"); }
 }
 atualizarPrecoBNB();
 
-// 2. FUNÇÃO ÚNICA DE CONEXÃO (Só dispara no clique)
+// 2. Função de Conexão Inteligente
 async function conectarCarteira() {
+    // Se NÃO detectou carteira (Ex: está no Chrome)
     if (typeof window.ethereum === 'undefined') {
-        return alert("Por favor, abra este site dentro do navegador da MetaMask ou Trust Wallet.");
+        const confirmGo = confirm("Para ver seu saldo, você precisa abrir o app na MetaMask. Deseja abrir agora?");
+        if (confirmGo) {
+            // DEEP LINK: Abre o site direto na MetaMask do usuário
+            window.location.href = "https://metamask.app.link/dapp/nitrogenio-protocolo.github.io/";
+        }
+        return;
     }
 
     try {
-        // Reinicia estados para evitar conflito de cache
-        userAccount = null;
-        
-        // Solicita conexão ativa ao usuário
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         userAccount = accounts[0];
-        
         provider = new ethers.BrowserProvider(window.ethereum);
         signer = await provider.getSigner();
         
-        // Só agora buscamos o saldo e atualizamos a tela
+        // Atualiza Interface
+        document.querySelector('.btn-wallet').innerText = userAccount.substring(0,6) + "..." + userAccount.substring(userAccount.length-4);
+        
         const balanceWei = await provider.getBalance(userAccount);
         const balanceBNB = ethers.formatEther(balanceWei);
         
-        // Atualiza Botão
-        document.querySelector('.btn-wallet').innerText = userAccount.substring(0,6) + "..." + userAccount.substring(userAccount.length-4);
-        
-        // Atualiza Saldo e BRL
         document.getElementById('display-balance').innerText = parseFloat(balanceBNB).toFixed(4);
-        const valorEmReais = (parseFloat(balanceBNB) * precoBNB).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-        document.getElementById('balance-brl').innerText = "≈ " + valorEmReais;
-
-        console.log("Carteira conectada com sucesso.");
+        document.getElementById('balance-brl').innerText = "≈ " + (parseFloat(balanceBNB) * precoBNB).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+        
     } catch (err) {
-        console.error(err);
-        alert("Falha ao conectar: Verifique se sua carteira está aberta e na rede correta.");
+        alert("Acesso recusado ou erro de rede.");
     }
 }
 
-// 3. Gestão de Salas e Limpeza (Conforme solicitado)
+// 3. Gestão de Salas e Limpeza (Seu pedido original)
 function abrirSala(id) {
     if (!userAccount) {
-        alert("Clique no botão CONECTAR primeiro.");
+        conectarCarteira();
         return;
     }
     document.getElementById(id).classList.add('ativa');
@@ -66,9 +62,8 @@ function fecharSala(id) {
     const sala = document.getElementById(id);
     if(sala) {
         sala.classList.remove('ativa');
-        document.body.style.overflow = 'auto';
         
-        // Limpa inputs para evitar pagamentos/recebimentos errados
+        // Limpa todos os inputs ao fechar/cancelar
         const inputs = sala.querySelectorAll('input');
         inputs.forEach(i => i.value = ''); 
 
@@ -81,12 +76,11 @@ function fecharSala(id) {
     }
 }
 
-// 4. Lógica de Pagamento
-async function confirmarPagamento() {
+// 4. Lógica de Pagar/Receber
+async function processarPagamento() {
     const destino = document.getElementById('chave-pagamento').value;
     const valorBRL = document.getElementById('valor-pagar-brl').value;
-
-    if (!destino || !valorBRL || !userAccount) return alert("Dados insuficientes.");
+    if (!destino || !valorBRL) return alert("Preencha os campos!");
 
     try {
         const valorBNB = (parseFloat(valorBRL) / precoBNB).toFixed(18);
@@ -94,14 +88,11 @@ async function confirmarPagamento() {
             to: destino,
             value: ethers.parseEther(valorBNB)
         });
-        alert("Transação enviada!");
+        alert("Sucesso! Hash: " + tx.hash);
         fecharSala('sala-pagar');
-    } catch (e) {
-        alert("Erro na transação. Verifique saldo ou conexão.");
-    }
+    } catch (e) { alert("Erro na transação."); }
 }
 
-// 5. Lógica de Recebimento
 function logicaReceber() {
     const input = document.getElementById('valor-brl');
     input.oninput = () => {
@@ -119,7 +110,7 @@ function logicaReceber() {
     };
 }
 
-// 6. Scanner
+// 5. Scanner
 function iniciarScanner() {
     document.getElementById('reader').style.display = 'block';
     document.querySelector('.btn-camera').style.display = 'none';
@@ -140,12 +131,9 @@ function pararScanner() {
     }
 }
 
-// 7. Inicialização estritamente passiva
+// 6. Inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    // Vincula o clique do botão CONECTAR à função
     document.querySelector('.btn-wallet').onclick = conectarCarteira;
-    
-    // Vincula o clique de confirmação de pagamento
     const btnPagar = document.getElementById('btn-confirmar-pagar');
-    if(btnPagar) btnPagar.onclick = confirmarPagamento;
+    if(btnPagar) btnPagar.onclick = processarPagamento;
 });
