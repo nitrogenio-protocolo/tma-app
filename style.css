@@ -26,3 +26,41 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 .modal-bottom { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-radius: 25px 25px 0 0; padding: 30px; z-index: 1100; text-align: center; }
 .btn-confirm { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; margin-top: 10px; }
 .btn-cancel { color: var(--red); background: none; border: none; padding: 15px; width: 100%; font-weight: bold; }
+
+/* --- AJUSTE DO SCANNER 
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Fundo escuro para focar na câmera */
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#reader {
+    width: 85%;
+    max-width: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 4px solid #007BFF; /* Blueberry blue do projeto */
+    background: black;
+}
+
+.btn-fechar-scanner {
+    margin-top: 30px;
+    background: #FF4444; /* Vermelho para cancelar */
+    color: white;
+    border: none;
+    padding: 15px 50px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
