@@ -76,7 +76,7 @@ function abrirSala(id) {
     }
 }
 
-ffunction fecharSala(id) {
+function fecharSala(id) {
     const sala = document.getElementById(id);
     if (!sala) return; // Segurança extra: se a sala não existir, não faz nada
 
