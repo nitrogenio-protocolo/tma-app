@@ -1,1 +1,89 @@
+:root {
+    --bg-white: #FFFFFF;
+    --blue-blueberry: #007BFF;
+    --text-dark: #1A1A1A;
+    --gray-light: #F4F7FA;
+    --red-alert: #FF4D4D;
+}
 
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+body { background-color: var(--gray-light); color: var(--text-dark); padding-bottom: 50px; }
+
+header { 
+    background: var(--bg-white); padding: 20px; display: flex; 
+    justify-content: space-between; align-items: center;
+    border-bottom: 2px solid var(--gray-light);
+}
+
+.logo-text { font-size: 1.2rem; font-weight: 900; color: var(--blue-blueberry); }
+.logo-text span { color: var(--text-dark); margin-left: 5px; }
+
+.btn-wallet {
+    background: var(--blue-blueberry); color: white; border: none;
+    padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 0.8rem;
+}
+
+.card-master {
+    background: var(--bg-white); margin: 20px; padding: 25px;
+    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.balance-info h2 { font-size: 2rem; margin: 5px 0; }
+.balance-info h2 span { font-size: 1rem; color: var(--blue-blueberry); }
+.balance-info h3 { color: var(--blue-blueberry); }
+
+.quick-actions {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px;
+}
+
+.quick-actions button {
+    background: var(--bg-white); border: none; padding: 15px 5px;
+    border-radius: 12px; font-size: 0.7rem; font-weight: bold;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.quick-actions i {
+    background: var(--gray-light); color: var(--blue-blueberry);
+    width: 40px; height: 40px; display: flex; align-items: center;
+    justify-content: center; border-radius: 50%; font-style: normal; font-size: 1.2rem;
+}
+
+.grid-dao {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px;
+}
+
+.sala-card {
+    background: var(--bg-white); padding: 20px; border-radius: 15px;
+    text-align: center; border: 1px solid transparent; transition: 0.3s;
+}
+
+.sala-card:active { border-color: var(--blue-blueberry); }
+
+.mint-area {
+    background: var(--blue-blueberry); color: white; margin: 20px;
+    padding: 25px; border-radius: 20px; text-align: center;
+}
+
+.mint-area input {
+    width: 100%; padding: 12px; border-radius: 8px; border: none; margin: 15px 0;
+}
+
+.btn-primary {
+    background: white; color: var(--blue-blueberry); border: none;
+    padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%;
+}
+
+/* OVERLAY */
+.overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end;
+}
+
+.sala-content {
+    background: white; width: 100%; height: 80%; border-radius: 25px 25px 0 0;
+    padding: 30px; position: relative; overflow-y: auto;
+}
+
+.btn-fechar { position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; }
