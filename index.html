@@ -107,20 +107,30 @@
             <h2>RECEBER</h2>
         </div>
         <div class="sala-body" style="text-align: center; padding: 15px 25px;">
-            <div style="margin-bottom: 20px;">
-                <label style="font-size: 12px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 8px;">VALOR DA COBRANÇA</label>
-                <div style="display: flex; align-items: center; justify-content: center; background: var(--cor-fundo-camuflagem); padding: 15px; border-radius: 18px;">
-                    <span style="font-size: 24px; font-weight: 900; color: var(--texto-escuro); margin-right: 5px;">R$</span>
-                    <input type="number" id="valor-brl" placeholder="0,00" step="0.01" inputmode="decimal" style="background: none; border: none; font-size: 32px; font-weight: 900; width: 100%; outline: none; color: var(--texto-escuro);">
-                </div>
-                <p id="conversao-preview" style="font-size: 12px; color: var(--azul-blueberry); font-weight: 700; margin-top: 8px;">≈ 0.0000 BNB</p>
-            </div>
-            <div id="qrcode-area" style="background: #fff; padding: 15px; border-radius: 20px; display: inline-block; border: 2px solid var(--cor-fundo-camuflagem);">
-                <img id="img-qrcode" src="" alt="QR Code" style="width: 180px; height: 180px; display: none; opacity: 0.3;">
-                <div id="placeholder-qr" style="width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; color: #ddd;">
-                    <i class="fa-solid fa-qrcode fa-4x"></i>
-                </div>
-            </div>
+    <div style="margin-bottom: 20px;">
+        <label style="font-size: 12px; font-weight: 800; color: var(--cinza-suave); display: block; margin-bottom: 8px;">VALOR DA COBRANÇA</label>
+        <div style="display: flex; align-items: center; justify-content: center; background: var(--cor-fundo-camuflagem); padding: 15px; border-radius: 18px;">
+            <span style="font-size: 24px; font-weight: 900; color: var(--texto-escuro); margin-right: 5px;">R$</span>
+            <input type="number" id="valor-brl" placeholder="0,00" step="0.01" inputmode="decimal" 
+                style="background: none; border: none; font-size: 32px; font-weight: 900; width: 100%; outline: none; color: var(--texto-escuro);">
+        </div>
+        <p id="conversao-preview" style="font-size: 12px; color: var(--azul-blueberry); font-weight: 700; margin-top: 8px;">≈ 0.0000 BNB</p>
+    </div>
+
+    <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+        <button onclick="fecharSala('sala-receber')" 
+            style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #eee; color: #666; font-weight: 800; font-size: 14px;">CANCELAR</button>
+        <button id="btn-confirmar-receber" disabled 
+            style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #ddd; color: #fff; font-weight: 800; font-size: 14px; transition: 0.3s;">CONFIRMAR</button>
+    </div>
+
+    <div id="qrcode-area" style="background: #fff; padding: 15px; border-radius: 20px; display: inline-block; border: 2px solid var(--cor-fundo-camuflagem);">
+        <img id="img-qrcode" src="" alt="QR Code" style="width: 180px; height: 180px; display: none; opacity: 0.3;">
+        <div id="placeholder-qr" style="width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; color: #ddd;">
+            <i class="fa-solid fa-qrcode fa-4x"></i>
+        </div>
+    </div>
+</div>
             <div style="display: flex; gap: 15px; margin-top: 25px;">
                 <button onclick="fecharSala('sala-receber')" style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #eee; color: #666; font-weight: 800; font-size: 14px;">CANCELAR</button>
                 <button id="btn-confirmar-receber" disabled style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #ddd; color: #fff; font-weight: 800; font-size: 14px; transition: 0.3s;">CONFIRMAR</button>
