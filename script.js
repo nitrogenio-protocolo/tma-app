@@ -62,37 +62,43 @@ function giroHome() {
 
 // 2. MOTOR WEB3 (CONEXÃO E PAGAMENTO)
 async function conectarCarteira() {
-    if (!window.ethereum) return alert("Por favor, abra pelo navegador da sua Carteira (MetaMask/Trust).");
+    if (!window.ethereum) return alert("Abra pelo navegador Web3 (MetaMask/Trust).");
     try {
         const browserProvider = new ethers.BrowserProvider(window.ethereum);
         const accounts = await browserProvider.send("eth_requestAccounts", []);
         userAccount = accounts[0];
         provider = browserProvider;
         signer = await browserProvider.getSigner();
+        
+        // Salva que está conectado para liberar as funções
         updateUI();
-    } catch (err) { console.error("Erro na conexão:", err); }
-}
-
-async function updateUI() {
-    const btnWallet = document.querySelector('.btn-wallet');
-    const displayN = document.querySelector('.currency');
-    if (userAccount && btnWallet) {
-        btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
-        const bal = await provider.getBalance(userAccount);
-        if(displayN) displayN.innerText = parseFloat(ethers.formatEther(bal)).toFixed(4);
+        alert("Carteira Conectada!");
+    } catch (err) { 
+        console.error("Erro na conexão:", err); 
     }
 }
 
-// Lógica de Envio de Pagamento
-async function processarPagamento() {
-    const destino = document.getElementById('chave-pagamento').value;
-    if (!destino || !destino.startsWith('0x')) return alert("Insira um endereço de carteira válido.");
-    
-    alert("Iniciando transação para: " + destino);
-    // Aqui entra a lógica de transação ethers.js que faremos a seguir
+// --- TRAVA DE SEGURANÇA PARA ABRIR SALAS ---
+function abrirSala(id) {
+    // Se o usuário tentar pagar ou receber sem conectar, barramos aqui
+    if (!userAccount && (id === 'sala-pagar' || id === 'sala-receber')) {
+        alert("Por favor, conecte sua carteira primeiro!");
+        conectarCarteira();
+        return;
+    }
+
+    const salasAbertas = document.querySelectorAll('.sala-card.ativa');
+    salasAbertas.forEach(s => s.classList.remove('ativa'));
+
+    const sala = document.getElementById(id);
+    if (sala) {
+        sala.classList.add('ativa');
+        document.body.style.overflow = 'hidden'; 
+        if(id === 'sala-receber') prepararSalaReceber();
+    }
 }
 
-// 3. TERMINAL DE RECEBIMENTO
+// --- GERADOR DE QR CODE REAL (DINÂMICO) ---
 function prepararSalaReceber() {
     const inputBRL = document.getElementById('valor-brl');
     const preview = document.getElementById('conversao-preview');
@@ -100,30 +106,27 @@ function prepararSalaReceber() {
 
     inputBRL.oninput = () => {
         const valor = parseFloat(inputBRL.value);
-        if (valor > 0) {
+        if (valor > 0 && userAccount) {
             const calculoBNB = (valor / precoBNB).toFixed(6);
             preview.innerText = `≈ ${calculoBNB} BNB`;
             btnConfirmar.disabled = false;
-            btnConfirmar.style.background = 'var(--azul-blueberry)';
         } else {
-            preview.innerText = `≈ 0.0000 BNB`;
             btnConfirmar.disabled = true;
-            btnConfirmar.style.background = '#ddd';
         }
     };
 
     btnConfirmar.onclick = () => {
         const valor = inputBRL.value;
         const calculoBNB = (valor / precoBNB).toFixed(6);
+        
+        // AGORA USA O userAccount (A carteira de quem está logado)
+        // E não mais a MINHA_CARTEIRA fixa
+        const qrData = `ethereum:${userAccount}@56?value=${calculoBNB}`;
+        
         const imgQr = document.getElementById('img-qrcode');
-        const placeholder = document.getElementById('placeholder-qr');
-
-        inputBRL.blur();
-        const qrData = `ethereum:${MINHA_CARTEIRA}@56?value=${calculoBNB}`;
         imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
         imgQr.style.display = 'block';
-        imgQr.style.opacity = '1';
-        placeholder.style.display = 'none';
+        document.getElementById('placeholder-qr').style.display = 'none';
     };
 }
 
