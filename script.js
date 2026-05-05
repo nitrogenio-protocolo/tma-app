@@ -81,81 +81,27 @@ function fecharSala(id) {
     if (sala) {
         sala.classList.remove('ativa');
         document.body.style.overflow = 'auto';
-        if (id === 'sala-pagar') pararScanner();
-    }
-}
 
-function giroHome() {
-    const salas = document.querySelectorAll('.sala-card');
-    salas.forEach(s => s.classList.remove('ativa'));
-    document.body.style.overflow = 'auto';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// --- 4. TERMINAL DE PAGAMENTO (ENVIO REAL) ---
-async function processarPagamento() {
-    const destino = document.getElementById('chave-pagamento').value;
-    const valorBRL = prompt("Confirme o valor do pagamento em R$:");
-
-    if (!destino || !destino.startsWith('0x')) return alert("Endereço de destino inválido.");
-    if (!valorBRL || isNaN(valorBRL)) return alert("Valor inválido.");
-
-    try {
-        const valorBNB = (parseFloat(valorBRL) / precoBNB).toFixed(18);
-        const valorEmWei = ethers.parseEther(valorBNB);
-
-        alert(`Enviando ${valorBNB} BNB para ${destino.substring(0,8)}...`);
-
-        const tx = await signer.sendTransaction({
-            to: destino,
-            value: valorEmWei
-        });
-
-        alert("Transação enviada! Aguardando confirmação...");
-        await tx.wait();
-        alert("Pagamento concluído com sucesso!");
-        
-        giroHome();
-        updateUI();
-    } catch (err) {
-        console.error(err);
-        alert("Erro na transação: " + (err.reason || "Falha no envio"));
-    }
-}
-
-// --- 5. TERMINAL DE RECEBIMENTO (QR CODE DINÂMICO) ---
-function prepararSalaReceber() {
-    const inputBRL = document.getElementById('valor-brl');
-    const preview = document.getElementById('conversao-preview');
-    const btnConfirmar = document.getElementById('btn-confirmar-receber');
-
-    inputBRL.oninput = () => {
-        const valor = parseFloat(inputBRL.value);
-        if (valor > 0) {
-            const calculoBNB = (valor / precoBNB).toFixed(6);
-            preview.innerText = `≈ ${calculoBNB} BNB`;
-            btnConfirmar.disabled = false;
-        } else {
-            preview.innerText = `≈ 0.0000 BNB`;
-            btnConfirmar.disabled = true;
+        // Limpa campos da sala PAGAR
+        if (id === 'sala-pagar') {
+            pararScanner();
+            document.getElementById('chave-pagamento').value = '';
+            // Se você tiver um campo de valor na tela de pagar, limpe-o aqui também:
+            if(document.getElementById('valor-pagar-brl')) document.getElementById('valor-pagar-brl').value = '';
         }
-    };
 
-    btnConfirmar.onclick = () => {
-        const valor = inputBRL.value;
-        const calculoBNB = (valor / precoBNB).toFixed(6);
-        const imgQr = document.getElementById('img-qrcode');
-        const placeholder = document.getElementById('placeholder-qr');
-
-        // GERA QR CODE COM O ENDEREÇO DE QUEM ESTÁ LOGADO
-        const qrData = `ethereum:${userAccount}@56?value=${calculoBNB}`;
-        imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
-        imgQr.style.display = 'block';
-        placeholder.style.display = 'none';
-    };
+        // Limpa campos da sala RECEBER
+        if (id === 'sala-receber') {
+            document.getElementById('valor-brl').value = '';
+            document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
+            document.getElementById('btn-confirmar-receber').disabled = true;
+            document.getElementById('img-qrcode').style.display = 'none';
+            document.getElementById('placeholder-qr').style.display = 'flex';
+        }
+    }
 }
 
-// --- 6. MOTOR DO SCANNER ---
+// --- AJUSTE NO LEITOR (CAPTURAR VALOR DO QR CODE) ---
 function iniciarScanner() {
     const btnCamera = document.querySelector('.btn-camera');
     const readerDiv = document.getElementById('reader');
@@ -170,8 +116,28 @@ function iniciarScanner() {
         { facingMode: "environment" },
         config,
         (decodedText) => {
-            const enderecoLimpo = decodedText.includes(':') ? decodedText.split(':')[1].split('@')[0] : decodedText;
-            document.getElementById('chave-pagamento').value = enderecoLimpo;
+            // Lógica para separar Endereço e Valor
+            // Exemplo de decodedText: "ethereum:0x123...89?value=0.01"
+            let endereco = decodedText;
+            let valorBNB = "";
+
+            if (decodedText.includes('?value=')) {
+                const partes = decodedText.split('?value=');
+                endereco = partes[0].replace('ethereum:', '');
+                valorBNB = partes[1];
+            } else {
+                endereco = decodedText.replace('ethereum:', '');
+            }
+
+            // Preenche o campo da carteira
+            document.getElementById('chave-pagamento').value = endereco;
+
+            // Se o QR Code trouxe valor, convertemos de volta para BRL para mostrar ao pagador
+            if (valorBNB && document.getElementById('valor-pagar-brl')) {
+                const valorBRL = (parseFloat(valorBNB) * precoBNB).toFixed(2);
+                document.getElementById('valor-pagar-brl').value = valorBRL;
+            }
+
             pararScanner();
         }
     ).catch((err) => {
@@ -180,13 +146,36 @@ function iniciarScanner() {
     });
 }
 
-function pararScanner() {
-    if (html5QrCode && html5QrCode.isScanning) {
-        html5QrCode.stop().then(() => {
-            document.querySelector('.btn-camera').style.display = 'block';
-            document.getElementById('reader').style.display = 'none';
-        });
-    }
+// --- AJUSTE NO GERADOR (EMBUTIR VALOR NO QR CODE) ---
+function prepararSalaReceber() {
+    const inputBRL = document.getElementById('valor-brl');
+    const preview = document.getElementById('conversao-preview');
+    const btnConfirmar = document.getElementById('btn-confirmar-receber');
+
+    inputBRL.oninput = () => {
+        const valor = parseFloat(inputBRL.value);
+        if (valor > 0) {
+            const calculoBNB = (valor / precoBNB).toFixed(6);
+            preview.innerText = `≈ ${calculoBNB} BNB`;
+            btnConfirmar.disabled = false;
+        } else {
+            btnConfirmar.disabled = true;
+        }
+    };
+
+    btnConfirmar.onclick = () => {
+        const valorBRL = inputBRL.value;
+        const calculoBNB = (valorBRL / precoBNB).toFixed(6);
+        const imgQr = document.getElementById('img-qrcode');
+        const placeholder = document.getElementById('placeholder-qr');
+
+        // IMPORTANTE: Incluímos o valor após o '?' para o leitor identificar
+        const qrData = `ethereum:${userAccount}?value=${calculoBNB}`;
+        
+        imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
+        imgQr.style.display = 'block';
+        placeholder.style.display = 'none';
+    };
 }
 
 // --- 7. GATILHOS DE INICIALIZAÇÃO ---
