@@ -3,51 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nitrogênio Protocolo | DAO</title>
+    <title>Nitrogênio | Motor BNB</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/index.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
     <header>
-        <div class="logo-area">
-            <h1>NITROGÊNIO <span>N</span></h1>
-            <div class="status-badge">BSC MAINNET</div>
-        </div>
-        <button id="btn-conectar" class="btn-wallet">CONECTAR CARTEIRA</button>
+        <h1>NITROGÊNIO <span>N</span></h1>
+        <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
     </header>
 
     <main>
         <section class="card-master">
-            <div class="balance-info">
-                <p class="label">SALDO EM CARTEIRA</p>
-                <h2 id="saldo-bnb">0.0000 <span>BNB</span></h2>
-                <h3 id="saldo-n">0.00 N</h3>
-            </div>
-            <div class="nft-badge">
-                <img src="https://img.icons8.com/ios-filled/50/007BFF/identity-theft.png" alt="NFT Alpha">
-                <span>SEM ACESSO ALPHA</span>
-            </div>
+            <p class="label">SALDO BNB (TESTE)</p>
+            <div class="balance" id="display-bnb">0.0000 <span>BNB</span></div>
+            <p id="display-n" class="token-n">0.00 N</p>
         </section>
 
-        <nav class="quick-actions">
-            <button onclick="abrir('pagar')">↑ PAGAR</button>
-            <button onclick="abrir('receber')">↓ RECEBER</button>
-            <button onclick="abrir('coleta')">N COLETAR</button>
-            <button onclick="abrir('troca')">⇄ TROCAR</button>
+        <nav class="nav-actions">
+            <button class="btn-act" id="btn-pagar">
+                <div class="icon">↑</div>
+                <span>PAGAR</span>
+            </button>
+            <button class="btn-act">
+                <div class="icon">↓</div>
+                <span>RECEBER</span>
+            </button>
+            <button class="btn-act">
+                <div class="icon">N</div>
+                <span>COLETAR</span>
+            </button>
+            <button class="btn-act">
+                <div class="icon">⇄</div>
+                <span>TROCAR</span>
+            </button>
         </nav>
-
-        <section class="grid-dao">
-            <div class="sala-card" onclick="abrir('governo')">GOVERNO</div>
-            <div class="sala-card" onclick="abrir('mural')">MURAL</div>
-            <div class="sala-card" onclick="abrir('comunidade')">COMUNIDADE</div>
-            <div class="sala-card" onclick="abrir('tesouraria')">TESOURARIA</div>
-        </section>
-
-        <section class="mint-area">
-            <h3>MINT NFT ALPHA</h3>
-            <input type="text" id="padrinho" placeholder="Endereço do Padrinho">
-            <button class="btn-primary">MINTAR AGORA (0.1 BNB)</button>
-        </section>
     </main>
+
+    <div id="cam-overlay" class="overlay">
+        <div class="scanner-container">
+            <div id="reader"></div>
+            <button class="btn-close-cam">✕</button>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal-bottom">
+        <h3>CONFIRMAR PAGAMENTO</h3>
+        <p id="info-destino" class="dest-text"></p>
+        <input type="number" id="valor-input" placeholder="0.00" step="0.001" inputmode="decimal">
+        <button id="btn-executar" class="btn-confirm">CONFIRMAR E ASSINAR</button>
+        <button id="btn-cancelar" class="btn-cancel">CANCELAR</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
