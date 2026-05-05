@@ -1,120 +1,128 @@
-// --- VARIÁVEIS GLOBAIS (AS PEÇAS DO MOTOR) ---
-let provider, signer, account, scanner;
-let destinoAtual = "";
+/**
+ * NITROGÊNIO PROTOCOLO - MOTOR WEB3 (CLASSE OFICIAL)
+ * Organizado por classes para facilitar ajustes futuros.
+ */
 
-// --- FUNÇÃO 1: LIGAR O MOTOR (CONEXÃO) ---
-async function conectar() {
-    // Verifica se a biblioteca Ethers carregou corretamente
-    if (typeof ethers === 'undefined') {
-        alert("Erro: Biblioteca de conexão não carregada. Verifique sua internet.");
-        return;
-    }
+const NitrogenApp = {
+    // 1. Peças do Motor (Estado)
+    data: {
+        provider: null,
+        signer: null,
+        account: null,
+        scanner: null,
+        destinoAtual: ""
+    },
 
-    if (window.ethereum) {
-        try {
-            // Sintaxe correta para a versão 6 do Ethers
-            provider = new ethers.BrowserProvider(window.ethereum);
-            
-            // Abre o pop-up da carteira para o usuário autorizar
-            const accs = await provider.send("eth_requestAccounts", []);
-            account = accs[0];
-            signer = await provider.getSigner();
-
-            // Atualiza o botão azul: mostra o início e o fim da carteira
-            const btn = document.getElementById('btn-conectar');
-            btn.innerText = account.substring(0,6) + "..." + account.substring(38);
-            btn.style.backgroundColor = "#28a745"; // Cor de "Motor Ligado" (Verde)
-
-            atualizarSaldo();
-            return true;
-        } catch (e) {
-            alert("Conexão recusada ou erro: " + e.message);
+    // 2. Ignição (Conexão com a Carteira)
+    async conectar() {
+        if (typeof ethers === 'undefined') {
+            alert("Erro: Biblioteca Ethers não carregada. Verifique sua internet.");
             return false;
         }
-    } else {
-        alert("Abra o app pelo navegador da sua MetaMask ou Trust Wallet!");
-        return false;
-    }
-}
 
-// --- FUNÇÃO 2: PAINEL DE CONTROLE (SALDO BNB) ---
-async function atualizarSaldo() {
-    if (!account || !provider) return;
-    try {
-        const saldoWei = await provider.getBalance(account);
-        const saldoBnb = ethers.formatEther(saldoWei);
-        document.getElementById('display-bnb').innerHTML = saldoBnb.substring(0,6) + " <span>BNB</span>";
-    } catch (e) {
-        console.error("Falha ao ler saldo:", e);
-    }
-}
-
-// --- FUNÇÃO 3: ROTA PAGAR (SCANNER + AUTO-CONEXÃO) ---
-async function abrirScanner() {
-    // Se não estiver conectado, tenta ligar o motor primeiro
-    if (!account) {
-        const conectado = await conectar();
-        if (!conectado) return;
-    }
-
-    document.getElementById('cam-overlay').style.display = 'block';
-    scanner = new Html5Qrcode("reader");
-
-    scanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (txt) => {
-            scanner.stop();
-            document.getElementById('cam-overlay').style.display = 'none';
-            
-            const dados = txt.split(':');
-            destinoAtual = dados[0];
-            
-            document.getElementById('modal-confirm').style.display = 'block';
-            document.getElementById('info-destino').innerText = "DESTINO: " + destinoAtual;
-            document.getElementById('valor-input').value = dados[1] || "";
-
-            // Foca no teclado se o valor estiver vazio
-            if (!dados[1]) {
-                setTimeout(() => document.getElementById('valor-input').focus(), 400);
-            }
+        if (!window.ethereum) {
+            alert("Abra o app dentro da MetaMask ou Trust Wallet!");
+            return false;
         }
-    ).catch(err => alert("Erro na câmera ou permissão negada."));
-}
 
-// --- FUNÇÃO 4: LIMPAR A SALA (RESET/FECHAR TUDO) ---
-function fecharTudo() {
-    if (scanner) {
-        try { scanner.stop(); } catch(e) {}
-    }
-    document.getElementById('cam-overlay').style.display = 'none';
-    document.getElementById('modal-confirm').style.display = 'none';
-    document.getElementById('valor-input').value = "";
-    destinoAtual = "";
-}
+        try {
+            // Inicializa Provider e Signer (Ethers v6)
+            this.data.provider = new ethers.BrowserProvider(window.ethereum);
+            const accounts = await this.data.provider.send("eth_requestAccounts", []);
+            
+            this.data.account = accounts[0];
+            this.data.signer = await this.data.provider.getSigner();
 
-// --- FUNÇÃO 5: O GATILHO FINAL (ENVIAR BNB) ---
-async function executarPagamento() {
-    const valor = document.getElementById('valor-input').value;
-    if (!valor || valor <= 0) return alert("Digite um valor válido!");
+            // Atualiza Interface do Botão
+            const btn = document.getElementById('btn-conectar');
+            const curta = this.data.account;
+            btn.innerText = curta.substring(0,6) + "..." + curta.substring(38);
+            btn.style.background = "#28a745"; // Verde Sucesso
 
-    try {
-        const tx = await signer.sendTransaction({
-            to: destinoAtual,
-            value: ethers.parseEther(valor)
-        });
+            this.atualizarSaldo();
+            return true;
+        } catch (error) {
+            console.error("Erro na conexão:", error);
+            alert("Conexão cancelada.");
+            return false;
+        }
+    },
+
+    // 3. Painel (Saldo)
+    async atualizarSaldo() {
+        if (!this.data.account) return;
+        try {
+            const saldoWei = await this.data.provider.getBalance(this.data.account);
+            const saldoBnb = ethers.formatEther(saldoWei);
+            document.getElementById('display-bnb').innerHTML = `${saldoBnb.substring(0, 6)} <span>BNB</span>`;
+        } catch (e) {
+            console.error("Erro ao ler saldo.");
+        }
+    },
+
+    // 4. Scanner (Pagar)
+    async abrirScanner() {
+        // Auto-conectar se estiver desligado
+        if (!this.data.account) {
+            const ok = await this.conectar();
+            if (!ok) return;
+        }
+
+        document.getElementById('cam-overlay').style.display = 'block';
         
-        alert("Transação enviada! Aguarde a confirmação na rede.");
-        fecharTudo();
-        setTimeout(atualizarSaldo, 4000); // Atualiza saldo após 4 segundos
-    } catch (e) {
-        alert("Erro no envio ou ação cancelada.");
+        this.data.scanner = new Html5Qrcode("reader");
+        this.data.scanner.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            (txt) => {
+                this.data.scanner.stop();
+                document.getElementById('cam-overlay').style.display = 'none';
+                
+                const partes = txt.split(':');
+                this.data.destinoAtual = partes[0];
+                
+                document.getElementById('modal-confirm').style.display = 'block';
+                document.getElementById('info-destino').innerText = "DESTINO: " + this.data.destinoAtual;
+                document.getElementById('valor-input').value = partes[1] || "";
+
+                if(!partes[1]) setTimeout(() => document.getElementById('valor-input').focus(), 400);
+            }
+        ).catch(err => alert("Erro na câmera."));
+    },
+
+    // 5. O Gatilho (Executar Pagamento)
+    async executarPagamento() {
+        const valor = document.getElementById('valor-input').value;
+        if (!valor || valor <= 0) return alert("Digite o valor.");
+
+        try {
+            const tx = await this.data.signer.sendTransaction({
+                to: this.data.destinoAtual,
+                value: ethers.parseEther(valor)
+            });
+            alert("Pagamento enviado!");
+            this.fecharTudo();
+            setTimeout(() => this.atualizarSaldo(), 4000);
+        } catch (e) {
+            alert("Falha na transação.");
+        }
+    },
+
+    // 6. Limpeza (Fechar Modais)
+    fecharTudo() {
+        if (this.data.scanner) {
+            try { this.data.scanner.stop(); } catch(e) {}
+        }
+        document.getElementById('cam-overlay').style.display = 'none';
+        document.getElementById('modal-confirm').style.display = 'none';
+        document.getElementById('valor-input').value = "";
     }
-}
+};
 
 // --- MAPEAMENTO DOS BOTÕES (INTERFACE) ---
-document.getElementById('btn-conectar').onclick = conectar;
-document.getElementById('btn-pagar').onclick = abrirScanner;
-document.getElementById('confirmar-pagamento').onclick = executarPagamento;
-document.getElementById('cancelar-pagamento').onclick = fecharTudo;
-document.getElementById('fechar-cam').onclick = fecharTudo;
+// Usamos o NitrogenApp.função para chamar a lógica da classe
+document.getElementById('btn-conectar').onclick = () => NitrogenApp.conectar();
+document.getElementById('btn-pagar').onclick = () => NitrogenApp.abrirScanner();
+document.getElementById('confirmar-pagamento').onclick = () => NitrogenApp.executarPagamento();
+document.getElementById('cancelar-pagamento').onclick = () => NitrogenApp.fecharTudo();
+document.getElementById('fechar-cam').onclick = () => NitrogenApp.fecharTudo();
