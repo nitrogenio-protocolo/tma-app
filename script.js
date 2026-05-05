@@ -157,21 +157,29 @@ document.getElementById('valor-brl').addEventListener('input', function() {
     }
 });
 
-// Ação de CONFIRMAR (Gera QR Code e esconde teclado)
+// Ação de CONFIRMAR (Gera QR Code e força a saída do teclado)
 document.getElementById('btn-confirmar-receber').onclick = function() {
-    const valor = document.getElementById('valor-brl').value;
+    const inputValor = document.getElementById('valor-brl');
+    const valor = inputValor.value;
     
-    // ABAIXA O TECLADO DO CELULAR
-    document.activeElement.blur(); 
+    // 1. FORÇA O TECLADO A SUMIR 
+    // Além do blur, tiramos o foco específico do input e focamos na janela
+    inputValor.blur(); 
+    window.focus(); 
 
-    // GERA O QR CODE (Usando seu endereço de carteira que vi no vídeo)
-    const minhaCarteira = "0x71ca...d87a"; // Coloque seu endereço completo aqui
-    const qrArea = document.getElementById('img-qrcode');
-    const placeholder = document.getElementById('placeholder-qr');
+    // 2. GERAÇÃO DO QR CODE
+    if (valor > 0) {
+        const minhaCarteira = "0x71ca...d87a"; // Mantenha seu endereço completo aqui
+        const qrArea = document.getElementById('img-qrcode');
+        const placeholder = document.getElementById('placeholder-qr');
 
-    qrArea.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ethereum:${minhaCarteira}@56?value=${valor}`;
-    
-    placeholder.style.display = 'none';
-    qrArea.style.display = 'block';
-    qrArea.style.opacity = '1';
+        // Monta o link para a rede BNB (Chain ID 56)
+        qrArea.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ethereum:${minhaCarteira}@56?value=${valor}`;
+        
+        placeholder.style.display = 'none';
+        qrArea.style.display = 'block';
+        qrArea.style.opacity = '1';
+        
+        console.log("Teclado recolhido e QR Code gerado para R$", valor);
+    }
 };
