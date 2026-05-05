@@ -65,6 +65,25 @@
         <button id="cancelar-pagamento" class="btn-cancel">CANCELAR</button>
     </div>
 
+    <head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+    
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <script>
+        window.onload = () => {
+            // Isso garante que o código só roda quando TUDO estiver carregado
+            console.log("Sistema pronto. Carregando motor...");
+            const script = document.createElement('script');
+            script.src = 'script.js?v=' + Date.now(); // O ?v= força o navegador a ler o arquivo novo
+            document.body.appendChild(script);
+        };
+    </script>
+</body>
+    
     <script src="script.js"></script>
 </body>
 </html>
