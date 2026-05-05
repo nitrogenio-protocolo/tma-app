@@ -124,3 +124,41 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.btn-wallet')?.addEventListener('click', conectarCarteira);
     if (window.ethereum && window.ethereum.selectedAddress) conectarCarteira();
 });
+
+let html5QrCode;
+
+function iniciarScanner() {
+    const btnCamera = document.getElementById('btn-abrir-camera');
+    const readerDiv = document.getElementById('reader');
+    
+    btnCamera.style.display = 'none';
+    readerDiv.style.display = 'block';
+
+    html5QrCode = new Html5Qrcode("reader");
+    
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+    html5QrCode.start(
+        { facingMode: "environment" }, // Usa a câmera traseira
+        config,
+        (decodedText) => {
+            // Sucesso ao ler!
+            document.getElementById('chave-pagamento').value = decodedText;
+            pararScanner();
+            alert("QR Code lido com sucesso!");
+        },
+        (errorMessage) => { /* erro de leitura comum, ignore */ }
+    ).catch((err) => {
+        alert("Erro ao abrir câmera: " + err);
+        pararScanner();
+    });
+}
+
+function pararScanner() {
+    if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+            document.getElementById('btn-abrir-camera').style.display = 'block';
+            document.getElementById('reader').style.display = 'none';
+        });
+    }
+}
