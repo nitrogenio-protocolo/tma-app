@@ -91,13 +91,36 @@
 </footer>
 
 <div id="container-salas">
-    <div id="sala-pagar" class="sala-card">
+        <div id="sala-pagar" class="sala-card">
         <div class="sala-handle"></div>
         <div class="sala-header">
             <button class="btn-fechar" onclick="fecharSala('sala-pagar')"><i class="fa-solid fa-xmark"></i></button>
             <h2>PAGAR</h2>
         </div>
-        <div class="sala-body">Escaneie o QR Code ou cole a chave para pagar.</div>
+        <div class="sala-body" style="text-align: center; padding: 15px 25px;">
+            
+            <div style="margin-bottom: 20px;">
+                <button class="btn-camera" style="width: 100%; padding: 20px; border-radius: 18px; border: 2px dashed var(--azul-blueberry); background: var(--cor-fundo-camuflagem); color: var(--azul-blueberry); font-weight: 800;">
+                    <i class="fa-solid fa-qrcode fa-2x" style="display: block; margin-bottom: 10px;"></i>
+                    ESCANEAR QR CODE
+                </button>
+            </div>
+
+            <div style="margin: 15px 0; color: var(--cinza-suave); font-weight: 700; font-size: 12px;">OU COLE A CHAVE</div>
+
+            <div style="margin-bottom: 20px; background: var(--cor-fundo-camuflagem); padding: 15px; border-radius: 18px;">
+                <input type="text" id="chave-pagamento" placeholder="0x... ou chave pix" 
+                    style="background: none; border: none; font-size: 16px; font-weight: 600; width: 100%; outline: none; color: var(--texto-escuro); text-align: center;">
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <button onclick="fecharSala('sala-pagar')" 
+                    style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: #eee; color: #666; font-weight: 800; font-size: 14px;">CANCELAR</button>
+                <button id="btn-confirmar-pagar" 
+                    style="flex: 1; padding: 16px; border-radius: 30px; border: none; background: var(--azul-blueberry); color: #fff; font-weight: 800; font-size: 14px;">CONTINUAR</button>
+            </div>
+
+        </div>
     </div>
 
     <    <div id="sala-receber" class="sala-card">
