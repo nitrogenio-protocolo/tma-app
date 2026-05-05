@@ -1,177 +1,125 @@
 /**
- * NITROGÊNIO PROTOCOLO - Versão Estabilizada
+ * NITROGÊNIO PROTOCOLO - Versão Simplificada e Funcional
  */
 
-const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; 
 let precoBNB = 3300; 
 let provider, signer, userAccount;
 let html5QrCode = null;
 
-// --- 1. MOTOR DE PREÇO ---
+// 1. Cotação
 async function atualizarPrecoBNB() {
     try {
         const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
         const data = await response.json();
         if(data.price) precoBNB = parseFloat(data.price);
-    } catch (e) { console.error("Erro cotação"); }
+    } catch (e) { console.log("Erro na cotação, usando padrão."); }
 }
 atualizarPrecoBNB();
 
-// --- 2. CONEXÃO WEB3 ---
+// 2. Conectar Carteira
 async function conectarCarteira() {
-    if (!window.ethereum) return alert("Abra pelo navegador da sua Carteira.");
+    if (!window.ethereum) return alert("Use o navegador da sua carteira!");
     try {
-        const browserProvider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await browserProvider.send("eth_requestAccounts", []);
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         userAccount = accounts[0];
-        provider = browserProvider;
-        signer = await browserProvider.getSigner();
-        await updateUI();
-    } catch (err) { console.error(err); }
-}
-
-async function updateUI() {
-    const btnWallet = document.querySelector('.btn-wallet');
-    const displayBalance = document.getElementById('display-balance');
-    const displayBRL = document.getElementById('balance-brl');
-
-    if (userAccount && provider) {
-        btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
-        const balanceWei = await provider.getBalance(userAccount);
-        const balanceBNB = parseFloat(ethers.formatEther(balanceWei));
+        provider = new ethers.BrowserProvider(window.ethereum);
+        signer = await provider.getSigner();
         
-        if(displayBalance) displayBalance.innerText = balanceBNB.toFixed(4);
-        if(displayBRL) {
-            const valorEmReais = (balanceBNB * precoBNB).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            displayBRL.innerText = `≈ ${valorEmReais}`;
-        }
-    }
+        // Atualiza Botão e Saldo
+        document.querySelector('.btn-wallet').innerText = userAccount.substring(0,6) + "..." + userAccount.substring(userAccount.length-4);
+        const balance = await provider.getBalance(userAccount);
+        document.getElementById('display-balance').innerText = parseFloat(ethers.formatEther(balance)).toFixed(4);
+        document.getElementById('balance-brl').innerText = "≈ " + (parseFloat(ethers.formatEther(balance)) * precoBNB).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+    } catch (err) { alert("Erro ao conectar."); }
 }
 
-// --- 3. GESTÃO DE SALAS ---
+// 3. Abrir e Fechar Salas (Com a limpeza que você pediu)
 function abrirSala(id) {
-    // Se não estiver conectado, força a conexão primeiro
-    if (!userAccount) {
-        conectarCarteira();
-        return;
-    }
-
-    const sala = document.getElementById(id);
-    if (sala) {
-        sala.classList.add('ativa');
-        document.body.style.overflow = 'hidden';
-        if(id === 'sala-receber') prepararSalaReceber();
-    }
+    if (!userAccount) return conectarCarteira();
+    document.getElementById(id).classList.add('ativa');
+    if(id === 'sala-receber') logicaReceber();
 }
 
 function fecharSala(id) {
     const sala = document.getElementById(id);
-    if (!sala) return;
-
     sala.classList.remove('ativa');
-    document.body.style.overflow = 'auto';
-
-    // Limpeza Geral
-    const inputs = sala.querySelectorAll('input');
-    inputs.forEach(i => i.value = '');
-
-    if (id === 'sala-pagar') {
-        pararScanner();
-    }
     
+    // LIMPEZA: Aqui limpamos os inputs quando o usuário cancela
+    const inputs = sala.querySelectorAll('input');
+    inputs.forEach(i => i.value = ''); 
+
+    if (id === 'sala-pagar') pararScanner();
     if (id === 'sala-receber') {
-        document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
         document.getElementById('img-qrcode').style.display = 'none';
         document.getElementById('placeholder-qr').style.display = 'flex';
-        document.getElementById('btn-confirmar-receber').disabled = true;
+        document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
     }
 }
 
-// --- 4. SCANNER ---
-function iniciarScanner() {
-    const readerDiv = document.getElementById('reader');
-    const btnCam = document.querySelector('.btn-camera');
+// 4. Lógica de Receber (Gerar QR)
+function logicaReceber() {
+    const inputBRL = document.getElementById('valor-brl');
+    const btnGerar = document.getElementById('btn-confirmar-receber');
     
-    readerDiv.style.display = 'block';
-    btnCam.style.display = 'none';
-
-    html5QrCode = new Html5Qrcode("reader");
-    html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (text) => {
-            let addr = text.includes('?') ? text.split('?')[0] : text;
-            addr = addr.replace('ethereum:', '');
-            document.getElementById('chave-pagamento').value = addr;
-            
-            if (text.includes('value=')) {
-                const val = text.split('value=')[1];
-                document.getElementById('valor-pagar-brl').value = (parseFloat(val) * precoBNB).toFixed(2);
-            }
-            pararScanner();
-        }
-    ).catch(() => pararScanner());
-}
-
-function pararScanner() {
-    if (html5QrCode) {
-        html5QrCode.stop().catch(() => {}).finally(() => {
-            document.getElementById('reader').style.display = 'none';
-            document.querySelector('.btn-camera').style.display = 'block';
-            html5QrCode = null;
-        });
-    }
-}
-
-// --- 5. RECEBER & PAGAR ---
-function prepararSalaReceber() {
-    const input = document.getElementById('valor-brl');
-    const btn = document.getElementById('btn-confirmar-receber');
-    
-    input.oninput = () => {
-        const bnb = (parseFloat(input.value) / precoBNB).toFixed(6);
+    inputBRL.oninput = () => {
+        const bnb = (parseFloat(inputBRL.value) / precoBNB).toFixed(6);
         document.getElementById('conversao-preview').innerText = `≈ ${isNaN(bnb) ? '0.0000' : bnb} BNB`;
-        btn.disabled = !(parseFloat(input.value) > 0);
+        btnGerar.disabled = !(parseFloat(inputBRL.value) > 0);
     };
 
-    btn.onclick = () => {
-        const bnb = (parseFloat(input.value) / precoBNB).toFixed(6);
-        const uri = `ethereum:${userAccount}?value=${bnb}`;
+    btnGerar.onclick = () => {
+        const bnb = (parseFloat(inputBRL.value) / precoBNB).toFixed(6);
+        const link = `ethereum:${userAccount}?value=${bnb}`;
         const img = document.getElementById('img-qrcode');
-        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(uri)}`;
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(link)}`;
         img.style.display = 'block';
         document.getElementById('placeholder-qr').style.display = 'none';
     };
 }
 
+// 5. Lógica de Pagar (Confirmar Envio)
 async function confirmarPagamento() {
-    const para = document.getElementById('chave-pagamento').value;
-    const brl = document.getElementById('valor-pagar-brl').value;
+    const destino = document.getElementById('chave-pagamento').value;
+    const valorBRL = document.getElementById('valor-pagar-brl').value;
 
-    if (!para || !brl) return alert("Dados incompletos");
+    if (!destino || !valorBRL) return alert("Preencha o endereço e o valor!");
 
     try {
-        const bnb = (parseFloat(brl) / precoBNB).toFixed(18);
+        const valorBNB = (parseFloat(valorBRL) / precoBNB).toFixed(18);
         const tx = await signer.sendTransaction({
-            to: para,
-            value: ethers.parseEther(bnb)
+            to: destino,
+            value: ethers.parseEther(valorBNB)
         });
-        alert("Sucesso! Hash: " + tx.hash);
+        alert("Enviado com sucesso!");
         fecharSala('sala-pagar');
     } catch (e) {
-        alert("Erro na transação. Verifique seu saldo ou a carteira de destino.");
+        alert("Falha na transação.");
     }
 }
 
-// --- 6. EVENTOS ---
-document.addEventListener('DOMContentLoaded', () => {
-    // Vincula o botão de conectar
-    document.querySelector('.btn-wallet').onclick = conectarCarteira;
-    
-    // Vincula o botão de confirmar pagamento da sala
-    const btnConfirmarPagar = document.getElementById('btn-confirmar-pagar');
-    if (btnConfirmarPagar) btnConfirmarPagar.onclick = confirmarPagamento;
+// 6. Scanner
+function iniciarScanner() {
+    document.getElementById('reader').style.display = 'block';
+    document.querySelector('.btn-camera').style.display = 'none';
+    html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+        let cleanText = text.replace('ethereum:', '').split('?')[0];
+        document.getElementById('chave-pagamento').value = cleanText;
+        pararScanner();
+    }).catch(e => console.log("Erro camera"));
+}
 
-    // Se já estiver logado no navegador, conecta auto
-    if (window.ethereum?.selectedAddress) conectarCarteira();
+function pararScanner() {
+    if(html5QrCode) {
+        html5QrCode.stop().then(() => {
+            document.getElementById('reader').style.display = 'none';
+            document.querySelector('.btn-camera').style.display = 'block';
+        }).catch(e => console.log(e));
+    }
+}
+
+// Inicialização dos botões
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.btn-wallet').onclick = conectarCarteira;
+    document.getElementById('btn-confirmar-pagar').onclick = confirmarPagamento;
 });
