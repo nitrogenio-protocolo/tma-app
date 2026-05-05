@@ -1,29 +1,70 @@
 /**
  * NITROGÊNIO PROTOCOLO - Motor de Gestão Web3 e Interface Circular
+ * Versão: 2.0 (Real Assets Integration)
  */
 
-// CONFIGURAÇÕES TÉCNICAS E GLOBAIS
+// CONFIGURAÇÕES TÉCNICAS
 const ENDERECO_COFRE_SAFE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219"; 
-const MINHA_CARTEIRA = "0x71caB1b9c71f97ad1024340a631A33434690d87a"; 
 let precoBNB = 3300; 
 let provider, signer, userAccount;
 let html5QrCode;
 
-// --- FUNÇÃO PARA BUSCAR PREÇO REAL ---
+// --- 1. MOTOR DE PREÇO (ORÁCULO BINANCE) ---
 async function atualizarPrecoBNB() {
     try {
         const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
         const data = await response.json();
-        precoBNB = parseFloat(data.price);
+        if(data.price) precoBNB = parseFloat(data.price);
     } catch (error) {
-        console.error("Erro na API, usando preço base.");
+        console.error("Erro ao buscar cotação real.");
     }
 }
 atualizarPrecoBNB();
 
-// 1. GERENCIAMENTO DE INTERFACE (SISTEMA DE SALAS)
+// --- 2. CONEXÃO WEB3 REAL ---
+async function conectarCarteira() {
+    if (!window.ethereum) return alert("Por favor, abra pelo navegador da sua Carteira (MetaMask/Trust).");
+    try {
+        const browserProvider = new ethers.BrowserProvider(window.ethereum);
+        const accounts = await browserProvider.send("eth_requestAccounts", []);
+        userAccount = accounts[0];
+        provider = browserProvider;
+        signer = await browserProvider.getSigner();
+        
+        await updateUI();
+    } catch (err) { 
+        console.error("Erro na conexão:", err); 
+        alert("Falha ao conectar carteira.");
+    }
+}
+
+async function updateUI() {
+    const btnWallet = document.querySelector('.btn-wallet');
+    const displayBalance = document.querySelector('.currency');
+    const symbolText = document.querySelector('.symbol');
+
+    if (userAccount && provider) {
+        // Exibe endereço curto no botão (ex: 0x71ca...d87a)
+        btnWallet.innerText = userAccount.substring(0, 6) + "..." + userAccount.substring(userAccount.length - 4);
+        
+        // BUSCA SALDO REAL DE BNB NA REDE
+        const balanceWei = await provider.getBalance(userAccount);
+        const balanceBNB = ethers.formatEther(balanceWei);
+        
+        if(displayBalance) displayBalance.innerText = parseFloat(balanceBNB).toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+        if(symbolText) symbolText.innerText = "BNB"; // Identificador real enquanto o Token N não é lançado
+    }
+}
+
+// --- 3. GESTÃO DE INTERFACE E TRAVAS ---
 function abrirSala(id) {
-    // Fecha outras salas abertas para não encavalar
+    // SEGURANÇA: Impede uso de funções financeiras sem conexão
+    if (!userAccount && (id === 'sala-pagar' || id === 'sala-receber')) {
+        alert("Conecte sua carteira para acessar esta função.");
+        conectarCarteira();
+        return;
+    }
+
     const salasAbertas = document.querySelectorAll('.sala-card.ativa');
     salasAbertas.forEach(s => s.classList.remove('ativa'));
 
@@ -40,16 +81,7 @@ function fecharSala(id) {
     if (sala) {
         sala.classList.remove('ativa');
         document.body.style.overflow = 'auto';
-
         if (id === 'sala-pagar') pararScanner();
-
-        if (id === 'sala-receber') {
-            document.getElementById('valor-brl').value = '';
-            document.getElementById('conversao-preview').innerText = '≈ 0.0000 BNB';
-            document.getElementById('btn-confirmar-receber').disabled = true;
-            document.getElementById('img-qrcode').style.display = 'none';
-            document.getElementById('placeholder-qr').style.display = 'flex';
-        }
     }
 }
 
@@ -60,45 +92,38 @@ function giroHome() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 2. MOTOR WEB3 (CONEXÃO E PAGAMENTO)
-async function conectarCarteira() {
-    if (!window.ethereum) return alert("Abra pelo navegador Web3 (MetaMask/Trust).");
+// --- 4. TERMINAL DE PAGAMENTO (ENVIO REAL) ---
+async function processarPagamento() {
+    const destino = document.getElementById('chave-pagamento').value;
+    const valorBRL = prompt("Confirme o valor do pagamento em R$:");
+
+    if (!destino || !destino.startsWith('0x')) return alert("Endereço de destino inválido.");
+    if (!valorBRL || isNaN(valorBRL)) return alert("Valor inválido.");
+
     try {
-        const browserProvider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await browserProvider.send("eth_requestAccounts", []);
-        userAccount = accounts[0];
-        provider = browserProvider;
-        signer = await browserProvider.getSigner();
+        const valorBNB = (parseFloat(valorBRL) / precoBNB).toFixed(18);
+        const valorEmWei = ethers.parseEther(valorBNB);
+
+        alert(`Enviando ${valorBNB} BNB para ${destino.substring(0,8)}...`);
+
+        const tx = await signer.sendTransaction({
+            to: destino,
+            value: valorEmWei
+        });
+
+        alert("Transação enviada! Aguardando confirmação...");
+        await tx.wait();
+        alert("Pagamento concluído com sucesso!");
         
-        // Salva que está conectado para liberar as funções
+        giroHome();
         updateUI();
-        alert("Carteira Conectada!");
-    } catch (err) { 
-        console.error("Erro na conexão:", err); 
+    } catch (err) {
+        console.error(err);
+        alert("Erro na transação: " + (err.reason || "Falha no envio"));
     }
 }
 
-// --- TRAVA DE SEGURANÇA PARA ABRIR SALAS ---
-function abrirSala(id) {
-    // Se o usuário tentar pagar ou receber sem conectar, barramos aqui
-    if (!userAccount && (id === 'sala-pagar' || id === 'sala-receber')) {
-        alert("Por favor, conecte sua carteira primeiro!");
-        conectarCarteira();
-        return;
-    }
-
-    const salasAbertas = document.querySelectorAll('.sala-card.ativa');
-    salasAbertas.forEach(s => s.classList.remove('ativa'));
-
-    const sala = document.getElementById(id);
-    if (sala) {
-        sala.classList.add('ativa');
-        document.body.style.overflow = 'hidden'; 
-        if(id === 'sala-receber') prepararSalaReceber();
-    }
-}
-
-// --- GERADOR DE QR CODE REAL (DINÂMICO) ---
+// --- 5. TERMINAL DE RECEBIMENTO (QR CODE DINÂMICO) ---
 function prepararSalaReceber() {
     const inputBRL = document.getElementById('valor-brl');
     const preview = document.getElementById('conversao-preview');
@@ -106,11 +131,12 @@ function prepararSalaReceber() {
 
     inputBRL.oninput = () => {
         const valor = parseFloat(inputBRL.value);
-        if (valor > 0 && userAccount) {
+        if (valor > 0) {
             const calculoBNB = (valor / precoBNB).toFixed(6);
             preview.innerText = `≈ ${calculoBNB} BNB`;
             btnConfirmar.disabled = false;
         } else {
+            preview.innerText = `≈ 0.0000 BNB`;
             btnConfirmar.disabled = true;
         }
     };
@@ -118,21 +144,19 @@ function prepararSalaReceber() {
     btnConfirmar.onclick = () => {
         const valor = inputBRL.value;
         const calculoBNB = (valor / precoBNB).toFixed(6);
-        
-        // AGORA USA O userAccount (A carteira de quem está logado)
-        // E não mais a MINHA_CARTEIRA fixa
-        const qrData = `ethereum:${userAccount}@56?value=${calculoBNB}`;
-        
         const imgQr = document.getElementById('img-qrcode');
+        const placeholder = document.getElementById('placeholder-qr');
+
+        // GERA QR CODE COM O ENDEREÇO DE QUEM ESTÁ LOGADO
+        const qrData = `ethereum:${userAccount}@56?value=${calculoBNB}`;
         imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
         imgQr.style.display = 'block';
-        document.getElementById('placeholder-qr').style.display = 'none';
+        placeholder.style.display = 'none';
     };
 }
 
-// 4. MOTOR DO SCANNER (SALA PAGAR)
+// --- 6. MOTOR DO SCANNER ---
 function iniciarScanner() {
-    // Pegamos o botão pela CLASSE agora, já que você usou class="btn-camera"
     const btnCamera = document.querySelector('.btn-camera');
     const readerDiv = document.getElementById('reader');
     
@@ -146,12 +170,10 @@ function iniciarScanner() {
         { facingMode: "environment" },
         config,
         (decodedText) => {
-            // Limpa endereços que venham com prefixos de carteira
             const enderecoLimpo = decodedText.includes(':') ? decodedText.split(':')[1].split('@')[0] : decodedText;
             document.getElementById('chave-pagamento').value = enderecoLimpo;
             pararScanner();
-        },
-        (errorMessage) => { }
+        }
     ).catch((err) => {
         alert("Erro na câmera: " + err);
         pararScanner();
@@ -161,21 +183,17 @@ function iniciarScanner() {
 function pararScanner() {
     if (html5QrCode && html5QrCode.isScanning) {
         html5QrCode.stop().then(() => {
-            const btnCamera = document.querySelector('.btn-camera');
-            const readerDiv = document.getElementById('reader');
-            if(btnCamera) btnCamera.style.display = 'block';
-            if(readerDiv) readerDiv.style.display = 'none';
+            document.querySelector('.btn-camera').style.display = 'block';
+            document.getElementById('reader').style.display = 'none';
         });
     }
 }
 
-// 5. INICIALIZAÇÃO DE GATILHOS
+// --- 7. GATILHOS DE INICIALIZAÇÃO ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Botão Conectar
     document.querySelector('.btn-wallet')?.addEventListener('click', conectarCarteira);
-    
-    // Botão Continuar Pagamento
     document.getElementById('btn-confirmar-pagar')?.addEventListener('click', processarPagamento);
 
+    // Auto-conecta se já houver permissão
     if (window.ethereum && window.ethereum.selectedAddress) conectarCarteira();
 });
