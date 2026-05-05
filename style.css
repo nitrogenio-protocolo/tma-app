@@ -148,3 +148,59 @@ body {
 .sala-header { display: flex; align-items: center; padding: 10px 20px; }
 .btn-fechar { background: #f2f2f7; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
 .sala-body { padding: 25px; overflow-y: auto; flex: 1; font-size: 16px; color: var(--texto-escuro); line-height: 1.5; }
+
+/* --- ESTILOS EXCLUSIVOS DA SALA RECEBER (TERMINAL COMERCIANTE) --- */
+
+/* Estilização do input de valor para parecer nativo e limpo */
+#valor-brl::placeholder {
+    color: #d1d1d6;
+}
+
+/* Remove as setinhas padrão do input de número */
+#valor-brl::-webkit-inner-spin-button, 
+#valor-brl::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+/* Container do QR Code com transição suave */
+#qrcode-area {
+    min-height: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+/* Botões Pílula (Estilo Moderno) */
+button#btn-confirmar-receber {
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.1);
+}
+
+button#btn-confirmar-receber:disabled {
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Efeito visual de quando o botão "acende" */
+button#btn-confirmar-receber:not(:disabled) {
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2); }
+    to { box-shadow: 0 4px 20px rgba(0, 122, 255, 0.4); }
+}
+
+/* Ajuste de tipografia para o endereço completo embaixo */
+#end-completo {
+    user-select: all; /* Facilita selecionar tudo no celular */
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
