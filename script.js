@@ -58,7 +58,7 @@ class NitrogenDAO {
         } catch (e) { console.error("Erro no saldo."); }
     }
 
-       // --- FUNÇÃO 3: PAGAR (SCANNER) ---
+   // --- FUNÇÃO 3: PAGAR (SCANNER) ---
     async abrirScanner() {
         if (!this.account) {
             const ok = await this.conectar();
@@ -66,7 +66,7 @@ class NitrogenDAO {
         }
 
         const overlay = document.getElementById('cam-overlay');
-        overlay.style.display = 'flex'; // Centraliza o scanner
+        overlay.style.display = 'flex'; 
         
         this.scanner = new Html5Qrcode("reader");
 
@@ -74,22 +74,21 @@ class NitrogenDAO {
             { facingMode: "environment" }, 
             { fps: 10, qrbox: { width: 250, height: 250 } }, 
             (txt) => {
-                // Sucesso na leitura
-                this.fecharTudo();
+                // AQUI ENTRA O CÓDIGO NOVO QUE VOCÊ MANDOU:
+                this.fecharTudo(); // Fecha a câmera primeiro
                 
                 const partes = txt.split(':');
                 this.destinoAtual = partes[0];
                 
+                // Abre a confirmação e preenche os dados
                 document.getElementById('modal-confirm').style.display = 'block';
                 document.getElementById('info-destino').innerText = "DESTINO: " + this.destinoAtual;
                 
-                const valorInformado = partes[1] || "";
-                document.getElementById('valor-input').value = valorInformado;
+                const input = document.getElementById('valor-input');
+                input.value = partes[1] || "";
 
-                // Se não tiver valor no QR, foca o teclado para digitar
-                if(!valorInformado) {
-                    setTimeout(() => document.getElementById('valor-input').focus(), 400);
-                }
+                // Dá o foco para o teclado subir sozinho
+                setTimeout(() => input.focus(), 500); 
             }
         ).catch(err => {
             alert("Erro na câmera: Certifique-se de dar permissão.");
