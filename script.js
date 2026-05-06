@@ -1,7 +1,3 @@
-/**
- * NITROGÊNIO PROTOCOLO - MOTOR WEB3 OFICIAL
- */
-
 class NitrogenDAO {
     constructor() {
         this.provider = null;
@@ -9,145 +5,118 @@ class NitrogenDAO {
         this.account = null;
         this.scanner = null;
         this.destinoAtual = "";
+        this.cotacaoBNB = 3300.00; // Valor base
         
         this.iniciarBotoes();
     }
 
-    // --- CONTROLE DA FOLHA LATERAL ---
+    async buscarPrecoBNB() {
+        try {
+            const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL");
+            const data = await res.json();
+            this.cotacaoBNB = parseFloat(data.price);
+        } catch (e) { console.log("Usando cotação offline"); }
+    }
+
     abrirFolha(tipo) {
+        this.buscarPrecoBNB();
         const panel = document.getElementById('side-panel');
         const title = document.getElementById('panel-title');
         const content = document.getElementById('panel-content');
         
+        content.innerHTML = ""; // Limpa a sala antes de entrar
         panel.classList.add('active');
 
-        // Conteúdo dinâmico para os 4 botões
         if (tipo === 'pagar') {
-            title.innerText = "SISTEMA DE PAGAMENTO";
+            title.innerText = "PAGAR EM BNB";
             content.innerHTML = `
-                <p style="margin-bottom:20px;">Use o scanner para ler o QR Code de destino.</p>
-                <button class="btn-confirm" id="iniciar-scan-flow">ABRIR CÂMERA</button>
+                <div id="reader-interno" style="width:100%; border-radius:15px; overflow:hidden; background:#000; min-height:250px;"></div>
+                <div id="area-valor" style="display:none; margin-top:15px;">
+                    <p id="info-dest" style="font-size:0.7rem; color:#666; margin-bottom:10px;"></p>
+                    <div class="converter-box">
+                        <small>VALOR EM R$</small>
+                        <input type="number" id="input-brl" class="input-brl" placeholder="0,00" inputmode="decimal">
+                        <span id="label-bnb-calc" class="label-bnb">≈ 0.000000 BNB</span>
+                    </div>
+                    <button class="btn-confirm" id="btn-finalizar">CONFIRMAR E ASSINAR</button>
+                </div>
             `;
-            // Liga o botão de dentro da folha à função de scanner original
-            document.getElementById('iniciar-scan-flow').onclick = () => this.abrirScanner();
+            this.iniciarScanner();
         } 
         else if (tipo === 'receber') {
-            title.innerText = "RECEBER NITROGÊNIO";
+            title.innerText = "MEU ENDEREÇO";
+            const qrLink = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${this.account}`;
             content.innerHTML = `
-                <p>Seu endereço de carteira:</p>
-                <div style="background:#eee; padding:15px; border-radius:10px; word-break:break-all; margin:15px 0; font-size:0.8rem;">
-                    ${this.account || "Conecte sua carteira primeiro"}
+                <div style="background:white; padding:20px; border-radius:20px; display:inline-block;">
+                    <img src="${this.account ? qrLink : ''}" style="width:200px; height:200px; background:#eee;">
                 </div>
-                <button class="btn-confirm" onclick="navigator.clipboard.writeText('${this.account}')">COPIAR ENDEREÇO</button>
+                <p style="margin-top:15px; font-size:0.8rem; word-break:break-all; color:#666;">${this.account || "Conecte sua carteira"}</p>
+                <button class="btn-confirm" onclick="navigator.clipboard.writeText('${this.account}')">COPIAR</button>
             `;
         }
-        else if (tipo === 'coletar') {
-            title.innerText = "COLETAR RECOMPENSAS";
-            content.innerHTML = `<p>Não há recompensas disponíveis para coleta no momento.</p>`;
-        }
-        else if (tipo === 'trocar') {
-            title.innerText = "TROCAR TOKENS (SWAP)";
-            content.innerHTML = `<p>O sistema de troca direta está em manutenção.</p>`;
+        else {
+            title.innerText = tipo.toUpperCase();
+            content.innerHTML = `<p style="margin-top:50px; color:#AAA;">Módulo ${tipo} em manutenção.</p>`;
         }
     }
 
-    fecharFolha() {
-        document.getElementById('side-panel').classList.remove('active');
+    iniciarScanner() {
+        this.scanner = new Html5Qrcode("reader-interno");
+        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            this.destinoAtual = txt.split(':')[0];
+            document.getElementById('reader-interno').style.display = 'none';
+            document.getElementById('area-valor').style.display = 'block';
+            document.getElementById('info-dest').innerText = "DESTINO: " + this.destinoAtual;
+            
+            const input = document.getElementById('input-brl');
+            input.oninput = () => {
+                const bnb = input.value / this.cotacaoBNB;
+                document.getElementById('label-bnb-calc').innerText = `≈ ${bnb.toFixed(6)} BNB`;
+            };
+            document.getElementById('btn-finalizar').onclick = () => this.executar(input.value / this.cotacaoBNB);
+        }).catch(e => alert("Erro na câmera"));
     }
 
-    // --- FUNÇÕES WEB3 (MANTIDAS ORIGINAIS) ---
-    async conectar() {
-        if (!window.ethereum) return alert("Abra no app da carteira.");
-        try {
-            this.provider = new ethers.BrowserProvider(window.ethereum);
-            const accounts = await this.provider.send("eth_requestAccounts", []);
-            this.account = accounts[0];
-            this.signer = await this.provider.getSigner();
-
-            const btn = document.getElementById('btn-conectar');
-            btn.innerText = this.account.substring(0,6) + "..." + this.account.substring(38);
-            btn.style.background = "#28a745";
-
-            this.atualizarSaldo();
-            return true;
-        } catch (e) { return false; }
-    }
-
-    async atualizarSaldo() {
-        if (!this.account) return;
-        try {
-            const saldoWei = await this.provider.getBalance(this.account);
-            const saldoBnb = ethers.formatEther(saldoWei);
-            document.getElementById('display-bnb').innerHTML = `${saldoBnb.substring(0, 6)} <span>BNB</span>`;
-        } catch (e) { console.error("Erro no saldo."); }
-    }
-
-    async abrirScanner() {
-        if (!this.account) {
-            const ok = await this.conectar();
-            if (!ok) return;
-        }
-        this.fecharFolha(); // Fecha a folha para mostrar a câmera em tela cheia
-        const overlay = document.getElementById('cam-overlay');
-        overlay.style.display = 'flex'; 
-        this.scanner = new Html5Qrcode("reader");
-
-        this.scanner.start(
-            { facingMode: "environment" }, 
-            { fps: 10, qrbox: { width: 250, height: 250 } }, 
-            (txt) => {
-                this.fecharTudo();
-                const partes = txt.split(':');
-                this.destinoAtual = partes[0];
-                document.getElementById('modal-confirm').style.display = 'block';
-                document.getElementById('info-destino').innerText = "DESTINO: " + this.destinoAtual;
-                const input = document.getElementById('valor-input');
-                input.value = partes[1] || "";
-                setTimeout(() => input.focus(), 500); 
-            }
-        ).catch(err => {
-            alert("Erro na câmera.");
-            this.fecharTudo();
-        });
-    }
-
-    async executar() {
-        const valor = document.getElementById('valor-input').value;
-        if (!valor || valor <= 0) return alert("Digite um valor.");
+    async executar(valorBNB) {
+        if (!valorBNB || valorBNB <= 0) return alert("Digite um valor");
         try {
             const tx = await this.signer.sendTransaction({
                 to: this.destinoAtual,
-                value: ethers.parseEther(valor)
+                value: ethers.parseEther(valorBNB.toFixed(18))
             });
-            alert("Enviado com sucesso!");
-            this.fecharTudo();
-            setTimeout(() => this.atualizarSaldo(), 4000);
-        } catch (e) { alert("Transação falhou."); }
+            alert("Sucesso! Enviado.");
+            this.fecharFolha();
+        } catch (e) { alert("Falha na transação"); }
     }
 
-    fecharTudo() {
-        if (this.scanner) { try { this.scanner.stop(); } catch(e) {} }
-        document.getElementById('cam-overlay').style.display = 'none';
-        document.getElementById('modal-confirm').style.display = 'none';
-        this.fecharFolha();
+    fecharFolha() {
+        if (this.scanner) { this.scanner.stop().catch(()=>{}); }
+        document.getElementById('side-panel').classList.remove('active');
+        // Limpeza garantida: o abrirFolha já limpa o conteúdo ao entrar
+    }
+
+    async conectar() {
+        if (!window.ethereum) return alert("Use a MetaMask/iFood Wallet");
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        this.account = accounts[0];
+        this.provider = new ethers.BrowserProvider(window.ethereum);
+        this.signer = await this.provider.getSigner();
+        document.getElementById('btn-conectar').innerText = this.account.substring(0,6)+"...";
+        this.atualizarSaldo();
+    }
+
+    async atualizarSaldo() {
+        const saldo = await this.provider.getBalance(this.account);
+        document.getElementById('display-bnb').innerHTML = `${ethers.formatEther(saldo).substring(0,6)} <span>BNB</span>`;
     }
 
     iniciarBotoes() {
-        // Botões da Home chamando a Folha
         document.getElementById('btn-pagar').onclick = () => this.abrirFolha('pagar');
         document.getElementById('btn-receber').onclick = () => this.abrirFolha('receber');
         document.getElementById('btn-coletar').onclick = () => this.abrirFolha('coletar');
         document.getElementById('btn-trocar').onclick = () => this.abrirFolha('trocar');
-
-        // Botão Conectar
         document.getElementById('btn-conectar').onclick = () => this.conectar();
-        
-        // Fechamento e Confirmação
         document.getElementById('close-panel').onclick = () => this.fecharFolha();
-        document.getElementById('confirmar-pagamento').onclick = () => this.executar();
-        document.getElementById('cancelar-pagamento').onclick = () => this.fecharTudo();
-        document.getElementById('fechar-cam').onclick = () => this.fecharTudo();
     }
 }
-
 const App = new NitrogenDAO();
