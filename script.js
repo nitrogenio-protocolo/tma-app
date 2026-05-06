@@ -50,10 +50,41 @@ class NitrogenDAO {
             this.configurarRecebedor();
         } 
         else if (tipo === 'pagar') {
-            title.innerText = "ESCANEAR E PAGAR";
-            content.innerHTML = `<div id="reader" style="width:100%; border-radius:15px; overflow:hidden; background:#000;"></div>`;
-            this.iniciarScanner();
-        } else {
+            title.innerText = "PAGAMENTO";
+            content.innerHTML = `
+                <div class="converter-box">
+                    <small>ENDEREÇO DO DESTINO</small>
+                    <input type="text" id="p-addr" class="input-brl" placeholder="0x..." style="font-size: 0.8rem; margin-bottom: 15px;">
+                    
+                    <small>VALOR EM BNB</small>
+                    <input type="number" id="p-valor" class="input-brl" placeholder="0.00" inputmode="decimal">
+                    
+                    <div style="margin-top:25px; display: flex; flex-direction: column; gap: 10px;">
+                        <button class="btn-confirm" id="btn-prosseguir-manual" style="background:#28A745;">PROSSEGUIR</button>
+                        <button class="btn-confirm" id="btn-usar-camera" style="background:#007BFF; font-size: 0.8rem;">OU LIGAR CÂMERA</button>
+                    </div>
+
+                    <div id="reader" style="width:100%; border-radius:15px; overflow:hidden; background:#000; margin-top:20px; display:none;"></div>
+                </div>`;
+
+            // AÇÃO: Se clicar em ligar câmera, aí sim ativa o hardware
+            document.getElementById('btn-usar-camera').onclick = () => {
+                document.getElementById('reader').style.display = 'block';
+                this.iniciarScanner(); 
+            };
+
+            // AÇÃO: Se preencher manual e clicar em prosseguir
+            document.getElementById('btn-prosseguir-manual').onclick = () => {
+                const addr = document.getElementById('p-addr').value;
+                const valor = document.getElementById('p-valor').value;
+                if(addr.length > 20 && valor > 0) {
+                    this.prepararPagamento(addr, valor);
+                } else {
+                    alert("Por favor, insira um endereço válido e o valor.");
+                }
+            };
+        }
+            else {
             title.innerText = tipo.toUpperCase();
             content.innerHTML = `<p style="margin-top:50px; color:#AAA;">Módulo ${tipo} em manutenção.</p>`;
         }
