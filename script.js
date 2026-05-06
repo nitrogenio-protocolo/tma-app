@@ -58,53 +58,43 @@ class NitrogenDAO {
         } catch (e) { console.error("Erro no saldo."); }
     }
 
-    // --- FUNÇÃO 3: PAGAR (SCANNER) 
-            async abrirScanner() {
+       // --- FUNÇÃO 3: PAGAR (SCANNER) ---
+    async abrirScanner() {
         if (!this.account) {
             const ok = await this.conectar();
             if (!ok) return;
         }
 
         const overlay = document.getElementById('cam-overlay');
-        overlay.style.display = 'flex'; // Mudamos para flex para centralizar
+        overlay.style.display = 'flex'; // Centraliza o scanner
         
         this.scanner = new Html5Qrcode("reader");
 
         this.scanner.start(
             { facingMode: "environment" }, 
-            { fps: 10, qrbox: { width: 250, height: 250 } }, // Centraliza o foco
+            { fps: 10, qrbox: { width: 250, height: 250 } }, 
             (txt) => {
-                this.fecharTudo(); // Fecha tudo ao ler com sucesso
+                // Sucesso na leitura
+                this.fecharTudo();
                 
                 const partes = txt.split(':');
                 this.destinoAtual = partes[0];
                 
                 document.getElementById('modal-confirm').style.display = 'block';
                 document.getElementById('info-destino').innerText = "DESTINO: " + this.destinoAtual;
-                document.getElementById('valor-input').value = partes[1] || "";
+                
+                const valorInformado = partes[1] || "";
+                document.getElementById('valor-input').value = valorInformado;
+
+                // Se não tiver valor no QR, foca o teclado para digitar
+                if(!valorInformado) {
+                    setTimeout(() => document.getElementById('valor-input').focus(), 400);
+                }
             }
         ).catch(err => {
             alert("Erro na câmera: Certifique-se de dar permissão.");
             this.fecharTudo();
         });
-    }
-
-        document.getElementById('cam-overlay').style.display = 'block';
-        this.scanner = new Html5Qrcode("reader");
-
-        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            this.scanner.stop();
-            document.getElementById('cam-overlay').style.display = 'none';
-            
-            const partes = txt.split(':');
-            this.destinoAtual = partes[0];
-            
-            document.getElementById('modal-confirm').style.display = 'block';
-            document.getElementById('info-destino').innerText = "DESTINO: " + this.destinoAtual;
-            document.getElementById('valor-input').value = partes[1] || "";
-
-            if(!partes[1]) setTimeout(() => document.getElementById('valor-input').focus(), 400);
-        }).catch(err => alert("Câmera não disponível."));
     }
 
     // --- FUNÇÃO 4: EXECUTAR (GATILHO) ---
