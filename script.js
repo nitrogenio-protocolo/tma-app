@@ -5,7 +5,7 @@ class NitrogenDAO {
         this.account = null;
         this.scanner = null;
         this.destinoAtual = "";
-        this.cotacaoBNB = 3300.00; // Valor base
+        this.cotacaoBNB = 3400.00; 
         
         this.iniciarBotoes();
     }
@@ -15,7 +15,7 @@ class NitrogenDAO {
             const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL");
             const data = await res.json();
             this.cotacaoBNB = parseFloat(data.price);
-        } catch (e) { console.log("Usando cotação offline"); }
+        } catch (e) { console.log("Erro cotação: " + e); }
     }
 
     abrirFolha(tipo) {
@@ -24,11 +24,11 @@ class NitrogenDAO {
         const title = document.getElementById('panel-title');
         const content = document.getElementById('panel-content');
         
-        content.innerHTML = ""; // Limpa a sala antes de entrar
+        content.innerHTML = ""; // Limpa dados ao entrar
         panel.classList.add('active');
 
         if (tipo === 'pagar') {
-            title.innerText = "PAGAR EM BNB";
+            title.innerText = "ESCANEAR E PAGAR";
             content.innerHTML = `
                 <div id="reader-interno" style="width:100%; border-radius:15px; overflow:hidden; background:#000; min-height:250px;"></div>
                 <div id="area-valor" style="display:none; margin-top:15px;">
@@ -44,59 +44,84 @@ class NitrogenDAO {
             this.iniciarScanner();
         } 
         else if (tipo === 'receber') {
-            title.innerText = "MEU ENDEREÇO";
-            const qrLink = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${this.account}`;
+            title.innerText = "GERAR COBRANÇA";
             content.innerHTML = `
-                <div style="background:white; padding:20px; border-radius:20px; display:inline-block;">
-                    <img src="${this.account ? qrLink : ''}" style="width:200px; height:200px; background:#eee;">
+                <div class="converter-box">
+                    <small>DEFINIR VALOR (R$)</small>
+                    <input type="number" id="valor-cobrar" class="input-brl" placeholder="0,00" inputmode="decimal">
+                    <span id="bnb-preview" class="label-bnb">≈ 0.0000 BNB</span>
                 </div>
-                <p style="margin-top:15px; font-size:0.8rem; word-break:break-all; color:#666;">${this.account || "Conecte sua carteira"}</p>
-                <button class="btn-confirm" onclick="navigator.clipboard.writeText('${this.account}')">COPIAR</button>
+                <div id="qr-area" style="margin-top:20px; display:none;">
+                    <div style="background:white; padding:15px; border-radius:15px; display:inline-block; border: 2px solid #EEE;">
+                        <img id="qr-gerado" src="" style="width:200px; height:200px;">
+                    </div>
+                    <p style="font-size:0.75rem; color:var(--blue); font-weight:bold; margin-top:10px;">MOSTRAR QR CODE</p>
+                </div>
             `;
-        }
-        else {
+            this.gerenciarGerador();
+        } else {
             title.innerText = tipo.toUpperCase();
             content.innerHTML = `<p style="margin-top:50px; color:#AAA;">Módulo ${tipo} em manutenção.</p>`;
         }
     }
 
+    gerenciarGerador() {
+        const input = document.getElementById('valor-cobrar');
+        input.oninput = () => {
+            if(!this.account) return alert("Conecte a carteira primeiro!");
+            const bnb = (input.value / this.cotacaoBNB).toFixed(6);
+            document.getElementById('bnb-preview').innerText = `≈ ${bnb} BNB`;
+            if(input.value > 0) {
+                const qrLink = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${this.account}:${bnb}`;
+                document.getElementById('qr-gerado').src = qrLink;
+                document.getElementById('qr-area').style.display = 'block';
+            }
+        };
+    }
+
     iniciarScanner() {
         this.scanner = new Html5Qrcode("reader-interno");
         this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            this.destinoAtual = txt.split(':')[0];
+            const partes = txt.split(':');
+            this.destinoAtual = partes[0];
+            const bnbFixo = partes[1];
+
             document.getElementById('reader-interno').style.display = 'none';
             document.getElementById('area-valor').style.display = 'block';
             document.getElementById('info-dest').innerText = "DESTINO: " + this.destinoAtual;
             
             const input = document.getElementById('input-brl');
-            input.oninput = () => {
-                const bnb = input.value / this.cotacaoBNB;
-                document.getElementById('label-bnb-calc').innerText = `≈ ${bnb.toFixed(6)} BNB`;
+            if(bnbFixo) {
+                input.value = (bnbFixo * this.cotacaoBNB).toFixed(2);
+                input.readOnly = true;
+                document.getElementById('label-bnb-calc').innerText = `≈ ${bnbFixo} BNB (VALOR FIXO)`;
+            }
+
+            document.getElementById('btn-finalizar').onclick = () => {
+                const finalBNB = bnbFixo || (input.value / this.cotacaoBNB);
+                this.executar(finalBNB);
             };
-            document.getElementById('btn-finalizar').onclick = () => this.executar(input.value / this.cotacaoBNB);
-        }).catch(e => alert("Erro na câmera"));
+        }).catch(() => alert("Erro na câmera"));
     }
 
-    async executar(valorBNB) {
-        if (!valorBNB || valorBNB <= 0) return alert("Digite um valor");
+    async executar(valor) {
         try {
             const tx = await this.signer.sendTransaction({
                 to: this.destinoAtual,
-                value: ethers.parseEther(valorBNB.toFixed(18))
+                value: ethers.parseEther(parseFloat(valor).toFixed(18))
             });
-            alert("Sucesso! Enviado.");
+            alert("Pagamento enviado!");
             this.fecharFolha();
-        } catch (e) { alert("Falha na transação"); }
+        } catch (e) { alert("Erro na transação."); }
     }
 
     fecharFolha() {
         if (this.scanner) { this.scanner.stop().catch(()=>{}); }
         document.getElementById('side-panel').classList.remove('active');
-        // Limpeza garantida: o abrirFolha já limpa o conteúdo ao entrar
     }
 
     async conectar() {
-        if (!window.ethereum) return alert("Use a MetaMask/iFood Wallet");
+        if (!window.ethereum) return alert("Abra na sua carteira!");
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         this.account = accounts[0];
         this.provider = new ethers.BrowserProvider(window.ethereum);
@@ -113,8 +138,6 @@ class NitrogenDAO {
     iniciarBotoes() {
         document.getElementById('btn-pagar').onclick = () => this.abrirFolha('pagar');
         document.getElementById('btn-receber').onclick = () => this.abrirFolha('receber');
-        document.getElementById('btn-coletar').onclick = () => this.abrirFolha('coletar');
-        document.getElementById('btn-trocar').onclick = () => this.abrirFolha('trocar');
         document.getElementById('btn-conectar').onclick = () => this.conectar();
         document.getElementById('close-panel').onclick = () => this.fecharFolha();
     }
