@@ -56,7 +56,7 @@ class NitrogenDAO {
                     <small>ENDEREÇO DO DESTINO</small>
                     <input type="text" id="p-addr" class="input-brl" placeholder="0x..." style="font-size: 0.8rem; margin-bottom: 15px;">
                     
-                    <small>VALOR EM BNB</small>
+                    <small>VALOR EM R$</small>
                     <input type="number" id="p-valor" class="input-brl" placeholder="0.00" inputmode="decimal">
                     
                     <div style="margin-top:25px; display: flex; flex-direction: column; gap: 10px;">
