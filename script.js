@@ -146,24 +146,27 @@ class NitrogenDAO {
     }
 
     async executar(para, quanto) {
-        try {
-            // Tapa o "furo" da carteira dormindo
-            if (!this.signer) await this.conectar();
-            
-            // Força a chamada do popup
-            const tx = await this.signer.sendTransaction({
-                to: para,
-                value: ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether")
-            });
-            
-            alert("Transação enviada! Aguardando rede...");
-            await tx.wait();
-            alert("Sucesso!");
-            location.reload(); // Limpa tudo e atualiza saldo
-        } catch (e) {
-            alert("Erro: " + (e.reason || "Verifique seu saldo e conexão"));
-        }
+    try {
+        if (!this.signer) await this.conectar();
+        
+        // Garantimos que o valor seja arredondado para o limite da rede (18 casas)
+        // para evitar o erro de precisão que causa a falha de conexão
+        const valorFormatado = parseFloat(quanto).toFixed(18);
+        
+        const tx = await this.signer.sendTransaction({
+            to: para,
+            value: ethers.parseUnits(valorFormatado, "ether")
+        });
+        
+        alert("Transação enviada! Aguardando rede...");
+        await tx.wait();
+        alert("Sucesso!");
+        location.reload();
+    } catch (e) {
+        console.error(e);
+        alert("Erro: Verifique se você está na rede BSC e se tem saldo para a taxa (Gas).");
     }
+}
 
     fecharFolha() {
         // 1. Se o scanner estiver ligado, desliga ele primeiro
