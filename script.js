@@ -119,18 +119,39 @@ class NitrogenDAO {
     iniciarScanner() {
     this.scanner = new Html5Qrcode("reader");
     this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-        const partes = txt.split(':');
-        const addr = partes[0];
-        const valorCapturado = partes[1];
+        console.log("QR Code lido:", txt);
 
-        if (addr && valorCapturado) {
-            this.scanner.stop().then(() => { 
-                this.scanner = null;
-                // Forçamos o valor a ser um número decimal limpo
-                this.prepararPagamento(addr, parseFloat(valorCapturado).toString()); 
-            });
-        }
-    }).catch(() => alert("Câmera não disponível"));
+        // Limpa o scanner e fecha a câmera
+        this.scanner.stop().then(() => {
+            this.scanner = null;
+            document.getElementById('reader').style.display = 'none';
+
+            let addr = "";
+            let valor = "0";
+
+            // Lógica para capturar endereço e valor do link ethereum:0x.../transfer?value=...
+            if (txt.includes(':')) {
+                const partePrincipal = txt.split(':')[1]; // Pega o que vem depois de 'ethereum:'
+                if (partePrincipal.includes('?')) {
+                    addr = partePrincipal.split('?')[0];
+                    const params = new URLSearchParams(partePrincipal.split('?')[1]);
+                    valor = params.get('value') || "0";
+                } else {
+                    addr = partePrincipal;
+                }
+            } else {
+                addr = txt;
+            }
+
+            // Se o valor vier em Wei (número muito grande), converte para decimal
+            if (valor.length > 10) {
+                valor = ethers.formatEther(valor);
+            }
+
+            console.log("Processado -> Addr:", addr, "Valor:", valor);
+            this.prepararPagamento(addr, valor);
+        });
+    }).catch(err => console.error("Erro no scanner:", err));
 }
 
     prepararPagamento(addr, valor) {
