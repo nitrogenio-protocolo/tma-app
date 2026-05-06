@@ -57,7 +57,7 @@ class NitrogenDAO {
                     <input type="text" id="p-addr" class="input-brl" placeholder="0x..." style="font-size: 0.8rem; margin-bottom: 15px;">
                     
                     <small>VALOR EM R$</small>
-                    <input type="number" id="p-valor" class="input-brl" placeholder="0.00" inputmode="decimal">
+                    <input type="number" id="p-brl" class="input-brl" placeholder="0.00" inputmode="decimal">
                     
                     <div style="margin-top:25px; display: flex; flex-direction: column; gap: 10px;">
                         <button class="btn-confirm" id="btn-prosseguir-manual" style="background:#28A745;">PROSSEGUIR</button>
@@ -67,24 +67,22 @@ class NitrogenDAO {
                     <div id="reader" style="width:100%; border-radius:15px; overflow:hidden; background:#000; margin-top:20px; display:none;"></div>
                 </div>`;
 
-            // AÇÃO: Se clicar em ligar câmera, aí sim ativa o hardware
+            // AÇÃO: Se clicar em ligar câmera
             document.getElementById('btn-usar-camera').onclick = () => {
                 document.getElementById('reader').style.display = 'block';
                 this.iniciarScanner(); 
             };
 
-            // AÇÃO: Se preencher manual e clicar em prosseguir
+            // AÇÃO: O botão verde agora vai encontrar o p-brl
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
-                const valorBrl = document.getElementById('p-brl').value; // Referência ao ID do input de Reais
-if(addr.length > 20 && valorBrl > 0) {
-    // Aqui fazemos a conversão: Real dividido pelo preço do BNB
-    const valorBnb = (valorBrl / this.cotacaoBNB).toFixed(18);
-    
-    // Agora enviamos o valor já convertido para a função de pagamento
-    this.prepararPagamento(addr, valorBnb); 
+                const valorBrl = document.getElementById('p-brl').value; 
+
+                if(addr.length > 20 && valorBrl > 0) {
+                    const valorBnb = (parseFloat(valorBrl) / this.cotacaoBNB).toFixed(18);
+                    this.prepararPagamento(addr, valorBnb); 
                 } else {
-                    alert("Por favor, insira um endereço válido e o valor.");
+                    alert("Por favor, insira um endereço válido e o valor em Reais.");
                 }
             };
         }
