@@ -58,12 +58,36 @@ class NitrogenDAO {
         } catch (e) { console.error("Erro no saldo."); }
     }
 
-    // --- FUNÇÃO 3: PAGAR (SCANNER) ---
-    async abrirScanner() {
+    // --- FUNÇÃO 3: PAGAR (SCANNER) 
+            async abrirScanner() {
         if (!this.account) {
             const ok = await this.conectar();
             if (!ok) return;
         }
+
+        const overlay = document.getElementById('cam-overlay');
+        overlay.style.display = 'flex'; // Mudamos para flex para centralizar
+        
+        this.scanner = new Html5Qrcode("reader");
+
+        this.scanner.start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: { width: 250, height: 250 } }, // Centraliza o foco
+            (txt) => {
+                this.fecharTudo(); // Fecha tudo ao ler com sucesso
+                
+                const partes = txt.split(':');
+                this.destinoAtual = partes[0];
+                
+                document.getElementById('modal-confirm').style.display = 'block';
+                document.getElementById('info-destino').innerText = "DESTINO: " + this.destinoAtual;
+                document.getElementById('valor-input').value = partes[1] || "";
+            }
+        ).catch(err => {
+            alert("Erro na câmera: Certifique-se de dar permissão.");
+            this.fecharTudo();
+        });
+    }
 
         document.getElementById('cam-overlay').style.display = 'block';
         this.scanner = new Html5Qrcode("reader");
