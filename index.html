@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nitrogênio Protocolo | DAO</title>
     <link rel="stylesheet" href="style.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
@@ -54,7 +55,7 @@
 
     <div id="cam-overlay" class="overlay">
         <div id="reader"></div>
-        <button id="fechar-cam" class="btn-close">✕</button>
+        <button id="fechar-cam" class="btn-close">✕ CANCELAR</button>
     </div>
 
     <div id="modal-confirm" class="modal-bottom">
@@ -65,25 +66,14 @@
         <button id="cancelar-pagamento" class="btn-cancel">CANCELAR</button>
     </div>
 
-    <head>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
-    
-    <script src="https://unpkg.com/html5-qrcode"></script>
-
     <script>
         window.onload = () => {
-            // Isso garante que o código só roda quando TUDO estiver carregado
-            console.log("Sistema pronto. Carregando motor...");
+            console.log("Sistema pronto. Carregando motor Nitrogen...");
             const script = document.createElement('script');
-            script.src = 'script.js?v=' + Date.now(); // O ?v= força o navegador a ler o arquivo novo
+            // O código abaixo evita que o celular use o arquivo "velho" do cache
+            script.src = 'script.js?v=' + Date.now(); 
             document.body.appendChild(script);
         };
     </script>
-</body>
-    
-    <script src="script.js"></script>
 </body>
 </html>
