@@ -31,10 +31,10 @@
         </section>
 
         <nav class="nav-actions">
-            <button class="btn-act" id="btn-pagar">PAGAR</button>
-            <button class="btn-act" id="btn-receber">RECEBER</button>
-            <button class="btn-act" id="btn-coletar">COLETAR</button>
-            <button class="btn-act" id="btn-trocar">TROCAR</button>
+            <button class="btn-act" id="btn-pagar">↑ PAGAR</button>
+            <button class="btn-act" id="btn-receber">↓ RECEBER</button>
+            <button class="btn-act" id="btn-coletar">N COLETAR</button>
+            <button class="btn-act" id="btn-trocar">⇄ TROCAR</button>
         </nav>
 
         <section class="grid-dao">
@@ -60,12 +60,6 @@
         <div id="panel-content" class="panel-body"></div>
     </div>
 
-    <script>
-        window.onload = () => {
-            const script = document.createElement('script');
-            script.src = 'script.js?v=' + Date.now(); 
-            document.body.appendChild(script);
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
