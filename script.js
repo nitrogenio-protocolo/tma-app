@@ -149,8 +149,24 @@ class NitrogenDAO {
     }
 
     fecharFolha() {
-        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-        document.getElementById('side-panel').classList.remove('active');
+        // 1. Se o scanner estiver ligado, desliga ele primeiro
+        if (this.scanner) {
+            this.scanner.stop().then(() => {
+                this.scanner = null; // Limpa a memória
+                console.log("Câmera encerrada com sucesso.");
+            }).catch(e => console.log("Câmera já estava desligada."));
+        }
+
+        // 2. Remove a classe active para esconder o painel lateral
+        const panel = document.getElementById('side-panel');
+        if (panel) {
+            panel.classList.remove('active');
+        }
+
+        // 3. Limpa o conteúdo para a próxima vez abrir "neutro"
+        setTimeout(() => {
+            document.getElementById('panel-content').innerHTML = "";
+        }, 300); // Espera a animação de fechar terminar
     }
 
     iniciarBotoes() {
