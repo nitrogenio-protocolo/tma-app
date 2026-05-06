@@ -4,124 +4,12 @@ class NitrogenDAO {
         this.signer = null;
         this.account = null;
         this.scanner = null;
-        this.destinoAtual = "";
-        this.cotacaoBNB = 3400.00; 
-        
+        this.cotacaoBNB = 3400.00;
         this.iniciarBotoes();
     }
 
-    async buscarPrecoBNB() {
-        try {
-            const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL");
-            const data = await res.json();
-            this.cotacaoBNB = parseFloat(data.price);
-        } catch (e) { console.log("Erro cotação: " + e); }
-    }
-
-    abrirFolha(tipo) {
-        this.buscarPrecoBNB();
-        const panel = document.getElementById('side-panel');
-        const title = document.getElementById('panel-title');
-        const content = document.getElementById('panel-content');
-        
-        content.innerHTML = ""; // Limpa dados ao entrar
-        panel.classList.add('active');
-
-        if (tipo === 'pagar') {
-            title.innerText = "ESCANEAR E PAGAR";
-            content.innerHTML = `
-                <div id="reader-interno" style="width:100%; border-radius:15px; overflow:hidden; background:#000; min-height:250px;"></div>
-                <div id="area-valor" style="display:none; margin-top:15px;">
-                    <p id="info-dest" style="font-size:0.7rem; color:#666; margin-bottom:10px;"></p>
-                    <div class="converter-box">
-                        <small>VALOR EM R$</small>
-                        <input type="number" id="input-brl" class="input-brl" placeholder="0,00" inputmode="decimal">
-                        <span id="label-bnb-calc" class="label-bnb">≈ 0.000000 BNB</span>
-                    </div>
-                    <button class="btn-confirm" id="btn-finalizar">CONFIRMAR E ASSINAR</button>
-                </div>
-            `;
-            this.iniciarScanner();
-        } 
-        else if (tipo === 'receber') {
-            title.innerText = "GERAR COBRANÇA";
-            content.innerHTML = `
-                <div class="converter-box">
-                    <small>DEFINIR VALOR (R$)</small>
-                    <input type="number" id="valor-cobrar" class="input-brl" placeholder="0,00" inputmode="decimal">
-                    <span id="bnb-preview" class="label-bnb">≈ 0.0000 BNB</span>
-                </div>
-                <div id="qr-area" style="margin-top:20px; display:none;">
-                    <div style="background:white; padding:15px; border-radius:15px; display:inline-block; border: 2px solid #EEE;">
-                        <img id="qr-gerado" src="" style="width:200px; height:200px;">
-                    </div>
-                    <p style="font-size:0.75rem; color:var(--blue); font-weight:bold; margin-top:10px;">MOSTRAR QR CODE</p>
-                </div>
-            `;
-            this.gerenciarGerador();
-        } else {
-            title.innerText = tipo.toUpperCase();
-            content.innerHTML = `<p style="margin-top:50px; color:#AAA;">Módulo ${tipo} em manutenção.</p>`;
-        }
-    }
-
-    gerenciarGerador() {
-        const input = document.getElementById('valor-cobrar');
-        input.oninput = () => {
-            if(!this.account) return alert("Conecte a carteira primeiro!");
-            const bnb = (input.value / this.cotacaoBNB).toFixed(6);
-            document.getElementById('bnb-preview').innerText = `≈ ${bnb} BNB`;
-            if(input.value > 0) {
-                const qrLink = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${this.account}:${bnb}`;
-                document.getElementById('qr-gerado').src = qrLink;
-                document.getElementById('qr-area').style.display = 'block';
-            }
-        };
-    }
-
-    iniciarScanner() {
-        this.scanner = new Html5Qrcode("reader-interno");
-        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            const partes = txt.split(':');
-            this.destinoAtual = partes[0];
-            const bnbFixo = partes[1];
-
-            document.getElementById('reader-interno').style.display = 'none';
-            document.getElementById('area-valor').style.display = 'block';
-            document.getElementById('info-dest').innerText = "DESTINO: " + this.destinoAtual;
-            
-            const input = document.getElementById('input-brl');
-            if(bnbFixo) {
-                input.value = (bnbFixo * this.cotacaoBNB).toFixed(2);
-                input.readOnly = true;
-                document.getElementById('label-bnb-calc').innerText = `≈ ${bnbFixo} BNB (VALOR FIXO)`;
-            }
-
-            document.getElementById('btn-finalizar').onclick = () => {
-                const finalBNB = bnbFixo || (input.value / this.cotacaoBNB);
-                this.executar(finalBNB);
-            };
-        }).catch(() => alert("Erro na câmera"));
-    }
-
-    async executar(valor) {
-        try {
-            const tx = await this.signer.sendTransaction({
-                to: this.destinoAtual,
-                value: ethers.parseEther(parseFloat(valor).toFixed(18))
-            });
-            alert("Pagamento enviado!");
-            this.fecharFolha();
-        } catch (e) { alert("Erro na transação."); }
-    }
-
-    fecharFolha() {
-        if (this.scanner) { this.scanner.stop().catch(()=>{}); }
-        document.getElementById('side-panel').classList.remove('active');
-    }
-
     async conectar() {
-        if (!window.ethereum) return alert("Abra na sua carteira!");
+        if (!window.ethereum) return alert("Abra no navegador da sua Carteira!");
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         this.account = accounts[0];
         this.provider = new ethers.BrowserProvider(window.ethereum);
@@ -131,8 +19,107 @@ class NitrogenDAO {
     }
 
     async atualizarSaldo() {
-        const saldo = await this.provider.getBalance(this.account);
-        document.getElementById('display-bnb').innerHTML = `${ethers.formatEther(saldo).substring(0,6)} <span>BNB</span>`;
+        if(!this.provider || !this.account) return;
+        const s = await this.provider.getBalance(this.account);
+        document.getElementById('display-bnb').innerHTML = `${ethers.formatEther(s).substring(0,6)} <span>BNB</span>`;
+    }
+
+    abrirFolha(tipo) {
+        const panel = document.getElementById('side-panel');
+        const content = document.getElementById('panel-content');
+        const title = document.getElementById('panel-title');
+        
+        // Mata o scanner se ele já estiver rodando antes de abrir outra tela
+        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+        
+        content.innerHTML = ""; 
+        panel.classList.add('active');
+
+        if (tipo === 'receber') {
+            title.innerText = "GERAR COBRANÇA";
+            content.innerHTML = `
+                <div class="converter-box">
+                    <small>VALOR (R$)</small>
+                    <input type="number" id="v-brl" class="input-brl" placeholder="0,00" inputmode="decimal">
+                    <p id="v-bnb" class="label-bnb">≈ 0.0000 BNB</p>
+                </div>
+                <div id="qr-area" style="display:none; margin-top:20px;">
+                    <img id="img-qr" style="width:200px; border:10px solid white; border-radius:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <p style="color:#007BFF; font-weight:bold; margin-top:10px; font-size:0.8rem;">APRESENTE O CÓDIGO</p>
+                </div>`;
+            this.configurarRecebedor();
+        } 
+        else if (tipo === 'pagar') {
+            title.innerText = "ESCANEAR E PAGAR";
+            content.innerHTML = `<div id="reader" style="width:100%; border-radius:15px; overflow:hidden; background:#000;"></div>`;
+            this.iniciarScanner();
+        } else {
+            title.innerText = tipo.toUpperCase();
+            content.innerHTML = `<p style="margin-top:50px; color:#AAA;">Módulo ${tipo} em manutenção.</p>`;
+        }
+    }
+
+    configurarRecebedor() {
+        const input = document.getElementById('v-brl');
+        input.oninput = () => {
+            if(!this.account) { alert("Conecte a carteira primeiro!"); return; }
+            const bnb = (input.value / this.cotacaoBNB).toFixed(6);
+            document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
+            if(input.value > 0) {
+                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${this.account}:${bnb}`;
+                document.getElementById('img-qr').src = link;
+                document.getElementById('qr-area').style.display = 'block';
+            }
+        };
+    }
+
+    iniciarScanner() {
+        this.scanner = new Html5Qrcode("reader");
+        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            const [addr, valor] = txt.split(':');
+            // IMPORTANTE: Para o scanner antes de processar o pagamento
+            this.scanner.stop().then(() => { 
+                this.scanner = null;
+                this.prepararPagamento(addr, valor); 
+            });
+        }).catch(() => alert("Câmera não disponível"));
+    }
+
+    prepararPagamento(addr, valor) {
+        const content = document.getElementById('panel-content');
+        content.innerHTML = `
+            <div class="converter-box">
+                <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,20)}...</p>
+                <h2 style="margin:15px 0;">R$ ${(valor * this.cotacaoBNB).toFixed(2)}</h2>
+                <p class="label-bnb" style="color:#28A745;">≈ ${valor} BNB</p>
+                <button class="btn-confirm" id="confirm-final">CONFIRMAR E ASSINAR</button>
+            </div>`;
+        document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
+    }
+
+    async executar(para, quanto) {
+        try {
+            // Tapa o "furo" da carteira dormindo
+            if (!this.signer) await this.conectar();
+            
+            // Força a chamada do popup
+            const tx = await this.signer.sendTransaction({
+                to: para,
+                value: ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether")
+            });
+            
+            alert("Transação enviada! Aguardando rede...");
+            await tx.wait();
+            alert("Sucesso!");
+            location.reload(); // Limpa tudo e atualiza saldo
+        } catch (e) {
+            alert("Erro: " + (e.reason || "Verifique seu saldo e conexão"));
+        }
+    }
+
+    fecharFolha() {
+        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+        document.getElementById('side-panel').classList.remove('active');
     }
 
     iniciarBotoes() {
