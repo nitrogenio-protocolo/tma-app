@@ -76,9 +76,13 @@ class NitrogenDAO {
             // AÇÃO: Se preencher manual e clicar em prosseguir
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
-                const valor = document.getElementById('p-valor').value;
-                if(addr.length > 20 && valor > 0) {
-                    this.prepararPagamento(addr, valor);
+                const valorBrl = document.getElementById('p-brl').value; // Referência ao ID do input de Reais
+if(addr.length > 20 && valorBrl > 0) {
+    // Aqui fazemos a conversão: Real dividido pelo preço do BNB
+    const valorBnb = (valorBrl / this.cotacaoBNB).toFixed(18);
+    
+    // Agora enviamos o valor já convertido para a função de pagamento
+    this.prepararPagamento(addr, valorBnb); 
                 } else {
                     alert("Por favor, insira um endereço válido e o valor.");
                 }
