@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nitrogênio Protocolo | DAO</title>
     <link rel="stylesheet" href="style.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
@@ -32,10 +31,10 @@
         </section>
 
         <nav class="nav-actions">
-            <button class="btn-act" id="btn-pagar">↑ PAGAR</button>
-            <button class="btn-act" id="btn-receber">↓ RECEBER</button>
-            <button class="btn-act" id="btn-coletar">N COLETAR</button>
-            <button class="btn-act" id="btn-trocar">⇄ TROCAR</button>
+            <button class="btn-act" id="btn-pagar">PAGAR</button>
+            <button class="btn-act" id="btn-receber">RECEBER</button>
+            <button class="btn-act" id="btn-coletar">COLETAR</button>
+            <button class="btn-act" id="btn-trocar">TROCAR</button>
         </nav>
 
         <section class="grid-dao">
@@ -62,22 +61,8 @@
             </div>
     </div>
 
-    <div id="cam-overlay" class="overlay">
-        <div id="reader"></div>
-        <button id="fechar-cam" class="btn-close">✕ CANCELAR</button>
-    </div>
-
-    <div id="modal-confirm" class="modal-bottom">
-        <h3>CONFIRMAR PAGAMENTO</h3>
-        <p id="info-destino"></p>
-        <input type="number" id="valor-input" placeholder="0.00" step="0.001" inputmode="decimal">
-        <button id="confirmar-pagamento" class="btn-confirm">CONFIRMAR E ASSINAR</button>
-        <button id="cancelar-pagamento" class="btn-cancel">CANCELAR</button>
-    </div>
-
     <script>
         window.onload = () => {
-            console.log("Sistema pronto. Carregando motor Nitrogen...");
             const script = document.createElement('script');
             script.src = 'script.js?v=' + Date.now(); 
             document.body.appendChild(script);
