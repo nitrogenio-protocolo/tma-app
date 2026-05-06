@@ -117,16 +117,21 @@ class NitrogenDAO {
     }
 
     iniciarScanner() {
-        this.scanner = new Html5Qrcode("reader");
-        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            const [addr, valor] = txt.split(':');
-            // IMPORTANTE: Para o scanner antes de processar o pagamento
+    this.scanner = new Html5Qrcode("reader");
+    this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+        const partes = txt.split(':');
+        const addr = partes[0];
+        const valorCapturado = partes[1];
+
+        if (addr && valorCapturado) {
             this.scanner.stop().then(() => { 
                 this.scanner = null;
-                this.prepararPagamento(addr, valor); 
+                // Forçamos o valor a ser um número decimal limpo
+                this.prepararPagamento(addr, parseFloat(valorCapturado).toString()); 
             });
-        }).catch(() => alert("Câmera não disponível"));
-    }
+        }
+    }).catch(() => alert("Câmera não disponível"));
+}
 
     prepararPagamento(addr, valor) {
         const content = document.getElementById('panel-content');
