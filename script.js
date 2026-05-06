@@ -96,10 +96,20 @@ class NitrogenDAO {
         const input = document.getElementById('v-brl');
         input.oninput = () => {
             if(!this.account) { alert("Conecte a carteira primeiro!"); return; }
+            
+            // 1. Calcula a fração de BNB baseada nos Reais digitados
             const bnb = (input.value / this.cotacaoBNB).toFixed(6);
             document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
+            
             if(input.value > 0) {
-                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${this.account}:${bnb}`;
+                // 2. Cria o link no padrão universal Web3 (ethereum:endereço?value=valor)
+                // O valor é convertido para Wei (unidade mínima) para evitar erros de leitura
+                const valorEmWei = ethers.parseEther(bnb).toString();
+                const dadosPagamento = `ethereum:${this.account}?value=${valorEmWei}`;
+                
+                // 3. Gera o QR Code com o link formatado corretamente
+                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(dadosPagamento)}`;
+                
                 document.getElementById('img-qr').src = link;
                 document.getElementById('qr-area').style.display = 'block';
             }
