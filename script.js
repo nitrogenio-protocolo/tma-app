@@ -147,24 +147,43 @@ class NitrogenDAO {
 
     async executar(para, quanto) {
     try {
-        if (!this.signer) await this.conectar();
-        
-        // Garantimos que o valor seja arredondado para o limite da rede (18 casas)
-        // para evitar o erro de precisão que causa a falha de conexão
+        // 1. GARANTIA DE CONEXÃO
+        if (!this.signer || !this.account) {
+            await this.conectar();
+        }
+
+        // 2. TRAVA DE SEGURANÇA: Só aceita se estiver na BNB Chain (ID 56)
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (chainId !== '0x38') { // '0x38' é o código da BNB Chain
+            alert("⚠️ Mude para a rede BNB Chain na sua MetaMask!");
+            return;
+        }
+
+        // 3. LIMPEZA E FORMATAÇÃO (Garante 18 casas decimais)
         const valorFormatado = parseFloat(quanto).toFixed(18);
-        
+        const valorFinal = ethers.parseUnits(valorFormatado, "ether");
+
+        console.log("Enviando para:", para, "Valor:", valorFinal);
+
+        // 4. DISPARA O POPUP DA METAMASK
         const tx = await this.signer.sendTransaction({
             to: para,
-            value: ethers.parseUnits(valorFormatado, "ether")
+            value: valorFinal,
         });
-        
-        alert("Transação enviada! Aguardando rede...");
+
+        alert("Popup aberto! Confirme o pagamento na sua carteira.");
         await tx.wait();
-        alert("Sucesso!");
+        
+        alert("Transferência Concluída com Sucesso! 🤜");
         location.reload();
+
     } catch (e) {
-        console.error(e);
-        alert("Erro: Verifique se você está na rede BSC e se tem saldo para a taxa (Gas).");
+        console.error("Erro no processo:", e);
+        if (e.code === 4001) {
+            alert("Você cancelou a transação.");
+        } else {
+            alert("Erro na conexão: Verifique saldo e rede.");
+        }
     }
 }
 
