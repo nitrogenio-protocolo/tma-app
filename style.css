@@ -35,3 +35,11 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 .sala { background: var(--white); padding: 25px; border-radius: 15px; text-align: center; font-weight: bold; font-size: 0.8rem; }
 
 .btn-confirm { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 1rem; margin-top: 20px; }
+
+
+
+/* Efeito de Carteira Conectada no padrão Nitrogênio */
+.btn-wallet.conectado {
+    background: var(--green) !important;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
