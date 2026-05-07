@@ -265,13 +265,19 @@ class NitrogenDAO {
         }, 300); // Espera a animação de fechar terminar
     }
 
-    iniciarBotoes() {
-    document.getElementById('btn-pagar').onclick = () => this.abrirFolha('pagar');
-    document.getElementById('btn-receber').onclick = () => this.abrirFolha('receber');
-    document.getElementById('btn-coletar').onclick = () => this.abrirFolha('coletar'); // Novo
-    document.getElementById('btn-trocar').onclick = () => this.abrirFolha('trocar');   // Novo
-    document.getElementById('btn-conectar').onclick = () => this.conectar();
-    document.getElementById('close-panel').onclick = () => this.fecharFolha();
-}
+        iniciarBotoes() {
+        const btnPagar = document.getElementById('btn-pagar');
+        const btnReceber = document.getElementById('btn-receber');
+        if (btnPagar) btnPagar.onclick = () => this.abrirFolha('pagar');
+        if (btnReceber) btnReceber.onclick = () => this.abrirFolha('receber');
+        const btnColetar = document.getElementById('btn-coletar');
+        const btnTrocar = document.getElementById('btn-trocar');
+        if (btnColetar) btnColetar.onclick = () => this.abrirFolha('coletar');
+        if (btnTrocar) btnTrocar.onclick = () => this.abrirFolha('trocar');
+        const btnConectar = document.getElementById('btn-conectar');
+        const btnFechar = document.getElementById('close-panel');
+        if (btnConectar) btnConectar.onclick = () => this.conectar();
+        if (btnFechar) btnFechar.onclick = () => this.fecharFolha();
+    }
 }
 const App = new NitrogenDAO();
