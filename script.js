@@ -162,6 +162,46 @@ class NitrogenDAO {
         document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
 
+    else if (tipo === 'coletar') {
+            title.innerText = "COLETAR TAXAS";
+            content.innerHTML = `
+                <div class="converter-box" style="text-align: center;">
+                    <div style="font-size: 3rem; margin: 15px 0;">💎</div>
+                    <p style="color: #666; font-size: 0.9rem;">
+                        Como detentor do <strong>NFT ALPHA</strong>, você tem o direito exclusivo de coletar o gás acumulado.
+                    </p>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <small>DISPONÍVEL AGORA</small>
+                        <h2 style="color: #007BFF; margin: 5px 0;">0.0000 BNB</h2>
+                    </div>
+                    <button class="btn-confirm" id="confirmar-coleta">COLETAR GÁS AGORA</button>
+                </div>`;
+            
+            document.getElementById('confirmar-coleta').onclick = () => {
+                alert("Chamando contrato para coletar taxas...");
+            };
+        }
+
+        else if (tipo === 'trocar') {
+            title.innerText = "TROCAR (SWAP)";
+            content.innerHTML = `
+                <div class="converter-box">
+                    <div style="background: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <strong style="color: #856404;">⚠️ AVISO IMPORTANTE</strong>
+                        <p style="font-size: 0.8rem; color: #856404; margin-top: 5px;">
+                            Você será levado para a <strong>PancakeSwap</strong> para trocar seus tokens. Verifique sempre o endereço do site para sua segurança.
+                        </p>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 25px;">Deseja sair do DApp para realizar a troca na rede BNB Chain?</p>
+                    <button class="btn-confirm" style="background: #d63384;" id="ir-pancake">SIM, IR PARA PANCAKE</button>
+                    <button class="btn-confirm" style="background: #6c757d; margin-top: 10px;" onclick="App.fecharFolha()">VOLTAR</button>
+                </div>`;
+
+            document.getElementById('ir-pancake').onclick = () => {
+                window.open("https://pancakeswap.finance/swap", "_blank");
+            };
+        }
+    
     async executar(para, quanto) {
     try {
         if (!this.signer || !this.account) {
