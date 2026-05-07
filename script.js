@@ -266,10 +266,12 @@ class NitrogenDAO {
     }
 
     iniciarBotoes() {
-        document.getElementById('btn-pagar').onclick = () => this.abrirFolha('pagar');
-        document.getElementById('btn-receber').onclick = () => this.abrirFolha('receber');
-        document.getElementById('btn-conectar').onclick = () => this.conectar();
-        document.getElementById('close-panel').onclick = () => this.fecharFolha();
-    }
+    document.getElementById('btn-pagar').onclick = () => this.abrirFolha('pagar');
+    document.getElementById('btn-receber').onclick = () => this.abrirFolha('receber');
+    document.getElementById('btn-coletar').onclick = () => this.abrirFolha('coletar'); // Novo
+    document.getElementById('btn-trocar').onclick = () => this.abrirFolha('trocar');   // Novo
+    document.getElementById('btn-conectar').onclick = () => this.conectar();
+    document.getElementById('close-panel').onclick = () => this.fecharFolha();
+}
 }
 const App = new NitrogenDAO();
