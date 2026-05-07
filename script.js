@@ -52,17 +52,21 @@ class NitrogenDAO {
         else if (tipo === 'pagar') {
             title.innerText = "PAGAMENTO";
             content.innerHTML = `
-                <div class="converter-box">
-                    <small>ENDEREÇO DO DESTINO</small>
-                    <input type="text" id="p-addr" class="input-brl" placeholder="0x..." style="font-size: 0.8rem; margin-bottom: 15px;">
-                    
-                    <small>VALOR EM R$</small>
-                    <input type="number" id="p-brl" class="input-brl" placeholder="0.00" inputmode="decimal">
-                    
-                    <div style="margin-top:25px; display: flex; flex-direction: column; gap: 10px;">
-                        <button class="btn-confirm" id="btn-prosseguir-manual" style="background:#28A745;">PROSSEGUIR</button>
-                        <button class="btn-confirm" id="btn-usar-camera" style="background:#007BFF; font-size: 0.8rem;">OU LIGAR CÂMERA</button>
-                    </div>
+                <div class="converter-box" style="position: relative; min-height: 300px;">
+        
+        <div id="reader" style="display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: #000; border-radius: 15px; overflow: hidden;"></div>
+
+        <small>ENDEREÇO DO DESTINO</small>
+        <input type="text" id="p-addr" class="input-brl" placeholder="0x..." style="font-size: 0.8rem; margin-bottom: 15px;">
+        
+        <small>VALOR EM R$</small>
+        <input type="number" id="p-brl" class="input-brl" placeholder="0.00" inputmode="decimal">
+        
+        <div style="margin-top:25px; display: flex; flex-direction: column; gap: 10px;">
+            <button class="btn-confirm" id="btn-prosseguir-manual" style="background:#28A745;">PROSSEGUIR</button>
+            <button class="btn-confirm" id="btn-usar-camera" style="background:#007BFF; font-size: 0.8rem;">OU LIGAR CÂMERA</button>
+        </div>
+    </div>`;
 
                     <div id="reader" style="width:100%; border-radius:15px; overflow:hidden; background:#000; margin-top:20px; display:none;"></div>
                 </div>`;
