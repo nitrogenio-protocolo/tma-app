@@ -85,19 +85,28 @@ class NitrogenDAO {
                 } else { alert("Insira um endereço e valor válidos."); }
             };
         }
-        else if (tipo === 'coletar') {
-            title.innerText = "COLETAR TAXAS";
+                else if (tipo === 'coletar') {
+            title.innerText = "COLETAR TOKEN N";
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center;">
-                    <div style="font-size: 3rem; margin: 15px 0;">💎</div>
-                    <p style="color: #666; font-size: 0.8rem;">Como detentor do NFT ALPHA, você coleta o gás acumulado.</p>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                        <small>DISPONÍVEL</small>
-                        <h2 style="color: #007BFF; margin: 5px 0;">0.0000 BNB</h2>
+                    <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
+                    
+                    <p style="color: #666; font-size: 0.9rem; padding: 0 10px;">
+                        Como detentor do <strong>NFT ALPHA</strong>, você tem o direito exclusivo de coletar sua participação em <strong>Tokens N</strong>.
+                    </p>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #e0e0e0;">
+                        <small style="color: #007BFF; font-weight: bold;">DISPONÍVEL PARA COLETA</small>
+                        <h2 style="color: #333; margin: 5px 0;">0.00 <span style="font-size: 1rem;">N</span></h2>
                     </div>
-                    <button class="btn-confirm" id="confirmar-coleta">COLETAR AGORA</button>
+
+                    <button class="btn-confirm" id="confirmar-coleta" style="background: #007BFF;">COLETAR AGORA</button>
+                    <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">As taxas de rede (Gas) serão pagas em BNB.</p>
                 </div>`;
-            document.getElementById('confirmar-coleta').onclick = () => alert("Chamando contrato de recompensas...");
+            
+            document.getElementById('confirmar-coleta').onclick = () => {
+                alert("Conectando ao contrato para reivindicar Tokens N...");
+            };
         }
         else if (tipo === 'trocar') {
             title.innerText = "TROCAR (SWAP)";
