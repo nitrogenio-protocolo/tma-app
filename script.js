@@ -164,42 +164,42 @@ class NitrogenDAO {
 
     async executar(para, quanto) {
     try {
-        // 1. GARANTIA DE CONEXÃO
         if (!this.signer || !this.account) {
             await this.conectar();
         }
 
-        // 2. TRAVA DE SEGURANÇA: Só aceita se estiver na BNB Chain (ID 56)
+        // 1. VERIFICAÇÃO DE REDE USANDO O PADRÃO DO SEU PRINT (0x38)
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-        if (chainId !== '0x38') { // '0x38' é o código da BNB Chain
-            alert("⚠️ Mude para a rede BNB Chain na sua MetaMask!");
+        if (chainId !== '0x38') { 
+            alert("⚠️ Mude para a rede BNB Chain!");
             return;
         }
 
-        // 3. LIMPEZA E FORMATAÇÃO (Garante 18 casas decimais)
-        const valorFormatado = parseFloat(quanto).toFixed(18);
-        const valorFinal = ethers.parseUnits(valorFormatado, "ether");
+        // 2. PREPARAÇÃO DO VALOR (Garante que o número vire Wei corretamente)
+        const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
 
-        console.log("Enviando para:", para, "Valor:", valorFinal);
+        console.log("Enviando para:", para, "Valor:", valorEmWei.toString());
 
-        // 4. DISPARA O POPUP DA METAMASK
+        // 3. CHAMADA DA CARTEIRA
+        // Adicionando o gasLimit manual para o popup abrir sem erro no celular
         const tx = await this.signer.sendTransaction({
             to: para,
-            value: valorFinal,
+            value: valorEmWei,
+            gasLimit: 21000 
         });
 
-        alert("Popup aberto! Confirme o pagamento na sua carteira.");
+        alert("Transação enviada! Aguarde a rede confirmar...");
         await tx.wait();
         
-        alert("Transferência Concluída com Sucesso! 🤜");
+        alert("Pagamento Concluído! 🤜🤛");
         location.reload();
 
     } catch (e) {
-        console.error("Erro no processo:", e);
-        if (e.code === 4001) {
-            alert("Você cancelou a transação.");
+        console.error("Erro na transação:", e);
+        if (e.code === 4001 || e.code === 'ACTION_REJECTED') {
+            alert("Pagamento cancelado pelo usuário.");
         } else {
-            alert("Erro na conexão: Verifique saldo e rede.");
+            alert("Erro na Carteira. Verifique se você tem BNB para a taxa!");
         }
     }
 }
