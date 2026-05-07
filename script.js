@@ -16,10 +16,15 @@ class NitrogenDAO {
             this.account = accounts[0];
             this.provider = new ethers.BrowserProvider(window.ethereum);
             this.signer = await this.provider.getSigner();
-            document.getElementById('btn-conectar').innerText = this.account.substring(0,6)+"...";
+            
+            // A MÁGICA AQUI:
+            const btn = document.getElementById('btn-conectar');
+            btn.innerText = "CARTEIRA ATIVA"; // Texto de confirmação
+            btn.classList.add('conectado'); // Adiciona a classe para ficar verde
+            
             this.atualizarSaldo();
-        } catch (e) {
-            console.error("Erro ao conectar:", e);
+        } catch (e) { 
+            console.error(e); 
         }
     }
 
