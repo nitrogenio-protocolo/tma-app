@@ -1,0 +1,17 @@
+import { CONFIG } from './config.js';
+
+// Função para verificar se o usuário é um Guardião (possui o NFT Alpha)
+export async function checkNFTAccess(walletAddress) {
+    if (!walletAddress) return false;
+    
+    try {
+        // Aqui entrará a lógica de chamada ao contrato via Web3
+        console.log(`Verificando NFT Alpha no contrato: ${CONFIG.CONTRACTS.NFT_ALPHA}`);
+        
+        // Simulação de retorno (enquanto não conectamos o contrato real)
+        return true; 
+    } catch (error) {
+        console.error("Erro na validação do NFT:", error);
+        return false;
+    }
+}
