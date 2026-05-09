@@ -22,7 +22,24 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 /* GRADE DE AÇÕES */
 .nav-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-top: 20px; }
 .action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.btn-act { background: var(--white); border: 2px solid #F0F0F0; width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; font-size: 1.2rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+.btn-act { 
+    background: var(--white); 
+    border: 2px solid #F0F0F0; 
+    width: 100%; 
+    aspect-ratio: 1 / 1; 
+    border-radius: 12px; 
+    /* Aumentado de 1.2rem para 1.8rem (aprox. 50% maior) */
+    font-size: 1.8rem; 
+    font-weight: 900; 
+    color: var(--blue); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    /* Garante que o ícone não saia do limite se crescer muito */
+    overflow: hidden; 
+}
 .btn-act:active { transform: scale(0.95); background: #f8f9fa; }
 .btn-label { font-size: 0.65rem; font-weight: 900; color: var(--blue); text-transform: uppercase; }
 
