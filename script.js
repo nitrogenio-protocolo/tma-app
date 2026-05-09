@@ -214,15 +214,26 @@ class NitrogenDAO {
             'btn-pagar': 'pagar', 'btn-receber': 'receber', 
             'btn-coletar': 'coletar', 'btn-trocar': 'trocar'
         };
+
         for (let id in btns) {
             const el = document.getElementById(id);
+            // Usamos arrow function () => para não perder o "this"
             if (el) el.onclick = () => this.abrirFolha(btns[id]);
         }
+
         const bc = document.getElementById('btn-conectar');
+        // AQUI ESTAVA O ERRO: Adicionando o bind ou arrow function
         if (bc) bc.onclick = () => this.conectar();
+
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
+        
+        // Tenta conectar automaticamente se o usuário já logou antes
+        if (window.ethereum && window.ethereum.selectedAddress) {
+            this.conectar();
+        }
     }
 }
 
+// Inicializa o App globalmente para facilitar o acesso
 const App = new NitrogenDAO();
