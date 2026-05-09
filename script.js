@@ -46,17 +46,19 @@ class NitrogenDAO {
 }
 
     async buscarCotacao() {
-        try {
-            const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
-            const data = await response.json();
-            if (data.price) {
-                this.cotacaoBNB = parseFloat(data.price);
-                this.atualizarSaldo();
-            }
-        } catch (e) {
-            console.error("Erro na cotação:", e);
+    try {
+        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
+        const data = await response.json();
+        if (data.price) {
+            this.cotacaoBNB = parseFloat(data.price);
+            this.ultimaAtualizacao = Date.now(); // Marca o tempo da última coleta
+            this.atualizarSaldo();
         }
+    } catch (e) {
+        console.error("Falha na cotação. Usando último valor seguro.");
+        // Se a última atualização foi há mais de 5 minutos, você pode desativar os botões
     }
+}
 
     iniciarAutomacao() {
         this.buscarCotacao();
