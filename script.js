@@ -5,60 +5,52 @@ class NitrogenDAO {
         this.account = null;
         this.scanner = null;
         this.cotacaoBNB = 3400.00; 
+        this.ultimaAtualizacao = 0;
         
         this.iniciarBotoes();
         this.iniciarAutomacao();
     }
 
-    // --- FUNÇÃO DE CONEXÃO QUE ESTAVA FALTANDO ---
     async conectar() {
-    // 1. Verifica se o provedor da carteira existe
-    if (!window.ethereum) {
-        return alert("Por favor, use o navegador da MetaMask ou Trust!");
-    }
-
-    try {
-        // 2. Garante que estamos usando a versão correta para o Ethers v6
-        this.provider = new ethers.BrowserProvider(window.ethereum);
-        
-        // 3. Solicita as contas (isso abre a janelinha da MetaMask)
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        
-        if (accounts.length > 0) {
-            this.account = accounts[0];
-            this.signer = await this.provider.getSigner();
-            
-            // 4. Atualiza o visual do botão
-            const btn = document.getElementById('btn-conectar');
-            if(btn) {
-                btn.innerText = "conectado";
-                btn.classList.add('conectado');
-            }
-            
-            // 5. Já busca a cotação e o saldo na hora
-            await this.buscarCotacao();
-            console.log("Conectado com sucesso:", this.account);
+        if (!window.ethereum) {
+            return alert("Por favor, use o navegador da MetaMask ou Trust!");
         }
-    } catch (e) { 
-        console.error("Erro detalhado na conexão:", e);
-        alert("Erro ao conectar: " + (e.message || "Verifique sua carteira"));
+
+        try {
+            this.provider = new ethers.BrowserProvider(window.ethereum);
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length > 0) {
+                this.account = accounts[0];
+                this.signer = await this.provider.getSigner();
+                
+                const btn = document.getElementById('btn-conectar');
+                if(btn) {
+                    btn.innerText = "conectado";
+                    btn.classList.add('conectado');
+                }
+                
+                await this.buscarCotacao();
+                console.log("Conectado:", this.account);
+            }
+        } catch (e) { 
+            console.error("Erro na conexão:", e);
+        }
     }
-}
 
     async buscarCotacao() {
-    try {
-        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
-        const data = await response.json();
-        if (data.price) {
-            this.cotacaoBNB = parseFloat(data.price);
-            this.ultimaAtualizacao = Date.now(); // Marca o tempo da última coleta
-            this.atualizarSaldo();
+        try {
+            const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
+            const data = await response.json();
+            if (data.price) {
+                this.cotacaoBNB = parseFloat(data.price);
+                this.ultimaAtualizacao = Date.now();
+                this.atualizarSaldo();
+            }
+        } catch (e) {
+            console.error("Falha na cotação.");
         }
-    } catch (e) {
-        console.error("Falha na cotação. Usando último valor seguro.");
-        // Se a última atualização foi há mais de 5 minutos, você pode desativar os botões
     }
-}
 
     iniciarAutomacao() {
         this.buscarCotacao();
@@ -111,16 +103,18 @@ class NitrogenDAO {
         else if (tipo === 'pagar') {
             title.innerText = "PAGAMENTO";
             content.innerHTML = `
-                <div class="converter-box" style="position: relative; min-height: 320px;">
-                    <div id="reader" style="display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: #000; border-radius: 15px; overflow: hidden;"></div>
-                    <small>ENDEREÇO DO DESTINO</small>
-                    <input type="text" id="p-addr" class="input-brl" placeholder="0x..." style="font-size: 0.8rem; margin-bottom: 15px;">
-                    <small>VALOR EM R$</small>
-                    <input type="number" id="p-brl" class="input-brl" placeholder="0.00" inputmode="decimal">
-                    <div style="margin-top:25px; display: flex; flex-direction: column; gap: 10px;">
-                        <button class="btn-confirm" id="btn-prosseguir-manual" style="background:#28A745;">PROSSEGUIR</button>
-                        <button class="btn-confirm" id="btn-usar-camera" style="background:#007BFF; font-size: 0.8rem;">OU LIGAR CÂMERA</button>
+                <div class="card-pagamento-fixo">
+                    <div id="reader" style="display:none;"></div>
+                    <div id="info-pagamento">
+                        <small class="label-clean">ENDEREÇO DO DESTINO</small>
+                        <input type="text" id="p-addr" class="txt-destino" placeholder="0x..." style="background:transparent; border:none; text-align:center; width:100%; outline:none;">
+                        <small class="label-clean">VALOR EM R$</small>
+                        <input type="number" id="p-brl" class="input-transparente" placeholder="0.00" inputmode="decimal">
                     </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-confirm green" id="btn-prosseguir-manual">PROSSEGUIR</button>
+                    <button class="btn-confirm blue" id="btn-usar-camera">LIGAR CÂMERA</button>
                 </div>`;
             
             document.getElementById('btn-usar-camera').onclick = () => {
@@ -142,8 +136,8 @@ class NitrogenDAO {
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center;">
                     <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
-                    <p style="color: #666; font-size: 0.9rem; padding: 0 10px;">Como detentor do NFT, reivindique seus Tokens N.</p>
-                    <button class="btn-confirm" id="confirmar-coleta" style="background: #007BFF;">COLETAR AGORA</button>
+                    <p style="color: #666; font-size: 0.9rem;">Reivindique seus Tokens N.</p>
+                    <button class="btn-confirm" id="confirmar-coleta">COLETAR AGORA</button>
                 </div>`;
         }
         else if (tipo === 'trocar') {
@@ -168,29 +162,25 @@ class NitrogenDAO {
     }
 
     iniciarScanner() {
-    this.scanner = new Html5Qrcode("reader");
-    this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-        // Para a câmera imediatamente após a leitura bem-sucedida
-        this.scanner.stop().then(() => {
-            this.scanner = null; 
-            document.getElementById('reader').style.display = 'none';
-            
-            // Processa o endereço e valor extraídos do QR Code
-            let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
-            let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
-            if (valor.length > 10) valor = ethers.formatEther(valor);
-            
-            this.prepararPagamento(addr, valor);
-        }).catch(err => console.error("Erro ao desligar câmera:", err));
-    }).catch(err => console.error("Erro ao iniciar scanner:", err));
-}
+        this.scanner = new Html5Qrcode("reader");
+        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            this.scanner.stop().then(() => {
+                this.scanner = null; 
+                document.getElementById('reader').style.display = 'none';
+                let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
+                let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
+                if (valor.length > 10) valor = ethers.formatEther(valor);
+                this.prepararPagamento(addr, valor);
+            }).catch(err => console.error(err));
+        }).catch(err => alert("Câmera bloqueada ou não encontrada."));
+    }
 
     prepararPagamento(addr, valor) {
         const content = document.getElementById('panel-content');
         const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
         content.innerHTML = `
             <div class="converter-box">
-                <p style="font-size:0.7rem; color:#666;">PARA: ${addr.substring(0,15)}...</p>
+                <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
                 <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
                 <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
             </div>`;
@@ -198,65 +188,38 @@ class NitrogenDAO {
     }
 
     async executar(para, quanto) {
-    const btn = document.getElementById('confirm-final');
-    
-    try {
-        // Desativa o botão para evitar cliques duplos no celular
-        if(btn) {
-            btn.disabled = true;
-            btn.innerText = "VERIFIQUE A CARTEIRA...";
-        }
-
-        // Garante cotação atualizada antes de enviar
-        if (!this.ultimaAtualizacao || (Date.now() - this.ultimaAtualizacao > 120000)) {
-            await this.buscarCotacao();
-        }
-
-        if (!this.signer) await this.conectar();
-        
-        const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
-        
-        // Abre a MetaMask
-        const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
-        
-        if(btn) btn.innerText = "PROCESSANDO REDE...";
-        await tx.wait();
-        
-        alert("Concluído! 🤜🤛");
-        location.reload();
-
-    } catch (e) {
-        console.error("Erro na transação:", e);
-
-        // Trata o cancelamento do usuário (Erro 4001 ou ACTION_REJECTED)
-        if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
-            alert("Pagamento cancelado na MetaMask.");
-        } else {
-            alert("Erro na transação. Tente novamente.");
-        }
-
-        // REATIVA O DAPP: O botão volta a funcionar aqui
-        if(btn) {
-            btn.disabled = false;
-            btn.innerText = "ASSINAR PAGAMENTO";
+        const btn = document.getElementById('confirm-final');
+        try {
+            if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
+            if (!this.ultimaAtualizacao || (Date.now() - this.ultimaAtualizacao > 120000)) await this.buscarCotacao();
+            if (!this.signer) await this.conectar();
+            
+            const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
+            const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
+            
+            if(btn) btn.innerText = "PROCESSANDO...";
+            await tx.wait();
+            alert("Concluído! 🤜🤛");
+            location.reload();
+        } catch (e) {
+            if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
+                alert("Pagamento cancelado.");
+            } else {
+                alert("Erro na transação.");
+            }
+            if(btn) { btn.disabled = false; btn.innerText = "ASSINAR PAGAMENTO"; }
         }
     }
-}
 
     async fecharFolha() {
-    if (this.scanner && this.scanner.isScanning) {
-        try {
-            await this.scanner.stop();
-            console.log("Câmera desligada com sucesso.");
-        } catch (err) {
-            console.warn("Erro ao desligar câmera:", err);
-        } finally {
-            this.scanner = null; // Limpa a instância
-            document.getElementById('reader').innerHTML = ""; // Limpa o container visual
+        if (this.scanner) {
+            await this.scanner.stop().catch(()=>{});
+            this.scanner = null;
         }
+        const r = document.getElementById('reader');
+        if(r) r.style.display = 'none';
+        document.getElementById('side-panel').classList.remove('active');
     }
-    document.getElementById('side-panel').classList.remove('active');
-}
 
     iniciarBotoes() {
         const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
@@ -269,7 +232,6 @@ class NitrogenDAO {
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
         
-        // Auto-conectar se já tiver conta ativa no navegador
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
         }, 1000);
