@@ -4,33 +4,33 @@ class NitrogenDAO {
         this.signer = null;
         this.account = null;
         this.scanner = null;
-        this.cotacaoBNB = 3400.00; // Cotação fixa para conversão
+        this.cotacaoBNB = 3400.00; // Valor inicial (será atualizado)
+        
         this.iniciarBotoes();
+        this.iniciarAutomacao(); // Liga o cronômetro de 70 segundos
     }
 
-    // Formata números para o padrão de moeda brasileira
-    formatarBRL(valor) {
-        return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-    }
-
-    async conectar() {
-        if (!window.ethereum) return alert("Abra no navegador da sua Carteira!");
+    // FUNÇÃO NOVA: Busca o preço real na Binance
+    async buscarCotacao() {
         try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            this.account = accounts[0];
-            this.provider = new ethers.BrowserProvider(window.ethereum);
-            this.signer = await this.provider.getSigner();
-            
-            const btn = document.getElementById('btn-conectar');
-            if(btn) {
-                btn.innerText = "CARTEIRA ATIVA";
-                btn.classList.add('conectado');
+            const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
+            const data = await response.json();
+            if (data.price) {
+                this.cotacaoBNB = parseFloat(data.price);
+                console.log("Cotação Atualizada (BNB/BRL):", this.cotacaoBNB);
+                this.atualizarSaldo(); // Atualiza o visual com o preço novo
             }
-            
-            this.atualizarSaldo();
-        } catch (e) { 
-            console.error(e); 
+        } catch (e) {
+            console.error("Erro ao buscar cotação na Binance:", e);
         }
+    }
+
+    // FUNÇÃO NOVA: Controla o tempo de 70 segundos
+    iniciarAutomacao() {
+        this.buscarCotacao(); // Busca a primeira vez logo de cara
+        setInterval(() => {
+            this.buscarCotacao();
+        }, 70000); // 70.000 milissegundos = 70 segundos
     }
 
     async atualizarSaldo() {
@@ -39,16 +39,21 @@ class NitrogenDAO {
             const s = await this.provider.getBalance(this.account);
             const saldoBnb = parseFloat(ethers.formatEther(s));
             
-            // CONVERSÃO POR BAIXO DO CAPÔ:
+            // Agora usa a cotação vinda da Binance!
             const saldoReais = saldoBnb * this.cotacaoBNB;
             
-            // Mostra apenas o Real na Home para não confundir o usuário
-            document.getElementById('display-bnb').innerHTML = this.formatarBRL(saldoReais);
-            
+            const display = document.getElementById('display-bnb');
+            if (display) {
+                display.innerHTML = saldoReais.toLocaleString('pt-br', { 
+                    style: 'currency', 
+                    currency: 'BRL' 
+                });
+            }
         } catch (e) {
             console.error("Erro ao carregar saldo:", e);
         }
     }
+
 
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
