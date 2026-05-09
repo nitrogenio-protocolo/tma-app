@@ -167,7 +167,7 @@ class NitrogenDAO {
         };
     }
 
-    iiniciarScanner() {
+    iniciarScanner() {
     this.scanner = new Html5Qrcode("reader");
     this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
         // Para a câmera imediatamente após a leitura bem-sucedida
