@@ -4,8 +4,13 @@ class NitrogenDAO {
         this.signer = null;
         this.account = null;
         this.scanner = null;
-        this.cotacaoBNB = 3400.00;
+        this.cotacaoBNB = 3400.00; // Cotação fixa para conversão
         this.iniciarBotoes();
+    }
+
+    // Formata números para o padrão de moeda brasileira
+    formatarBRL(valor) {
+        return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
     }
 
     async conectar() {
@@ -16,10 +21,11 @@ class NitrogenDAO {
             this.provider = new ethers.BrowserProvider(window.ethereum);
             this.signer = await this.provider.getSigner();
             
-            // A MÁGICA AQUI:
             const btn = document.getElementById('btn-conectar');
-            btn.innerText = "CARTEIRA ATIVA"; // Texto de confirmação
-            btn.classList.add('conectado'); // Adiciona a classe para ficar verde
+            if(btn) {
+                btn.innerText = "CARTEIRA ATIVA";
+                btn.classList.add('conectado');
+            }
             
             this.atualizarSaldo();
         } catch (e) { 
@@ -31,12 +37,18 @@ class NitrogenDAO {
         if(!this.provider || !this.account) return;
         try {
             const s = await this.provider.getBalance(this.account);
-            document.getElementById('display-bnb').innerHTML = `${ethers.formatEther(s).substring(0,6)} <span>BNB</span>`;
+            const saldoBnb = parseFloat(ethers.formatEther(s));
+            
+            // CONVERSÃO POR BAIXO DO CAPÔ:
+            const saldoReais = saldoBnb * this.cotacaoBNB;
+            
+            // Mostra apenas o Real na Home para não confundir o usuário
+            document.getElementById('display-bnb').innerHTML = this.formatarBRL(saldoReais);
+            
         } catch (e) {
             console.error("Erro ao carregar saldo:", e);
         }
     }
-
 
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
@@ -54,7 +66,7 @@ class NitrogenDAO {
                 <div class="converter-box">
                     <small>VALOR (R$)</small>
                     <input type="number" id="v-brl" class="input-brl" placeholder="0,00" inputmode="decimal">
-                    <p id="v-bnb" class="label-bnb">≈ 0.0000 BNB</p>
+                    <p id="v-bnb" class="label-bnb" style="font-size:0.7rem; opacity:0.6;">≈ 0.0000 BNB</p>
                 </div>
                 <div id="qr-area" style="display:none; margin-top:20px;">
                     <img id="img-qr" style="width:200px; border:10px solid white; border-radius:10px;">
@@ -76,10 +88,12 @@ class NitrogenDAO {
                         <button class="btn-confirm" id="btn-usar-camera" style="background:#007BFF; font-size: 0.8rem;">OU LIGAR CÂMERA</button>
                     </div>
                 </div>`;
+            
             document.getElementById('btn-usar-camera').onclick = () => {
                 document.getElementById('reader').style.display = 'block';
                 this.iniciarScanner(); 
             };
+
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
                 const valorBrl = document.getElementById('p-brl').value; 
@@ -89,37 +103,26 @@ class NitrogenDAO {
                 } else { alert("Insira um endereço e valor válidos."); }
             };
         }
-                else if (tipo === 'coletar') {
+        else if (tipo === 'coletar') {
             title.innerText = "COLETAR TOKEN N";
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center;">
                     <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
-                    
                     <p style="color: #666; font-size: 0.9rem; padding: 0 10px;">
-                        Como detentor do <strong>NFT ALPHA</strong>, você tem o direito exclusivo de coletar sua participação em <strong>Tokens N</strong>.
+                        Como detentor do <strong>NFT ALPHA</strong>, reivindique seus <strong>Tokens N</strong>.
                     </p>
-
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #e0e0e0;">
-                        <small style="color: #007BFF; font-weight: bold;">DISPONÍVEL PARA COLETA</small>
+                        <small style="color: #007BFF; font-weight: bold;">DISPONÍVEL</small>
                         <h2 style="color: #333; margin: 5px 0;">0.00 <span style="font-size: 1rem;">N</span></h2>
                     </div>
-
                     <button class="btn-confirm" id="confirmar-coleta" style="background: #007BFF;">COLETAR AGORA</button>
-                    <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">As taxas de rede (Gas) serão pagas em BNB.</p>
                 </div>`;
-            
-            document.getElementById('confirmar-coleta').onclick = () => {
-                alert("Conectando ao contrato para reivindicar Tokens N...");
-            };
+            document.getElementById('confirmar-coleta').onclick = () => alert("Conectando ao contrato...");
         }
         else if (tipo === 'trocar') {
             title.innerText = "TROCAR (SWAP)";
             content.innerHTML = `
                 <div class="converter-box">
-                    <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <strong style="color: #856404;">⚠️ AVISO</strong>
-                        <p style="font-size: 0.8rem; color: #856404;">Você será levado para a PancakeSwap oficial.</p>
-                    </div>
                     <button class="btn-confirm" style="background: #d63384;" id="ir-pancake">IR PARA PANCAKE</button>
                     <button class="btn-confirm" style="background: #6c757d; margin-top: 10px;" onclick="App.fecharFolha()">VOLTAR</button>
                 </div>`;
@@ -127,13 +130,13 @@ class NitrogenDAO {
         }
     }
 
-
     configurarRecebedor() {
         const input = document.getElementById('v-brl');
         input.oninput = () => {
-            if(!this.account) return;
+            if(!this.account || !input.value) return;
             const bnb = (input.value / this.cotacaoBNB).toFixed(6);
             document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
+            
             if(input.value > 0) {
                 const valorEmWei = ethers.parseEther(bnb).toString();
                 const dadosPagamento = `ethereum:${this.account}?value=${valorEmWei}`;
@@ -160,16 +163,18 @@ class NitrogenDAO {
 
     prepararPagamento(addr, valor) {
         const content = document.getElementById('panel-content');
+        const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+
         content.innerHTML = `
             <div class="converter-box">
-                <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,20)}...</p>
-                <h2 style="margin:15px 0;">R$ ${(valor * this.cotacaoBNB).toFixed(2)}</h2>
-                <p class="label-bnb" style="color:#28A745;">≈ ${valor} BNB</p>
-                <button class="btn-confirm" id="confirm-final">CONFIRMAR E ASSINAR</button>
+                <p style="font-size:0.7rem; color:#666; word-break: break-all;">PARA: ${addr}</p>
+                <small>VALOR DO PAGAMENTO</small>
+                <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
+                <p class="label-bnb" style="font-size:0.7rem; color:#999;">Custo da rede: ${valor} BNB</p>
+                <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
             </div>`;
         document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
-
 
     async executar(para, quanto) {
         try {
@@ -180,15 +185,15 @@ class NitrogenDAO {
             const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
             const tx = await this.signer.sendTransaction({
                 to: para,
-                value: valorEmWei,
-                gasLimit: 21000 
+                value: valorEmWei
             });
-            alert("Enviado! Aguarde a confirmação...");
+            
+            alert("Pagamento enviado! Processando...");
             await tx.wait();
-            alert("Pagamento Concluído! 🤜🤛");
+            alert("Concluído com sucesso! 🤜🤛");
             location.reload();
         } catch (e) {
-            alert("Operação cancelada ou erro de saldo.");
+            alert("Erro na transação. Verifique o saldo ou rede.");
         }
     }
 
