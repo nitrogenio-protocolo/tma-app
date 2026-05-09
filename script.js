@@ -221,12 +221,16 @@ class NitrogenDAO {
 
     async fecharFolha() {
         if (this.scanner) {
-            await this.scanner.stop().catch(()=>{});
+            try {
+                await this.scanner.stop();
+            } catch (e) { console.log("Scanner parado"); }
             this.scanner = null;
         }
-        document.getElementById('reader');
+        
+        const r = document.getElementById('reader'); // Corrigido!
         const info = document.getElementById('info-pagamento');
-        if(r) r.style.display = 'none';
+        
+        if(r) r.style.setProperty('display', 'none', 'important');
         if(info) info.style.display = 'block'; 
         
         document.getElementById('side-panel').classList.remove('active');
