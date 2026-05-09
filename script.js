@@ -167,18 +167,23 @@ class NitrogenDAO {
         };
     }
 
-    iniciarScanner() {
-        this.scanner = new Html5Qrcode("reader");
-        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            this.scanner.stop().then(() => {
-                document.getElementById('reader').style.display = 'none';
-                let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
-                let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
-                if (valor.length > 10) valor = ethers.formatEther(valor);
-                this.prepararPagamento(addr, valor);
-            });
-        }).catch(err => console.error("Scanner Error:", err));
-    }
+    iiniciarScanner() {
+    this.scanner = new Html5Qrcode("reader");
+    this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+        // Para a câmera imediatamente após a leitura bem-sucedida
+        this.scanner.stop().then(() => {
+            this.scanner = null; 
+            document.getElementById('reader').style.display = 'none';
+            
+            // Processa o endereço e valor extraídos do QR Code
+            let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
+            let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
+            if (valor.length > 10) valor = ethers.formatEther(valor);
+            
+            this.prepararPagamento(addr, valor);
+        }).catch(err => console.error("Erro ao desligar câmera:", err));
+    }).catch(err => console.error("Erro ao iniciar scanner:", err));
+}
 
     prepararPagamento(addr, valor) {
         const content = document.getElementById('panel-content');
