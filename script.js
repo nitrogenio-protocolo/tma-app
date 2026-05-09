@@ -194,24 +194,37 @@ class NitrogenDAO {
 
     async executar(para, quanto) {
     try {
-        // 1. Verificação de segurança da cotação (Trava de 2 minutos)
+        // 1. Verificação de cotação
         if (!this.ultimaAtualizacao || (Date.now() - this.ultimaAtualizacao > 120000)) {
-            console.log("Cotação antiga ou inexistente. Atualizando antes de enviar...");
             await this.buscarCotacao();
         }
 
         if (!this.signer) await this.conectar();
         
-        // O restante permanece igual...
         const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
+
+        // --- ADICIONE UM AVISO DE ESPERA NA UI AQUI ---
+        console.log("Aguardando confirmação na carteira...");
+
         const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
         
+        // Se chegou aqui, o usuário confirmou!
         await tx.wait();
         alert("Concluído! 🤜🤛");
         location.reload();
+
     } catch (e) { 
-        console.error(e);
-        alert("Erro na transação."); 
+        // 2. TRATAMENTO DE CANCELAMENTO
+        if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
+            console.warn("Usuário cancelou a transação.");
+            alert("Pagamento cancelado pelo usuário.");
+        } else {
+            console.error("Erro inesperado:", e);
+            alert("Erro na transação. Verifique seu saldo ou conexão.");
+        }
+        
+        // IMPORTANTE: Não damos reload aqui para o usuário poder 
+        // tentar de novo ou corrigir o valor sem perder o que digitou.
     }
 }
 
