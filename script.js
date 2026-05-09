@@ -118,9 +118,11 @@ class NitrogenDAO {
                 </div>`;
             
             document.getElementById('btn-usar-camera').onclick = () => {
-                document.getElementById('reader').style.display = 'block';
-                this.iniciarScanner(); 
-            };
+    const reader = document.getElementById('reader');
+    // Força a exibição ignorando qualquer outra trava do CSS
+    reader.style.setProperty('display', 'block', 'important');
+    this.iniciarScanner(); 
+};
 
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
