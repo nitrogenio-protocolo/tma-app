@@ -4,33 +4,49 @@ class NitrogenDAO {
         this.signer = null;
         this.account = null;
         this.scanner = null;
-        this.cotacaoBNB = 3400.00; // Valor inicial (será atualizado)
+        this.cotacaoBNB = 3400.00; 
         
         this.iniciarBotoes();
-        this.iniciarAutomacao(); // Liga o cronômetro de 70 segundos
+        this.iniciarAutomacao();
     }
 
-    // FUNÇÃO NOVA: Busca o preço real na Binance
+    // --- FUNÇÃO DE CONEXÃO QUE ESTAVA FALTANDO ---
+    async conectar() {
+        if (!window.ethereum) return alert("Abra no navegador da sua Carteira!");
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            this.account = accounts[0];
+            this.provider = new ethers.BrowserProvider(window.ethereum);
+            this.signer = await this.provider.getSigner();
+            
+            const btn = document.getElementById('btn-conectar');
+            if(btn) {
+                btn.innerText = "CARTEIRA ATIVA";
+                btn.classList.add('conectado');
+            }
+            
+            this.atualizarSaldo();
+        } catch (e) { 
+            console.error("Erro ao conectar:", e); 
+        }
+    }
+
     async buscarCotacao() {
         try {
             const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL');
             const data = await response.json();
             if (data.price) {
                 this.cotacaoBNB = parseFloat(data.price);
-                console.log("Cotação Atualizada (BNB/BRL):", this.cotacaoBNB);
-                this.atualizarSaldo(); // Atualiza o visual com o preço novo
+                this.atualizarSaldo();
             }
         } catch (e) {
-            console.error("Erro ao buscar cotação na Binance:", e);
+            console.error("Erro na cotação:", e);
         }
     }
 
-    // FUNÇÃO NOVA: Controla o tempo de 70 segundos
     iniciarAutomacao() {
-        this.buscarCotacao(); // Busca a primeira vez logo de cara
-        setInterval(() => {
-            this.buscarCotacao();
-        }, 70000); // 70.000 milissegundos = 70 segundos
+        this.buscarCotacao();
+        setInterval(() => this.buscarCotacao(), 70000);
     }
 
     async atualizarSaldo() {
@@ -38,8 +54,6 @@ class NitrogenDAO {
         try {
             const s = await this.provider.getBalance(this.account);
             const saldoBnb = parseFloat(ethers.formatEther(s));
-            
-            // Agora usa a cotação vinda da Binance!
             const saldoReais = saldoBnb * this.cotacaoBNB;
             
             const display = document.getElementById('display-bnb');
@@ -53,7 +67,6 @@ class NitrogenDAO {
             console.error("Erro ao carregar saldo:", e);
         }
     }
-
 
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
@@ -113,25 +126,13 @@ class NitrogenDAO {
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center;">
                     <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
-                    <p style="color: #666; font-size: 0.9rem; padding: 0 10px;">
-                        Como detentor do <strong>NFT ALPHA</strong>, reivindique seus <strong>Tokens N</strong>.
-                    </p>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #e0e0e0;">
-                        <small style="color: #007BFF; font-weight: bold;">DISPONÍVEL</small>
-                        <h2 style="color: #333; margin: 5px 0;">0.00 <span style="font-size: 1rem;">N</span></h2>
-                    </div>
+                    <p style="color: #666; font-size: 0.9rem; padding: 0 10px;">Como detentor do NFT, reivindique seus Tokens N.</p>
                     <button class="btn-confirm" id="confirmar-coleta" style="background: #007BFF;">COLETAR AGORA</button>
                 </div>`;
-            document.getElementById('confirmar-coleta').onclick = () => alert("Conectando ao contrato...");
         }
         else if (tipo === 'trocar') {
             title.innerText = "TROCAR (SWAP)";
-            content.innerHTML = `
-                <div class="converter-box">
-                    <button class="btn-confirm" style="background: #d63384;" id="ir-pancake">IR PARA PANCAKE</button>
-                    <button class="btn-confirm" style="background: #6c757d; margin-top: 10px;" onclick="App.fecharFolha()">VOLTAR</button>
-                </div>`;
-            document.getElementById('ir-pancake').onclick = () => window.open("https://pancakeswap.finance/swap", "_blank");
+            content.innerHTML = `<button class="btn-confirm" style="background: #d63384;" onclick="window.open('https://pancakeswap.finance/swap', '_blank')">IR PARA PANCAKE</button>`;
         }
     }
 
@@ -141,11 +142,9 @@ class NitrogenDAO {
             if(!this.account || !input.value) return;
             const bnb = (input.value / this.cotacaoBNB).toFixed(6);
             document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
-            
             if(input.value > 0) {
                 const valorEmWei = ethers.parseEther(bnb).toString();
-                const dadosPagamento = `ethereum:${this.account}?value=${valorEmWei}`;
-                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(dadosPagamento)}`;
+                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('ethereum:'+this.account+'?value='+valorEmWei)}`;
                 document.getElementById('img-qr').src = link;
                 document.getElementById('qr-area').style.display = 'block';
             }
@@ -156,7 +155,6 @@ class NitrogenDAO {
         this.scanner = new Html5Qrcode("reader");
         this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
             this.scanner.stop().then(() => {
-                this.scanner = null;
                 document.getElementById('reader').style.display = 'none';
                 let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
                 let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
@@ -169,13 +167,10 @@ class NitrogenDAO {
     prepararPagamento(addr, valor) {
         const content = document.getElementById('panel-content');
         const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
-
         content.innerHTML = `
             <div class="converter-box">
-                <p style="font-size:0.7rem; color:#666; word-break: break-all;">PARA: ${addr}</p>
-                <small>VALOR DO PAGAMENTO</small>
+                <p style="font-size:0.7rem; color:#666;">PARA: ${addr.substring(0,15)}...</p>
                 <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
-                <p class="label-bnb" style="font-size:0.7rem; color:#999;">Custo da rede: ${valor} BNB</p>
                 <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
             </div>`;
         document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
@@ -184,56 +179,35 @@ class NitrogenDAO {
     async executar(para, quanto) {
         try {
             if (!this.signer) await this.conectar();
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            if (chainId !== '0x38') return alert("⚠️ Mude para a rede BNB Chain!");
-            
             const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
-            const tx = await this.signer.sendTransaction({
-                to: para,
-                value: valorEmWei
-            });
-            
-            alert("Pagamento enviado! Processando...");
+            const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
             await tx.wait();
-            alert("Concluído com sucesso! 🤜🤛");
+            alert("Concluído! 🤜🤛");
             location.reload();
-        } catch (e) {
-            alert("Erro na transação. Verifique o saldo ou rede.");
-        }
+        } catch (e) { alert("Erro na transação."); }
     }
 
     fecharFolha() {
-        if (this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-        const panel = document.getElementById('side-panel');
-        if (panel) panel.classList.remove('active');
-        setTimeout(() => { document.getElementById('panel-content').innerHTML = ""; }, 300);
+        if (this.scanner) this.scanner.stop();
+        document.getElementById('side-panel').classList.remove('active');
     }
 
     iniciarBotoes() {
-        const btns = {
-            'btn-pagar': 'pagar', 'btn-receber': 'receber', 
-            'btn-coletar': 'coletar', 'btn-trocar': 'trocar'
-        };
-
+        const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
         for (let id in btns) {
             const el = document.getElementById(id);
-            // Usamos arrow function () => para não perder o "this"
             if (el) el.onclick = () => this.abrirFolha(btns[id]);
         }
-
         const bc = document.getElementById('btn-conectar');
-        // AQUI ESTAVA O ERRO: Adicionando o bind ou arrow function
         if (bc) bc.onclick = () => this.conectar();
-
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
         
-        // Tenta conectar automaticamente se o usuário já logou antes
-        if (window.ethereum && window.ethereum.selectedAddress) {
-            this.conectar();
-        }
+        // Auto-conectar se já tiver conta ativa no navegador
+        setTimeout(() => {
+            if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
+        }, 1000);
     }
 }
 
-// Inicializa o App globalmente para facilitar o acesso
 const App = new NitrogenDAO();
