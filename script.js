@@ -198,8 +198,16 @@ class NitrogenDAO {
     }
 
     async executar(para, quanto) {
+    const btn = document.getElementById('confirm-final');
+    
     try {
-        // 1. Verificação de cotação
+        // Desativa o botão para evitar cliques duplos no celular
+        if(btn) {
+            btn.disabled = true;
+            btn.innerText = "VERIFIQUE A CARTEIRA...";
+        }
+
+        // Garante cotação atualizada antes de enviar
         if (!this.ultimaAtualizacao || (Date.now() - this.ultimaAtualizacao > 120000)) {
             await this.buscarCotacao();
         }
@@ -207,29 +215,31 @@ class NitrogenDAO {
         if (!this.signer) await this.conectar();
         
         const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
-
-        // --- ADICIONE UM AVISO DE ESPERA NA UI AQUI ---
-        console.log("Aguardando confirmação na carteira...");
-
+        
+        // Abre a MetaMask
         const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
         
-        // Se chegou aqui, o usuário confirmou!
+        if(btn) btn.innerText = "PROCESSANDO REDE...";
         await tx.wait();
+        
         alert("Concluído! 🤜🤛");
         location.reload();
 
-    } catch (e) { 
-        // 2. TRATAMENTO DE CANCELAMENTO
+    } catch (e) {
+        console.error("Erro na transação:", e);
+
+        // Trata o cancelamento do usuário (Erro 4001 ou ACTION_REJECTED)
         if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
-            console.warn("Usuário cancelou a transação.");
-            alert("Pagamento cancelado pelo usuário.");
+            alert("Pagamento cancelado na MetaMask.");
         } else {
-            console.error("Erro inesperado:", e);
-            alert("Erro na transação. Verifique seu saldo ou conexão.");
+            alert("Erro na transação. Tente novamente.");
         }
-        
-        // IMPORTANTE: Não damos reload aqui para o usuário poder 
-        // tentar de novo ou corrigir o valor sem perder o que digitou.
+
+        // REATIVA O DAPP: O botão volta a funcionar aqui
+        if(btn) {
+            btn.disabled = false;
+            btn.innerText = "ASSINAR PAGAMENTO";
+        }
     }
 }
 
