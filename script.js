@@ -12,24 +12,38 @@ class NitrogenDAO {
 
     // --- FUNÇÃO DE CONEXÃO QUE ESTAVA FALTANDO ---
     async conectar() {
-        if (!window.ethereum) return alert("Abra no navegador da sua Carteira!");
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    // 1. Verifica se o provedor da carteira existe
+    if (!window.ethereum) {
+        return alert("Por favor, use o navegador da MetaMask ou Trust!");
+    }
+
+    try {
+        // 2. Garante que estamos usando a versão correta para o Ethers v6
+        this.provider = new ethers.BrowserProvider(window.ethereum);
+        
+        // 3. Solicita as contas (isso abre a janelinha da MetaMask)
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
+        if (accounts.length > 0) {
             this.account = accounts[0];
-            this.provider = new ethers.BrowserProvider(window.ethereum);
             this.signer = await this.provider.getSigner();
             
+            // 4. Atualiza o visual do botão
             const btn = document.getElementById('btn-conectar');
             if(btn) {
                 btn.innerText = "CARTEIRA ATIVA";
                 btn.classList.add('conectado');
             }
             
-            this.atualizarSaldo();
-        } catch (e) { 
-            console.error("Erro ao conectar:", e); 
+            // 5. Já busca a cotação e o saldo na hora
+            await this.buscarCotacao();
+            console.log("Conectado com sucesso:", this.account);
         }
+    } catch (e) { 
+        console.error("Erro detalhado na conexão:", e);
+        alert("Erro ao conectar: " + (e.message || "Verifique sua carteira"));
     }
+}
 
     async buscarCotacao() {
         try {
