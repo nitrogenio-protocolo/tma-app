@@ -201,10 +201,20 @@ class NitrogenDAO {
         } catch (e) { alert("Erro na transação."); }
     }
 
-    fecharFolha() {
-        if (this.scanner) this.scanner.stop();
-        document.getElementById('side-panel').classList.remove('active');
+    async fecharFolha() {
+    if (this.scanner && this.scanner.isScanning) {
+        try {
+            await this.scanner.stop();
+            console.log("Câmera desligada com sucesso.");
+        } catch (err) {
+            console.warn("Erro ao desligar câmera:", err);
+        } finally {
+            this.scanner = null; // Limpa a instância
+            document.getElementById('reader').innerHTML = ""; // Limpa o container visual
+        }
     }
+    document.getElementById('side-panel').classList.remove('active');
+}
 
     iniciarBotoes() {
         const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
