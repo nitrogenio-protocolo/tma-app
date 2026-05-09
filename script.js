@@ -224,8 +224,11 @@ class NitrogenDAO {
             await this.scanner.stop().catch(()=>{});
             this.scanner = null;
         }
-        const r = document.getElementById('reader');
+        cconst r = document.getElementById('reader');
+        const info = document.getElementById('info-pagamento');
         if(r) r.style.display = 'none';
+        if(info) info.style.display = 'block'; 
+        
         document.getElementById('side-panel').classList.remove('active');
     }
 
