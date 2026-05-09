@@ -31,7 +31,7 @@ class NitrogenDAO {
             // 4. Atualiza o visual do botão
             const btn = document.getElementById('btn-conectar');
             if(btn) {
-                btn.innerText = "CARTEIRA ATIVA";
+                btn.innerText = "conectado";
                 btn.classList.add('conectado');
             }
             
