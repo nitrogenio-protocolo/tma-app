@@ -224,7 +224,7 @@ class NitrogenDAO {
             await this.scanner.stop().catch(()=>{});
             this.scanner = null;
         }
-        cconst r = document.getElementById('reader');
+        document.getElementById('reader');
         const info = document.getElementById('info-pagamento');
         if(r) r.style.display = 'none';
         if(info) info.style.display = 'block'; 
