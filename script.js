@@ -193,15 +193,27 @@ class NitrogenDAO {
     }
 
     async executar(para, quanto) {
-        try {
-            if (!this.signer) await this.conectar();
-            const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
-            const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
-            await tx.wait();
-            alert("Concluído! 🤜🤛");
-            location.reload();
-        } catch (e) { alert("Erro na transação."); }
+    try {
+        // 1. Verificação de segurança da cotação (Trava de 2 minutos)
+        if (!this.ultimaAtualizacao || (Date.now() - this.ultimaAtualizacao > 120000)) {
+            console.log("Cotação antiga ou inexistente. Atualizando antes de enviar...");
+            await this.buscarCotacao();
+        }
+
+        if (!this.signer) await this.conectar();
+        
+        // O restante permanece igual...
+        const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
+        const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
+        
+        await tx.wait();
+        alert("Concluído! 🤜🤛");
+        location.reload();
+    } catch (e) { 
+        console.error(e);
+        alert("Erro na transação."); 
     }
+}
 
     async fecharFolha() {
     if (this.scanner && this.scanner.isScanning) {
