@@ -48,3 +48,16 @@ function voltarMint() {
     mint.classList.remove('cheia');
     mint.classList.remove('metade');
 }
+
+function abrirQuintaFolha() {
+    document.getElementById('folha-pagamento').classList.add('metade');
+}
+
+function fecharPagamento() {
+    document.getElementById('folha-pagamento').classList.remove('metade');
+}
+
+function chamarMetaMask() {
+    alert("Iniciando conexão com a MetaMask para pagamento em USDT...");
+    // Aqui no futuro entra o código técnico do Ethers.js
+}
