@@ -38,4 +38,58 @@
 </body>
 </html>
 
+    <div id="home-app" style="display: none;">
+        <header style="display: flex; justify-content: space-between; align-items: center; padding: 15px;">
+            <div class="logo-area">
+                <h1 style="margin:0; font-size: 1.2rem;">NITROGÊNIO</h1>
+                <p style="margin:0; font-size: 0.7rem; color: #0056b3;">PROTOCOLO</p>
+            </div>
+            <button id="btn-conectar" class="btn-padrao">CONECTAR</button>
+        </header>
 
+        <main style="padding: 15px;">
+            <section class="card-master">
+                <p>SALDO CONTA</p>
+                <h2 id="display-bnb">R$ 0,00</h2>
+            </section>
+
+            <nav class="nav-actions">
+                <div class="action-item">
+                    <button class="btn-act" id="btn-pagar">↑</button>
+                    <p>PAGAR</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-receber">↓</button>
+                    <p>RECEBER</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-coletar">↓</button>
+                    <p>COLETAR</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-trocar">⇄</button>
+                    <p>TROCAR</p>
+                </div>
+            </nav>
+
+            <section class="grid-dao">
+                <div class="sala">COMUNIDADE</div>
+                <div class="sala" onclick="abrirMint()">GOVERNANÇA</div>
+                <div class="sala">TRANSPARÊNCIA</div>
+                <div class="sala">TESOURARIA</div>
+            </section>
+        </main>
+    </div>
+
+    <div id="folha-mint" class="mint-overlay">
+        <div class="mint-content" style="padding: 20px;">
+            <button onclick="voltarMint()">← Voltar</button>
+            <h3>MINT NFT ALPHA</h3>
+            <p>Preço: 10 USD</p>
+            <input type="text" id="padrinho" class="input-clean" placeholder="Endereço do Padrinho">
+            <button class="btn-padrao" onclick="expandirMint()" style="width:100%;">EXECUTAR MINT</button>
+            <div id="extra-info" style="display: none; margin-top: 15px;">
+                <p>Divisão: 70% Usuário | 20% Padrinho | 10% DAO</p>
+            </div>
+        </div>
+    </div>
