@@ -88,13 +88,22 @@
 
     <div id="folha-mint" class="mint-overlay">
         <div class="mint-content" style="padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-            <button onclick="voltarMint()" style="align-self: flex-start; background:none; border:none; color:#0056b3;">← Voltar</button>
-            <h3 style="margin: 20px 0;">EXECUTAR MINT</h3>
-            <input type="text" id="padrinho" class="input-clean" placeholder="Endereço do Padrinho" style="text-align: center;">
-            <button class="btn-pilula-azul" onclick="expandirMint()">CONFIRMAR MINT</button>
-            <div id="extra-info" style="display: none; margin-top: 20px;">
-                <p style="font-size: 0.7rem; color: #666;">70% Usuário | 20% Padrinho | 10% DAO</p>
+            <button onclick="voltarMint()" style="align-self: flex-start; background:none; border:none; color:#0056b3; font-weight:bold;">← VOLTAR</button>
+            
+            <div style="margin: 10px 0; border-radius: 15px; overflow: hidden; border: 2px solid #0056b3;">
+                <img src="raposa.png" alt="NFT Alpha" style="width: 150px; display: block;">
+                <div style="background: #0056b3; color: white; padding: 5px; font-size: 0.7rem; font-weight: bold;">
+                    NFT ALPHA #001
+                </div>
             </div>
+
+            <h3 style="margin: 10px 0;">MINT EM USDT</h3>
+            <p style="font-size: 1.2rem; font-weight: bold; color: #333;">$ 10.00</p>
+            
+            <p style="font-size: 0.7rem; color: #666; margin-top: 15px;">CARTEIRA REFERRAL (OPCIONAL)</p>
+            <input type="text" id="referral-input" class="input-clean" placeholder="0x... (ou deixe em branco)" style="text-align: center; font-size: 0.8rem;">
+            
+            <button class="btn-pilula-azul" onclick="abrirQuintaFolha()" style="margin-top: 20px; width: 100%;">GERAR ORDEM EM USDT</button>
         </div>
     </div>
 
