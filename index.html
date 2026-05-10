@@ -107,6 +107,30 @@
         </div>
     </div>
 
+            .    <div id="folha-pagamento" class="mint-overlay" style="z-index: 10001;">
+        <div class="mint-content" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+            <h2>RESUMO DA ORDEM</h2>
+            <hr style="width: 80%; border: 0.5px solid #eee; margin: 20px 0;">
+            
+            <div style="text-align: left; width: 100%; font-size: 0.9rem;">
+                <p><strong>Item:</strong> NFT Alpha</p>
+                <p><strong>Rede:</strong> BNB Smart Chain (BSC)</p>
+                <p><strong>Moeda:</strong> USDT</p>
+                <p><strong>Total:</strong> 10.00 USDT</p>
+            </div>
+
+            <div style="margin-top: 30px; background: #f4f7f6; padding: 15px; border-radius: 10px; width: 100%;">
+                <p style="font-size: 0.7rem; color: #666;">Ao confirmar, sua MetaMask será aberta para autorizar o pagamento.</p>
+            </div>
+
+            <button class="btn-pilula-azul" onclick="chamarMetaMask()" style="margin-top: 25px; width: 100%; background: #f6851b; border: none;">
+                PAGAR COM METAMASK
+            </button>
+            
+            <button onclick="fecharPagamento()" style="margin-top: 15px; background: none; border: none; color: #999;">Cancelar Ordem</button>
+        </div>
+    </div>
+    
     <script src="src/shared/js/config.js"></script>
     <script src="script.js"></script>
 
