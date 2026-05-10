@@ -90,3 +90,33 @@ body {
     text-align: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
+
+
+
+
+/* Botão Estilo Pílula */
+.btn-pilula {
+    background: white;
+    color: #0056b3;
+    border: none;
+    padding: 12px 45px;
+    border-radius: 50px; /* Faz o formato de pílula */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-pilula:disabled {
+    background: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.5);
+}
+
+.btn-pilula-azul {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 12px 45px;
+    border-radius: 50px;
+    font-weight: bold;
+}
