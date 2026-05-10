@@ -1,1 +1,32 @@
+:root {
+    /* Blueberry Blue e Escala de Cinza */
+    --azul-forte: #0056b3;
+    --branco-puro: #ffffff;
+    --cinza-suave: #f4f7f6;
+    --texto-dark: #333333;
+}
 
+/* Estilos de Botão Padronizados */
+.btn-padrao {
+    background-color: var(--azul-forte);
+    color: var(--branco-puro);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-padrao:active {
+    transform: scale(0.95);
+}
+
+/* Estilo das Caixas de Texto */
+.input-clean {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    width: 90%;
+    margin: 10px 0;
+}
