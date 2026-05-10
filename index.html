@@ -13,23 +13,33 @@
 <body>
 
     <div id="intro-layer">
-        <section id="folha1" class="folha-fade visivel" onclick="irParaFolha2()">
-            <img src="raposa.png" alt="Raposa Branca Alpha" style="width: 180px;">
-            <p>Protocolo Nitrogênio - Iniciando...</p>
+        <section id="folha1" class="folha-fade visivel">
+            <img src="raposa.png" alt="Raposa" style="width: 180px;">
+            <p style="margin-top:20px; font-size: 0.9rem; letter-spacing: 2px;">INICIANDO PROTOCOLO...</p>
         </section>
 
         <section id="folha2" class="folha-fade">
-            <h2>Engenharia de Fluxo</h2>
-            <p>50% Liquidez | 50% Cofre Safe</p>
-            <p>70% Usuário | 20% Indicador | 10% DAO</p>
-            <button class="btn-padrao" onclick="irParaFolha3()">AVANÇAR</button>
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px;">
+                <h2>Engenharia de Fluxo</h2>
+                <p style="color: rgba(255,255,255,0.7); margin-top: 20px;">[Área reservada para descrição técnica]</p>
+                <p>50% Liquidez | 50% Cofre Safe</p>
+                <p>70% Usuário | 20% Indicador | 10% DAO</p>
+            </div>
+            <div style="padding-bottom: 40px;">
+                <button class="btn-pilula" onclick="irParaFolha3()">AVANÇAR</button>
+            </div>
         </section>
 
         <section id="folha3" class="folha-fade">
-            <h2>Conformidade</h2>
-            <label><input type="checkbox" id="check-whitepaper"> Li o Documento Oficial</label><br><br>
-            <label><input type="checkbox" id="check-governanca"> Concordo com a Governança</label><br>
-            <button id="btn-entrar" class="btn-padrao" style="margin-top:20px;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
+            <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+                <h2>Benefícios NFT Alpha</h2>
+                <p style="font-size: 0.8rem;">Acesso à governança, recompensas de 70% e participação na DAO pura.</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); width: 100%; padding: 20px; border-radius: 20px 20px 0 0;">
+                <label style="font-size: 0.7rem;"><input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper</label><br>
+                <label style="font-size: 0.7rem;"><input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança</label><br>
+                <button id="btn-entrar" class="btn-pilula" style="margin-top:15px; width: 80%;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
+            </div>
         </section>
     </div>
 
@@ -77,14 +87,13 @@
     </div>
 
     <div id="folha-mint" class="mint-overlay">
-        <div class="mint-content" style="padding: 20px;">
-            <button onclick="voltarMint()">← Voltar</button>
-            <h3>MINT NFT ALPHA</h3>
-            <p>Preço: 10 USD</p>
-            <input type="text" id="padrinho" class="input-clean" placeholder="Endereço do Padrinho">
-            <button class="btn-padrao" onclick="expandirMint()" style="width:100%;">EXECUTAR MINT</button>
-            <div id="extra-info" style="display: none; margin-top: 15px;">
-                <p>Divisão: 70% Usuário | 20% Padrinho | 10% DAO</p>
+        <div class="mint-content" style="padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+            <button onclick="voltarMint()" style="align-self: flex-start; background:none; border:none; color:#0056b3;">← Voltar</button>
+            <h3 style="margin: 20px 0;">EXECUTAR MINT</h3>
+            <input type="text" id="padrinho" class="input-clean" placeholder="Endereço do Padrinho" style="text-align: center;">
+            <button class="btn-pilula-azul" onclick="expandirMint()">CONFIRMAR MINT</button>
+            <div id="extra-info" style="display: none; margin-top: 20px;">
+                <p style="font-size: 0.7rem; color: #666;">70% Usuário | 20% Padrinho | 10% DAO</p>
             </div>
         </div>
     </div>
