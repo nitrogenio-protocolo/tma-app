@@ -1,34 +1,30 @@
+body { font-family: sans-serif; margin: 0; background: #f4f7f6; }
 
-/* Efeito de Apagar/Aparecer (Fade) */
+/* Efeito de Apagar e Aparecer */
 .folha-fade {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #ffffff;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    opacity: 0; visibility: hidden;
-    transition: opacity 0.6s ease, visibility 0.6s;
-    z-index: 10;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: white; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.6s ease;
 }
 .folha-fade.visivel { opacity: 1; visibility: visible; }
 
-/* Botões e Caixas Estilo Clean */
+/* Estilo dos Botões */
 .btn-proximo {
-    background: #0056b3; color: white;
-    border: none; padding: 15px 40px;
-    border-radius: 8px; margin-top: 20px;
-    font-weight: bold; cursor: pointer;
+    background: #0056b3; color: white; border: none;
+    padding: 15px 30px; border-radius: 8px; font-weight: bold;
 }
-.btn-proximo:disabled { background: #cccccc; cursor: not-allowed; }
+.btn-proximo:disabled { background: #ccc; }
 
-/* Overlay do Mint (A meia-folha) */
+/* Meia-Folha do Mint */
 .mint-overlay {
-    position: fixed;
-    bottom: -100%; left: 0; width: 100%;
-    height: 50%; background: #f4f7f6;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 100; border-radius: 25px 25px 0 0;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    position: fixed; bottom: -100%; left: 0; width: 100%;
+    height: 50%; background: white; transition: all 0.5s ease;
+    border-radius: 20px 20px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
 }
-.mint-overlay.metade { bottom: 0; height: 50%; }
+.mint-overlay.metade { bottom: 0; }
 .mint-overlay.cheia { bottom: 0; height: 100%; border-radius: 0; }
+
+/* Grid da Home */
+.grid-dao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px; }
+.sala { background: white; padding: 20px; text-align: center; border-radius: 10px; border: 1px solid #eee; }
