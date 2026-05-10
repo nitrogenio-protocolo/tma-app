@@ -11,8 +11,10 @@
 
     <div id="intro-layer">
         <section id="folha1" class="folha-fade visivel">
-            <img src="raposa.png" alt="Raposa" style="width: 180px;">
-            <p style="margin-top:20px; font-size: 0.9rem; letter-spacing: 2px;">INICIANDO PROTOCOLO...</p>
+            <div class="splash-content">
+                <img src="raposa.png" class="raposa-splash" alt="Raposa">
+                <p class="status-loading">INICIANDO PROTOCOLO...</p>
+            </div>
         </section>
 
         <section id="folha2" class="folha-fade">
@@ -21,19 +23,26 @@
                 <p>Uma <b>Economia Circular</b> via BNB Chain, focada em autonomia financeira e impacto social.</p>
             </div>
             <div class="footer-intro">
-                <button class="btn-pilula-ativo" onclick="irParaFolha3()">CONHECER GOVERNANÇA</button>
+                <button class="btn-pilula-ativo" onclick="irParaFolha3()">AVANÇAR</button>
             </div>
         </section>
 
         <section id="folha3" class="folha-fade">
+            <div class="top-raposa">
+                <img src="raposa.png" class="raposa-mini">
+            </div>
             <div class="content-intro">
                 <h2>Governança</h2>
                 <p>Na <b>DAO Pura</b>, a comunidade decide. Aceite os termos para acessar o painel de controle.</p>
             </div>
             <div class="check-box">
-                <label><input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper</label><br>
-                <label><input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança</label><br>
-                <button id="btn-entrar" class="btn-pilula" style="margin-top:15px; width: 100%;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
+                <label class="label-check">
+                    <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper
+                </label>
+                <label class="label-check">
+                    <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança
+                </label>
+                <button id="btn-entrar" class="btn-pilula" style="margin-top:20px; width: 100%;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
             </div>
         </section>
     </div>
@@ -47,10 +56,10 @@
             <button id="btn-conectar" class="btn-padrao">CONECTAR</button>
         </header>
 
-        <main style="padding: 15px;">
+        <main>
             <section class="card-master">
                 <p>SALDO CONTA</p>
-                <h2 id="display-bnb">R$ 0,00</h2>
+                <h2>R$ 0,00</h2>
             </section>
 
             <nav class="nav-actions">
@@ -78,7 +87,6 @@
             </div>
             <h3>CHAVE DE GOVERNANÇA</h3>
             <p class="price">$ 10.00 USDT</p>
-            <p style="font-size: 0.7rem; color: #666;">Apenas 1 NFT por carteira é necessário para votar.</p>
             <input type="text" id="referral-input" class="input-clean" placeholder="REFERRAL (OPCIONAL)">
             <button class="btn-azul" onclick="abrirQuintaFolha()">GERAR ORDEM</button>
         </div>
@@ -93,7 +101,7 @@
                 <p><b>Total:</b> 10.00 USDT</p>
             </div>
             <button class="btn-meta" onclick="chamarMetaMask()">PAGAR COM METAMASK</button>
-            <button onclick="fecharPagamento()" class="btn-cancel">Cancelar</button>
+            <button onclick="fecharPagamento()" class="btn-cancel">Cancelar Ordem</button>
         </div>
     </div>
 
