@@ -1,33 +1,92 @@
-body { font-family: sans-serif; margin: 0; background: #f4f7f6; }
+/* Fundo Geral - Azul Blueberry */
+body { 
+    font-family: sans-serif; 
+    margin: 0; 
+    background: #0056b3; 
+}
 
-/* Efeito de Apagar e Aparecer */
+/* Efeito de Apagar e Aparecer (Splash Screen) */
 .folha-fade {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    /* MUDANÇA AQUI: Cor Blueberry e Texto Branco */
-    background: #0056b3; color: white;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center;
-    opacity: 0; visibility: hidden; transition: opacity 0.6s ease;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: #0056b3; 
+    color: white;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    opacity: 0; 
+    visibility: hidden; 
+    transition: opacity 0.6s ease;
+    z-index: 9999; /* Garante que a raposa fique na frente de tudo */
 }
-.folha-fade.visivel { opacity: 1; visibility: visible; }
-.folha-fade.visivel { opacity: 1; visibility: visible; }
 
-/* Estilo dos Botões */
-.btn-proximo {
-    background: #0056b3; color: white; border: none;
-    padding: 15px 30px; border-radius: 8px; font-weight: bold;
+/* Quando a folha está ativa */
+.folha-fade.visivel { 
+    opacity: 1; 
+    visibility: visible; 
 }
-.btn-proximo:disabled { background: #ccc; }
+
+/* Estilo dos Botões de Navegação */
+.btn-padrao {
+    background: white; 
+    color: #0056b3; 
+    border: none;
+    padding: 15px 30px; 
+    border-radius: 12px; 
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Estilo da Home (Aparece depois da Splash) */
+#home-app {
+    background: #f4f7f6; /* A Home volta a ter o fundo cinza claro */
+    min-height: 100vh;
+}
 
 /* Meia-Folha do Mint */
 .mint-overlay {
-    position: fixed; bottom: -100%; left: 0; width: 100%;
-    height: 50%; background: white; transition: all 0.5s ease;
-    border-radius: 20px 20px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    position: fixed; 
+    bottom: -100%; 
+    left: 0; 
+    width: 100%;
+    height: 50%; 
+    background: white; 
+    transition: all 0.5s ease;
+    border-radius: 20px 20px 0 0; 
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    z-index: 10000;
 }
+
 .mint-overlay.metade { bottom: 0; }
 .mint-overlay.cheia { bottom: 0; height: 100%; border-radius: 0; }
 
 /* Grid da Home */
-.grid-dao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 20px; }
-.sala { background: white; padding: 20px; text-align: center; border-radius: 10px; border: 1px solid #eee; }
+.grid-dao { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    padding: 20px; 
+}
+
+.sala { 
+    background: white; 
+    padding: 20px; 
+    text-align: center; 
+    border-radius: 10px; 
+    border: 1px solid #eee; 
+}
+
+/* Card de Saldo */
+.card-master {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
