@@ -62,3 +62,167 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; 
     background: white; transition: all 0.5s ease; z-index: 10000;
 }
 .mint-overlay.metade { bottom: 0; }
+
+
+.<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo | DAO</title>
+    
+    <link rel="stylesheet" href="src/shared/styles/theme.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+
+    <div id="intro-layer">
+        <section id="folha1" class="folha-fade visivel">
+            <img src="raposa.png" alt="Raposa" style="width: 180px;">
+            <p style="margin-top:20px; font-size: 0.9rem; letter-spacing: 2px;">INICIANDO PROTOCOLO...</p>
+        </section>
+
+        <section id="folha2" class="folha-fade">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; text-align: left;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px;">O Protocolo</h2>
+                <p style="line-height: 1.6; color: rgba(255,255,255,0.9);">
+                    Uma <b>Economia Circular</b> via BNB Chain, desenhada para gerar autonomia financeira. 
+                    Conectamos tecnologia e impacto social para fortalecer quem realmente faz o motor girar.
+                </p>
+            </div>
+            <div style="padding-bottom: 40px;">
+                <button class="btn-pilula" style="background:white; color:#0056b3; cursor:pointer; opacity:1;" onclick="irParaFolha3()">CONHECER GOVERNANÇA</button>
+            </div>
+        </section>
+
+        <section id="folha3" class="folha-fade">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; text-align: left;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px;">Governança</h2>
+                <p style="line-height: 1.6; color: rgba(255,255,255,0.9);">
+                    No Protocolo Nitrogênio, a comunidade decide. <br><br>
+                    Através da <b>DAO Pura</b>, suas propostas e votos moldam o futuro do ecossistema de forma transparente e imutável.
+                </p>
+            </div>
+            <div style="padding-bottom: 40px;">
+                <button class="btn-pilula" style="background:white; color:#0056b3; cursor:pointer; opacity:1;" onclick="irParaFolha4()">VER CHAVE DE ACESSO</button>
+            </div>
+        </section>
+
+        <section id="folha4" class="folha-fade">
+            <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+                <img src="raposa.png" alt="NFT Alpha" style="width: 120px; margin: 0 auto 20px auto; filter: brightness(0) invert(1);">
+                <h2 style="margin-bottom: 15px;">Chave de Governança</h2>
+                <p style="font-size: 0.9rem; line-height: 1.5; padding: 0 10px;">
+                    O <b>NFT Alpha</b> é sua credencial única para participar. <br><br>
+                    • Apenas 1 por carteira.<br>
+                    • Direito a voto em propostas.<br>
+                    • Participação nos resultados da DAO.
+                </p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); width: 100%; padding: 25px; border-radius: 30px 30px 0 0;">
+                <label style="font-size: 0.8rem; display: block; margin-bottom: 10px;">
+                    <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper
+                </label>
+                <label style="font-size: 0.8rem; display: block; margin-bottom: 20px;">
+                    <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito as Regras de Governança
+                </label>
+                <button id="btn-entrar" class="btn-pilula" style="width: 80%;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="home-app" style="display: none;">
+        <header style="display: flex; justify-content: space-between; align-items: center; padding: 15px;">
+            <div class="logo-area">
+                <h1 style="margin:0; font-size: 1.2rem;">NITROGÊNIO</h1>
+                <p style="margin:0; font-size: 0.7rem; color: #0056b3;">PROTOCOLO</p>
+            </div>
+            <button id="btn-conectar" class="btn-padrao">CONECTAR</button>
+        </header>
+
+        <main style="padding: 15px;">
+            <section class="card-master">
+                <p>SALDO CONTA</p>
+                <h2 id="display-bnb">R$ 0,00</h2>
+            </section>
+
+            <nav class="nav-actions">
+                <div class="action-item">
+                    <button class="btn-act" id="btn-pagar">↑</button>
+                    <p>PAGAR</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-receber">↓</button>
+                    <p>RECEBER</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-coletar">↓</button>
+                    <p>COLETAR</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-trocar">⇄</button>
+                    <p>TROCAR</p>
+                </div>
+            </nav>
+
+            <section class="grid-dao">
+                <div class="sala">COMUNIDADE</div>
+                <div class="sala" onclick="abrirMint()">GOVERNANÇA</div>
+                <div class="sala">TRANSPARÊNCIA</div>
+                <div class="sala">TESOURARIA</div>
+            </section>
+        </main>
+    </div>
+
+    <div id="folha-mint" class="mint-overlay">
+        <div class="mint-content" style="padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+            <button onclick="voltarMint()" style="align-self: flex-start; background:none; border:none; color:#0056b3; font-weight:bold;">← VOLTAR</button>
+            
+            <div style="margin: 10px 0; border-radius: 15px; overflow: hidden; border: 2px solid #0056b3;">
+                <img src="raposa.png" alt="NFT Alpha" style="width: 150px; display: block;">
+                <div style="background: #0056b3; color: white; padding: 5px; font-size: 0.7rem; font-weight: bold;">
+                    NFT ALPHA #001
+                </div>
+            </div>
+
+            <h3 style="margin: 10px 0;">MINT EM USDT</h3>
+            <p style="font-size: 1.2rem; font-weight: bold; color: #333;">$ 10.00</p>
+            
+            <p style="font-size: 0.7rem; color: #666; margin-top: 15px;">CARTEIRA REFERRAL (OPCIONAL)</p>
+            <input type="text" id="referral-input" class="input-clean" placeholder="0x... (ou deixe em branco)" style="text-align: center; font-size: 0.8rem;">
+            
+            <button class="btn-pilula-azul" onclick="abrirQuintaFolha()" style="margin-top: 20px; width: 100%;">GERAR ORDEM EM USDT</button>
+        </div>
+    </div>
+
+    <div id="folha-pagamento" class="mint-overlay" style="z-index: 10001;">
+        <div class="mint-content" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+            <h2>RESUMO DA ORDEM</h2>
+            <hr style="width: 80%; border: 0.5px solid #eee; margin: 20px 0;">
+            
+            <div style="text-align: left; width: 100%; font-size: 0.9rem;">
+                <p><strong>Item:</strong> NFT Alpha</p>
+                <p><strong>Rede:</strong> BNB Smart Chain (BSC)</p>
+                <p><strong>Moeda:</strong> USDT</p>
+                <p><strong>Total:</strong> 10.00 USDT</p>
+            </div>
+
+            <div style="margin-top: 30px; background: #f4f7f6; padding: 15px; border-radius: 10px; width: 100%;">
+                <p style="font-size: 0.7rem; color: #666;">Ao confirmar, sua MetaMask será aberta para autorizar o pagamento.</p>
+            </div>
+
+            <button class="btn-pilula-azul" onclick="chamarMetaMask()" style="margin-top: 25px; width: 100%; background: #f6851b; border: none;">
+                PAGAR COM METAMASK
+            </button>
+            
+            <button onclick="fecharPagamento()" style="margin-top: 15px; background: none; border: none; color: #999;">Cancelar Ordem</button>
+        </div>
+    </div>
+    
+    <script src="src/shared/js/config.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
