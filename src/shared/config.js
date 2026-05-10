@@ -11,3 +11,9 @@ export const CONFIG = {
         QR_SERVER: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='
     }
 };
+
+// shared/config.js
+export const CONFIG = {
+    // ... suas outras configurações
+    CHAVE_ACEITE: "nitro_aceite_termos", // Nome da "chave" na memória do celular
+};
