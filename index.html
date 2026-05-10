@@ -19,26 +19,50 @@
         </section>
 
         <section id="folha2" class="folha-fade">
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 20px;">
-                <h2>Engenharia de Fluxo</h2>
-                <p style="color: rgba(255,255,255,0.7); margin-top: 20px;">[Área reservada para descrição técnica]</p>
-                <p>50% Liquidez | 50% Cofre Safe</p>
-                <p>70% Usuário | 20% Indicador | 10% DAO</p>
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; text-align: left;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px;">O Protocolo</h2>
+                <p style="line-height: 1.6; color: rgba(255,255,255,0.9);">
+                    Uma <b>Economia Circular</b> via BNB Chain, desenhada para gerar autonomia financeira. 
+                    Conectamos tecnologia e impacto social para fortalecer quem realmente faz o motor girar.
+                </p>
             </div>
             <div style="padding-bottom: 40px;">
-                <button class="btn-pilula" onclick="irParaFolha3()">AVANÇAR</button>
+                <button class="btn-pilula" style="background:white; color:#0056b3; cursor:pointer; opacity:1;" onclick="irParaFolha3()">CONHECER GOVERNANÇA</button>
             </div>
         </section>
 
         <section id="folha3" class="folha-fade">
-            <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
-                <h2>Benefícios NFT Alpha</h2>
-                <p style="font-size: 0.8rem;">Acesso à governança, recompensas de 70% e participação na DAO pura.</p>
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; text-align: left;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px;">Governança</h2>
+                <p style="line-height: 1.6; color: rgba(255,255,255,0.9);">
+                    No Protocolo Nitrogênio, a comunidade decide. <br><br>
+                    Através da <b>DAO Pura</b>, suas propostas e votos moldam o futuro do ecossistema de forma transparente e imutável.
+                </p>
             </div>
-            <div style="background: rgba(0,0,0,0.2); width: 100%; padding: 20px; border-radius: 20px 20px 0 0;">
-                <label style="font-size: 0.7rem;"><input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper</label><br>
-                <label style="font-size: 0.7rem;"><input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança</label><br>
-                <button id="btn-entrar" class="btn-pilula" style="margin-top:15px; width: 80%;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
+            <div style="padding-bottom: 40px;">
+                <button class="btn-pilula" style="background:white; color:#0056b3; cursor:pointer; opacity:1;" onclick="irParaFolha4()">VER CHAVE DE ACESSO</button>
+            </div>
+        </section>
+
+        <section id="folha4" class="folha-fade">
+            <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+                <img src="raposa.png" alt="NFT Alpha" style="width: 120px; margin: 0 auto 20px auto; filter: brightness(0) invert(1);">
+                <h2 style="margin-bottom: 15px;">Chave de Governança</h2>
+                <p style="font-size: 0.9rem; line-height: 1.5; padding: 0 10px;">
+                    O <b>NFT Alpha</b> é sua credencial única para participar. <br><br>
+                    • Apenas 1 por carteira.<br>
+                    • Direito a voto em propostas.<br>
+                    • Participação nos resultados da DAO.
+                </p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); width: 100%; padding: 25px; border-radius: 30px 30px 0 0;">
+                <label style="font-size: 0.8rem; display: block; margin-bottom: 10px;">
+                    <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper
+                </label>
+                <label style="font-size: 0.8rem; display: block; margin-bottom: 20px;">
+                    <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito as Regras de Governança
+                </label>
+                <button id="btn-entrar" class="btn-pilula" style="width: 80%;" disabled onclick="acessarHome()">ENTRAR NO APP</button>
             </div>
         </section>
     </div>
@@ -59,23 +83,23 @@
             </section>
 
             <nav class="nav-actions">
-    <div class="action-item">
-        <button class="btn-act" id="btn-pagar">↑</button>
-        <p>PAGAR</p>
-    </div>
-    <div class="action-item">
-        <button class="btn-act" id="btn-receber">↓</button>
-        <p>RECEBER</p>
-    </div>
-    <div class="action-item">
-        <button class="btn-act" id="btn-coletar">↓</button>
-        <p>COLETAR</p>
-    </div>
-    <div class="action-item">
-        <button class="btn-act" id="btn-trocar">⇄</button>
-        <p>TROCAR</p>
-    </div>
-</nav>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-pagar">↑</button>
+                    <p>PAGAR</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-receber">↓</button>
+                    <p>RECEBER</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-coletar">↓</button>
+                    <p>COLETAR</p>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-trocar">⇄</button>
+                    <p>TROCAR</p>
+                </div>
+            </nav>
 
             <section class="grid-dao">
                 <div class="sala">COMUNIDADE</div>
@@ -107,7 +131,7 @@
         </div>
     </div>
 
-            .    <div id="folha-pagamento" class="mint-overlay" style="z-index: 10001;">
+    <div id="folha-pagamento" class="mint-overlay" style="z-index: 10001;">
         <div class="mint-content" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
             <h2>RESUMO DA ORDEM</h2>
             <hr style="width: 80%; border: 0.5px solid #eee; margin: 20px 0;">
