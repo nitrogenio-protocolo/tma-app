@@ -12,9 +12,23 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; 
 
 /* Botões Estilo Pílula */
 .btn-pilula {
-    background: white; color: #0056b3; border: none;
-    padding: 12px 45px; border-radius: 50px; font-weight: bold;
-    text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background: rgba(255, 255, 255, 0.2); /* Fica quase transparente */
+    color: rgba(255, 255, 255, 0.5); /* Texto cinza claro */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 45px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: not-allowed; /* Mostra o ícone de proibido ao passar o mouse */
+    transition: all 0.3s ease;
+}
+
+/* Botão Pílula - Quando estiver HABILITADO (Acordado) */
+.btn-pilula:not(:disabled) {
+    background: white !important;
+    color: #0056b3 !important;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 /* Configuração da Home */
