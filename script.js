@@ -1,34 +1,49 @@
-
-/* Efeito de Apagar/Aparecer (Fade) */
-.folha-fade {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #ffffff;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    opacity: 0; visibility: hidden;
-    transition: opacity 0.6s ease, visibility 0.6s;
-    z-index: 10;
+// Navegação Inicial
+function irParaFolha2() {
+    document.getElementById('folha1').classList.remove('visivel');
+    setTimeout(() => { document.getElementById('folha2').classList.add('visivel'); }, 600);
 }
-.folha-fade.visivel { opacity: 1; visibility: visible; }
 
-/* Botões e Caixas Estilo Clean */
-.btn-proximo {
-    background: #0056b3; color: white;
-    border: none; padding: 15px 40px;
-    border-radius: 8px; margin-top: 20px;
-    font-weight: bold; cursor: pointer;
+function irParaFolha3() {
+    document.getElementById('folha2').classList.remove('visivel');
+    setTimeout(() => { document.getElementById('folha3').classList.add('visivel'); }, 600);
 }
-.btn-proximo:disabled { background: #cccccc; cursor: not-allowed; }
 
-/* Overlay do Mint (A meia-folha) */
-.mint-overlay {
-    position: fixed;
-    bottom: -100%; left: 0; width: 100%;
-    height: 50%; background: #f4f7f6;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 100; border-radius: 25px 25px 0 0;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+// Trava dos Checkboxes
+const c1 = document.getElementById('check-whitepaper');
+const c2 = document.getElementById('check-governanca');
+const btnEntrar = document.getElementById('btn-entrar');
+
+[c1, c2].forEach(check => {
+    check.addEventListener('change', () => {
+        btnEntrar.disabled = !(c1.checked && c2.checked);
+    });
+});
+
+function acessarHome() {
+    document.getElementById('intro-layer').style.display = 'none';
+    document.getElementById('home-app').style.display = 'block';
 }
-.mint-overlay.metade { bottom: 0; height: 50%; }
-.mint-overlay.cheia { bottom: 0; height: 100%; border-radius: 0; }
+
+// Lógica do Mint (Folha 4)
+function abrirMint() {
+    document.getElementById('folha-mint').classList.add('metade');
+}
+
+function expandirMint() {
+    const mint = document.getElementById('folha-mint');
+    if (mint.classList.contains('metade')) {
+        mint.classList.replace('metade', 'cheia');
+        document.getElementById('extra-info').style.display = 'block';
+    }
+}
+
+function voltarMint() {
+    const mint = document.getElementById('folha-mint');
+    if (mint.classList.contains('cheia')) {
+        mint.classList.replace('cheia', 'metade');
+        document.getElementById('extra-info').style.display = 'none';
+    } else {
+        mint.classList.remove('metade');
+    }
+}
