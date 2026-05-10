@@ -1,43 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo | DAO</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
 
-<div id="intro-layer">
-    <section id="folha1" class="folha-fade visivel" onclick="irParaFolha2()">
-        <img src="raposa.png" alt="Alpha" class="logo-splash">
-        <p class="tech-text">Iniciando Kernel Nitrogênio...</p>
-    </section>
+    <div id="intro-layer">
+        <section id="folha1" class="folha-fade visivel" onclick="irParaFolha2()">
+            <img src="raposa.png" alt="Alpha" class="logo-splash" style="width: 150px;">
+            <p class="tech-text">Protocolo Nitrogênio - Iniciando...</p>
+        </section>
 
-    <section id="folha2" class="folha-fade">
-        <h2 class="titulo-tech">Arquitetura do Protocolo</h2>
-        <div class="info-box">
-            <p>50% Liquidez | 50% Cofre Safe</p>
-            <p>70% Usuário | 20% Indicador | 10% DAO</p>
-        </div>
-        <button class="btn-proximo" onclick="irParaFolha3()">AVANÇAR</button>
-    </section>
+        <section id="folha2" class="folha-fade">
+            <h2>Arquitetura do Protocolo</h2>
+            <div class="info-box">
+                <p><strong>Engenharia de Fluxo:</strong></p>
+                <p>50% Liquidez | 50% Cofre Safe</p>
+                <p>70% Usuário | 20% Indicador | 10% DAO</p>
+            </div>
+            <button class="btn-proximo" onclick="irParaFolha3()">AVANÇAR</button>
+        </section>
 
-    <section id="folha3" class="folha-fade">
-        <h2 class="titulo-tech">Conformidade e Rede</h2>
-        <div class="check-group">
-            <label><input type="checkbox" id="check-whitepaper"> Li o Whitepaper Oficial</label>
-            <label><input type="checkbox" id="check-governanca"> Concordo com a Governança</label>
-        </div>
-        <button id="btn-entrar" class="btn-proximo" disabled onclick="acessarHome()">VALIDAR E ENTRAR</button>
-    </section>
-</div>
-
-<div id="home-app" style="display: none;">
+        <section id="folha3" class="folha-fade">
+            <h2>Conformidade</h2>
+            <div class="check-group">
+                <label><input type="checkbox" id="check-whitepaper"> Li o Documento Oficial</label><br><br>
+                <label><input type="checkbox" id="check-governanca"> Concordo com a Governança</label>
+            </div>
+            <button id="btn-entrar" class="btn-proximo" disabled onclick="acessarHome()">VALIDAR E ENTRAR</button>
+        </section>
     </div>
 
-<div id="folha-mint" class="mint-overlay">
-    <div class="drag-bar" onclick="expandirMint()"></div>
-    <div class="mint-content">
-        <button class="btn-voltar" onclick="voltarMint()">Voltar</button>
-        <h3 class="titulo-tech">MINT NFT ALPHA</h3>
-        <p class="preco-texto">Preço: 10 USD</p>
-        <input type="text" id="padrinho" placeholder="Endereço do Padrinho (Referral)">
-        <button class="btn-executar">EXECUTAR MINT</button>
-        <div id="extra-info" style="display: none;">
-            <p>Detalhes técnicos do Smart Contract...</p>
-            <a href="#">Ver Whitepaper Completo</a>
+    <div id="home-app" style="display: none;">
+        <header>
+            <div class="logo-area">
+                <h1>NITROGÊNIO</h1>
+                <p>PROTOCOLO</p>
+            </div>
+            <button id="btn-conectar">CONECTAR</button>
+        </header>
+
+        <main>
+            <section class="card-master">
+                <p>SALDO CONTA</p>
+                <h2 id="display-bnb">R$ 0,00</h2>
+            </section>
+
+            <nav class="nav-actions">
+                <button class="btn-act">↑ PAGAR</button>
+                <button class="btn-act">↓ RECEBER</button>
+                <button class="btn-act">↓ COLETAR</button>
+                <button class="btn-act">⇄ TROCAR</button>
+            </nav>
+
+            <section class="grid-dao">
+                <div class="sala">COMUNIDADE</div>
+                <div class="sala" onclick="abrirMint()">GOVERNANÇA</div>
+                <div class="sala">TRANSPARÊNCIA</div>
+                <div class="sala">TESOURARIA</div>
+            </section>
+        </main>
+    </div>
+
+    <div id="folha-mint" class="mint-overlay">
+        <div class="mint-content">
+            <button onclick="voltarMint()">← Voltar</button>
+            <h3>MINT NFT ALPHA</h3>
+            <p>Preço: 10 USD</p>
+            <input type="text" id="padrinho" placeholder="Carteira do Padrinho">
+            <button class="btn-proximo" onclick="expandirMint()">DETALHES / EXECUTAR</button>
+            <div id="extra-info" style="display: none;">
+                <p>Informações técnicas do contrato...</p>
+            </div>
         </div>
     </div>
-</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
