@@ -1,21 +1,13 @@
-
-// Configurações Oficiais do Protocolo Nitrogênio
+// shared/config.js
 export const CONFIG = {
-    NETWORK: {
-        CHAIN_ID: '0x38', // BNB Smart Chain
-        SYMBOL: 'BNB',
-        CURRENCY_BRL: 3400.00
-    },
-    CONTRACTS: {
-        TOKEN_N: "0x...", // Endereço do seu Token N
-        NFT_ALPHA: "0x..." // Chave de acesso NFT Alpha
-    },
-    GOVERNANCE: {
-        GUARDIANS_COUNT: 21,
-        SNAPSHOT_SPACE: "nitrogenio.eth"
-    },
-    THEME: {
-        PRIMARY: "#007BFF", // Blueberry Blue
-        SECONDARY: "#f8f9fa" // Antarctic Clean
+    NETWORK: "BNB Smart Chain",
+    SYMBOL: "BNB",
+    CURRENCY: "BRL",
+    COTACAO_INICIAL: 3400.00,
+    API_BINANCE: 'https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL',
+    UPDATE_INTERVAL: 70000, // 70 segundos
+    LINKS: {
+        PANCAKE: 'https://pancakeswap.finance/swap',
+        QR_SERVER: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='
     }
 };
