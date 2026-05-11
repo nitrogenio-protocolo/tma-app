@@ -34,30 +34,30 @@ body {
     width: 150px;
     opacity: 0; 
     transform: scale(0.9);
-    /* Mantivemos o delay de 2s, mas a animação agora dura 3s no total */
-    animation: materializaEsome 3s ease-in-out forwards;
+    /* A animação agora dura 2 segundos (do segundo 2 ao 4) */
+    animation: materializaEsomeRapido 2s ease-in-out forwards;
     animation-delay: 2s; 
 }
 
-@keyframes materializaEsome {
+@keyframes materializaEsomeRapido {
     0% {
         opacity: 0;
         transform: scale(0.9);
     }
-    /* Em 33% do tempo (após 1s de animação), ela está 100% visível */
-    33% {
+    /* Aparece em 0.5s (25% de 2s) */
+    25% {
         opacity: 1;
         transform: scale(1);
     }
-    /* Ela fica visível até os 66% do tempo (mais 1s parada) */
-    66% {
+    /* Fica parada por 1s (dos 25% aos 75%) */
+    75% {
         opacity: 1;
         transform: scale(1);
     }
-    /* No último 1s (dos 66% aos 100%), ela desaparece */
+    /* Some nos últimos 0.5s (dos 75% aos 100%) */
     100% {
         opacity: 0;
-        transform: scale(1.05); /* Um leve zoom enquanto some dá um toque especial */
+        transform: scale(1.02);
     }
 }
 
