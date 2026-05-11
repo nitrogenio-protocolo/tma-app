@@ -10,38 +10,37 @@
 <body>
 
     <div id="intro-layer">
-        <section id="folha1" class="folha-fade visivel">
-            <div class="splash-content">
-                <img src="raposa.png" class="raposa-splash" alt="Raposa">
-                <p class="status-loading">INICIANDO PROTOCOLO...</p>
+    <section id="folha1" class="folha-fade visivel">
+        <div class="splash-content">
+            <img src="raposa.png" class="raposa-splash" alt="Raposa">
             </div>
-        </section>
+    </section>
 
-        <section id="folha2" class="folha-fade">
-            <div class="content-intro">
-                <h2>O Protocolo</h2>
-                <p>Uma <b>Economia Circular</b> via BNB Chain, focada em autonomia financeira e impacto social.</p>
-            </div>
-            <div class="footer-intro">
-                <button class="btn-pilula-ativo" onclick="irParaFolha3()">AVANÇAR</button>
-            </div>
-        </section>
+    <section id="folha2" class="folha-fade">
+        <div class="content-intro">
+            <h2>O Protocolo</h2>
+            <p>Uma <b>Economia Circular</b> via BNB Chain, focada em autonomia financeira e impacto social.</p>
+        </div>
+        <div class="footer-intro">
+            <button class="btn-pilula-ativo" onclick="irParaFolha3()">AVANÇAR</button>
+        </div>
+    </section>
 
-        <section id="folha3" class="folha-fade">
-            <div class="top-raposa">
-                <img src="raposa.png" class="raposa-mini">
-            </div>
-            <div class="content-intro">
-                <h2>Governança</h2>
-                <p>Na <b>DAO Pura</b>, a comunidade decide. Aceite os termos para acessar o painel de controle.</p>
-            </div>
-            <div class="check-box">
-                <label class="label-check"><input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper</label>
-                <label class="label-check"><input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança</label>
+    <section id="folha3" class="folha-fade">
+        <div class="content-intro">
+            <h2>Governança</h2>
+            <p>Na <b>DAO Pura</b>, a comunidade decide. Aceite os termos para acessar o painel de controle.</p>
+        </div>
+        <div class="check-box">
+            <label class="label-check"><input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper</label>
+            <label class="label-check"><input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança</label>
+            <div class="btn-container">
                 <button id="btn-entrar" class="btn-pilula" disabled onclick="acessarHome()">ENTRAR NO APP</button>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
+     
 
     <div id="home-app" style="display: none;">
         <header>
