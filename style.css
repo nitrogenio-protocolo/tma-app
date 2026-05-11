@@ -40,25 +40,11 @@ body {
 }
 
 @keyframes materializaEsomeRapido {
-    0% {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    /* Aparece em 0.5s (25% de 2s) */
-    25% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    /* Fica parada por 1s (dos 25% aos 75%) */
-    75% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    /* Some nos últimos 0.5s (dos 75% aos 100%) */
-    100% {
-        opacity: 0;
-        transform: scale(1.02);
-    }
+    0% { opacity: 0; transform: scale(0.9); }
+    /* Entra mais devagar: leva 1.5s para chegar no 100% (75% de 2s) */
+    75% { opacity: 1; transform: scale(1); } 
+    /* Some rápido no final: os últimos 0.5s (dos 75% aos 100%) */
+    100% { opacity: 0; transform: scale(1.02); }
 }
 
 /* --- BLOCO DE BOTÕES (Estilo Pílula Centralizado) --- */
