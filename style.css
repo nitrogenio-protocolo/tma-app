@@ -1,67 +1,235 @@
-body { font-family: sans-serif; margin: 0; background: #0056b3; overflow: hidden; color: #333; }
+/* Configurações Gerais */
+body { 
+    font-family: sans-serif; 
+    margin: 0; 
+    background: #0056b3; 
+    overflow: hidden; 
+    color: #333; 
+}
 
-//* Centralização dos botões nas folhas de introdução */
+/* Folhas de Transição (Intro) */
+.folha-fade {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: #0056b3; 
+    color: white; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    opacity: 0; 
+    visibility: hidden; 
+    transition: opacity 0.6s ease; 
+    z-index: 2000;
+}
+.folha-fade.visivel { opacity: 1; visibility: visible; }
+
+/* --- BLOCO DA FOLHA 1 (Splash Screen) --- */
+#folha1 { justify-content: center; }
+
+.raposa-splash {
+    width: 150px;
+    opacity: 0; /* Começa invisível */
+    transform: scale(0.9);
+    animation: materializar 1.2s ease-out forwards;
+    animation-delay: 2s; /* Espera 2 segundos de tela azul pura */
+}
+
+@keyframes materializar {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- BLOCO DE BOTÕES (Estilo Pílula Centralizado) --- */
 .footer-intro, .btn-container {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-bottom: 40px; /* Respiro no fundo da tela */
+    padding-bottom: 40px;
 }
 
 .btn-pilula, .btn-pilula-ativo {
     border: none;
-    padding: 12px 40px; /* Estilo pílula: mais largo que alto */
+    padding: 12px 40px;
     border-radius: 50px;
     font-weight: bold;
     text-transform: uppercase;
     transition: 0.3s;
-    width: auto;       /* Não ocupa a largura toda */
-    min-width: 180px;  /* Tamanho mínimo para ficar elegante */
+    width: auto;
+    min-width: 180px;
     cursor: pointer;
 }
 
-/* Cor específica do botão ativo */
+/* Cores dos Botões */
 .btn-pilula-ativo, .btn-pilula:not(:disabled) {
     background: white !important;
     color: #0056b3 !important;
 }
 
-.folha-fade.visivel { opacity: 1; visibility: visible; }
+.btn-pilula:disabled { 
+    background: rgba(255,255,255,0.1) !important; 
+    color: rgba(255,255,255,0.3) !important; 
+    cursor: not-allowed; 
+}
 
-/* Splash Centralizada */
-#folha1 { justify-content: center; }
-.splash-content { display: flex; flex-direction: column; align-items: center; }
-.raposa-splash { width: 150px; }
-.status-loading { margin-top: 25px; font-size: 0.8rem; letter-spacing: 2px; }
+/* Conteúdo das Folhas 2 e 3 */
+.content-intro { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    padding: 40px; 
+}
 
+.check-box { 
+    background: rgba(0,0,0,0.25); 
+    width: 100%; 
+    padding: 30px; 
+    border-radius: 30px 30px 0 0; 
+    box-sizing: border-box; 
+    text-align: left; 
+}
 
-.content-intro { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px; }
-.footer-intro { padding-bottom: 50px; width: 100%; }
-
-/* Checkboxes e Botão */
-.check-box { background: rgba(0,0,0,0.25); width: 100%; padding: 30px; border-radius: 30px 30px 0 0; box-sizing: border-box; text-align: left; }
 .label-check { display: block; margin-bottom: 15px; font-size: 0.9rem; cursor: pointer; }
-.btn-pilula, .btn-pilula-ativo { border: none; padding: 16px 45px; border-radius: 50px; font-weight: bold; text-transform: uppercase; transition: 0.3s; width: 100%; margin-top: 10px; }
 
-.btn-pilula:disabled { background: rgba(255,255,255,0.1) !important; color: rgba(255,255,255,0.3) !important; cursor: not-allowed; }
-.btn-pilula:not(:disabled), .btn-pilula-ativo { background: white !important; color: #0056b3 !important; cursor: pointer; }
-
-/* Home e Overlays */
+/* --- HOME APP E INTERFACE --- */
 #home-app { background: #f4f7f6; min-height: 100vh; position: relative; }
-header { background: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
-.card-master { background: white; margin: 20px; padding: 30px; border-radius: 20px; text-align: center; }
-.nav-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; }
-.btn-act { width: 60px; height: 60px; border-radius: 18px; border: none; background: #0056b3; color: white; font-size: 1.2rem; margin: 0 auto; display: block; }
-.action-item p { font-size: 0.6rem; font-weight: bold; margin-top: 8px; color: #0056b3; text-align: center; }
-.grid-dao { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
-.sala { background: white; padding: 20px; border-radius: 15px; text-align: center; font-size: 0.7rem; font-weight: bold; border: 1px solid #eee; color: #666; }
 
-.mint-overlay { position: fixed; bottom: -100%; left: 0; width: 100%; height: 100%; background: white; transition: 0.5s ease; z-index: 5000; }
+header { 
+    background: white; 
+    padding: 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #eee; 
+}
+
+.card-master { 
+    background: white; 
+    margin: 20px; 
+    padding: 30px; 
+    border-radius: 20px; 
+    text-align: center; 
+}
+
+.nav-actions { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px; 
+    padding: 0 20px; 
+}
+
+.btn-act { 
+    width: 60px; 
+    height: 60px; 
+    border-radius: 18px; 
+    border: none; 
+    background: #0056b3; 
+    color: white; 
+    font-size: 1.2rem; 
+    margin: 0 auto; 
+    display: block; 
+}
+
+.action-item p { 
+    font-size: 0.6rem; 
+    font-weight: bold; 
+    margin-top: 8px; 
+    color: #0056b3; 
+    text-align: center; 
+}
+
+.grid-dao { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+    padding: 20px; 
+}
+
+.sala { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 15px; 
+    text-align: center; 
+    font-size: 0.7rem; 
+    font-weight: bold; 
+    border: 1px solid #eee; 
+    color: #666; 
+}
+
+/* Overlays de Mint e Pagamento */
+.mint-overlay { 
+    position: fixed; 
+    bottom: -100%; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: white; 
+    transition: 0.5s ease; 
+    z-index: 5000; 
+}
+
 .mint-overlay.metade { bottom: 0; }
-.mint-content { padding: 40px 20px; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center; }
-.nft-preview { border: 2px solid #0056b3; border-radius: 15px; overflow: hidden; margin-bottom: 15px; }
+
+.mint-content { 
+    padding: 40px 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    height: 100%; 
+    justify-content: center; 
+}
+
+.nft-preview { 
+    border: 2px solid #0056b3; 
+    border-radius: 15px; 
+    overflow: hidden; 
+    margin-bottom: 15px; 
+}
+
 .nft-preview img { width: 140px; display: block; }
-.nft-tag { background: #0056b3; color: white; padding: 5px; font-size: 0.7rem; font-weight: bold; text-align: center; }
-.btn-azul { background: #0056b3; color: white; border: none; width: 100%; padding: 16px; border-radius: 10px; font-weight: bold; }
-.btn-meta { background: #f6851b; color: white; border: none; width: 100%; padding: 16px; border-radius: 10px; font-weight: bold; margin-top: 20px; }
-.btn-voltar { align-self: flex-start; background: none; border: none; color: #0056b3; font-weight: bold; position: absolute; top: 40px; }
+
+.nft-tag { 
+    background: #0056b3; 
+    color: white; 
+    padding: 5px; 
+    font-size: 0.7rem; 
+    font-weight: bold; 
+    text-align: center; 
+}
+
+.btn-azul { 
+    background: #0056b3; 
+    color: white; 
+    border: none; 
+    width: 100%; 
+    padding: 16px; 
+    border-radius: 10px; 
+    font-weight: bold; 
+}
+
+.btn-meta { 
+    background: #f6851b; 
+    color: white; 
+    border: none; 
+    width: 100%; 
+    padding: 16px; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    margin-top: 20px; 
+}
+
+.btn-voltar { 
+    align-self: flex-start; 
+    background: none; 
+    border: none; 
+    color: #0056b3; 
+    font-weight: bold; 
+    position: absolute; 
+    top: 40px; 
+}
