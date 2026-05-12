@@ -10,52 +10,47 @@
 <body>
 
     <div id="intro-layer">
-    <section id="folha1" class="folha-fade visivel">
-        <div class="splash-content">
-            <img src="raposa.png" class="raposa-splash" alt="Raposa">
+        <section id="folha1" class="folha-fade visivel">
+            <div class="splash-content">
+                <img src="raposa.png" class="raposa-splash" alt="Raposa">
             </div>
-    </section>
+        </section>
 
-    <section id="folha2" class="folha-fade">
-        <div class="content-intro">
-            <h2>A Nova Era da Estabilidade Digital</h2>
-            <p>Através<b>da nossa Liquidez Blindada,</b>garantimos que cada entrada fortaleça o preço de mercado antes mesmo da primeira venda. Com o sistema de Resgate Inteligente, protegemos o patrimônio do grupo, permitindo que a valorização acompanhe o tempo, enquanto nossos 21 Guardiões asseguram que cada taxa transacional retorne como força para a própria comunidade.
-​Sustentabilidade, Meritocracia e Impacto Social.</p>
-        </div>
-        <div class="footer-intro">
-            <button class="btn-pilula-ativo" onclick="irParaFolha3()">AVANÇAR</button>
-        </div>
-    </section>
+        <section id="folha2" class="folha-fade">
+            <div class="content-intro">
+                <h2>A Nova Era da Estabilidade Digital</h2>
+                <p>Através da nossa <b>Liquidez Blindada</b>, garantimos que cada entrada fortaleça o preço de mercado antes mesmo da primeira venda[span_0](start_span)[span_0](end_span). Com o sistema de Resgate Inteligente, protegemos o patrimônio do grupo, permitindo que a valorização acompanhe o tempo, enquanto nossos 21 Guardiões asseguram que cada taxa transacional retorne como força para a própria comunidade[span_1](start_span)[span_1](end_span). Sustentabilidade, Meritocracia e Impacto Social[span_2](start_span)[span_2](end_span).</p>
+            </div>
+            <div class="footer-intro">
+                <button class="btn-pilula-ativo" onclick="irParaFolha3()">AVANÇAR</button>
+            </div>
+        </section>
 
-    <section id="folha3" class="folha-fade">
-    <div class="content-intro">
-        <h2>Governança do Protocolo</h2>
-        <p>
-            Na <b>DAO </b>, o poder pertence à comunidade. Nossas regras de segurança e liquidez são protegidas pela tecnologia da rede BNB Chain.
-        </p>
-        <!-- Link discreto para quem quiser validar, sem ser obrigatório -->
-        <p style="font-size: 0.8em; margin-top: 10px;">
-            <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7;">
-                🔍 Verificar contrato no BscScan
-            </a>
-        </p>
-    </div>
+        <section id="folha3" class="folha-fade">
+            <div class="content-intro">
+                <h2>Governança do Protocolo</h2>
+                <p>Na <b>DAO Pura</b>, o poder pertence à comunidade[span_3](start_span)[span_3](end_span). Nossas regras de segurança e liquidez são protegidas pela tecnologia da rede BNB Chain[span_4](start_span)[span_4](end_span).</p>
+                <p style="font-size: 0.8em; margin-top: 10px;">
+                    <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7;">
+                        🔍 Verificar contrato no BscScan
+                    </a>
+                </p>
+            </div>
 
-    <div class="check-box">
-        <!-- Textos ajustados para serem mais diretos e convidativos -->
-        <label class="label-check">
-            <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li e concordo com os termos
-        </label>
-        <label class="label-check">
-            <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito participar da Economia Circular
-        </label>
-        
-        <div class="btn-container">
-            <button id="btn-entrar" class="btn-pilula" disabled onclick="acessarHome()">ENTRAR NO APP</button>
-        </div>
-    </div>
-</section>
-     
+            <div class="check-box">
+                <label class="label-check">
+                    <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li e concordo com os termos[span_5](start_span)[span_5](end_span)
+                </label>
+                <label class="label-check">
+                    <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito participar da Economia Circular[span_6](start_span)[span_6](end_span)
+                </label>
+                
+                <div class="btn-container">
+                    <button id="btn-entrar" class="btn-pilula" disabled onclick="acessarHome()">ENTRAR NO APP</button>
+                </div>
+            </div>
+        </section>
+    </div> <!-- Fechamento correto do intro-layer -->
 
     <div id="home-app" style="display: none;">
         <header>
@@ -88,6 +83,7 @@
         </main>
     </div>
 
+    <!-- Modais de NFT e Pagamento mantidos conforme seu original -->
     <div id="folha-mint" class="mint-overlay">
         <div class="mint-content">
             <button onclick="voltarMint()" class="btn-voltar">← VOLTAR</button>
