@@ -28,19 +28,33 @@
     </section>
 
     <section id="folha3" class="folha-fade">
-        <div class="content-intro">
-            <h2>Governança</h2>
-            <p>Na <b>DAO Pura</b>, a comunidade decide. Aceite os termos para acessar o painel de controle.</p>
+    <div class="content-intro">
+        <h2>Governança do Protocolo</h2>
+        <p>
+            Na <b>DAO </b>, o poder pertence à comunidade. Nossas regras de segurança e liquidez são protegidas pela tecnologia da rede BNB Chain.
+        </p>
+        <!-- Link discreto para quem quiser validar, sem ser obrigatório -->
+        <p style="font-size: 0.8em; margin-top: 10px;">
+            <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7;">
+                🔍 Verificar contrato no BscScan
+            </a>
+        </p>
+    </div>
+
+    <div class="check-box">
+        <!-- Textos ajustados para serem mais diretos e convidativos -->
+        <label class="label-check">
+            <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li e concordo com os termos
+        </label>
+        <label class="label-check">
+            <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito participar da Economia Circular
+        </label>
+        
+        <div class="btn-container">
+            <button id="btn-entrar" class="btn-pilula" disabled onclick="acessarHome()">ENTRAR NO APP</button>
         </div>
-        <div class="check-box">
-            <label class="label-check"><input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li o Whitepaper</label>
-            <label class="label-check"><input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito a Governança</label>
-            <div class="btn-container">
-                <button id="btn-entrar" class="btn-pilula" disabled onclick="acessarHome()">ENTRAR NO APP</button>
-            </div>
-        </div>
-    </section>
-</div>
+    </div>
+</section>
      
 
     <div id="home-app" style="display: none;">
