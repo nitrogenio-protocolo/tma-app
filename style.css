@@ -31,7 +31,7 @@ body {
 #folha1 { justify-content: center; }
 
 .raposa-splash {
-    width: 200px; /* Mantido os 200px conforme solicitado */
+    width: 200px; 
     opacity: 0; 
     transform: scale(0.9);
     animation: materializaEsomeRapido 2s ease-in-out forwards;
@@ -152,10 +152,10 @@ header {
 
 .sala { 
     background: white; 
-    padding: 15px 5px; /* Reduzido levemente o padding lateral para proteger textos longos */
+    padding: 15px 5px; 
     border-radius: 15px; 
     text-align: center; 
-    font-size: 0.65rem; /* Ajustado para 0.65rem para evitar quebras em telas pequenas */
+    font-size: 0.65rem; 
     font-weight: bold; 
     border: 1px solid #eee; 
     color: #666; 
@@ -174,29 +174,34 @@ header {
     z-index: 5000; 
 }
 
-/* Overlays de Mint e Pagamento - Ajustado para se adaptar ao conteúdo */
-.mint-overlay { 
-    position: fixed; 
-    bottom: -100%; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: white; 
-    transition: 0.5s ease; 
-    z-index: 5000; 
-    overflow-y: auto; /* Permite rolar a tela se o teclado do celular abrir */
-}
-
 .mint-overlay.metade { bottom: 0; }
 
 .mint-content { 
-    padding: 60px 20px 40px 20px; /* Aumentado espaço superior por causa do botão voltar */
+    padding: 40px 20px; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    min-height: calc(100% - 100px); /* Garante o alinhamento sem estourar a tela */
+    height: 100%; 
     justify-content: center; 
     box-sizing: border-box;
+}
+
+/* Nova classe criada exclusivamente para a estrutura da folha de pagamento */
+.pagamento-content {
+    padding: 40px 25px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    height: 100%; 
+    justify-content: flex-start; /* Alinha os itens do topo para baixo */
+    box-sizing: border-box;
+    margin-top: 40px; /* Joga os textos ligeiramente para baixo para dar folga */
+}
+
+.resumo-txt {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .nft-preview { 
@@ -227,7 +232,6 @@ header {
     border-radius: 10px; 
     font-weight: bold; 
     cursor: pointer;
-    margin-top: 15px;
 }
 
 .btn-meta { 
@@ -250,21 +254,19 @@ header {
     color: #0056b3; 
     font-weight: bold; 
     position: absolute; 
-    top: 25px; /* Ajustado para não sumir no topo de alguns celulares */
-    left: 20px;
+    top: 40px; 
     cursor: pointer;
-    z-index: 5100;
 }
 
-/* Container para centralizar o botão de cancelar */
+/* Container do Botão Cancelar */
 .btn-container-cancel {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Espaço controlado entre o botão MetaMask e o Cancelar */
+    margin-top: 25px; /* Controla a distância exata abaixo do botão laranja */
 }
 
-/* Novo Botão Cancelar Estilo Pílula Padronizado */
+/* Botão Cancelar Estilo Pílula */
 .btn-cancel-pilula {
     border: none;
     padding: 12px 40px;
