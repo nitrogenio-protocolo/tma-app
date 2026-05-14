@@ -31,19 +31,16 @@ body {
 #folha1 { justify-content: center; }
 
 .raposa-splash {
-    width: 200px;
+    width: 200px; /* Mantido os 200px conforme solicitado */
     opacity: 0; 
     transform: scale(0.9);
-    /* A animação agora dura 2 segundos (do segundo 2 ao 4) */
     animation: materializaEsomeRapido 2s ease-in-out forwards;
     animation-delay: 2s; 
 }
 
 @keyframes materializaEsomeRapido {
     0% { opacity: 0; transform: scale(0.9); }
-    /* Entra mais devagar: leva 1.5s para chegar no 100% (75% de 2s) */
     75% { opacity: 1; transform: scale(1); } 
-    /* Some rápido no final: os últimos 0.5s (dos 75% aos 100%) */
     100% { opacity: 0; transform: scale(1.02); }
 }
 
@@ -155,13 +152,14 @@ header {
 
 .sala { 
     background: white; 
-    padding: 20px; 
+    padding: 15px 5px; /* Reduzido levemente o padding lateral para proteger textos longos */
     border-radius: 15px; 
     text-align: center; 
-    font-size: 0.7rem; 
+    font-size: 0.65rem; /* Ajustado para 0.65rem para evitar quebras em telas pequenas */
     font-weight: bold; 
     border: 1px solid #eee; 
     color: #666; 
+    cursor: pointer;
 }
 
 /* Overlays de Mint e Pagamento */
@@ -192,6 +190,7 @@ header {
     border-radius: 15px; 
     overflow: hidden; 
     margin-bottom: 15px; 
+    background: #fdfdfd; /* Fundo limpo para harmonizar com a imagem */
 }
 
 .nft-preview img { width: 140px; display: block; }
@@ -213,6 +212,7 @@ header {
     padding: 16px; 
     border-radius: 10px; 
     font-weight: bold; 
+    cursor: pointer;
 }
 
 .btn-meta { 
@@ -224,6 +224,8 @@ header {
     border-radius: 10px; 
     font-weight: bold; 
     margin-top: 20px; 
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
 .btn-voltar { 
@@ -234,4 +236,5 @@ header {
     font-weight: bold; 
     position: absolute; 
     top: 40px; 
+    cursor: pointer;
 }
