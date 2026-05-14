@@ -238,3 +238,30 @@ header {
     top: 40px; 
     cursor: pointer;
 }
+
+/* Container para centralizar o botão de cancelar */
+.btn-container-cancel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* Novo Botão Cancelar Estilo Pílula Padronizado */
+.btn-cancel-pilula {
+    border: none;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.3s;
+    width: auto;
+    min-width: 180px;
+    cursor: pointer;
+    background: #e0e0e0; /* Cinza suave que combina com o tema clean */
+    color: #666666; /* Texto em cinza escuro para bom contraste */
+}
+
+.btn-cancel-pilula:hover {
+    background: #d5d5d5;
+}
