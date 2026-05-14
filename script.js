@@ -58,6 +58,13 @@ function fecharPagamento() {
 }
 
 function chamarMetaMask() {
+    // 1. Muda o texto do botão na hora para dar o feedback visual
+    document.getElementById('btn-pagar-meta').innerText = 'AGUARDANDO METAMASK...';
+    
+    // 2. Mostra o aviso para o usuário
     alert("Iniciando conexão com a MetaMask para pagamento em USDT...");
+    
     // Aqui no futuro entra o código técnico do Ethers.js
 }
+
+
