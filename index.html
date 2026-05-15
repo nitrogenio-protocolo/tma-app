@@ -28,53 +28,35 @@
             </div>
         </section>
 
-        <section id="folha3" class="folha-fade">
-    <div class="content-intro">
+        <<section id="folha3" class="folha-fade">
+    <div class="content-intro" style="padding: 20px; justify-content: flex-start; padding-top: 40px;">
         <h2>Governança do Protocolo</h2>
         
-        <div class="dao-info-container">
-            <div class="dao-item">
-                <strong>Comunidade:</strong>
-                <span>O poder de decisão pertence a todos os membros ativos.</span>
-            </div>
-
-            <div class="dao-item">
-                <strong>Consenso:</strong>
-                <span>Regras validadas por 11 de 21 Guardiões via Smart Contract.</span>
-            </div>
-
-            <div class="dao-item">
-                <strong>Rede:</strong>
-                <span>Taxas de Gas (BNB) para execução de transações na blockchain.</span>
-            </div>
-
-            <div class="dao-item">
-                <strong>Propósito:</strong>
-                <span>Ecossistema de economia circular (Não é investimento financeiro).</span>
-            </div>
+        <div class="dao-lista">
+            <p><strong>Comunidade:</strong> Poder de decisão de todos os membros.</p>
+            <p><strong>Consenso:</strong> Regras validadas por 11 de 21 Guardiões.</p>
+            <p><strong>Rede:</strong> Taxas de Gas (BNB) via Smart Contract.</p>
+            <p><strong>Propósito:</strong> Economia circular (Não é investimento).</p>
         </div>
 
-        <p style="margin-top: 20px;">
-            <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7; font-size: 0.8em;">
+        <p style="margin-top: 10px;">
+            <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7; font-size: 0.75em;">
                 🔍 Verificar contrato no BscScan
             </a>
         </p>
     </div>
 
-    <div class="footer-terms">
-        <label class="check-container">
-            <input type="checkbox" id="termos">
-            <span class="checkmark"></span>
-            Li e concordo com os termos
+    <div class="check-box">
+        <label class="label-check">
+            <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li e concordo com os termos
         </label>
-        
-        <label class="check-container">
-            <input type="checkbox" id="circular">
-            <span class="checkmark"></span>
-            Aceito participar da Economia Circular
+        <label class="label-check">
+            <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito participar da Economia Circular
         </label>
 
-        <button id="btnEntrar" class="btn-avancar" disabled>ENTRAR NO APP</button>
+        <div class="btn-container" style="padding-bottom: 0; margin-top: 15px;">
+            <button id="btn-entrar" class="btn-pilula" onclick="acessarHome()" disabled>ENTRAR NO APP</button>
+        </div>
     </div>
 </section>
 
