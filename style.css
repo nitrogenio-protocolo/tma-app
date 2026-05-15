@@ -284,3 +284,29 @@ header {
 .btn-cancel-pilula:active {
     background: #d5d5d5;
 }
+
+/* Estilo compacto para a lista da DAO */
+.dao-lista {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.dao-lista p {
+    margin-bottom: 10px; /* Espaço entre os itens */
+    line-height: 1.2;
+    font-size: 0.85rem;
+    color: #e0e0e0;
+}
+
+.dao-lista strong {
+    display: block; /* Título em cima */
+    color: #fff;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+/* Ajuste para os checkboxes ficarem brancos no fundo azul */
+.label-check {
+    color: white !important;
+}
