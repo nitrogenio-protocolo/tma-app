@@ -9,8 +9,68 @@ class NitrogenDAO {
         
         this.iniciarBotoes();
         this.iniciarAutomacao();
+        this.iniciarSplash();
     }
 
+    // ==========================================
+    // CONTROLE DA SPLASH SCREEN & INTRODUÇÃO
+    // ==========================================
+    iniciarSplash() {
+        // Passa da Folha 1 (Raposa) para a Folha 2 automaticamente após 4 segundos
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                this.irParaFolha2();
+            }, 4000);
+        });
+
+        // Monitora os checkboxes para liberar o botão de entrar
+        const c1 = document.getElementById('check-whitepaper');
+        const c2 = document.getElementById('check-governanca');
+        if (c1 && c2) {
+            c1.onchange = () => this.validarChecks();
+            c2.onchange = () => this.validarChecks();
+        }
+    }
+
+    irParaFolha2() {
+        const f1 = document.getElementById('folha1');
+        const f2 = document.getElementById('folha2');
+        if (f1 && f2) {
+            f1.classList.remove('visivel');
+            f2.classList.add('visivel');
+        }
+    }
+
+    irParaFolha3() {
+        const f2 = document.getElementById('folha2');
+        const f3 = document.getElementById('folha3');
+        if (f2 && f3) {
+            f2.classList.remove('visivel');
+            f3.classList.add('visivel');
+        }
+    }
+
+    validarChecks() {
+        const c1 = document.getElementById('check-whitepaper');
+        const c2 = document.getElementById('check-governanca');
+        const btnEntrar = document.getElementById('btn-entrar');
+        if (btnEntrar && c1 && c2) {
+            btnEntrar.disabled = !(c1.checked && c2.checked);
+        }
+    }
+
+    acessarHome() {
+        const intro = document.getElementById('intro-layer');
+        const home = document.getElementById('home-app');
+        if (intro && home) {
+            intro.style.display = 'none';
+            home.style.display = 'block';
+        }
+    }
+
+    // ==========================================
+    // CONEXÃO BLOCKCHAIN & COTAÇÃO
+    // ==========================================
     async conectar() {
         if (!window.ethereum) {
             return alert("Por favor, use o navegador da MetaMask ou Trust!");
@@ -76,6 +136,9 @@ class NitrogenDAO {
         }
     }
 
+    // ==========================================
+    // OPERAÇÕES DO PAINEL LATERAL (SIDE PANEL)
+    // ==========================================
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
         const content = document.getElementById('panel-content');
@@ -120,13 +183,8 @@ class NitrogenDAO {
             document.getElementById('btn-usar-camera').onclick = () => {
                 const reader = document.getElementById('reader');
                 const infoPagamento = document.getElementById('info-pagamento');
-                
-                // 1. Esconde o texto e o campo de valor para dar lugar à câmara
                 if(infoPagamento) infoPagamento.style.display = 'none';
-                
-                // 2. Mostra o leitor de QR Code
-                reader.style.setProperty('display', 'block', 'important');
-                
+                if(reader) reader.style.setProperty('display', 'block', 'important');
                 this.iniciarScanner(); 
             };
 
@@ -156,6 +214,7 @@ class NitrogenDAO {
 
     configurarRecebedor() {
         const input = document.getElementById('v-brl');
+        if(!input) return;
         input.oninput = () => {
             if(!this.account || !input.value) return;
             const bnb = (input.value / this.cotacaoBNB).toFixed(6);
@@ -195,7 +254,7 @@ class NitrogenDAO {
         document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
 
-    async executar(para, quanto) {
+    async ejecutar(para, quanto) {
         const btn = document.getElementById('confirm-final');
         try {
             if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
@@ -227,7 +286,7 @@ class NitrogenDAO {
             this.scanner = null;
         }
         
-        const r = document.getElementById('reader'); // Corrigido!
+        const r = document.getElementById('reader');
         const info = document.getElementById('info-pagamento');
         
         if(r) r.style.setProperty('display', 'none', 'important');
