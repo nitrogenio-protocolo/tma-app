@@ -446,3 +446,28 @@ header p { font-size: 0.6rem; margin: 0; color: #666; font-weight: bold; }
     color: #666666; 
 }
 .btn-cancel-pilula:active { background: #d5d5d5; }
+
+/* Correção para os campos da aba PAGAR aparecerem perfeitamente */
+.card-pagamento-fixo {
+    background: #f8f9fa !important; /* Força um fundo cinza claro para destacar */
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.txt-destino, .input-transparente {
+    color: #111111 !important; /* Força o texto a ficar preto e visível */
+    font-weight: bold;
+}
+
+/* Garante que o texto explicativo fique cinza escuro */
+.label-clean {
+    color: #666666 !important;
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
