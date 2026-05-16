@@ -348,3 +348,56 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     background: var(--green) !important;
     box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
 }
+
+/* Container do Rodapé Fixo */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: #ffffff;
+    border-top: 1px solid #eef0f5;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 999;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.02);
+}
+
+/* Itens de navegação (Padrão: Desativado em cinza) */
+.nav-item {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+    color: #a0a5b5; /* Cinza suave industrial */
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent; /* Remove o flash preto ao tocar no mobile */
+}
+
+/* O tamanho e peso dos símbolos industriais */
+.nav-icon {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+/* O texto abaixo do ícone */
+.nav-text {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   ESTADO ATIVO - ACENDE EM AZUL FORTE (BLUEBERRY BLUE)
+   ========================================================================== */
+.nav-item.active {
+    color: #007bff; /* Seu azul forte padrão */
+}
