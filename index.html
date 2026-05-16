@@ -9,6 +9,37 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
+    <div id="splash-screen" class="splash-overlay">
+    <div class="splash-slide active" id="slide-1">
+        <div class="splash-logo-box">
+            <h1 class="logo-animation">NITROGÊNIO</h1>
+            <p class="subtitle-animation">PROTOCOLO</p>
+            <div class="logo-line"></div>
+        </div>
+        <p class="splash-text-intro">Bem-vindo ao ecossistema descentralizado.</p>
+        <button type="button" class="btn-next-slide" onclick="nextSplashSlide()">PROSSEGUIR</button>
+    </div>
+
+    <div class="splash-slide" id="slide-2">
+        <div class="rules-container">
+            <h3>TERMOS E DIRETRIZES</h3>
+            <div class="rules-text">
+                <p><strong>1. Descentralização Pura:</strong> Você é inteiramente responsável pelas suas chaves privadas e transações. O protocolo não armazena suas credenciais.</p>
+                <p><strong>2. Conselhos e Guardiões:</strong> As decisões do ecossistema são coordenadas através de votações transparentes pelos 21 Guardiões legítimos.</p>
+                <p><strong>3. Transparência:</strong> Todas as movimentações na Tesouraria e contratos são públicas e auditáveis diretamente na blockchain.</p>
+                <p><strong>4. Uso do Aplicativo:</strong> Ao prosseguir, você concorda que entende a natureza Web3 e os riscos envolvidos em operações de redes descentralizadas.</p>
+            </div>
+        </div>
+
+        <div class="rules-footer">
+            <div class="checkbox-area">
+                <button type="button" id="btn-read" class="btn-small-toggle" onclick="toggleRead()">LI</button>
+                <button type="button" id="btn-agree" class="btn-small-toggle" onclick="toggleAgree()">CONCORDO</button>
+            </div>
+            <button type="button" id="btn-enter-home" class="btn-disabled" disabled onclick="finishSplash()">ACESSAR HOME</button>
+        </div>
+    </div>
+</div>
     <header>
         <div class="logo-area">
             <h1>NITROGÊNIO <span></span></h1>
