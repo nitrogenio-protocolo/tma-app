@@ -19,7 +19,6 @@ class NitrogenDAO {
     // --- MÉTODOS DA SPLASH SCREEN ---
 
     verificarSplashInicial() {
-        // Verifica no carregamento se o usuário já aceitou os termos anteriormente
         if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
             const splash = document.getElementById('splash-screen');
             if (splash) {
@@ -85,7 +84,6 @@ class NitrogenDAO {
         if (splash) {
             splash.classList.add('hidden');
         }
-        // Persiste a decisão no navegador para não incomodar o usuário novamente
         localStorage.setItem('nitrogenio_terms_accepted', 'true');
     }
 
@@ -266,16 +264,13 @@ class NitrogenDAO {
         const content = document.getElementById('panel-content');
         const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
         
-        // Colocamos o "this.ejecutar" direto no onclick do botão. 
-        // Usamos as aspas simples para passar os textos com segurança.
+        // Aqui a chave fecha no lugar perfeito e a ordem do clique vai direto na tag
         content.innerHTML = `
             <div class="converter-box">
                 <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
                 <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
                 <button class="btn-confirm" id="confirm-final" onclick="App.ejecutar('${addr}', '${valor}')">ASSINAR PAGAMENTO</button>
             </div>`;
-    }
-        document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
 
     async ejecutar(para, quanto) {
@@ -336,5 +331,4 @@ class NitrogenDAO {
     }
 }
 
-// Inicializa a aplicação de forma global
 const App = new NitrogenDAO();
