@@ -6,144 +6,59 @@
     <title>Nitrogênio Protocolo | DAO</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
+    <header>
+        <div class="logo-area">
+            <h1>NITROGÊNIO <span></span></h1>
+            <p class="network-label">PROTOCOLO</p>
+        </div>
+        <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
+    </header>
 
-    <!-- CAMADA DE INTRODUÇÃO -->
-    <div id="intro-layer">
-        <section id="folha1" class="folha-fade visivel">
-            <div class="splash-content">
-                <img src="raposa.png" class="raposa-splash" alt="Raposa">
-            </div>
+    <main>
+        <section class="card-master">
+            <div class="balance-info">
+                <p class="label">SALDO CONTA</p>
+                <h2 id="display-bnb">R$ 0.00000 <span></span></h2>
+            </div> 
         </section>
 
-        <section id="folha2" class="folha-fade">
-            <div class="content-intro">
-                <h2>DAO</h2>
-                <p>Sustentabilidade, Governança e Autonomia.
-                   Protocolo de economia circular: de troca de valor, 
-                   serviços e suporte mútuo que se retroalimenta.
-                   Token aqui funcionando mais como "Combustível", NFT é a voz da "Comunidade".</p>
+        <!-- Grade de Ações com texto abaixo e afastamento de 20px -->
+        <nav class="nav-actions">
+            <div class="action-item">
+                <button class="btn-act" id="btn-pagar">↑</button>
+                <span class="btn-label">PAGAR</span>
             </div>
-            <div class="footer-intro">
-                <!-- Ajustado para chamar o método da classe -->
-                <button class="btn-pilula-ativo" onclick="App.irParaFolha3()">AVANÇAR</button>
+            <div class="action-item">
+                <button class="btn-act" id="btn-receber">↓</button>
+                <span class="btn-label">RECEBER</span>
             </div>
+            <div class="action-item">
+                <button class="btn-act" id="btn-coletar">↓</button>
+                <span class="btn-label">COLETAR</span>
+            </div>
+            <div class="action-item">
+                <button class="btn-act" id="btn-trocar">⇄</button>
+                <span class="btn-label">TROCAR</span>
+            </div>
+        </nav>
+
+        <section class="grid-dao">
+            <div class="sala">COMUNIDADE</div>
+            <div class="sala">GOVERNANÇA</div>
+            <div class="sala">TRANSPARÊNCIA</div>
+            <div class="sala">TESOURARIA</div>
         </section>
+    </main>
 
-        <section id="folha3" class="folha-fade">
-            <div class="content-intro">
-                <h2>Governança do Protocolo</h2>
-                <p>COMUNIDADE: poder de decisão de todos os membros ativos.<br>
-                   CONSENSO: regras válidas por 11 de 21 do conselho.<br>
-                   REDE: taxas de gás (BNB) via Smart Contract.<br>
-                   PROPÓSITO: Economia circular (Não somos investimentos).</p>
-                <p style="font-size: 0.8em; margin-top: 10px;">
-                    <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7;">
-                        🔍 Verificar contrato no BscScan
-                    </a>
-                </p>
-            </div>
-
-            <div class="check-box">
-                <!-- Ajustado os gatilhos dos checkboxes -->
-                <label class="label-check">
-                    <input type="checkbox" id="check-whitepaper"> Li e concordo com os termos
-                </label>
-                <label class="label-check">
-                    <input type="checkbox" id="check-governanca"> Aceito participar da Economia Circular
-                </label>
-                
-                <div class="btn-container">
-                    <!-- Ajustado para chamar o método da classe -->
-                    <button id="btn-entrar" class="btn-pilula" disabled onclick="App.acessarHome()">ENTRAR NO APP</button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- TELA PRINCIPAL DO APP -->
-    <div id="home-app" style="display: none;">
-        <header>
-            <div class="logo-area">
-                <h1>NITROGÊNIO</h1>
-                <p>PROTOCOLO</p>
-            </div>
-            <button id="btn-conectar" class="btn-padrao">CONECTAR</button>
-        </header>
-
-        <main>
-            <section class="card-master">
-                <p>SALDO CONTA</p>
-                <!-- ID corrigido para bater com o display-bnb do JavaScript -->
-                <h2 id="display-bnb">R$ 0,00</h2>
-            </section>
-
-            <nav class="nav-actions">
-                <!-- Adicionado IDs corretos nos botões para o listener 'iniciarBotoes()' funcionar -->
-                <div class="action-item"><button id="btn-pagar" class="btn-act">↑</button><p>PAGAR</p></div>
-                <div class="action-item"><button id="btn-receber" class="btn-act">↓</button><p>RECEBER</p></div>
-                <div class="action-item"><button id="btn-coletar" class="btn-act">↓</button><p>COLETAR</p></div>
-                <div class="action-item"><button id="btn-trocar" class="btn-act">⇄</button><p>TROCAR</p></div>
-            </nav>
-
-            <section class="grid-dao">
-                <div class="sala">COMUNIDADE</div>
-                <!-- Ajustado para abrir a folha do Mint -->
-                <div class="sala" onclick="App.abrirMint()">GOVERNANÇA</div>
-                <div class="sala">TRANSPARÊNCIA</div>
-                <div class="sala">TESOURARIA</div>
-            </section>
-        </main>
-    </div>
-
-    <!-- PAINEL LATERAL DINÂMICO (SIDE PANEL) -->
-    <!-- Essencial para que as abas de Pagar, Receber e Coletar funcionem na tela -->
-    <div id="side-panel" class="side-panel-overlay">
-        <div class="side-panel-content">
-            <header class="panel-header">
-                <h3 id="panel-title">PAINEL</h3>
-                <button id="close-panel" class="btn-close-clean">✕</button>
-            </header>
-            <div id="panel-content">
-                <!-- O conteúdo dinâmico do JS entra aqui -->
-            </div>
+    <div id="side-panel" class="side-panel">
+        <div class="panel-header">
+            <button id="close-panel" class="btn-back">← VOLTAR</button>
+            <h2 id="panel-title">AÇÃO</h2>
         </div>
-    </div>
-
-    <!-- SINALIZADOR / COMPRA DO NFT (FOLHA MINT) -->
-    <div id="folha-mint" class="mint-overlay">
-        <div class="mint-content">
-            <!-- Ajustado para o método correto de fechar -->
-            <button onclick="App.voltarMint()" class="btn-voltar">← VOLTAR</button>
-            <div class="nft-preview">
-                <img src="raposa.png" alt="Preview NFT">
-                <div class="nft-tag">NFT ALPHA #001</div>
-            </div>
-            <h3>CHAVE DE GOVERNANÇA</h3>
-            <p class="price">10.00 USDT</p>
-            <!-- Ajustado para chamar a próxima etapa da ordem -->
-            <button class="btn-azul" onclick="App.abrirQuintaFolha()">GERAR ORDEM</button>
-        </div>
-    </div>
-
-    <!-- RESUMO DO PAGAMENTO DA ORDEM -->
-    <div id="folha-pagamento" class="mint-overlay">
-        <div class="pagamento-content">
-            <h2>RESUMO DA ORDEM</h2>
-            <div class="resumo-txt">
-                <p><b>Item:</b> NFT Alpha</p>
-                <p><b>Rede:</b> BNB Chain</p>
-                <p><b>Total:</b> 10.00 USDT</p>
-            </div>
-            <!-- Ajustado chamada da MetaMask -->
-            <button id="btn-pagar-meta" class="btn-meta" onclick="App.chamarMetaMask()">PAGAR COM METAMASK</button>
-            
-            <div class="btn-container-cancel">
-                <!-- Ajustado método de cancelamento -->
-                <button onclick="App.fecharPagamento()" class="btn-cancel-pilula">CANCELAR ORDEM</button>
-            </div>
-        </div>
+        <div id="panel-content" class="panel-body"></div>
     </div>
 
     <script src="script.js"></script>
