@@ -1,4 +1,4 @@
-class NitrogenDAO {
+Class NitrogenDAO {
     constructor() {
         this.provider = null;
         this.signer = null;
@@ -6,6 +6,10 @@ class NitrogenDAO {
         this.scanner = null;
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
+        
+        // --- ENDEREÇO DO CONTRATO NA MAINNET ---
+        // Altere para o endereço real do seu contrato na BNB Chain
+        this.enderecoContrato = "0x0000000000000000000000000000000000000000"; 
         
         // Propriedades de controle da Splash Screen
         this.readAccepted = false;
@@ -19,7 +23,6 @@ class NitrogenDAO {
     // --- MÉTODOS DA SPLASH SCREEN ---
 
     verificarSplashInicial() {
-        // Verifica no carregamento se o usuário já aceitou os termos anteriormente
         if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
             const splash = document.getElementById('splash-screen');
             if (splash) {
@@ -85,7 +88,6 @@ class NitrogenDAO {
         if (splash) {
             splash.classList.add('hidden');
         }
-        // Persiste a decisão no navegador para não incomodar o usuário novamente
         localStorage.setItem('nitrogenio_terms_accepted', 'true');
     }
 
@@ -111,10 +113,51 @@ class NitrogenDAO {
                 }
                 
                 await this.buscarCotacao();
+                
+                // NOVO: Assim que conecta, verifica se a carteira tem saldo acumulado para liberar o botão
+                await this.verificarSaldoColeta(this.account);
+                
                 console.log("Conectado:", this.account);
             }
         } catch (e) { 
             console.error("Erro na conexão:", e);
+        }
+    }
+
+    // NOVO MÉTODO: Faz a leitura direta no contrato inteligente na Mainnet
+    async verificarSaldoColeta(carteira) {
+        if (!this.provider || !carteira) return;
+        
+        try {
+            // ABI mínima contendo apenas a função que lê o saldo acumulado (tipo view, não gasta gás)
+            const abiMinima = ["function saldoParaColetar(address usuario) public view returns (uint256)"];
+            const contrato = new ethers.Contract(this.enderecoContrato, abiMinima, this.provider);
+            
+            // Faz a chamada ao contrato
+            const saldoWei = await contrato.saldoParaColetar(carteira);
+            const botaoColetar = document.getElementById('btn-coletar');
+
+            if (botaoColetar) {
+                if (saldoWei == 0n) { // Se o saldo for zero (usando BigInt do ethers v6)
+                    // Estiliza o botão para parecer desativado e remove a ação de clique
+                    botaoColetar.style.opacity = "0.4";
+                    botaoColetar.style.pointerEvents = "none";
+                    botaoColetar.style.cursor = "not-allowed";
+                } else {
+                    // Se tiver saldo, garante que ele está ativo com Blueberry Blue total
+                    botaoColetar.style.opacity = "1";
+                    botaoColetar.style.pointerEvents = "auto";
+                    botaoColetar.style.cursor = "pointer";
+                }
+            }
+        } catch (e) {
+            console.error("Erro ao verificar saldo de coleta no contrato:", e);
+            // Em caso de erro (ex: contrato ainda não implantado), mantém o botão ativo por segurança do teste anterior
+            const botaoColetar = document.getElementById('btn-coletar');
+            if (botaoColetar) {
+                botaoColetar.style.opacity = "1";
+                botaoColetar.style.pointerEvents = "auto";
+            }
         }
     }
 
@@ -219,17 +262,53 @@ class NitrogenDAO {
             };
         }
         else if (tipo === 'coletar') {
-            title.innerText = "COLETAR TOKEN N";
+            title.innerText = "COLETAR REPASSE"; // Atualizado para refletir o resgate do ecossistema
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center;">
                     <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
-                    <p style="color: #666; font-size: 0.9rem;">Reivindique seus Tokens N.</p>
+                    <p style="color: #666; font-size: 0.9rem;">Reivindique seus valores acumulados do protocolo.</p>
                     <button class="btn-confirm" id="confirmar-coleta">COLETAR AGORA</button>
                 </div>`;
+            
+            // NOVO: Vincula a execução do resgate direto no contrato ao clicar no botão da folha lateral
+            document.getElementById('confirmar-coleta').onclick = () => this.executarColetaContrato();
         }
         else if (tipo === 'trocar') {
             title.innerText = "TROCAR (SWAP)";
             content.innerHTML = `<button class="btn-confirm" style="background: #d63384;" onclick="window.open('https://pancakeswap.finance/swap', '_blank')">IR PARA PANCAKE</button>`;
+        }
+    }
+
+    // NOVO MÉTODO: Executa a transação de Claim pagando o gás na Mainnet
+    async executarColetaContrato() {
+        const btn = document.getElementById('confirmar-coleta');
+        try {
+            if (!this.signer) await this.conectar();
+            if (btn) { btn.disabled = true; btn.innerText = "ASSINANDO NA CARTEIRA..."; }
+
+            // Instancia o contrato com permissão de escrita (signer)
+            const abiEscrita = ["function realizarColeta() public"];
+            const contrato = new ethers.Contract(this.enderecoContrato, abiEscrita, this.signer);
+
+            // Dispara a transação de resgate
+            const tx = await contrato.realizarColeta();
+            if (btn) btn.innerText = "PROCESSANDO NA REDE...";
+            
+            await tx.wait(); // Aguarda confirmação na blockchain
+            alert("Coleta realizada com sucesso! 🦊💎");
+            
+            this.fecharFolha();
+            // Atualiza o botão da home de volta para o estado desativado
+            await this.verificarSaldoColeta(this.account);
+            await this.atualizarSaldo(); // Atualiza o saldo principal da Home
+        } catch (e) {
+            console.error("Erro na execução da coleta:", e);
+            if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
+                alert("Operação cancelada pelo usuário.");
+            } else {
+                alert("Falha ao processar coleta.");
+            }
+            if (btn) { btn.disabled = false; btn.innerText = "COLETAR AGORA"; }
         }
     }
 
@@ -332,5 +411,4 @@ class NitrogenDAO {
     }
 }
 
-// Inicializa a aplicação de forma global
 const App = new NitrogenDAO();
