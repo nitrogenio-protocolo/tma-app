@@ -109,7 +109,6 @@ class NitrogenDAO {
         }
         
         alert("Iniciando conexão com a MetaMask para pagamento em USDT...");
-        // Espaço reservado para a integração futura com Ethers.js
     }
 
     // ==========================================
@@ -226,21 +225,8 @@ class NitrogenDAO {
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="btn-confirm green" id="btn-prosseguir-manual">PROSSEGUIR</button>
-                    <button class="btn-confirm blue" id="btn-usar-camera">LIGAR CÂMERA</button>
+                    <button class="btn-confirm blue" onclick="App.dispararFluxoCamera()">LIGAR CÂMERA</button>
                 </div>`;
-            
-            document.getElementById('btn-usar-camera').onclick = () => {
-    const reader = document.getElementById('reader');
-    const infoPagamento = document.getElementById('info-pagamento');
-    
-    if(infoPagamento) infoPagamento.style.display = 'none';
-    if(reader) reader.style.setProperty('display', 'block', 'important');
-    
-    // Aumentamos para 300ms: tempo perfeito para o painel se estabilizar na tela do celular
-    setTimeout(() => {
-        this.iniciarScanner(); 
-    }, 300);
-};
 
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
@@ -266,70 +252,92 @@ class NitrogenDAO {
         }
     }
 
+    // Método intermediário seguro invocado via HTML nativo
+    dispararFluxoCamera() {
+        const reader = document.getElementById('reader');
+        const infoPagamento = document.getElementById('info-pagamento');
+        
+        if(infoPagamento) infoPagamento.style.display = 'none';
+        if(reader) reader.style.setProperty('display', 'block', 'important');
+        
+        // Sincronização ideal para o painel terminar o movimento de transição css
+        setTimeout(() => {
+            this.iniciarScanner(); 
+        }, 300);
+    }
+
     iniciarScanner() {
-    if (this.scanner) return;
+        if (this.scanner) return;
 
-    const readerEl = document.getElementById('reader');
-    if (readerEl) readerEl.innerHTML = "";
+        const readerEl = document.getElementById('reader');
+        if (readerEl) readerEl.innerHTML = "";
 
-    this.scanner = new Html5Qrcode("reader");
+        this.scanner = new Html5Qrcode("reader");
 
-    // 1. Solicita explicitamente as permissões de câmera ao dispositivo
-    Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length > 0) {
-            // Procurar por uma câmera que tenha "back", "traseira" ou "environment" no nome
-            let cameraTraseira = devices.find(device => 
-                device.label.toLowerCase().includes('back') || 
-                device.label.toLowerCase().includes('traseira') ||
-                device.label.toLowerCase().includes('environment')
-            );
+        // 1. Solicita explicitamente as permissões de câmera ao dispositivo
+        Html5Qrcode.getCameras().then(devices => {
+            if (devices && devices.length > 0) {
+                let cameraTraseira = devices.find(device => 
+                    device.label.toLowerCase().includes('back') || 
+                    device.label.toLowerCase().includes('traseira') ||
+                    device.label.toLowerCase().includes('environment')
+                );
 
-            // Se não achar pelo nome, usa a última da lista (que geralmente é a traseira principal em celulares multicanais)
-            let cameraId = cameraTraseira ? cameraTraseira.id : devices[devices.length - 1].id;
+                let cameraId = cameraTraseira ? cameraTraseira.id : devices[devices.length - 1].id;
 
-            // 2. Inicializa o scanner passando diretamente o ID do Hardware encontrado
-            this.scanner.start(
-                cameraId, 
-                { 
-                    fps: 10, 
-                    qrbox: (width, height) => {
-                        const minEdge = Math.min(width, height);
-                        const qrboxSize = Math.floor(minEdge * 0.7);
-                        return { width: qrboxSize, height: qrboxSize };
+                // 2. Inicializa o scanner passando diretamente o ID do Hardware encontrado
+                this.scanner.start(
+                    cameraId, 
+                    { 
+                        fps: 10, 
+                        qrbox: (width, height) => {
+                            const minEdge = Math.min(width, height);
+                            const qrboxSize = Math.floor(minEdge * 0.7);
+                            return { width: qrboxSize, height: qrboxSize };
+                        }
+                    }, 
+                    (txt) => {
+                        this.scanner.stop().then(() => {
+                            this.scanner = null; 
+                            if (readerEl) readerEl.style.display = 'none';
+                            
+                            let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
+                            let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
+                            if (valor.length > 10) valor = ethers.formatEther(valor);
+                            
+                            this.prepararPagamento(addr, valor);
+                        }).catch(err => console.error("Erro ao parar o scanner:", err));
+                    },
+                    (errorMessage) => {
+                        // Ignora ruídos de foco
                     }
-                }, 
-                (txt) => {
-                    this.scanner.stop().then(() => {
-                        this.scanner = null; 
-                        if (readerEl) readerEl.style.display = 'none';
-                        
-                        let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
-                        let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
-                        if (valor.length > 10) valor = ethers.formatEther(valor);
-                        
-                        this.prepararPagamento(addr, valor);
-                    }).catch(err => console.error("Erro ao parar o scanner:", err));
-                },
-                (errorMessage) => {
-                    // Ignora ruídos de foco
-                }
-            ).catch(err => {
-                console.error("Erro ao iniciar com ID de câmera:", err);
-                this.scanner = null;
-                alert("Erro ao abrir a câmera. Verifique as permissões do aplicativo da MetaMask.");
-                this.fecharFolha();
-            });
+                ).catch(err => {
+                    console.error("Erro ao iniciar com ID de câmera:", err);
+                    this.scanner = null;
+                    alert("Erro ao abrir a câmera. Verifique as permissões do aplicativo da MetaMask.");
+                    this.fecharFolha();
+                });
 
-        } else {
-            alert("Nenhuma câmera encontrada no dispositivo.");
+            } else {
+                alert("Nenhuma câmera encontrada no dispositivo.");
+                this.fecharFolha();
+            }
+        }).catch(err => {
+            console.error("Erro ao listar câmeras:", err);
+            alert("Permissão de câmera negada. Acesse as configurações do seu celular e permita que a MetaMask use a câmera.");
             this.fecharFolha();
-        }
-    }).catch(err => {
-        console.error("Erro ao listar câmeras:", err);
-        alert("Permissão de câmera negada. Acesse as configurações do seu celular e permita que a MetaMask use a câmera.");
-        this.fecharFolha();
-    });
-}
+        });
+    }
+
+    prepararPagamento(endereco, valor) {
+        console.log("Preparando envio para:", endereco, "Valor:", valor);
+        alert(`Dados capturados!\nDestinatário: ${endereco}\nValor: ${valor} BNB`);
+        // Aqui entrará a execução do envio via contrato futuramente
+    }
+
+    configurarRecebedor() {
+        console.log("Configuração da aba receber carregada.");
+    }
 
     async fecharFolha() {
         // Desliga a câmera imediatamente ao fechar a folha para liberar o hardware do celular
@@ -350,7 +358,6 @@ class NitrogenDAO {
         
         document.getElementById('side-panel').classList.remove('active');
     }
-
 
     // ==========================================
     // 5. MAPEAMENTO GERAL DE CLIQUES (LISTENERS)
@@ -378,5 +385,5 @@ class NitrogenDAO {
     }
 }
 
-// Inicia a aplicação globalmente de forma limpa
+// Inicia a aplicação globalmente de forma limpa garantindo o escopo do App
 const App = new NitrogenDAO();
