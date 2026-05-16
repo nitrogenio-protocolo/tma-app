@@ -7,11 +7,12 @@ class NitrogenDAO {
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
         
-        // --- CONFIGURAÇÃO DO CONTRATO ---
-        // Guardamos apenas como texto simples para não criar instâncias do ethers antes da hora
+        // --- CONFIGURAÇÃO DO CONTRATO DE COLETA ---
+        // Quando seu contrato estiver pronto na Mainnet, é só colar o endereço dele aqui.
+        // Enquanto estiver zerado, o sistema vai ignorar a trava e deixar o botão ativo por padrão.
         this.enderecoContrato = "0x0000000000000000000000000000000000000000"; 
         
-        // Propriedades de controle da Splash Screen
+        // Propriedades de controle da Splash Screen originais
         this.readAccepted = false;
         this.agreeAccepted = false;
         
@@ -115,13 +116,9 @@ class NitrogenDAO {
                 await this.buscarCotacao();
                 console.log("Conectado:", this.account);
 
-                // A checagem do contrato fica totalmente isolada aqui dentro de um ambiente seguro
-                try {
-                    if (this.enderecoContrato && this.enderecoContrato !== "0x0000000000000000000000000000000000000000") {
-                        await this.verificarSaldoColeta(this.account);
-                    }
-                } catch (err) {
-                    console.warn("Ignorando checagem do contrato para evitar travamentos:", err);
+                // Executa a verificação apenas se tiver um contrato configurado real
+                if (this.enderecoContrato && this.enderecoContrato !== "0x0000000000000000000000000000000000000000") {
+                    await this.verificarSaldoColeta(this.account);
                 }
             }
         } catch (e) { 
@@ -151,13 +148,7 @@ class NitrogenDAO {
                 }
             }
         } catch (e) {
-            console.error("Erro ao ler saldo do contrato:", e);
-            // Se falhar a leitura na mainnet por qualquer motivo, mantém o botão liberado para testes
-            const botaoColetar = document.getElementById('btn-coletar');
-            if (botaoColetar) {
-                botaoColetar.style.opacity = "1";
-                botaoColetar.style.pointerEvents = "auto";
-            }
+            console.error("Erro na leitura do contrato:", e);
         }
     }
 
@@ -279,6 +270,11 @@ class NitrogenDAO {
     }
 
     async executarColetaContrato() {
+        // Se ainda não houver contrato real configurado, avisa o usuário sem dar erro de blockchain
+        if (this.enderecoContrato === "0x0000000000000000000000000000000000000000") {
+            return alert("Contrato de coleta ainda não implantado no ecossistema.");
+        }
+
         const btn = document.getElementById('confirmar-coleta');
         try {
             if (!this.signer) await this.conectar();
@@ -400,12 +396,6 @@ class NitrogenDAO {
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
         
-        // Garante que elementos de transição da Splash funcionem independentemente do contrato
-        const btnProsseguir = document.querySelector('[onclick*="nextSplashSlide"]');
-        if(btnProsseguir) {
-             btnProsseguir.style.pointerEvents = "auto";
-        }
-
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
         }, 1000);
