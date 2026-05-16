@@ -230,17 +230,17 @@ class NitrogenDAO {
                 </div>`;
             
             document.getElementById('btn-usar-camera').onclick = () => {
-                const reader = document.getElementById('reader');
-                const infoPagamento = document.getElementById('info-pagamento');
-                
-                if(infoPagamento) infoPagamento.style.display = 'none';
-                if(reader) reader.style.setProperty('display', 'block', 'important');
-                
-                // Damos um delay de 150ms para o HTML renderizar a caixinha preta antes de chamar a câmera
-                setTimeout(() => {
-                    this.iniciarScanner(); 
-                }, 150);
-            };
+    const reader = document.getElementById('reader');
+    const infoPagamento = document.getElementById('info-pagamento');
+    
+    if(infoPagamento) infoPagamento.style.display = 'none';
+    if(reader) reader.style.setProperty('display', 'block', 'important');
+    
+    // Aumentamos para 300ms: tempo perfeito para o painel se estabilizar na tela do celular
+    setTimeout(() => {
+        this.iniciarScanner(); 
+    }, 300);
+};
 
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
