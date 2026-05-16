@@ -6,48 +6,53 @@
     <title>Nitrogênio Protocolo | DAO</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
 
     <div id="intro-layer">
         <section id="folha1" class="folha-fade visivel">
             <div class="splash-content">
-                <img src="raposa.png" class="raposa-splash" alt="Protocolo Nitrogênio">
+                <img src="raposa.png" class="raposa-splash" alt="Raposa">
             </div>
         </section>
 
         <section id="folha2" class="folha-fade">
             <div class="content-intro">
                 <h2>DAO</h2>
-                <p>Sustentabilidade, Governança e Autonomia.<br><br>
-                   Protocolo de economia circular: troca de valor, serviços e suporte mútuo que se retroalimenta.<br><br>
-                   O Token aqui funciona como "Combustível" e o NFT é a voz da "Comunidade".</p>
+                <p>Sustentabilidade, Governança e Autonomia.
+                   Protocolo de economia círcular:de troca de valor, 
+                   serviços e suporte mútuo que se retroalimenta.
+                   Token aqui funcionando mais como "Combustível", NFT é a vós da "Comunidade".</p>
             </div>
             <div class="footer-intro">
-                <button class="btn-pilula" onclick="App.irParaFolha3()">AVANÇAR</button>
+                <button class="btn-pilula-ativo" onclick="irParaFolha3()">AVANÇAR</button>
             </div>
         </section>
 
         <section id="folha3" class="folha-fade">
             <div class="content-intro">
                 <h2>Governança do Protocolo</h2>
-                <p><b>COMUNIDADE:</b> Poder de decisão de todos os membros ativos.<br><br>
-                   <b>CONSENSO:</b> Regras válidas por 11 de 21 do conselho.<br><br>
-                   <b>REDE:</b> Taxas de gás (BNB) via Smart Contract.<br><br>
-                   <b>PROPÓSITO:</b> Economia circular (Não somos plataforma de investimento).</p>
+                <p>COMUNIDADE:poder de decisão de todos os membros ativos.
+                   CONSENSO: regras válidas por 11 de 21 do conselho.
+                   REDE: taxas de gás (BNB) via smsrt Contract.
+                   PROPÓSITO: Economia círcular (Não somos investimentos).  </p>
+                <p style="font-size: 0.8em; margin-top: 10px;">
+                    <a href="https://bscscan.com" target="_blank" style="color: #ffffff; text-decoration: underline; opacity: 0.7;">
+                        🔍 Verificar contrato no BscScan
+                    </a>
+                </p>
             </div>
 
             <div class="check-box">
                 <label class="label-check">
-                    <input type="checkbox" id="check-whitepaper"> Li e concordo com os termos descritos
+                    <input type="checkbox" id="check-whitepaper" onchange="validarChecks()"> Li e concordo com os termos
                 </label>
                 <label class="label-check">
-                    <input type="checkbox" id="check-governanca"> Aceito participar da Economia Circular
+                    <input type="checkbox" id="check-governanca" onchange="validarChecks()"> Aceito participar da Economia Circular
                 </label>
                 
-                <div class="btn-container-intro">
-                    <button id="btn-entrar" class="btn-pilula" disabled onclick="App.acessarHome()">ENTRAR NO APP</button>
+                <div class="btn-container">
+                    <button id="btn-entrar" class="btn-pilula" disabled onclick="acessarHome()">ENTRAR NO APP</button>
                 </div>
             </div>
         </section>
@@ -56,54 +61,61 @@
     <div id="home-app" style="display: none;">
         <header>
             <div class="logo-area">
-                <h1>NITROGÊNIO <span></span></h1>
-                <p class="network-label">PROTOCOLO</p>
+                <h1>NITROGÊNIO</h1>
+                <p>PROTOCOLO</p>
             </div>
-            <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
+            <button id="btn-conectar" class="btn-padrao">CONECTAR</button>
         </header>
 
         <main>
             <section class="card-master">
-                <div class="balance-info">
-                    <p class="label">SALDO CONTA</p>
-                    <h2 id="display-bnb">R$ 0,00 <span></span></h2>
-                </div> 
+                <p>SALDO CONTA</p>
+                <h2>R$ 0,00</h2>
             </section>
 
             <nav class="nav-actions">
-                <div class="action-item">
-                    <button class="btn-act" id="btn-pagar">↑</button>
-                    <span class="btn-label">PAGAR</span>
-                </div>
-                <div class="action-item">
-                    <button class="btn-act" id="btn-receber">↓</button>
-                    <span class="btn-label">RECEBER</span>
-                </div>
-                <div class="action-item">
-                    <button class="btn-act" id="btn-coletar">↓</button>
-                    <span class="btn-label">COLETAR</span>
-                </div>
-                <div class="action-item">
-                    <button class="btn-act" id="btn-trocar">⇄</button>
-                    <span class="btn-label">TROCAR</span>
-                </div>
+                <div class="action-item"><button class="btn-act">↑</button><p>PAGAR</p></div>
+                <div class="action-item"><button class="btn-act">↓</button><p>RECEBER</p></div>
+                <div class="action-item"><button class="btn-act">↓</button><p>COLETAR</p></div>
+                <div class="action-item"><button class="btn-act">⇄</button><p>TROCAR</p></div>
             </nav>
 
             <section class="grid-dao">
                 <div class="sala">COMUNIDADE</div>
-                <div class="sala">GOVERNANÇA</div>
+                <div class="sala" onclick="abrirMint()">GOVERNANÇA</div>
                 <div class="sala">TRANSPARÊNCIA</div>
                 <div class="sala">TESOURARIA</div>
             </section>
         </main>
     </div>
 
-    <div id="side-panel" class="side-panel">
-        <div class="panel-header">
-            <button id="close-panel" class="btn-back">← VOLTAR</button>
-            <h2 id="panel-title">AÇÃO</h2>
+    <div id="folha-mint" class="mint-overlay">
+        <div class="mint-content">
+            <button onclick="voltarMint()" class="btn-voltar">← VOLTAR</button>
+            <div class="nft-preview">
+                <img src="raposa.png">
+                <div class="nft-tag">NFT ALPHA #001</div>
+            </div>
+            <h3>CHAVE DE GOVERNANÇA</h3>
+            <p class="price">$ 10.00 USDT</p>
+            <button class="btn-azul" onclick="abrirQuintaFolha()">GERAR ORDEM</button>
         </div>
-        <div id="panel-content" class="panel-body"></div>
+    </div>
+
+    <div id="folha-pagamento" class="mint-overlay">
+        <div class="pagamento-content">
+            <h2>RESUMO DA ORDEM</h2>
+            <div class="resumo-txt">
+                <p><b>Item:</b> NFT Alpha</p>
+                <p><b>Rede:</b> BNB Chain</p>
+                <p><b>Total:</b> 10.00 USDT</p>
+            </div>
+            <button id="btn-pagar-meta" class="btn-meta" onclick="chamarMetaMask()">PAGAR COM METAMASK</button>
+            
+            <div class="btn-container-cancel">
+                <button onclick="fecharPagamento()" class="btn-cancel-pilula">CANCELAR ORDEM</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
