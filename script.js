@@ -265,12 +265,16 @@ class NitrogenDAO {
     prepararPagamento(addr, valor) {
         const content = document.getElementById('panel-content');
         const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+        
+        // Colocamos o "this.ejecutar" direto no onclick do botão. 
+        // Usamos as aspas simples para passar os textos com segurança.
         content.innerHTML = `
             <div class="converter-box">
                 <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
                 <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
-                <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
+                <button class="btn-confirm" id="confirm-final" onclick="App.ejecutar('${addr}', '${valor}')">ASSINAR PAGAMENTO</button>
             </div>`;
+    }
         document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
 
