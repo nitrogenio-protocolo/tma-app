@@ -267,20 +267,30 @@ class NitrogenDAO {
     }
 
     iniciarScanner() {
-        // Certifica de que não há nenhuma leitura órfã rodando
         if (this.scanner) return;
+
+        // Garante que o elemento HTML existe e limpa resíduos de inicializações anteriores
+        const readerEl = document.getElementById('reader');
+        if (readerEl) readerEl.innerHTML = "";
 
         this.scanner = new Html5Qrcode("reader");
         
-        // Configuração focada em performance mobile (facingMode: environment força a câmera traseira)
+        // Configuração otimizada para navegadores Web3 integrados (MetaMask / Trust / Brave)
         this.scanner.start(
             { facingMode: "environment" }, 
-            { fps: 10, qrbox: { width: 220, height: 220 } }, 
+            { 
+                fps: 10, 
+                qrbox: (width, height) => {
+                    // Torna a caixa de leitura perfeitamente responsiva no ecrã do telemóvel
+                    const minEdge = Math.min(width, height);
+                    const qrboxSize = Math.floor(minEdge * 0.7);
+                    return { width: qrboxSize, height: qrboxSize };
+                }
+            }, 
             (txt) => {
-                // Sucesso na leitura
+                // Código detetado com sucesso
                 this.scanner.stop().then(() => {
                     this.scanner = null; 
-                    const readerEl = document.getElementById('reader');
                     if (readerEl) readerEl.style.display = 'none';
                     
                     let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
@@ -291,11 +301,14 @@ class NitrogenDAO {
                 }).catch(err => console.error("Erro ao parar o scanner:", err));
             },
             (errorMessage) => {
-                // Silencia erros bobos de foco de câmera para não travar o console do celular
+                // Ignora logs repetitivos de procura de foco para não sobrecarregar o processador do telemóvel
             }
         ).catch(err => {
-            console.error(err);
-            alert("Permissão de câmera negada ou dispositivo indisponível. Verifique as configurações da MetaMask.");
+            console.error("Erro crítico na câmara:", err);
+            this.scanner = null;
+            
+            // Mensagem clara orientando o utilizador sobre como resolver o bloqueio no telemóvel
+            alert("A câmara não pôde ser iniciada.\n\nPor favor, verifique se concedeu permissão de câmara nas definições do seu navegador ou aplicação MetaMask.");
             this.fecharFolha();
         });
     }
