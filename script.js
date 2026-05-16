@@ -7,77 +7,89 @@ class NitrogenDAO {
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
         
+        // Propriedades de controle da Splash Screen
+        this.readAccepted = false;
+        this.agreeAccepted = false;
+        
         this.iniciarBotoes();
         this.iniciarAutomacao();
+        this.verificarSplashInicial();
     }
-// Variáveis para controlar o estado dos botões da folha 2
-let readAccepted = false;
-let agreeAccepted = false;
 
-// Avança da Folha 1 para a Folha 2
-function nextSplashSlide() {
-    const slide1 = document.getElementById('slide-1');
-    const slide2 = document.getElementById('slide-2');
-    
-    slide1.classList.remove('active');
-    slide2.classList.add('active');
-}
+    // --- MÉTODOS DA SPLASH SCREEN ---
 
-// Alterna o estado do botão "LI"
-function toggleRead() {
-    const btn = document.getElementById('btn-read');
-    readAccepted = !readAccepted;
-    
-    if (readAccepted) {
-        btn.classList.add('checked');
-    } else {
-        btn.classList.remove('checked');
+    verificarSplashInicial() {
+        // Verifica no carregamento se o usuário já aceitou os termos anteriormente
+        if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                splash.style.display = 'none';
+            }
+        }
     }
-    validateRulesForm();
-}
 
-// Alterna o estado do botão "CONCORDO"
-function toggleAgree() {
-    const btn = document.getElementById('btn-agree');
-    agreeAccepted = !agreeAccepted;
-    
-    if (agreeAccepted) {
-        btn.classList.add('checked');
-    } else {
-        btn.classList.remove('checked');
+    nextSplashSlide() {
+        const slide1 = document.getElementById('slide-1');
+        const slide2 = document.getElementById('slide-2');
+        
+        if (slide1 && slide2) {
+            slide1.classList.remove('active');
+            slide2.classList.add('active');
+        }
     }
-    validateRulesForm();
-}
 
-// Verifica se ambos estão ativados para "acender" o botão principal
-function validateRulesForm() {
-    const btnEnter = document.getElementById('btn-enter-home');
-    
-    if (readAccepted && agreeAccepted) {
-        btnEnter.removeAttribute('disabled');
-        btnEnter.className = 'btn-activated';
-    } else {
-        btnEnter.setAttribute('disabled', 'true');
-        btnEnter.className = 'btn-disabled';
+    toggleRead() {
+        const btn = document.getElementById('btn-read');
+        this.readAccepted = !this.readAccepted;
+        
+        if (btn) {
+            if (this.readAccepted) {
+                btn.classList.add('checked');
+            } else {
+                btn.classList.remove('checked');
+            }
+        }
+        this.validateRulesForm();
     }
-}
 
-// Finaliza a Splash screen e revela a aplicação principal (Home)
-function finishSplash() {
-    const splash = document.getElementById('splash-screen');
-    splash.classList.add('hidden');
-    
-    // Opcional: Salva no navegador que o usuário já aceitou os termos para não pedir toda hora
-    localStorage.setItem('nitrogênio_terms_accepted', 'true');
-}
+    toggleAgree() {
+        const btn = document.getElementById('btn-agree');
+        this.agreeAccepted = !this.agreeAccepted;
+        
+        if (btn) {
+            if (this.agreeAccepted) {
+                btn.classList.add('checked');
+            } else {
+                btn.classList.remove('checked');
+            }
+        }
+        this.validateRulesForm();
+    }
 
-// Opcional: Se quiser que o app lembre que ele já aceitou e pule direto para a Home nas próximas vezes
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('nitrogênio_terms_accepted') === 'true') {
+    validateRulesForm() {
+        const btnEnter = document.getElementById('btn-enter-home');
+        
+        if (btnEnter) {
+            if (this.readAccepted && this.agreeAccepted) {
+                btnEnter.removeAttribute('disabled');
+                btnEnter.className = 'btn-activated';
+            } else {
+                btnEnter.setAttribute('disabled', 'true');
+                btnEnter.className = 'btn-disabled';
+            }
+        }
+    }
+
+    finishSplash() {
         const splash = document.getElementById('splash-screen');
-        if (splash) splash.style.display = 'none';
+        if (splash) {
+            splash.classList.add('hidden');
+        }
+        // Persiste a decisão no navegador para não incomodar o usuário novamente
+        localStorage.setItem('nitrogenio_terms_accepted', 'true');
     }
-});
+
+    // --- MÉTODOS DE CONEXÃO E MONITORAÇÃO DE CARTEIRA ---
     
     async conectar() {
         if (!window.ethereum) {
@@ -94,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const btn = document.getElementById('btn-conectar');
                 if(btn) {
-                    btn.innerText = "conectado";
+                    btn.innerText = "CONECTADO";
                     btn.classList.add('conectado');
                 }
                 
@@ -144,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- DIÁLOGOS INTERNOS E INTERFACES DAS FOLHAS LATERAIS ---
+
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
         const content = document.getElementById('panel-content');
@@ -189,10 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const reader = document.getElementById('reader');
                 const infoPagamento = document.getElementById('info-pagamento');
                 
-                // 1. Esconde o texto e o campo de valor para dar lugar à câmara
                 if(infoPagamento) infoPagamento.style.display = 'none';
-                
-                // 2. Mostra o leitor de QR Code
                 reader.style.setProperty('display', 'block', 'important');
                 
                 this.iniciarScanner(); 
@@ -263,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
 
-    async executar(para, quanto) {
+    async ejecutar(para, quanto) {
         const btn = document.getElementById('confirm-final');
         try {
             if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
@@ -295,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.scanner = null;
         }
         
-        const r = document.getElementById('reader'); // Corrigido!
+        const r = document.getElementById('reader'); 
         const info = document.getElementById('info-pagamento');
         
         if(r) r.style.setProperty('display', 'none', 'important');
@@ -321,4 +332,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 }
 
+// Inicializa a aplicação de forma global
 const App = new NitrogenDAO();
