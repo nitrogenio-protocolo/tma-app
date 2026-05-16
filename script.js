@@ -267,51 +267,69 @@ class NitrogenDAO {
     }
 
     iniciarScanner() {
-        if (this.scanner) return;
+    if (this.scanner) return;
 
-        // Garante que o elemento HTML existe e limpa resíduos de inicializações anteriores
-        const readerEl = document.getElementById('reader');
-        if (readerEl) readerEl.innerHTML = "";
+    const readerEl = document.getElementById('reader');
+    if (readerEl) readerEl.innerHTML = "";
 
-        this.scanner = new Html5Qrcode("reader");
-        
-        // Configuração otimizada para navegadores Web3 integrados (MetaMask / Trust / Brave)
-        this.scanner.start(
-            { facingMode: "environment" }, 
-            { 
-                fps: 10, 
-                qrbox: (width, height) => {
-                    // Torna a caixa de leitura perfeitamente responsiva no ecrã do telemóvel
-                    const minEdge = Math.min(width, height);
-                    const qrboxSize = Math.floor(minEdge * 0.7);
-                    return { width: qrboxSize, height: qrboxSize };
+    this.scanner = new Html5Qrcode("reader");
+
+    // 1. Solicita explicitamente as permissões de câmera ao dispositivo
+    Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length > 0) {
+            // Procurar por uma câmera que tenha "back", "traseira" ou "environment" no nome
+            let cameraTraseira = devices.find(device => 
+                device.label.toLowerCase().includes('back') || 
+                device.label.toLowerCase().includes('traseira') ||
+                device.label.toLowerCase().includes('environment')
+            );
+
+            // Se não achar pelo nome, usa a última da lista (que geralmente é a traseira principal em celulares multicanais)
+            let cameraId = cameraTraseira ? cameraTraseira.id : devices[devices.length - 1].id;
+
+            // 2. Inicializa o scanner passando diretamente o ID do Hardware encontrado
+            this.scanner.start(
+                cameraId, 
+                { 
+                    fps: 10, 
+                    qrbox: (width, height) => {
+                        const minEdge = Math.min(width, height);
+                        const qrboxSize = Math.floor(minEdge * 0.7);
+                        return { width: qrboxSize, height: qrboxSize };
+                    }
+                }, 
+                (txt) => {
+                    this.scanner.stop().then(() => {
+                        this.scanner = null; 
+                        if (readerEl) readerEl.style.display = 'none';
+                        
+                        let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
+                        let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
+                        if (valor.length > 10) valor = ethers.formatEther(valor);
+                        
+                        this.prepararPagamento(addr, valor);
+                    }).catch(err => console.error("Erro ao parar o scanner:", err));
+                },
+                (errorMessage) => {
+                    // Ignora ruídos de foco
                 }
-            }, 
-            (txt) => {
-                // Código detetado com sucesso
-                this.scanner.stop().then(() => {
-                    this.scanner = null; 
-                    if (readerEl) readerEl.style.display = 'none';
-                    
-                    let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
-                    let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
-                    if (valor.length > 10) valor = ethers.formatEther(valor);
-                    
-                    this.prepararPagamento(addr, valor);
-                }).catch(err => console.error("Erro ao parar o scanner:", err));
-            },
-            (errorMessage) => {
-                // Ignora logs repetitivos de procura de foco para não sobrecarregar o processador do telemóvel
-            }
-        ).catch(err => {
-            console.error("Erro crítico na câmara:", err);
-            this.scanner = null;
-            
-            // Mensagem clara orientando o utilizador sobre como resolver o bloqueio no telemóvel
-            alert("A câmara não pôde ser iniciada.\n\nPor favor, verifique se concedeu permissão de câmara nas definições do seu navegador ou aplicação MetaMask.");
+            ).catch(err => {
+                console.error("Erro ao iniciar com ID de câmera:", err);
+                this.scanner = null;
+                alert("Erro ao abrir a câmera. Verifique as permissões do aplicativo da MetaMask.");
+                this.fecharFolha();
+            });
+
+        } else {
+            alert("Nenhuma câmera encontrada no dispositivo.");
             this.fecharFolha();
-        });
-    }
+        }
+    }).catch(err => {
+        console.error("Erro ao listar câmeras:", err);
+        alert("Permissão de câmera negada. Acesse as configurações do seu celular e permita que a MetaMask use a câmera.");
+        this.fecharFolha();
+    });
+}
 
     async fecharFolha() {
         // Desliga a câmera imediatamente ao fechar a folha para liberar o hardware do celular
