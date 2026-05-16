@@ -112,15 +112,22 @@ Class NitrogenDAO {
                     btn.classList.add('conectado');
                 }
                 
+                // Primeiro roda o que já funcionava perfeitamente
                 await this.buscarCotacao();
-                
-                // NOVO: Assim que conecta, verifica se a carteira tem saldo acumulado para liberar o botão
-                await this.verificarSaldoColeta(this.account);
-                
                 console.log("Conectado:", this.account);
+
+                // Agora rodamos a checagem do contrato de forma "segura".
+                // Se o contrato falhar, ele não trava o resto do aplicativo.
+                try {
+                    if (this.enderecoContrato && this.enderecoContrato !== "0x0000000000000000000000000000000000000000") {
+                        await this.verificarSaldoColeta(this.account);
+                    }
+                } catch (erroContrato) {
+                    console.warn("Contrato de coleta não encontrado ou inacessível, ignorando trava do botão:", erroContrato);
+                }
             }
         } catch (e) { 
-            console.error("Erro na conexão:", e);
+            console.error("Erro na conexão geral:", e);
         }
     }
 
