@@ -10,7 +10,75 @@ class NitrogenDAO {
         this.iniciarBotoes();
         this.iniciarAutomacao();
     }
+// Variáveis para controlar o estado dos botões da folha 2
+let readAccepted = false;
+let agreeAccepted = false;
 
+// Avança da Folha 1 para a Folha 2
+function nextSplashSlide() {
+    const slide1 = document.getElementById('slide-1');
+    const slide2 = document.getElementById('slide-2');
+    
+    slide1.classList.remove('active');
+    slide2.classList.add('active');
+}
+
+// Alterna o estado do botão "LI"
+function toggleRead() {
+    const btn = document.getElementById('btn-read');
+    readAccepted = !readAccepted;
+    
+    if (readAccepted) {
+        btn.classList.add('checked');
+    } else {
+        btn.classList.remove('checked');
+    }
+    validateRulesForm();
+}
+
+// Alterna o estado do botão "CONCORDO"
+function toggleAgree() {
+    const btn = document.getElementById('btn-agree');
+    agreeAccepted = !agreeAccepted;
+    
+    if (agreeAccepted) {
+        btn.classList.add('checked');
+    } else {
+        btn.classList.remove('checked');
+    }
+    validateRulesForm();
+}
+
+// Verifica se ambos estão ativados para "acender" o botão principal
+function validateRulesForm() {
+    const btnEnter = document.getElementById('btn-enter-home');
+    
+    if (readAccepted && agreeAccepted) {
+        btnEnter.removeAttribute('disabled');
+        btnEnter.className = 'btn-activated';
+    } else {
+        btnEnter.setAttribute('disabled', 'true');
+        btnEnter.className = 'btn-disabled';
+    }
+}
+
+// Finaliza a Splash screen e revela a aplicação principal (Home)
+function finishSplash() {
+    const splash = document.getElementById('splash-screen');
+    splash.classList.add('hidden');
+    
+    // Opcional: Salva no navegador que o usuário já aceitou os termos para não pedir toda hora
+    localStorage.setItem('nitrogênio_terms_accepted', 'true');
+}
+
+// Opcional: Se quiser que o app lembre que ele já aceitou e pule direto para a Home nas próximas vezes
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('nitrogênio_terms_accepted') === 'true') {
+        const splash = document.getElementById('splash-screen');
+        if (splash) splash.style.display = 'none';
+    }
+});
+    
     async conectar() {
         if (!window.ethereum) {
             return alert("Por favor, use o navegador da MetaMask ou Trust!");
