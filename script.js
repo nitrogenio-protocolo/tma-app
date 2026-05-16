@@ -7,113 +7,10 @@ class NitrogenDAO {
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
         
-        // Inicializa todas as configurações do ecossistema
         this.iniciarBotoes();
         this.iniciarAutomacao();
-        this.iniciarNavegacaoIntro();
     }
 
-    // ==========================================
-    // 1. NAVEGAÇÃO INTERNA E INTRODUÇÃO
-    // ==========================================
-    iniciarNavegacaoIntro() {
-        // Pular a primeira folha automaticamente após 5 segundos
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                this.irParaFolha2();
-            }, 5000);
-        });
-
-        // Configura o evento do checkbox se os elementos existirem na tela
-        const c1 = document.getElementById('check-whitepaper');
-        const c2 = document.getElementById('check-governanca');
-        if (c1 && c2) {
-            c1.onchange = () => this.validarChecks();
-            c2.onchange = () => this.validarChecks();
-        }
-    }
-
-    irParaFolha2() {
-        const f1 = document.getElementById('folha1');
-        const f2 = document.getElementById('folha2');
-        if(f1 && f2) {
-            f1.classList.remove('visivel');
-            f2.classList.add('visivel');
-        }
-    }
-
-    irParaFolha3() {
-        const f2 = document.getElementById('folha2');
-        const f3 = document.getElementById('folha3');
-        if(f2 && f3) {
-            f2.classList.remove('visivel');
-            f3.classList.add('visivel');
-        }
-    }
-
-    validarChecks() {
-        const c1 = document.getElementById('check-whitepaper');
-        const c2 = document.getElementById('check-governanca');
-        const btnEntrar = document.getElementById('btn-entrar');
-        if(btnEntrar && c1 && c2) {
-            btnEntrar.disabled = !(c1.checked && c2.checked);
-        }
-    }
-
-    acessarHome() {
-        const intro = document.getElementById('intro-layer');
-        const home = document.getElementById('home-app');
-        if(intro && home) {
-            intro.style.display = 'none';
-            home.style.display = 'block';
-        }
-    }
-
-    // ==========================================
-    // 2. LÓGICA DO MINT E ABAS DE PAGAMENTO
-    // ==========================================
-    abrirMint() {
-        const mint = document.getElementById('folha-mint');
-        if(mint) mint.classList.add('metade');
-    }
-
-    expandirMint() {
-        const mint = document.getElementById('folha-mint');
-        const extra = document.getElementById('extra-info');
-        if(mint) mint.classList.add('cheia');
-        if(extra) extra.style.display = 'block';
-    }
-
-    voltarMint() {
-        const mint = document.getElementById('folha-mint');
-        if(mint) {
-            mint.classList.remove('cheia');
-            mint.classList.remove('metade');
-        }
-    }
-
-    abrirQuintaFolha() {
-        const pag = document.getElementById('folha-pagamento');
-        if(pag) pag.classList.add('metade');
-    }
-
-    fecharPagamento() {
-        const pag = document.getElementById('folha-pagamento');
-        if(pag) pag.classList.remove('metade');
-    }
-
-    chamarMetaMask() {
-        const btnPagar = document.getElementById('btn-pagar-meta');
-        if(btnPagar) {
-            btnPagar.innerText = 'AGUARDANDO METAMASK...';
-        }
-        
-        alert("Iniciando conexão com a MetaMask para pagamento em USDT...");
-    }
-
-    // ==========================================
-    // 3. CONEXÃO BLOCKCHAIN & COTAÇÃO
-    // ==========================================
     async conectar() {
         if (!window.ethereum) {
             return alert("Por favor, use o navegador da MetaMask ou Trust!");
@@ -129,7 +26,7 @@ class NitrogenDAO {
                 
                 const btn = document.getElementById('btn-conectar');
                 if(btn) {
-                    btn.innerText = "CONECTADO";
+                    btn.innerText = "conectado";
                     btn.classList.add('conectado');
                 }
                 
@@ -179,21 +76,13 @@ class NitrogenDAO {
         }
     }
 
-    // ==========================================
-    // 4. OPERAÇÕES DO PAINEL LATERAL (SIDE PANEL)
-    // ==========================================
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
         const content = document.getElementById('panel-content');
         const title = document.getElementById('panel-title');
         
-        // Se já existia um scanner aberto, força a destruição dele antes de avançar
-        if(this.scanner) { 
-            this.scanner.stop().catch(()=>{}); 
-            this.scanner = null; 
-        }
+        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
         
-        if(!content || !panel) return;
         content.innerHTML = ""; 
         panel.classList.add('active');
 
@@ -203,7 +92,7 @@ class NitrogenDAO {
                 <div class="converter-box">
                     <small>VALOR (R$)</small>
                     <input type="number" id="v-brl" class="input-brl" placeholder="0,00" inputmode="decimal">
-                    <p id="v-bnb" class="label-bnb" style="font-size:0.7rem; opacity:0.6; color:#666;">≈ 0.0000 BNB</p>
+                    <p id="v-bnb" class="label-bnb" style="font-size:0.7rem; opacity:0.6;">≈ 0.0000 BNB</p>
                 </div>
                 <div id="qr-area" style="display:none; margin-top:20px;">
                     <img id="img-qr" style="width:200px; border:10px solid white; border-radius:10px;">
@@ -215,18 +104,31 @@ class NitrogenDAO {
             title.innerText = "PAGAMENTO";
             content.innerHTML = `
                 <div class="card-pagamento-fixo">
-                    <div id="reader" style="display:none; width: 100%; min-height: 250px; background: #000; margin-bottom: 15px;"></div>
+                    <div id="reader" style="display:none;"></div>
                     <div id="info-pagamento">
                         <small class="label-clean">ENDEREÇO DO DESTINO</small>
                         <input type="text" id="p-addr" class="txt-destino" placeholder="0x..." style="background:transparent; border:none; text-align:center; width:100%; outline:none;">
-                        <small class="label-clean" style="margin-top:10px;">VALOR EM R$</small>
+                        <small class="label-clean">VALOR EM R$</small>
                         <input type="number" id="p-brl" class="input-transparente" placeholder="0.00" inputmode="decimal">
                     </div>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="btn-confirm green" id="btn-prosseguir-manual">PROSSEGUIR</button>
-                    <button class="btn-confirm blue" onclick="App.dispararFluxoCamera()">LIGAR CÂMERA</button>
+                    <button class="btn-confirm blue" id="btn-usar-camera">LIGAR CÂMERA</button>
                 </div>`;
+            
+            document.getElementById('btn-usar-camera').onclick = () => {
+                const reader = document.getElementById('reader');
+                const infoPagamento = document.getElementById('info-pagamento');
+                
+                // 1. Esconde o texto e o campo de valor para dar lugar à câmara
+                if(infoPagamento) infoPagamento.style.display = 'none';
+                
+                // 2. Mostra o leitor de QR Code
+                reader.style.setProperty('display', 'block', 'important');
+                
+                this.iniciarScanner(); 
+            };
 
             document.getElementById('btn-prosseguir-manual').onclick = () => {
                 const addr = document.getElementById('p-addr').value;
@@ -252,105 +154,80 @@ class NitrogenDAO {
         }
     }
 
-    // Método intermediário seguro invocado via HTML nativo
-    dispararFluxoCamera() {
-        const reader = document.getElementById('reader');
-        const infoPagamento = document.getElementById('info-pagamento');
-        
-        if(infoPagamento) infoPagamento.style.display = 'none';
-        if(reader) reader.style.setProperty('display', 'block', 'important');
-        
-        // Sincronização ideal para o painel terminar o movimento de transição css
-        setTimeout(() => {
-            this.iniciarScanner(); 
-        }, 300);
+    configurarRecebedor() {
+        const input = document.getElementById('v-brl');
+        input.oninput = () => {
+            if(!this.account || !input.value) return;
+            const bnb = (input.value / this.cotacaoBNB).toFixed(6);
+            document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
+            if(input.value > 0) {
+                const valorEmWei = ethers.parseEther(bnb).toString();
+                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('ethereum:'+this.account+'?value='+valorEmWei)}`;
+                document.getElementById('img-qr').src = link;
+                document.getElementById('qr-area').style.display = 'block';
+            }
+        };
     }
 
     iniciarScanner() {
-        if (this.scanner) return;
-
-        const readerEl = document.getElementById('reader');
-        if (readerEl) readerEl.innerHTML = "";
-
         this.scanner = new Html5Qrcode("reader");
+        this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
+            this.scanner.stop().then(() => {
+                this.scanner = null; 
+                document.getElementById('reader').style.display = 'none';
+                let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
+                let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
+                if (valor.length > 10) valor = ethers.formatEther(valor);
+                this.prepararPagamento(addr, valor);
+            }).catch(err => console.error(err));
+        }).catch(err => alert("Câmera bloqueada ou não encontrada."));
+    }
 
-        // 1. Solicita explicitamente as permissões de câmera ao dispositivo
-        Html5Qrcode.getCameras().then(devices => {
-            if (devices && devices.length > 0) {
-                let cameraTraseira = devices.find(device => 
-                    device.label.toLowerCase().includes('back') || 
-                    device.label.toLowerCase().includes('traseira') ||
-                    device.label.toLowerCase().includes('environment')
-                );
+    prepararPagamento(addr, valor) {
+        const content = document.getElementById('panel-content');
+        const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+        content.innerHTML = `
+            <div class="converter-box">
+                <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
+                <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
+                <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
+            </div>`;
+        document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
+    }
 
-                let cameraId = cameraTraseira ? cameraTraseira.id : devices[devices.length - 1].id;
-
-                // 2. Inicializa o scanner passando diretamente o ID do Hardware encontrado
-                this.scanner.start(
-                    cameraId, 
-                    { 
-                        fps: 10, 
-                        qrbox: (width, height) => {
-                            const minEdge = Math.min(width, height);
-                            const qrboxSize = Math.floor(minEdge * 0.7);
-                            return { width: qrboxSize, height: qrboxSize };
-                        }
-                    }, 
-                    (txt) => {
-                        this.scanner.stop().then(() => {
-                            this.scanner = null; 
-                            if (readerEl) readerEl.style.display = 'none';
-                            
-                            let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
-                            let valor = txt.includes('value=') ? txt.split('value=')[1] : "0";
-                            if (valor.length > 10) valor = ethers.formatEther(valor);
-                            
-                            this.prepararPagamento(addr, valor);
-                        }).catch(err => console.error("Erro ao parar o scanner:", err));
-                    },
-                    (errorMessage) => {
-                        // Ignora ruídos de foco
-                    }
-                ).catch(err => {
-                    console.error("Erro ao iniciar com ID de câmera:", err);
-                    this.scanner = null;
-                    alert("Erro ao abrir a câmera. Verifique as permissões do aplicativo da MetaMask.");
-                    this.fecharFolha();
-                });
-
+    async executar(para, quanto) {
+        const btn = document.getElementById('confirm-final');
+        try {
+            if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
+            if (!this.ultimaAtualizacao || (Date.now() - this.ultimaAtualizacao > 120000)) await this.buscarCotacao();
+            if (!this.signer) await this.conectar();
+            
+            const valorEmWei = ethers.parseUnits(parseFloat(quanto).toFixed(18), "ether");
+            const tx = await this.signer.sendTransaction({ to: para, value: valorEmWei });
+            
+            if(btn) btn.innerText = "PROCESSANDO...";
+            await tx.wait();
+            alert("Concluído! 🤜🤛");
+            location.reload();
+        } catch (e) {
+            if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
+                alert("Pagamento cancelado.");
             } else {
-                alert("Nenhuma câmera encontrada no dispositivo.");
-                this.fecharFolha();
+                alert("Erro na transação.");
             }
-        }).catch(err => {
-            console.error("Erro ao listar câmeras:", err);
-            alert("Permissão de câmera negada. Acesse as configurações do seu celular e permita que a MetaMask use a câmera.");
-            this.fecharFolha();
-        });
-    }
-
-    prepararPagamento(endereco, valor) {
-        console.log("Preparando envio para:", endereco, "Valor:", valor);
-        alert(`Dados capturados!\nDestinatário: ${endereco}\nValor: ${valor} BNB`);
-        // Aqui entrará a execução do envio via contrato futuramente
-    }
-
-    configurarRecebedor() {
-        console.log("Configuração da aba receber carregada.");
+            if(btn) { btn.disabled = false; btn.innerText = "ASSINAR PAGAMENTO"; }
+        }
     }
 
     async fecharFolha() {
-        // Desliga a câmera imediatamente ao fechar a folha para liberar o hardware do celular
         if (this.scanner) {
-            try { 
-                await this.scanner.stop(); 
-            } catch (e) { 
-                console.log("Scanner já estava parado ou fechado."); 
-            }
+            try {
+                await this.scanner.stop();
+            } catch (e) { console.log("Scanner parado"); }
             this.scanner = null;
         }
         
-        const r = document.getElementById('reader');
+        const r = document.getElementById('reader'); // Corrigido!
         const info = document.getElementById('info-pagamento');
         
         if(r) r.style.setProperty('display', 'none', 'important');
@@ -359,31 +236,21 @@ class NitrogenDAO {
         document.getElementById('side-panel').classList.remove('active');
     }
 
-    // ==========================================
-    // 5. MAPEAMENTO GERAL DE CLIQUES (LISTENERS)
-    // ==========================================
     iniciarBotoes() {
-        // Botões do Painel Principal (Ações da Web3)
         const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
         for (let id in btns) {
             const el = document.getElementById(id);
             if (el) el.onclick = () => this.abrirFolha(btns[id]);
         }
-
-        // Botão Conectar Carteira
         const bc = document.getElementById('btn-conectar');
         if (bc) bc.onclick = () => this.conectar();
-
-        // Botão Fechar Painel Lateral
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
         
-        // Auto-conexão caso já possua endereço ativo autorizado
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
         }, 1000);
     }
 }
 
-// Inicia a aplicação globalmente de forma limpa garantindo o escopo do App
 const App = new NitrogenDAO();
