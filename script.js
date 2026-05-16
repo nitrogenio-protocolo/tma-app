@@ -7,12 +7,7 @@ class NitrogenDAO {
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
         
-        // --- CONFIGURAÇÃO DO CONTRATO DE COLETA ---
-        // Quando seu contrato estiver pronto na Mainnet, é só colar o endereço dele aqui.
-        // Enquanto estiver zerado, o sistema vai ignorar a trava e deixar o botão ativo por padrão.
-        this.enderecoContrato = "0x0000000000000000000000000000000000000000"; 
-        
-        // Propriedades de controle da Splash Screen originais
+        // Propriedades de controle da Splash Screen
         this.readAccepted = false;
         this.agreeAccepted = false;
         
@@ -24,6 +19,7 @@ class NitrogenDAO {
     // --- MÉTODOS DA SPLASH SCREEN ---
 
     verificarSplashInicial() {
+        // Verifica no carregamento se o usuário já aceitou os termos anteriormente
         if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
             const splash = document.getElementById('splash-screen');
             if (splash) {
@@ -89,6 +85,7 @@ class NitrogenDAO {
         if (splash) {
             splash.classList.add('hidden');
         }
+        // Persiste a decisão no navegador para não incomodar o usuário novamente
         localStorage.setItem('nitrogenio_terms_accepted', 'true');
     }
 
@@ -115,40 +112,9 @@ class NitrogenDAO {
                 
                 await this.buscarCotacao();
                 console.log("Conectado:", this.account);
-
-                // Executa a verificação apenas se tiver um contrato configurado real
-                if (this.enderecoContrato && this.enderecoContrato !== "0x0000000000000000000000000000000000000000") {
-                    await this.verificarSaldoColeta(this.account);
-                }
             }
         } catch (e) { 
             console.error("Erro na conexão:", e);
-        }
-    }
-
-    async verificarSaldoColeta(carteira) {
-        if (!this.provider || !carteira) return;
-        
-        try {
-            const abiMinima = ["function saldoParaColetar(address usuario) public view returns (uint256)"];
-            const contrato = new ethers.Contract(this.enderecoContrato, abiMinima, this.provider);
-            
-            const saldoWei = await contrato.saldoParaColetar(carteira);
-            const botaoColetar = document.getElementById('btn-coletar');
-
-            if (botaoColetar) {
-                if (saldoWei == 0n) { 
-                    botaoColetar.style.opacity = "0.4";
-                    botaoColetar.style.pointerEvents = "none";
-                    botaoColetar.style.cursor = "not-allowed";
-                } else {
-                    botaoColetar.style.opacity = "1";
-                    botaoColetar.style.pointerEvents = "auto";
-                    botaoColetar.style.cursor = "pointer";
-                }
-            }
-        } catch (e) {
-            console.error("Erro na leitura do contrato:", e);
         }
     }
 
@@ -253,53 +219,17 @@ class NitrogenDAO {
             };
         }
         else if (tipo === 'coletar') {
-            title.innerText = "COLETAR REPASSE";
+            title.innerText = "COLETAR TOKEN N";
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center;">
                     <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
-                    <p style="color: #666; font-size: 0.9rem;">Reivindique seus valores acumulados do protocolo.</p>
+                    <p style="color: #666; font-size: 0.9rem;">Reivindique seus Tokens N.</p>
                     <button class="btn-confirm" id="confirmar-coleta">COLETAR AGORA</button>
                 </div>`;
-            
-            document.getElementById('confirmar-coleta').onclick = () => this.executarColetaContrato();
         }
         else if (tipo === 'trocar') {
             title.innerText = "TROCAR (SWAP)";
             content.innerHTML = `<button class="btn-confirm" style="background: #d63384;" onclick="window.open('https://pancakeswap.finance/swap', '_blank')">IR PARA PANCAKE</button>`;
-        }
-    }
-
-    async executarColetaContrato() {
-        // Se ainda não houver contrato real configurado, avisa o usuário sem dar erro de blockchain
-        if (this.enderecoContrato === "0x0000000000000000000000000000000000000000") {
-            return alert("Contrato de coleta ainda não implantado no ecossistema.");
-        }
-
-        const btn = document.getElementById('confirmar-coleta');
-        try {
-            if (!this.signer) await this.conectar();
-            if (btn) { btn.disabled = true; btn.innerText = "ASSINANDO NA CARTEIRA..."; }
-
-            const abiEscrita = ["function realizarColeta() public"];
-            const contrato = new ethers.Contract(this.enderecoContrato, abiEscrita, this.signer);
-
-            const tx = await contrato.realizarColeta();
-            if (btn) btn.innerText = "PROCESSANDO NA REDE...";
-            
-            await tx.wait();
-            alert("Coleta realizada com sucesso! 🦊💎");
-            
-            this.fecharFolha();
-            await this.verificarSaldoColeta(this.account);
-            await this.atualizarSaldo();
-        } catch (e) {
-            console.error("Erro na execução da coleta:", e);
-            if (e.code === 'ACTION_REJECTED' || e.code === 4001) {
-                alert("Operação cancelada pelo usuário.");
-            } else {
-                alert("Falha ao processar coleta.");
-            }
-            if (btn) { btn.disabled = false; btn.innerText = "COLETAR AGORA"; }
         }
     }
 
@@ -402,4 +332,5 @@ class NitrogenDAO {
     }
 }
 
+// Inicializa a aplicação de forma global
 const App = new NitrogenDAO();
