@@ -1,484 +1,132 @@
-/* ==========================================
-   1. CONFIGURAÇÕES GERAIS E RESET
-   ========================================== */
-body { 
-    font-family: sans-serif; 
-    margin: 0; 
-    background: #0056b3; 
-    overflow: hidden; 
-    color: #333; 
-    user-select: none; /* Evita seleção de texto acidental no celular */
+:root { 
+    --blue: #007BFF; 
+    --white: #FFFFFF; 
+    --bg: #F4F7FA; 
+    --red: #FF3B30; 
+    --green: #28A745;
 }
 
-/* ==========================================
-   2. CAMADA DE INTRODUÇÃO (FOLHAS 1, 2 E 3)
-   ========================================== */
-.folha-fade {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: #0056b3; 
-    color: white; 
-    display: flex; 
-    flex-direction: column;
-    align-items: center; 
-    text-align: center;
-    opacity: 0; 
-    visibility: hidden; 
-    transition: opacity 0.6s ease; 
-    z-index: 2000;
-}
-.folha-fade.visivel { opacity: 1; visibility: visible; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background: var(--bg); color: #333; overflow-x: hidden; }
 
-#folha1 { justify-content: center; }
+/* HEADER */
+header { background: var(--white); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #EEE; }
+header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
+.btn-wallet { background: var(--blue); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
 
-.raposa-splash {
-    width: 200px; 
-    opacity: 0; 
-    transform: scale(0.9);
-    animation: materializaEsomeRapido 2s ease-in-out forwards;
-    animation-delay: 2s; 
-}
+/* CARD DE SALDO */
+.card-master { background: var(--white); margin: 15px; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+.balance-info h2 { font-size: 1.6rem; }
+.balance-info h2 span { font-size: 0.8rem; color: var(--blue); }
 
-@keyframes materializaEsomeRapido {
-    0% { opacity: 0; transform: scale(0.9); }
-    75% { opacity: 1; transform: scale(1); } 
-    100% { opacity: 0; transform: scale(1.02); }
-}
-
-.content-intro { 
-    flex: 1; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    padding: 40px; 
-}
-
-.check-box { 
-    background: rgba(0,0,0,0.25); 
-    width: 100%; 
-    padding: 30px; 
-    border-radius: 30px 30px 0 0; 
-    box-sizing: border-box; 
-    text-align: left; 
-}
-
-.label-check { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    margin-bottom: 15px; 
-    font-size: 0.9rem; 
-    cursor: pointer; 
-}
-
-/* Botões do Estilo Pílula da Intro */
-.footer-intro, .btn-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-bottom: 40px;
-}
-
-.btn-pilula, .btn-pilula-ativo {
-    border: none;
-    padding: 12px 40px;
-    border-radius: 50px;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: 0.3s;
-    width: auto;
-    min-width: 180px;
-    cursor: pointer;
-}
-
-.btn-pilula-ativo, .btn-pilula:not(:disabled) {
-    background: white !important;
-    color: #0056b3 !important;
-}
-
-.btn-pilula:disabled { 
-    background: rgba(255,255,255,0.1) !important; 
-    color: rgba(255,255,255,0.3) !important; 
-    cursor: not-allowed; 
-}
-
-/* ==========================================
-   3. HOME APP E CORPO DA INTERFACE
-   ========================================== */
-#home-app { 
-    background: #f4f7f6; 
-    min-height: 100vh; 
-    position: relative; 
-}
-
-header { 
-    background: white; 
-    padding: 20px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    border-bottom: 1px solid #eee; 
-}
-
-header h1 { font-size: 1.2rem; margin: 0; color: #0056b3; letter-spacing: 1px; }
-header p { font-size: 0.6rem; margin: 0; color: #666; font-weight: bold; }
-
-.btn-padrao {
-    background: #0056b3;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.btn-padrao.conectado {
-    background: #28a745;
-}
-
-.card-master { 
-    background: white; 
-    margin: 20px; 
-    padding: 30px; 
-    border-radius: 20px; 
-    text-align: center; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-}
-.card-master p { margin: 0 0 5px 0; font-size: 0.75rem; color: #999; font-weight: bold; }
-.card-master h2 { margin: 0; font-size: 2rem; color: #111; }
-
-/* Barra de Navegação de Ações Quick */
-.nav-actions { 
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 10px; 
-    padding: 0 20px; 
-}
-
-.action-item { display: flex; flex-direction: column; align-items: center; }
-
+/* GRADE DE AÇÕES */
+.nav-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-top: 20px; }
+.action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .btn-act { 
-    width: 60px; 
-    height: 60px; 
-    border-radius: 18px; 
-    border: none; 
-    background: #0056b3; 
-    color: white; 
-    font-size: 1.2rem; 
-    cursor: pointer;
-    transition: transform 0.2s;
+    background: var(--white); 
+    border: 2px solid #F0F0F0; 
+    width: 100%; 
+    aspect-ratio: 1 / 1; 
+    border-radius: 12px; 
+    /* Aumentado de 1.2rem para 1.8rem (aprox. 50% maior) */
+    font-size: 1.8rem; 
+    font-weight: 900; 
+    color: var(--blue); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    /* Garante que o ícone não saia do limite se crescer muito */
+    overflow: hidden; 
 }
-.btn-act:active { transform: scale(0.92); }
+.btn-act:active { transform: scale(0.95); background: #f8f9fa; }
+.btn-label { font-size: 0.65rem; font-weight: 900; color: var(--blue); text-transform: uppercase; }
 
-.action-item p { 
-    font-size: 0.6rem; 
-    font-weight: bold; 
-    margin-top: 8px; 
-    color: #0056b3; 
-    text-align: center; 
-}
+/* PAINEL LATERAL */
+.side-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background: var(--white); transition: right 0.4s ease; z-index: 5000; display: flex; flex-direction: column; }
+.side-panel.active { right: 0; }
+.panel-header { background: var(--white); padding: 20px; display: flex; align-items: center; border-bottom: 2px solid #EEE; gap: 15px; }
+.btn-back { background: none; border: none; color: var(--blue); font-weight: bold; font-size: 1rem; cursor: pointer; }
+.panel-body { padding: 20px; flex: 1; overflow-y: auto; text-align: center; }
 
-/* Salas da DAO */
-.grid-dao { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 12px; 
-    padding: 20px; 
-}
-
-.sala { 
-    background: white; 
-    padding: 22px 5px; 
-    border-radius: 15px; 
-    text-align: center; 
-    font-size: 0.7rem; 
-    font-weight: bold; 
-    border: 1px solid #eee; 
-    color: #444; 
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.01);
-}
-.sala:active { background: #fafafa; }
-
-/* ==========================================
-   4. NOVO PAINEL LATERAL DINÂMICO (SIDE PANEL)
-   ========================================== */
-.side-panel-overlay {
-    position: fixed;
-    top: 0;
-    right: -100%;
+/* BLOCO MÍSTICA (PAGAMENTO E CÂMERA) */
+.card-pagamento-fixo {
+    position: relative; 
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 4000;
-    transition: right 0.4s ease;
-}
-.side-panel-overlay.active { right: 0; }
-
-.side-panel-content {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 85%; /* Deixa uma fresta do app visível na lateral */
-    height: 100%;
-    background: #ffffff;
-    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+    height: 320px; 
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    justify-content: center;
+    border: 1px solid #333;
+    margin: 15px 0;
 }
 
-.panel-header {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-}
-#panel-title { margin: 0; font-size: 0.9rem; color: #111; letter-spacing: 0.5px; }
-
-.btn-close-clean {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #999;
-    cursor: pointer;
-}
-
-#panel-content {
-    flex: 1;
-    padding: 25px 20px;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-
-/* Elementos Renderizados dentro do Painel pelo JS */
-.converter-box {
-    background: #f8f9fa;
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px solid #eee;
-    text-align: center;
-    box-sizing: border-box;
-}
-.converter-box small { font-size: 0.6rem; font-weight: bold; color: #999; display: block; margin-bottom: 5px; }
-
-.input-brl, .input-transparente {
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-size: 1.8rem;
-    text-align: center;
-    font-weight: bold;
-    color: #111;
-    outline: none;
-}
-
-.btn-confirm {
-    background: #0056b3;
-    color: white;
-    border: none;
-    width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-top: 15px;
-    cursor: pointer;
-}
-.btn-confirm.green { background: #28a745; }
-.btn-confirm.blue { background: #007bff; }
-
-.card-pagamento-fixo {
-    background: #f8f9fa;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px;
-    border: 1px solid #eee;
-}
-
-.txt-destino {
-    font-size: 0.75rem;
-    color: #333;
-    font-weight: bold;
-}
-
-.label-clean {
-    font-size: 0.6rem;
-    font-weight: bold;
-    color: #aaa;
-    display: block;
-    margin-bottom: 5px;
-    text-align: center;
-}
-
-/* Área Interna da Câmera (Html5Qrcode) - Corrigido para Mobile */
 #reader {
-    width: 100% !important;
-    min-height: 280px !important; /* Força uma altura para a câmera inicializar */
-    background: #000000 !important;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 15px;
-    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100% !important;
+    z-index: 10;
+    background: #000;
+    display: none !important;
 }
 
-/* Ajuste fino para os elementos de vídeo internos que a biblioteca gera */
+/* Isso força o vídeo da câmera a preencher o espaço do card */
 #reader video {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* Faz a imagem da câmera preencher o espaço sem distorcer */
-    border-radius: 12px;
+    object-fit: cover !important;
 }
 
-/* ==========================================
-   5. OVERLAYS DE MINT E RESUMO DE ORDENS
-   ========================================== */
-.mint-overlay { 
-    position: fixed; 
-    bottom: -100%; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: white; 
-    transition: 0.5s ease; 
-    z-index: 5000; 
-}
-.mint-overlay.metade { bottom: 0; }
-
-.mint-content { 
-    padding: 40px 20px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    height: 100%; 
-    justify-content: center; 
-    box-sizing: border-box;
-}
-
-.pagamento-content {
-    padding: 40px 25px;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    height: 100%; 
-    justify-content: flex-start; 
-    box-sizing: border-box;
-    margin-top: 40px; 
-}
-
-.resumo-txt {
+#info-pagamento {
     width: 100%;
     text-align: center;
-    margin-bottom: 10px;
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-.resumo-txt p { margin: 6px 0; font-size: 0.85rem; color: #555; }
-
-.nft-preview { 
-    border: 2px solid #0056b3; 
-    border-radius: 15px; 
-    overflow: hidden; 
-    margin-bottom: 15px; 
-    background: #fdfdfd; 
-}
-.nft-preview img { width: 140px; display: block; }
-
-.nft-tag { 
-    background: #0056b3; 
-    color: white; 
-    padding: 5px; 
-    font-size: 0.7rem; 
-    font-weight: bold; 
-    text-align: center; 
-}
-
-.btn-azul { 
-    background: #0056b3; 
-    color: white; 
-    border: none; 
-    width: 100%; 
-    padding: 16px; 
-    border-radius: 10px; 
-    font-weight: bold; 
-    cursor: pointer;
-}
-
-.btn-meta { 
-    background: #f6851b; 
-    color: white; 
-    border: none; 
-    width: 100%; 
-    padding: 16px; 
-    border-radius: 10px; 
-    font-weight: bold; 
-    margin-top: 20px; 
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-voltar { 
-    align-self: flex-start; 
-    background: none; 
-    border: none; 
-    color: #0056b3; 
-    font-weight: bold; 
-    position: absolute; 
-    top: 40px; 
-    cursor: pointer;
-}
-
-.btn-container-cancel {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 25px; 
-}
-
-.btn-cancel-pilula {
-    border: none;
-    padding: 12px 40px;
-    border-radius: 50px;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: 0.3s;
-    width: auto;
-    min-width: 180px;
-    cursor: pointer;
-    background: #e0e0e0; 
-    color: #666666; 
-}
-.btn-cancel-pilula:active { background: #d5d5d5; }
-
-/* Correção para os campos da aba PAGAR aparecerem perfeitamente */
-.card-pagamento-fixo {
-    background: #f8f9fa !important; /* Força um fundo cinza claro para destacar */
-    border-radius: 15px;
     padding: 20px;
-    margin-bottom: 15px;
-    border: 1px solid #e0e0e0;
 }
 
-.txt-destino, .input-transparente {
-    color: #111111 !important; /* Força o texto a ficar preto e visível */
-    font-weight: bold;
+.label-clean { color: #888; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+
+.txt-destino {
+    color: var(--blue);
+    font-family: monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+    margin: 10px 0 20px 0;
 }
 
-/* Garante que o texto explicativo fique cinza escuro */
-.label-clean {
-    color: #666666 !important;
-    font-size: 0.7rem;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
+.input-transparente {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #333;
+    color: #FFF;
     text-align: center;
+    font-size: 2.2rem;
+    font-weight: bold;
+    width: 100%;
+    outline: none;
 }
 
+/* CONVERTER BOX (RECEBER E OUTROS) */
+.converter-box { background: #F8F9FA; padding: 20px; border-radius: 15px; margin: 15px 0; border: 1px solid #EEE; }
+.input-brl { width: 100%; border: none; background: transparent; font-size: 2.2rem; font-weight: bold; color: var(--blue); text-align: center; outline: none; }
+.label-bnb { display: block; color: var(--green); font-size: 0.9rem; font-weight: bold; margin-top: 10px; }
+
+/* GRID INFERIOR (SALAS) */
+.grid-dao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
+.sala { background: var(--white); padding: 25px; border-radius: 15px; text-align: center; font-weight: bold; font-size: 0.8rem; border: 1px solid #F0F0F0; }
+
+/* BOTÕES DE AÇÃO */
+.btn-confirm { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+.btn-confirm.green { background: var(--green); }
+.btn-confirm.blue { background: var(--blue); font-size: 0.8rem; }
+
+/* EFEITO CONECTADO */
+.btn-wallet.conectado {
+    background: var(--green) !important;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
