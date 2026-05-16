@@ -1,13 +1,18 @@
-/* Configurações Gerais */
+/* ==========================================
+   1. CONFIGURAÇÕES GERAIS E RESET
+   ========================================== */
 body { 
     font-family: sans-serif; 
     margin: 0; 
     background: #0056b3; 
     overflow: hidden; 
     color: #333; 
+    user-select: none; /* Evita seleção de texto acidental no celular */
 }
 
-/* Folhas de Transição (Intro) */
+/* ==========================================
+   2. CAMADA DE INTRODUÇÃO (FOLHAS 1, 2 E 3)
+   ========================================== */
 .folha-fade {
     position: fixed; 
     top: 0; 
@@ -27,7 +32,6 @@ body {
 }
 .folha-fade.visivel { opacity: 1; visibility: visible; }
 
-/* --- BLOCO DA FOLHA 1 (Splash Screen) --- */
 #folha1 { justify-content: center; }
 
 .raposa-splash {
@@ -44,7 +48,33 @@ body {
     100% { opacity: 0; transform: scale(1.02); }
 }
 
-/* --- BLOCO DE BOTÕES (Estilo Pílula Centralizado) --- */
+.content-intro { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    padding: 40px; 
+}
+
+.check-box { 
+    background: rgba(0,0,0,0.25); 
+    width: 100%; 
+    padding: 30px; 
+    border-radius: 30px 30px 0 0; 
+    box-sizing: border-box; 
+    text-align: left; 
+}
+
+.label-check { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-bottom: 15px; 
+    font-size: 0.9rem; 
+    cursor: pointer; 
+}
+
+/* Botões do Estilo Pílula da Intro */
 .footer-intro, .btn-container {
     width: 100%;
     display: flex;
@@ -64,7 +94,6 @@ body {
     cursor: pointer;
 }
 
-/* Cores dos Botões */
 .btn-pilula-ativo, .btn-pilula:not(:disabled) {
     background: white !important;
     color: #0056b3 !important;
@@ -76,28 +105,14 @@ body {
     cursor: not-allowed; 
 }
 
-/* Conteúdo das Folhas 2 e 3 */
-.content-intro { 
-    flex: 1; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    padding: 40px; 
+/* ==========================================
+   3. HOME APP E CORPO DA INTERFACE
+   ========================================== */
+#home-app { 
+    background: #f4f7f6; 
+    min-height: 100vh; 
+    position: relative; 
 }
-
-.check-box { 
-    background: rgba(0,0,0,0.25); 
-    width: 100%; 
-    padding: 30px; 
-    border-radius: 30px 30px 0 0; 
-    box-sizing: border-box; 
-    text-align: left; 
-}
-
-.label-check { display: block; margin-bottom: 15px; font-size: 0.9rem; cursor: pointer; }
-
-/* --- HOME APP E INTERFACE --- */
-#home-app { background: #f4f7f6; min-height: 100vh; position: relative; }
 
 header { 
     background: white; 
@@ -108,20 +123,44 @@ header {
     border-bottom: 1px solid #eee; 
 }
 
+header h1 { font-size: 1.2rem; margin: 0; color: #0056b3; letter-spacing: 1px; }
+header p { font-size: 0.6rem; margin: 0; color: #666; font-weight: bold; }
+
+.btn-padrao {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-padrao.conectado {
+    background: #28a745;
+}
+
 .card-master { 
     background: white; 
     margin: 20px; 
     padding: 30px; 
     border-radius: 20px; 
     text-align: center; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
+.card-master p { margin: 0 0 5px 0; font-size: 0.75rem; color: #999; font-weight: bold; }
+.card-master h2 { margin: 0; font-size: 2rem; color: #111; }
 
+/* Barra de Navegação de Ações Quick */
 .nav-actions { 
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
     gap: 10px; 
     padding: 0 20px; 
 }
+
+.action-item { display: flex; flex-direction: column; align-items: center; }
 
 .btn-act { 
     width: 60px; 
@@ -131,9 +170,10 @@ header {
     background: #0056b3; 
     color: white; 
     font-size: 1.2rem; 
-    margin: 0 auto; 
-    display: block; 
+    cursor: pointer;
+    transition: transform 0.2s;
 }
+.btn-act:active { transform: scale(0.92); }
 
 .action-item p { 
     font-size: 0.6rem; 
@@ -143,6 +183,7 @@ header {
     text-align: center; 
 }
 
+/* Salas da DAO */
 .grid-dao { 
     display: grid; 
     grid-template-columns: 1fr 1fr; 
@@ -152,17 +193,141 @@ header {
 
 .sala { 
     background: white; 
-    padding: 15px 5px; 
+    padding: 22px 5px; 
     border-radius: 15px; 
     text-align: center; 
-    font-size: 0.65rem; 
+    font-size: 0.7rem; 
     font-weight: bold; 
     border: 1px solid #eee; 
-    color: #666; 
+    color: #444; 
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+}
+.sala:active { background: #fafafa; }
+
+/* ==========================================
+   4. NOVO PAINEL LATERAL DINÂMICO (SIDE PANEL)
+   ========================================== */
+.side-panel-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 4000;
+    transition: right 0.4s ease;
+}
+.side-panel-overlay.active { right: 0; }
+
+.side-panel-content {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 85%; /* Deixa uma fresta do app visível na lateral */
+    height: 100%;
+    background: #ffffff;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.panel-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+#panel-title { margin: 0; font-size: 0.9rem; color: #111; letter-spacing: 0.5px; }
+
+.btn-close-clean {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #999;
     cursor: pointer;
 }
 
-/* Overlays de Mint e Pagamento */
+#panel-content {
+    flex: 1;
+    padding: 25px 20px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* Elementos Renderizados dentro do Painel pelo JS */
+.converter-box {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #eee;
+    text-align: center;
+    box-sizing: border-box;
+}
+.converter-box small { font-size: 0.6rem; font-weight: bold; color: #999; display: block; margin-bottom: 5px; }
+
+.input-brl, .input-transparente {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 1.8rem;
+    text-align: center;
+    font-weight: bold;
+    color: #111;
+    outline: none;
+}
+
+.btn-confirm {
+    background: #0056b3;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.btn-confirm.green { background: #28a745; }
+.btn-confirm.blue { background: #007bff; }
+
+.card-pagamento-fixo {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+}
+
+.txt-destino {
+    font-size: 0.75rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.label-clean {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: #aaa;
+    display: block;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Área Interna da Câmera (Html5Qrcode) */
+#reader {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+}
+
+/* ==========================================
+   5. OVERLAYS DE MINT E RESUMO DE ORDENS
+   ========================================== */
 .mint-overlay { 
     position: fixed; 
     bottom: -100%; 
@@ -173,7 +338,6 @@ header {
     transition: 0.5s ease; 
     z-index: 5000; 
 }
-
 .mint-overlay.metade { bottom: 0; }
 
 .mint-content { 
@@ -186,23 +350,27 @@ header {
     box-sizing: border-box;
 }
 
-/* Nova classe criada exclusivamente para a estrutura da folha de pagamento */
 .pagamento-content {
     padding: 40px 25px;
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     height: 100%; 
-    justify-content: flex-start; /* Alinha os itens do topo para baixo */
+    justify-content: flex-start; 
     box-sizing: border-box;
-    margin-top: 40px; /* Joga os textos ligeiramente para baixo para dar folga */
+    margin-top: 40px; 
 }
 
 .resumo-txt {
     width: 100%;
     text-align: center;
     margin-bottom: 10px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    box-sizing: border-box;
 }
+.resumo-txt p { margin: 6px 0; font-size: 0.85rem; color: #555; }
 
 .nft-preview { 
     border: 2px solid #0056b3; 
@@ -211,7 +379,6 @@ header {
     margin-bottom: 15px; 
     background: #fdfdfd; 
 }
-
 .nft-preview img { width: 140px; display: block; }
 
 .nft-tag { 
@@ -258,15 +425,13 @@ header {
     cursor: pointer;
 }
 
-/* Container do Botão Cancelar */
 .btn-container-cancel {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 25px; /* Controla a distância exata abaixo do botão laranja */
+    margin-top: 25px; 
 }
 
-/* Botão Cancelar Estilo Pílula */
 .btn-cancel-pilula {
     border: none;
     padding: 12px 40px;
@@ -280,7 +445,4 @@ header {
     background: #e0e0e0; 
     color: #666666; 
 }
-
-.btn-cancel-pilula:active {
-    background: #d5d5d5;
-}
+.btn-cancel-pilula:active { background: #d5d5d5; }
