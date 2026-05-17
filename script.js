@@ -217,13 +217,31 @@ class NitrogenDAO {
             };
         }
         else if (tipo === 'coletar') {
-            title.innerText = "COLETAR TOKEN N";
+            title.innerText = "COLETAR RECOMPENSAS";
+            
+            // A folha abre mostrando um estado de carregamento (botão dormindo)
             content.innerHTML = `
-                <div class="converter-box" style="text-align: center;">
-                    <img src="raposa.png" alt="Alpha Fox" style="width: 100px; height: 100px; margin: 15px 0; filter: drop-shadow(0 0 10px rgba(0,123,255,0.5));">
-                    <p style="color: #666; font-size: 0.9rem;">Reivindique seus Tokens N.</p>
-                    <button class="btn-confirm" id="confirmar-coleta">COLETAR AGORA</button>
+                <div class="converter-box" style="text-align: center; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                    <img src="raposa.png" alt="Alpha Fox" style="width: 80px; height: 80px; filter: drop-shadow(0 0 8px rgba(0,123,255,0.3));">
+                    
+                    <div class="detalhes-coleta" style="width: 100%; text-align: left; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; font-size: 0.85rem;">
+                        <p style="margin: 4px 0;"><strong>Status Guardião:</strong> <span id="status-guardiao" style="color: #666;">Verificando lista...</span></p>
+                        <p style="margin: 4px 0;"><strong>Arrecadação do Cofre:</strong> <span id="coleta-arrecadacao" style="color: #666;">Calculando...</span></p>
+                        <p style="margin: 4px 0;"><strong>Sua Quota Semanal:</strong> <span id="coleta-quota" style="color: #666;">Calculando...</span></p>
+                        <p style="margin: 4px 0;"><strong>Nonce de Segurança:</strong> <span id="coleta-nonce" style="color: #666;">-#</span></p>
+                    </div>
+
+                    <small style="color: #666; font-size: 0.8rem; line-height: 1.2;">
+                        Cada guardião assina a transação individualmente e paga sua própria taxa de gás.
+                    </small>
+
+                    <button class="btn-confirm" id="confirmar-coleta" disabled style="background: #cccccc; cursor: not-allowed; width: 100%;">
+                        AGUARDANDO DADOS...
+                    </button>
                 </div>`;
+
+            // Chama a função interna para simular ou buscar os dados do JS e acordar o botão
+            this.processarDadosColeta();
         }
         else if (tipo === 'trocar') {
             title.innerText = "TROCAR (SWAP)";
