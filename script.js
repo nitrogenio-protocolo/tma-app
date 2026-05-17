@@ -216,23 +216,20 @@ class NitrogenDAO {
                 } else { alert("Insira um endereço e valor válidos."); }
             };
         }
-            else if (tipo === 'coletar') {
+        else if (tipo === 'coletar') {
             title.innerText = "COLETAR RECOMPENSAS";
             
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center; display: flex; flex-direction: column; gap: 15px; align-items: center; padding-top: 10px;">
-                    
                     <div class="detalhes-coleta" style="width: 100%; text-align: left; background: rgba(0,0,0,0.03); padding: 14px; border-radius: 8px; font-size: 0.85rem; box-sizing: border-box;">
                         <p style="margin: 6px 0;"><strong>Status Guardião:</strong> <span id="status-guardiao" style="color: #666;">Verificando lista...</span></p>
                         <p style="margin: 6px 0;"><strong>Arrecadação do Cofre:</strong> <span id="coleta-arrecadacao" style="color: #666;">Calculando...</span></p>
                         <p style="margin: 6px 0;"><strong>Sua Quota Semanal:</strong> <span id="coleta-quota" style="color: #666;">Calculando...</span></p>
                         <p style="margin: 6px 0;"><strong>Nonce de Segurança:</strong> <span id="coleta-nonce" style="color: #666;">-#</span></p>
                     </div>
-
                     <small style="color: #666; font-size: 0.8rem; line-height: 1.3; padding: 0 5px;">
                         Cada guardião assina a transação individualmente e paga sua própria taxa de gás.
                     </small>
-
                     <button class="btn-confirm" id="confirmar-coleta" disabled style="background: #cccccc; cursor: not-allowed; width: 100%; margin-top: 5px;">
                         AGUARDANDO DADOS...
                     </button>
@@ -279,7 +276,6 @@ class NitrogenDAO {
         const content = document.getElementById('panel-content');
         const valorEmBrl = (valor * this.cotacaoBNB).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
         
-        // Aqui a chave fecha no lugar perfeito e a ordem do clique vai direto na tag
         content.innerHTML = `
             <div class="converter-box">
                 <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
@@ -311,11 +307,10 @@ class NitrogenDAO {
             if(btn) { btn.disabled = false; btn.innerText = "ASSINAR PAGAMENTO"; }
         }
     }
-        async processarDadosColeta() {
-        // Simulando o tempo de resposta da leitura do cofre/banco de dados JS (1.5 segundos)
+
+    async processarDadosColeta() {
         await new Promise(resolve => setTimeout(resolve, 1500));
 
-        // Elementos da interface interna da folha
         const txtStatus = document.getElementById('status-guardiao');
         const txtArrecadacao = document.getElementById('coleta-arrecadacao');
         const txtQuota = document.getElementById('coleta-quota');
@@ -331,30 +326,25 @@ class NitrogenDAO {
             return;
         }
 
-        // DADOS TEMPORÁRIOS (MOCK) - Substituir pelas chamadas de contrato/API futuramente
-        // Aqui simulamos que o backend JS já vigiou o cofre e calculou os valores
         const dadosSimulados = {
             ehGuardiao: true,
             arrecadacaoTotal: "15,420 Token N",
             quotaIndividual: "734.28 Token N",
-            nonceAtual: "0" // Próximo nonce livre do guardião
+            nonceAtual: "0"
         };
 
-        // Preenchendo a folha lateral com os detalhes reais calculados
         if (dadosSimulados.ehGuardiao) {
             if (txtStatus) txtStatus.innerHTML = "<span style='color: #28A745; font-weight: bold;'>Ativo (Guardião Oficial)</span>";
             if (txtArrecadacao) txtArrecadacao.innerText = dadosSimulados.arrecadacaoTotal;
             if (txtQuota) txtQuota.innerText = dadosSimulados.quotaIndividual;
             if (txtNonce) txtNonce.innerText = dadosSimulados.nonceAtual;
 
-            // ACORDANDO O BOTÃO INTERNO
             if (btnColetar) {
                 btnColetar.removeAttribute('disabled');
                 btnColetar.innerText = "REIVINDICAR TOKENS NOW";
-                btnColetar.style.background = "#007BFF"; // Cor ativa do seu padrão
+                btnColetar.style.background = "#007BFF";
                 btnColetar.style.cursor = "pointer";
                 
-                // Programando a ação de clique do botão acordado
                 btnColetar.onclick = () => {
                     this.executarColetaEfetiva(dadosSimulados.quotaIndividual, dadosSimulados.nonceAtual);
                 };
@@ -365,7 +355,7 @@ class NitrogenDAO {
         }
     }
 
-    async executarColetaEfetiva(quantidade, nonce) {
+    async ejecutarColetaEfetiva(quantidade, nonce) {
         const btn = document.getElementById('confirmar-coleta');
         try {
             if (btn) { 
@@ -373,17 +363,7 @@ class NitrogenDAO {
                 btn.innerText = "VERIFIQUE SUA CARTEIRA..."; 
             }
             
-            console.log(`Iniciando requisição de assinatura para ${quantidade} tokens com nonce ${nonce}`);
-            
-            // --- FUTURA INTEGRAÇÃO WEB3 ---
-            // Aqui entrará a chamada para o seu contrato 'NitrogênioDistribuidor' passando os parâmetros
-            // ex: const tx = await contratoDistribuidor.coletarTokens(quantidadeEmWei, nonce, assinaturaDoServidor);
-            // await tx.wait();
-            // ------------------------------
-            
-            // Simulação da assinatura da transação pelo cliente pagando o próprio gás
             await new Promise(resolve => setTimeout(resolve, 2000)); 
-            
             alert("Tokens N coletados com sucesso para a sua carteira! 🤜🤛");
             this.fecharFolha();
             
@@ -397,7 +377,6 @@ class NitrogenDAO {
         }
     }
 
-    
     async fecharFolha() {
         if (this.scanner) {
             try {
@@ -415,24 +394,7 @@ class NitrogenDAO {
         document.getElementById('side-panel').classList.remove('active');
     }
 
-    iniciarBotoes() {
-        const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
-        for (let id in btns) {
-            const el = document.getElementById(id);
-            if (el) el.onclick = () => this.abrirFolha(btns[id]);
-        }
-        const bc = document.getElementById('btn-conectar');
-        if (bc) bc.onclick = () => this.conectar();
-        const cp = document.getElementById('close-panel');
-        if (cp) cp.onclick = () => this.fecharFolha();
-        
-        setTimeout(() => {
-            if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
-        }, 1000);
-    }
-}
-
-    // --- TESOURARIA COM LEITURA REAL E BOTÃO DE SEGURANÇA ---
+    // --- SESSÃO INTEGRADA DA TESOURARIA REAL ---
     
     abrirTesouraria() {
         const panel = document.getElementById('side-panel');
@@ -444,33 +406,27 @@ class NitrogenDAO {
         title.innerText = "TESOURARIA DETALHADA";
         panel.classList.add('active');
 
-        // Endereço real que você buscou na Safe Wallet
         const enderecoCofre = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
 
-        // MOLDURA DA TELA - Começa adormecida com o botão para o JS descansar
         content.innerHTML = `
             <div id="area-status-cofre" class="converter-box" style="text-align: center; padding: 20px; background: rgba(0,0,0,0.02); border-radius: 12px; margin-bottom: 15px;">
                 <small style="color: #666; font-weight: bold; display: block; margin-bottom: 5px;">COFRE SAFE DETECTADO</small>
                 <code style="font-size: 0.65rem; color: #007BFF; word-break: break-all; display: block; margin-bottom: 15px;">
                     ${enderecoCofre}
                 </code>
-                
                 <button id="btn-sincronizar-cofre" style="background: #007BFF; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%;">
                     SINCRONIZAR COFRE REAL
                 </button>
             </div>
-            
             <div id="dados-reais-tesouraria" style="display: none;"></div>
         `;
 
-        // PROGRAMANDO O CLIQUE DO BOTÃO PARA ACORDAR AS FUNÇÕES
         const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
         if (btnSincronizar) {
             btnSincronizar.onclick = async () => {
                 btnSincronizar.innerText = "CONECTANDO NA BLOCKCHAIN...";
                 btnSincronizar.disabled = true;
                 btnSincronizar.style.background = "#666";
-                
                 await this.executarSincronizacaoReal(enderecoCofre);
             };
         }
@@ -483,22 +439,18 @@ class NitrogenDAO {
         try {
             let saldoBrlFinal = 0;
 
-            // Se a carteira principal estiver conectada ao app, busca o saldo real via RPC
             if (this.provider) {
                 const saldoWei = await this.provider.getBalance(enderecoCofre);
                 const saldoBnb = parseFloat(ethers.formatEther(saldoWei));
                 saldoBrlFinal = saldoBnb * this.cotacaoBNB;
             } else {
-                // Fallback de segurança se abrir sem carteira logada (Simula o saldo com base no print do Safe de $4)
                 const saldoDolarMock = 4.00; 
-                saldoBrlFinal = saldoDolarMock * 5.00; // Converte aproximado para Real
+                saldoBrlFinal = saldoDolarMock * 5.50; 
             }
 
-            // Divisão matemática exata aprovada por você
             const splitComunidade = (saldoBrlFinal * 0.58).toFixed(2);
             const splitGuardioes = (saldoBrlFinal * 0.42).toFixed(2);
 
-            // Banco de dados leve dos 21 guardiões para o loop
             const dadosGuardioes = [
                 { id: 1, saldo: saldoBrlFinal > 0 ? (splitGuardioes / 21) * 1.5 : 0, status: "Acumulado" },
                 { id: 2, saldo: 0, status: "Coletado" },
@@ -523,7 +475,6 @@ class NitrogenDAO {
                 { id: 21, saldo: 0, status: "Coletado" }
             ];
 
-            // Atualiza a caixinha do topo com os valores reais calculados
             areaStatus.innerHTML = `
                 <small style="color: #666; font-weight: bold; letter-spacing: 0.5px;">SALDO ATUAL DO COFRE SAFE</small>
                 <h2 style="margin: 5px 0 15px 0; font-size: 1.8rem; color: #28A745;">
@@ -535,7 +486,6 @@ class NitrogenDAO {
                 </div>
             `;
 
-            // Monta a lista dos 21 guardiões embaixo
             let htmlGrid = `
                 <h3 style="font-size: 0.9rem; color: #444; margin: 15px 0 10px 5px; font-weight: bold; letter-spacing: 0.5px; text-align: left;">DISTRIBUIÇÃO INDIVIDUAL (42%)</h3>
                 <div class="grid-guardioes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 300px; overflow-y: auto; padding-right: 5px; box-sizing: border-box;">
@@ -563,16 +513,36 @@ class NitrogenDAO {
             });
 
             htmlGrid += `</div>`;
-            
-            // Injeta a lista e faz o container aparecer suavemente
             containerDados.innerHTML = htmlGrid;
             containerDados.style.display = "block";
 
         } catch (error) {
             console.error("Erro na leitura da rede:", error);
             alert("Falha ao ler dados da blockchain. Verifique sua conexão.");
-            this.abrirTesouraria(); // Reseta a tela para o estado adormecido
+            this.abrirTesouraria();
         }
     }
+
+    iniciarBotoes() {
+        const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
+        for (let id in btns) {
+            const el = document.getElementById(id);
+            if (el) el.onclick = () => this.abrirFolha(btns[id]);
+        }
+        
+        // Ativando o clique do botão da Tesouraria de forma limpa
+        const bt = document.getElementById('btn-tesouraria');
+        if (bt) bt.onclick = () => this.abrirTesouraria();
+
+        const bc = document.getElementById('btn-conectar');
+        if (bc) bc.onclick = () => this.conectar();
+        const cp = document.getElementById('close-panel');
+        if (cp) cp.onclick = () => this.fecharFolha();
+        
+        setTimeout(() => {
+            if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
+        }, 1000);
+    }
+}
 
 const App = new NitrogenDAO();
