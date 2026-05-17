@@ -314,7 +314,93 @@ class NitrogenDAO {
             if(btn) { btn.disabled = false; btn.innerText = "ASSINAR PAGAMENTO"; }
         }
     }
+        async processarDadosColeta() {
+        // Simulando o tempo de resposta da leitura do cofre/banco de dados JS (1.5 segundos)
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
+        // Elementos da interface interna da folha
+        const txtStatus = document.getElementById('status-guardiao');
+        const txtArrecadacao = document.getElementById('coleta-arrecadacao');
+        const txtQuota = document.getElementById('coleta-quota');
+        const txtNonce = document.getElementById('coleta-nonce');
+        const btnColetar = document.getElementById('confirmar-coleta');
+
+        if (!this.account) {
+            if (txtStatus) txtStatus.innerHTML = "<span style='color: #DC3545;'>Carteira não conectada</span>";
+            if (btnColetar) {
+                btnColetar.innerText = "CONECTE SUA CARTEIRA PRIMEIRO";
+                btnColetar.style.background = "#DC3545";
+            }
+            return;
+        }
+
+        // DADOS TEMPORÁRIOS (MOCK) - Substituir pelas chamadas de contrato/API futuramente
+        // Aqui simulamos que o backend JS já vigiou o cofre e calculou os valores
+        const dadosSimulados = {
+            ehGuardiao: true,
+            arrecadacaoTotal: "15,420 Token N",
+            quotaIndividual: "734.28 Token N",
+            nonceAtual: "0" // Próximo nonce livre do guardião
+        };
+
+        // Preenchendo a folha lateral com os detalhes reais calculados
+        if (dadosSimulados.ehGuardiao) {
+            if (txtStatus) txtStatus.innerHTML = "<span style='color: #28A745; font-weight: bold;'>Ativo (Guardião Oficial)</span>";
+            if (txtArrecadacao) txtArrecadacao.innerText = dadosSimulados.arrecadacaoTotal;
+            if (txtQuota) txtQuota.innerText = dadosSimulados.quotaIndividual;
+            if (txtNonce) txtNonce.innerText = dadosSimulados.nonceAtual;
+
+            // ACORDANDO O BOTÃO INTERNO
+            if (btnColetar) {
+                btnColetar.removeAttribute('disabled');
+                btnColetar.innerText = "REIVINDICAR TOKENS NOW";
+                btnColetar.style.background = "#007BFF"; // Cor ativa do seu padrão
+                btnColetar.style.cursor = "pointer";
+                
+                // Programando a ação de clique do botão acordado
+                btnColetar.onclick = () => {
+                    this.executarColetaEfetiva(dadosSimulados.quotaIndividual, dadosSimulados.nonceAtual);
+                };
+            }
+        } else {
+            if (txtStatus) txtStatus.innerHTML = "<span style='color: #DC3545;'>Endereço não é Guardião</span>";
+            if (btnColetar) btnColetar.innerText = "COLETA INDISPONÍVEL";
+        }
+    }
+
+    async executarColetaEfetiva(quantidade, nonce) {
+        const btn = document.getElementById('confirmar-coleta');
+        try {
+            if (btn) { 
+                btn.disabled = true; 
+                btn.innerText = "VERIFIQUE SUA CARTEIRA..."; 
+            }
+            
+            console.log(`Iniciando requisição de assinatura para ${quantidade} tokens com nonce ${nonce}`);
+            
+            // --- FUTURA INTEGRAÇÃO WEB3 ---
+            // Aqui entrará a chamada para o seu contrato 'NitrogênioDistribuidor' passando os parâmetros
+            // ex: const tx = await contratoDistribuidor.coletarTokens(quantidadeEmWei, nonce, assinaturaDoServidor);
+            // await tx.wait();
+            // ------------------------------
+            
+            // Simulação da assinatura da transação pelo cliente pagando o próprio gás
+            await new Promise(resolve => setTimeout(resolve, 2000)); 
+            
+            alert("Tokens N coletados com sucesso para a sua carteira! 🤜🤛");
+            this.fecharFolha();
+            
+        } catch (e) {
+            console.error("Erro na coleta:", e);
+            alert("Falha ao processar a coleta.");
+            if (btn) { 
+                btn.disabled = false; 
+                btn.innerText = "REIVINDICAR TOKENS NOW"; 
+            }
+        }
+    }
+
+    
     async fecharFolha() {
         if (this.scanner) {
             try {
