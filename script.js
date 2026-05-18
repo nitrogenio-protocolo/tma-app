@@ -403,7 +403,7 @@ class NitrogenDAO {
         
         if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
         
-        title.innerText = "TESOURARIA DETALHADA";
+        title.innerText = "TESOURARIA";
         panel.classList.add('active');
 
         const enderecoCofre = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
