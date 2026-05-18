@@ -243,28 +243,20 @@ class NitrogenDAO {
         }
     }
 
-    cconfigurarRecebedor() {
-    const input = document.getElementById('v-brl');
-    input.oninput = () => {
-        if(!this.account || !input.value) return;
-        
-        // 1. Cria o escudo mudando a vírgula para ponto
-        const valorLimpo = input.value.toString().replace(',', '.');
-        
-        // 2. Faz a conta matemática usando a variável tratada e protegida
-        const bnb = (parseFloat(valorLimpo) / this.cotacaoBNB).toFixed(6);
-        
-        document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
-        
-        // 3. Valida usando o valor limpo para não dar erro no IF
-        if(parseFloat(valorLimpo) > 0) {
-            const valorEmWei = ethers.parseEther(bnb).toString();
-            const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('ethereum:'+this.account+'?value='+valorEmWei)}`;
-            document.getElementById('img-qr').src = link;
-            document.getElementById('qr-area').style.display = 'block';
-        }
-    };
-}
+    configurarRecebedor() {
+        const input = document.getElementById('v-brl');
+        input.oninput = () => {
+            if(!this.account || !input.value) return;
+            const bnb = (input.value / this.cotacaoBNB).toFixed(6);
+            document.getElementById('v-bnb').innerText = `≈ ${bnb} BNB`;
+            if(input.value > 0) {
+                const valorEmWei = ethers.parseEther(bnb).toString();
+                const link = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('ethereum:'+this.account+'?value='+valorEmWei)}`;
+                document.getElementById('img-qr').src = link;
+                document.getElementById('qr-area').style.display = 'block';
+            }
+        };
+    }
 
     iniciarScanner() {
         this.scanner = new Html5Qrcode("reader");
