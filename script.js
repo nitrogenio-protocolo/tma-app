@@ -692,25 +692,61 @@ class NitrogenDAO {
         }
     }
 
-    iniciarBotoes() {
+        iniciarBotoes() {
+        // 1. Vincula os botões das folhas de ações principais
         const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
         for (let id in btns) {
             const el = document.getElementById(id);
             if (el) el.onclick = () => this.abrirFolha(btns[id]);
         }
         
-        const bt = document.getElementById('btn-tesouraria');
-        if (bt) bt.onclick = () => this.abrirTesouraria();
+        // 2. Vincula os botões de controle inferiores e cabeçalho
+        const dt = document.getElementById('btn-tesouraria');
+        if (dt) dt.onclick = () => this.abrirTesouraria();
 
-        const bc = document.getElementById('btn-conectar');
-        if (bc) bc.onclick = () => this.conectar();
+        const dc = document.getElementById('btn-conectar');
+        if (dc) dc.onclick = () => this.conectar();
         
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
+
+        // ==========================================
+        // ENGENHARIA CIRÚRGICA: CONTROLE DA SPLASH
+        // ==========================================
+
+        // Botão PROSSEGUIR (Muda do Slide 1 para o Slide 2)
+        const btnNextSlide = document.querySelector('.btn-next-slide');
+        if (btnNextSlide) {
+            btnNextSlide.removeAttribute('onclick'); // Limpa o lixo do HTML antigo
+            btnNextSlide.onclick = () => this.nextSplashSlide();
+        }
+
+        // Botão de Seleção "LI" (Folha 2)
+        const btnRead = document.getElementById('btn-read');
+        if (btnRead) {
+            btnRead.removeAttribute('onclick');
+            btnRead.onclick = () => this.toggleRead();
+        }
+
+        // Botão de Seleção "CONCORDO" (Folha 2)
+        const btnAgree = document.getElementById('btn-agree');
+        if (btnAgree) {
+            btnAgree.removeAttribute('onclick');
+            btnAgree.onclick = () => this.toggleAgree();
+        }
+
+        // Botão ACESSAR HOME (Finaliza a Splash)
+        const btnEnterHome = document.getElementById('btn-enter-home');
+        if (btnEnterHome) {
+            btnEnterHome.removeAttribute('onclick');
+            btnEnterHome.onclick = () => this.finishSplash();
+        }
         
+        // 3. Auto-conexão se a carteira já estiver ativa no navegador dApp
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
         }, 1000);
+    }
     }
 }
 
