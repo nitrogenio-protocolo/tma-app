@@ -6,10 +6,15 @@ class NitrogenDAO {
         this.scanner = null;
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
-        this.saldoAppN = 1000;            // Saldo acumulado inicial interno
-        this.girosDisponiveis = 2;        // Quantidade de giros iniciais
+        this.saldoAppN = 1045;            // Saldo acumulado interno (ajustado para seus testes)
+        this.girosDisponiveis = 0;        // Quantidade de giros iniciais
         this.fluxoQuizRespondido = false; // Evita responder o quiz várias vezes
         this.roletaGirando = false; 
+        
+        // --- NOVAS PROPRIEDADES DA MINI HOME (RECOMPENSAS) ---
+        this.saldoPoupancaN = 0;          // Armazena os tokens bloqueados na poupança
+        this.diasPoupancaRestantes = 0;   // Contador visual de tempo da poupança
+        this.checkInRealizadoHoje = false;// Evita check-in duplo no mesmo dia
         
         // Propriedades de controle da Splash Screen
         this.readAccepted = false;
@@ -407,7 +412,7 @@ class NitrogenDAO {
         if (btnHome) btnHome.classList.add('active');
     }
 
-    // --- SESSÃO INTEGRADA DO PERFIL E ABAS ---
+    // --- SESSÃO INTEGRADA DO PERFIL E ABAS (A MINI HOME DO MOTORISTA) ---
 
     mudarAba(aba) {
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
@@ -426,40 +431,79 @@ class NitrogenDAO {
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
+            // Gerencia as travas visuais dos botões de ação baseado no estado atual
             const travaBotaoGiro = this.girosDisponiveis > 0 ? '' : 'disabled style="background: #cccccc; cursor: not-allowed;"';
+            const estiloQuizBtn = this.fluxoQuizRespondido ? 'background: #cccccc; cursor: not-allowed;' : 'background: #333333;';
+            const textoQuizBtn = this.fluxoQuizRespondido ? '✔️ QUIZ SEMANAL CONCLUÍDO' : '📚 QUIZ SEMANAL';
+            const travaQuiz = this.fluxoQuizRespondido ? 'disabled' : '';
+
+            const estiloCheckInBtn = this.checkInRealizadoHoje ? 'background: #cccccc; cursor: not-allowed;' : 'background: #333333;';
+            const textoCheckInBtn = this.checkInRealizadoHoje ? '✔️ CHECK-IN DIÁRIO REALIZADO' : '📆 CHECK-IN DIÁRIO';
+            const travaCheckIn = this.checkInRealizadoHoje ? 'disabled' : '';
             
+            // Texto dinâmico do estado da poupança
+            const textoTempoPoupanca = this.saldoPoupancaN > 0 ? `Libera em ${this.diasPoupancaRestantes} dias (Rendimento Ativo)` : 'Nenhum token retido para bônus';
+
+            // Injeta o novo layout unificado "Cyber-Industrial Clean" diretamente no painel
             content.innerHTML = `
                 <div class="perfil-container">
+                    
                     <div class="perfil-card-interno">
                         <p class="perfil-label">SALDO ACUMULADO (APP)</p>
-                        <h3 class="perfil-saldo-pontos">${this.saldoAppN} <span class="token-symbol">N</span></h3>
+                        <h3 class="perfil-saldo-pontos"><span id="saldo-app-tokens">${this.saldoAppN}</span> <span class="token-symbol">N</span></h3>
                         <p class="perfil-subtext">Tokens guardados no fundo de recompensa</p>
                         
                         <button class="btn-resgatar-vault" onclick="App.executarResgate()">
                             RESGATAR PARA CARTEIRA
                         </button>
+                        
+                        <div style="border-top: 1px dashed rgba(0,0,0,0.1); margin: 15px 0; padding-top: 10px;"></div>
+                        
+                        <p class="perfil-label" style="font-size: 0.7rem; opacity: 0.8;">POUPANÇA NITROGÊNIO (30 DIAS)</p>
+                        <div style="background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px; margin: 8px 0; text-align: center;">
+                            <strong style="font-size: 1.1rem; color: #007BFF; display: block;" id="saldo-poupanca-tokens">${this.saldoPoupancaN} N</strong>
+                            <small style="font-size: 0.65rem; color: #666;" id="tempo-poupanca-restante">${textoTempoPoupanca}</small>
+                        </div>
+                        <button type="button" class="btn-confirm" onclick="App.enviarParaPoupanca()" style="background: #333333; margin: 0; padding: 10px; font-size: 0.8rem; width: 100%;">
+                            GUARDAR NA POUPANÇA (+2 GIROS)
+                        </button>
                     </div>
 
-                    <div class="perfil-card-giros">
+                    <div class="perfil-card-giros" style="margin-top: 15px;">
                         <p class="perfil-label">ROLETAS DISPONÍVEIS</p>
-                        <h4 class="perfil-giros-count" style="margin-bottom: 15px;">${this.girosDisponiveis} Giros</h4>
+                        <h4 class="perfil-giros-count" style="margin-bottom: 15px;" id="perfil-giros-contador">${this.girosDisponiveis} Giros</h4>
                         
                         <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <button class="btn-confirm" id="btn-abrir-quiz" onclick="App.abrirQuizPainel()" style="background: #333333; margin: 0; padding: 12px; font-size: 0.85rem;">
-                                📖 RESPONDER QUIZ DIÁRIO
+                            <button class="btn-confirm" id="btn-quiz-semanal" onclick="App.abrirQuizPainel()" style="${estiloQuizBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaQuiz}>
+                                ${textoQuizBtn}
                             </button>
+                            
+                            <button class="btn-confirm" id="btn-checkin-diario" onclick="App.executarCheckInDiario()" style="${estiloCheckInBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaCheckIn}>
+                                ${textoCheckInBtn}
+                            </button>
+                            
                             <button class="btn-confirm blue" id="btn-abrir-giro" onclick="App.abrirRoletaPainel()" ${travaBotaoGiro}>
                                 🎯 IR PARA A ROLETA
                             </button>
                         </div>
                     </div>
 
-                    <div class="perfil-historico">
+                    <div class="perfil-card-interno" style="margin-top: 15px; text-align: left;">
+                        <p class="perfil-label">CÓDIGO DA COMUNIDADE</p>
+                        <p class="perfil-subtext" style="margin-bottom: 10px;">Insira o código compartilhado nos canais oficiais ou via rádio pelos parceiros.</p>
+                        
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="input-codigo-comunidade" placeholder="Digite o código..." autocomplete="off" style="flex: 1; padding: 10px; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; font-size: 0.85rem; outline: none;">
+                            <button type="button" onclick="App.validarCodigoComunidade()" style="background: #007BFF; color: white; border: none; padding: 0 15px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">VALIDAR</button>
+                        </div>
+                    </div>
+
+                    <div class="perfil-historico" style="margin-top: 15px;">
                         <p class="perfil-label-historico">ÚLTIMAS ATIVIDADES</p>
                         <div id="historico-lista">
                             <div class="historico-item">
-                                <span>Saldo Inicial de Teste</span>
-                                <span class="historico-positivo">+${this.saldoAppN} N</span>
+                                <span>Saldo Inicial Registrado</span>
+                                <span class="historico-positivo">+1045 N</span>
                             </div>
                         </div>
                     </div>
@@ -475,7 +519,59 @@ class NitrogenDAO {
         alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
     }
 
-    // --- SALA DO QUIZ DO BEM ---
+    // --- LOGICA DAS NOVAS FUNÇÕES DA MINI HOME ---
+
+    enviarParaPoupanca() {
+        if (this.saldoAppN <= 0) {
+            alert("Você não possui saldo disponível no aplicativo para guardar na poupança.");
+            return;
+        }
+
+        const valorParaGuardar = prompt(`Você possui ${this.saldoAppN} N. Quanto deseja guardar na poupança por 30 dias?`, this.saldoAppN);
+        const quantidade = parseInt(valorParaGuardar);
+
+        if (isNaN(quantidade) || quantidade <= 0 || quantidade > this.saldoAppN) {
+            alert("Quantidade inválida ou insuficiente.");
+            return;
+        }
+
+        // Executa a descida de saldo (Mecânica de Mini-Staking)
+        this.saldoAppN -= quantidade;
+        this.saldoPoupancaN += quantidade;
+        this.diasPoupancaRestantes = 30;
+        this.girosDisponiveis += 2; // Recompensa instantânea por poupar
+
+        alert(`Sucesso! ${quantidade} Token N foram movidos para a sua Poupança. Você ganhou +2 Giros de bônus por fortalecer o protocolo! 🤜🤛`);
+        this.mudarAba('perfil'); // Recarrega a tela atualizando os números
+    }
+
+    executarCheckInDiario() {
+        if (this.checkInRealizadoHoje) return;
+
+        this.checkInRealizadoHoje = true;
+        this.girosDisponiveis += 1; // Dá um giro na roleta pelo compromisso diário
+
+        alert("Check-in Diário Concluído com sucesso! Você ganhou +1 Giro para usar na Roleta do Bem. Volte amanhã! 📆");
+        this.mudarAba('perfil');
+    }
+
+    validarCodigoComunidade() {
+        const input = document.getElementById('input-codigo-comunidade');
+        if (!input) return;
+
+        const codigo = input.value.trim().toUpperCase();
+        const codigoValidoSecreto = "NITRO2026"; // Exemplo de código distribuído na comunidade
+
+        if (codigo === codigoValidoSecreto) {
+            this.girosDisponiveis += 1; // Premia o boca a boca
+            alert("Código da Comunidade Validado! O motorista que te indicou ajudou o protocolo. Você recebeu +1 Giro! 🎯");
+            this.mudarAba('perfil');
+        } else {
+            alert("Código inválido ou já expirado. Busque códigos atualizados nos grupos oficiais!");
+        }
+    }
+
+    // --- SÁLA DO QUIZ DO BEM (AGORA SEMANÁRIO EDUCACIONAL) ---
 
     abrirQuizPainel() {
         const content = document.getElementById('panel-content');
@@ -486,7 +582,7 @@ class NitrogenDAO {
         if (this.fluxoQuizRespondido) {
             content.innerHTML = `
                 <div style="padding: 20px; text-align: center;">
-                    <p style="font-size: 1.1rem; color: #28a745; font-weight: bold; margin-bottom: 10px;">Tarefa Diária Concluída! ✔️</p>
+                    <p style="font-size: 1.1rem; color: #28a745; font-weight: bold; margin-bottom: 10px;">Tarefa Semanal Concluída! ✔️</p>
                     <p style="font-size: 0.85rem; color: #666; line-height: 1.5; margin-bottom: 20px;">
                         Você já garantiu seu prêmio por hoje. Estude mais amanhã para proteger sua carteira e ganhar mais giros!
                     </p>
@@ -502,7 +598,7 @@ class NitrogenDAO {
             <div style="padding: 15px; text-align: left;">
                 <p style="font-size: 0.75rem; font-weight: bold; color: #007BFF; letter-spacing: 1px; margin-bottom: 10px;">SEGURANÇA WEB3</p>
                 <p style="font-size: 0.95rem; font-weight: bold; color: #1a1a1a; line-height: 1.4; margin-bottom: 20px;">
-                    Se alguém fingir ser do suporte do Protocolo Nitrogênio e pedir as suas 12 palavras-chave (frase de recuperação) da MetaMask para resolver um problem, o que você faz?
+                    Se alguém fingir ser do suporte do Protocolo Nitrogênio e pedir as suas 12 palavras-chave (frase de recuperação) da MetaMask para resolver um problema, o que você faz?
                 </p>
                 
                 <div style="display: flex; flex-direction: column; gap: 12px;">
