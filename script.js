@@ -392,9 +392,79 @@ class NitrogenDAO {
         if(info) info.style.display = 'block'; 
         
         document.getElementById('side-panel').classList.remove('active');
+        
+        // Remove a marcação de ativo de todos os botões do rodapé e ativa a HOME novamente
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
+        const btnHome = document.querySelector('.bottom-nav .nav-item:first-child');
+        if (btnHome) btnHome.classList.add('active');
     }
 
-        // --- SESSÃO INTEGRADA DA TESOURARIA REAL ---
+    // --- SESSÃO INTEGRADA DO PERFIL E ABAS ---
+
+    mudarAba(aba) {
+        // Seleciona todos os botões de navegação no rodapé
+        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+
+        if (aba === 'perfil') {
+            // Adiciona destaque visual no botão Perfil do rodapé
+            const btnPerfil = document.getElementById('nav-perfil');
+            if (btnPerfil) btnPerfil.classList.add('active');
+
+            // 1. Abre o painel lateral existente
+            const panel = document.getElementById('side-panel');
+            const content = document.getElementById('panel-content');
+            const title = document.getElementById('panel-title');
+            
+            if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+            
+            title.innerText = "MEU PERFIL";
+            panel.classList.add('active');
+            
+            // 2. Injeta o HTML limpo e leve do Perfil
+            content.innerHTML = `
+                <div class="perfil-container">
+                    <div class="perfil-card-interno">
+                        <p class="perfil-label">SALDO ACUMULADO (APP)</p>
+                        <h3 class="perfil-saldo-pontos">1.000 <span class="token-symbol">N</span></h3>
+                        <p class="perfil-subtext">Tokens prontos para o resgate</p>
+                        
+                        <button class="btn-resgatar-vault" onclick="App.executarResgate()">
+                            RESGATAR PARA CARTEIRA
+                        </button>
+                    </div>
+
+                    <div class="perfil-card-giros">
+                        <p class="perfil-label">ROLETAS DISPONÍVEIS</p>
+                        <h4 class="perfil-giros-count">2 Giros</h4>
+                    </div>
+
+                    <div class="perfil-historico">
+                        <p class="perfil-label-historico">ÚLTIMAS ATIVIDADES</p>
+                        <div class="historico-item">
+                            <span>Ganho no Quiz do Bem</span>
+                            <span class="historico-positivo">+1 Giro</span>
+                        </div>
+                        <div class="historico-item">
+                            <span>Resultado da Roleta</span>
+                            <span class="historico-positivo">+1.000 N</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+        } else if (aba === 'home') {
+            // Se o usuário clicar em Home, fecha a aba lateral com a animação padrão
+            this.fecharFolha();
+        }
+    }
+
+    executarResgate() {
+        alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
+        // Futura integração com o ethers.js
+    }
+
+    // --- SESSÃO INTEGRADA DA TESOURARIA REAL ---
     
     abrirTesouraria() {
         const panel = document.getElementById('side-panel');
@@ -438,7 +508,6 @@ class NitrogenDAO {
         const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
         
         try {
-            // SEGURANÇA: Se o provider não estiver pronto, força a conexão antes de ler o saldo
             if (!this.provider || !this.account) {
                 console.log("Detectada falta de conexão. Ativando carteira primeiro...");
                 await this.conectar();
@@ -446,12 +515,10 @@ class NitrogenDAO {
 
             let saldoBrlFinal = 0;
 
-            // Se mesmo após tentar conectar o provider existir, faz a leitura real
             if (this.provider) {
                 const saldoWei = await this.provider.getBalance(enderecoCofre);
                 const saldoBnb = parseFloat(ethers.formatEther(saldoWei));
                 
-                // Força atualização da cotação se estiver zerada para não zerar o saldo em R$
                 if (this.cotacaoBNB <= 0) {
                     await this.buscarCotacao();
                 }
@@ -459,18 +526,15 @@ class NitrogenDAO {
                 saldoBrlFinal = saldoBnb * this.cotacaoBNB;
             } 
             
-            // Rota de contingência amigável caso a rede falhe ou recuse
             if (saldoBrlFinal === 0) {
-                saldoBrlFinal = 22.00; // Valor padrão de simulação se o cofre real estiver zerado na testnet
+                saldoBrlFinal = 22.00; 
             }
 
             const splitComunidade = (saldoBrlFinal * 0.58).toFixed(2);
             const splitGuardioes = (saldoBrlFinal * 0.42).toFixed(2);
 
-            // Monta a distribuição real dividida rigorosamente entre os 21 guardiões ativos
             const dadosGuardioes = [];
             for (let i = 1; i <= 21; i++) {
-                // Simulação matemática baseada no saldo real do split dos guardiões (id 1 e 3 começam com saldo acumulado)
                 let saldoIndividual = 0;
                 let statusIndividual = "Coletado";
 
@@ -489,7 +553,6 @@ class NitrogenDAO {
                 });
             }
 
-            // Altera o painel superior mostrando o saldo real capturado
             areaStatus.innerHTML = `
                 <small style="color: #666; font-weight: bold; letter-spacing: 0.5px;">SALDO ATUAL DO COFRE SAFE</small>
                 <h2 style="margin: 5px 0 15px 0; font-size: 1.8rem; color: #28A745;">
@@ -501,7 +564,6 @@ class NitrogenDAO {
                 </div>
             `;
 
-            // Gera o design limpo em formato grid com rolagem para os 21 guardiões
             let htmlGrid = `
                 <h3 style="font-size: 0.9rem; color: #444; margin: 15px 0 10px 5px; font-weight: bold; letter-spacing: 0.5px; text-align: left;">DISTRIBUIÇÃO INDIVIDUAL (42%)</h3>
                 <div class="grid-guardioes" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 260px; overflow-y: auto; padding-right: 5px; box-sizing: border-box;">
