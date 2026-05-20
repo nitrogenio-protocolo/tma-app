@@ -401,27 +401,28 @@ class NitrogenDAO {
 
     // --- SESSÃO INTEGRADA DO PERFIL E ABAS ---
 
-    mudarAba(aba) {
-        // Seleciona todos os botões de navegação no rodapé
+        mudarAba(aba) {
+        // Seleciona todos os botões de navegação no rodapé e desativa o azul deles
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         navItems.forEach(item => item.classList.remove('active'));
 
         if (aba === 'perfil') {
-            // Adiciona destaque visual no botão Perfil do rodapé
+            // Adiciona o destaque visual (Azul Blueberry) no botão Perfil do rodapé
             const btnPerfil = document.getElementById('nav-perfil');
             if (btnPerfil) btnPerfil.classList.add('active');
 
-            // 1. Abre o painel lateral existente
+            // Abre o painel lateral padrão do seu app
             const panel = document.getElementById('side-panel');
             const content = document.getElementById('panel-content');
             const title = document.getElementById('panel-title');
             
             if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
             
+            // Define o título do painel superior
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
-            // 2. Injeta o HTML limpo e leve do Perfil
+            // Injeta o HTML limpo e leve do Perfil com o ícone de texto que não trava
             content.innerHTML = `
                 <div class="perfil-container">
                     <div class="perfil-card-interno">
@@ -454,7 +455,7 @@ class NitrogenDAO {
             `;
             
         } else if (aba === 'home') {
-            // Se o usuário clicar em Home, fecha a aba lateral com a animação padrão
+            // Se clicar em Home, fecha a folha lateral com a animação nativa
             this.fecharFolha();
         }
     }
