@@ -9,6 +9,7 @@ class NitrogenDAO {
         this.saldoAppN = 1000;            // Saldo acumulado inicial interno
         this.girosDisponiveis = 2;        // Quantidade de giros iniciais
         this.fluxoQuizRespondido = false; // Evita responder o quiz várias vezes
+        this.roletaGirando = false; 
         
         // Propriedades de controle da Splash Screen
         this.readAccepted = false;
