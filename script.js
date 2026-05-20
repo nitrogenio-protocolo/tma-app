@@ -406,7 +406,7 @@ class NitrogenDAO {
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         navItems.forEach(item => item.classList.remove('active'));
 
-        if (aba === 'perfil') {
+            if (aba === 'perfil') {
             // Adiciona o destaque visual (Azul Blueberry) no botão Perfil do rodapé
             const btnPerfil = document.getElementById('nav-perfil');
             if (btnPerfil) btnPerfil.classList.add('active');
@@ -422,13 +422,17 @@ class NitrogenDAO {
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
-            // Injeta o HTML limpo e leve do Perfil com o ícone de texto que não trava
+            // Define se o botão da roleta fica cinza ou ativo com base nos giros
+            const travaBotaoGiro = this.girosDisponiveis > 0 ? '' : 'disabled style="background: #cccccc; cursor: not-allowed;"';
+            
+            // Injeta o HTML com o Hub do Perfil (Saldo, Quiz e Giro integrados)
             content.innerHTML = `
                 <div class="perfil-container">
+                    
                     <div class="perfil-card-interno">
                         <p class="perfil-label">SALDO ACUMULADO (APP)</p>
-                        <h3 class="perfil-saldo-pontos">1.000 <span class="token-symbol">N</span></h3>
-                        <p class="perfil-subtext">Tokens prontos para o resgate</p>
+                        <h3 class="perfil-saldo-pontos">${this.saldoAppN} <span class="token-symbol">N</span></h3>
+                        <p class="perfil-subtext">Tokens guardados no fundo de recompensa</p>
                         
                         <button class="btn-resgatar-vault" onclick="App.executarResgate()">
                             RESGATAR PARA CARTEIRA
@@ -437,18 +441,25 @@ class NitrogenDAO {
 
                     <div class="perfil-card-giros">
                         <p class="perfil-label">ROLETAS DISPONÍVEIS</p>
-                        <h4 class="perfil-giros-count">2 Giros</h4>
+                        <h4 class="perfil-giros-count" style="margin-bottom: 15px;">${this.girosDisponiveis} Giros</h4>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn-confirm" id="btn-abrir-quiz" onclick="App.abrirQuizPainel()" style="background: #333333; margin: 0; padding: 12px; font-size: 0.85rem;">
+                                📖 RESPONDER QUIZ DIÁRIO
+                            </button>
+                            <button class="btn-confirm blue" id="btn-abrir-giro" onclick="App.abrirRoletaPainel()" ${travaBotaoGiro}>
+                                🎯 IR PARA A ROLETA
+                            </button>
+                        </div>
                     </div>
 
                     <div class="perfil-historico">
                         <p class="perfil-label-historico">ÚLTIMAS ATIVIDADES</p>
-                        <div class="historico-item">
-                            <span>Ganho no Quiz do Bem</span>
-                            <span class="historico-positivo">+1 Giro</span>
-                        </div>
-                        <div class="historico-item">
-                            <span>Resultado da Roleta</span>
-                            <span class="historico-positivo">+1.000 N</span>
+                        <div id="historico-lista">
+                            <div class="historico-item">
+                                <span>Saldo Inicial de Teste</span>
+                                <span class="historico-positivo">+${this.saldoAppN} N</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -464,7 +475,6 @@ class NitrogenDAO {
         alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
         // Futura integração com o ethers.js
     }
-
     // --- SESSÃO INTEGRADA DA TESOURARIA REAL ---
     
     abrirTesouraria() {
