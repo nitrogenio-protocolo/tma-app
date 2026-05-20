@@ -11,9 +11,9 @@ class NitrogenDAO {
         this.fluxoQuizRespondido = false; // Evita responder o quiz várias vezes
         this.roletaGirando = false; 
         
-        // --- NOVAS PROPRIEDADES DA MINI HOME (RECOMPENSAS) ---
+        // --- PROPRIEDADES DA MINI HOME (RECOMPENSAS) ---
         this.saldoPoupancaN = 0;          // Armazena os tokens bloqueados na poupança
-        this.diasPoupancaRestantes = 0;   // Contador visual de tempo da poupança
+        this.diasPoupancaRestantes = 0;   // Contador visual de tempo da poupança (0 significa liberado)
         this.checkInRealizadoHoje = false;// Evita check-in duplo no mesmo dia
         
         // Propriedades de controle da Splash Screen
@@ -270,7 +270,7 @@ class NitrogenDAO {
     iniciarScanner() {
         this.scanner = new Html5Qrcode("reader");
         this.scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (txt) => {
-            this.scanner.stop().then(() => {
+            this.scanner.scanner.stop().then(() => {
                 this.scanner = null; 
                 document.getElementById('reader').style.display = 'none';
                 let addr = txt.includes(':') ? txt.split(':')[1].split('?')[0] : txt;
@@ -289,11 +289,11 @@ class NitrogenDAO {
             <div class="converter-box">
                 <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
                 <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
-                <button class="btn-confirm" id="confirm-final" onclick="App.ejecutar('${addr}', '${valor}')">ASSINAR PAGAMENTO</button>
+                <button class="btn-confirm" id="confirm-final" onclick="App.executar('${addr}', '${valor}')">ASSINAR PAGAMENTO</button>
             </div>`;
     }
 
-    async ejecutar(para, quanto) {
+    async executar(para, quanto) {
         const btn = document.getElementById('confirm-final');
         try {
             if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
@@ -368,7 +368,7 @@ class NitrogenDAO {
         // Método vazio ou reserva se necessário
     }
 
-    async ejecutarColetaEfetiva(quantidade, nonce) {
+    async executarColetaEfetiva(quantidade, nonce) {
         const btn = document.getElementById('confirmar-coleta');
         try {
             if (btn) { 
@@ -442,7 +442,30 @@ class NitrogenDAO {
             const travaCheckIn = this.checkInRealizadoHoje ? 'disabled' : '';
             
             // Texto dinâmico do estado da poupança
-            const textoTempoPoupanca = this.saldoPoupancaN > 0 ? `Libera em ${this.diasPoupancaRestantes} dias (Rendimento Ativo)` : 'Nenhum token retido para bônus';
+            const textoTempoPoupanca = this.saldoPoupancaN > 0 
+                ? (this.diasPoupancaRestantes > 0 ? `Libera em ${this.diasPoupancaRestantes} dias (Rendimento Ativo)` : '🔓 Saldo Liberado para Resgate!') 
+                : 'Nenhum token retido para bônus';
+
+            // --- LÓGICA DINÂMICA DOS BOTÕES DA POUPANÇA ---
+            let blocoBotoesPoupanca = '';
+            if (this.saldoPoupancaN > 0 && this.diasPoupancaRestantes <= 0) {
+                blocoBotoesPoupanca = `
+                    <div style="display: flex; gap: 8px; margin-top: 8px; width: 100%;">
+                        <button type="button" class="btn-confirm" onclick="App.clamarPoupanca()" style="background: #28A745; margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
+                            🔓 CLAMAR DE VOLTA
+                        </button>
+                        <button type="button" class="btn-confirm blue" onclick="App.renovarPoupanca()" style="margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
+                            🔄 RENOVAR (+2 GIROS)
+                        </button>
+                    </div>
+                `;
+            } else {
+                blocoBotoesPoupanca = `
+                    <button type="button" class="btn-confirm" onclick="App.enviarParaPoupanca()" style="background: #333333; margin: 8px 0 0 0; padding: 10px; font-size: 0.8rem; width: 100%;">
+                        GUARDAR NA POUPANÇA (+2 GIROS)
+                    </button>
+                `;
+            }
 
             // Injeta o novo layout unificado "Cyber-Industrial Clean" diretamente no painel
             content.innerHTML = `
@@ -464,9 +487,7 @@ class NitrogenDAO {
                             <strong style="font-size: 1.1rem; color: #007BFF; display: block;" id="saldo-poupanca-tokens">${this.saldoPoupancaN} N</strong>
                             <small style="font-size: 0.65rem; color: #666;" id="tempo-poupanca-restante">${textoTempoPoupanca}</small>
                         </div>
-                        <button type="button" class="btn-confirm" onclick="App.enviarParaPoupanca()" style="background: #333333; margin: 0; padding: 10px; font-size: 0.8rem; width: 100%;">
-                            GUARDAR NA POUPANÇA (+2 GIROS)
-                        </button>
+                        ${blocoBotoesPoupanca}
                     </div>
 
                     <div class="perfil-card-giros" style="margin-top: 15px;">
@@ -519,7 +540,7 @@ class NitrogenDAO {
         alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
     }
 
-    // --- LOGICA DAS NOVAS FUNÇÕES DA MINI HOME ---
+    // --- LOGICA DAS FUNÇÕES DA MINI HOME ---
 
     enviarParaPoupanca() {
         if (this.saldoAppN <= 0) {
@@ -538,11 +559,36 @@ class NitrogenDAO {
         // Executa a descida de saldo (Mecânica de Mini-Staking)
         this.saldoAppN -= quantidade;
         this.saldoPoupancaN += quantidade;
-        this.diasPoupancaRestantes = 30;
-        this.girosDisponiveis += 2; // Recompensa instantânea por poupar
+        this.diasPoupancaRestantes = 30; // Define o bloqueio regulamentar
+        this.girosDisponiveis += 2;      // Recompensa instantânea por poupar
 
         alert(`Sucesso! ${quantidade} Token N foram movidos para a sua Poupança. Você ganhou +2 Giros de bônus por fortalecer o protocolo! 🤜🤛`);
         this.mudarAba('perfil'); // Recarrega a tela atualizando os números
+    }
+
+    clamarPoupanca() {
+        if (this.saldoPoupancaN <= 0) return;
+
+        const valorRetornado = this.saldoPoupancaN;
+        
+        // Devolve o montante retido para o saldo de uso interno do App
+        this.saldoAppN += valorRetornado;
+        this.saldoPoupancaN = 0;
+        this.diasPoupancaRestantes = 0;
+
+        alert(`🔓 Sucesso! Seus ${valorRetornado} Token N saíram da poupança e voltaram para o seu saldo de recompensas principal! 🤜🤛`);
+        this.mudarAba('perfil'); 
+    }
+
+    renovarPoupanca() {
+        if (this.saldoPoupancaN <= 0) return;
+
+        // Tranca por mais uma temporada completa de 30 dias
+        this.diasPoupancaRestantes = 30;
+        this.girosDisponiveis += 2; // Bonifica novamente o comportamento leal do usuário
+
+        alert(`🔄 Poupança Renovada! Seus ${this.saldoPoupancaN} Token N estão guardados por mais 30 dias. Você faturou +2 Giros de bônus por incentivar a liquidez! 🎯`);
+        this.mudarAba('perfil'); 
     }
 
     executarCheckInDiario() {
@@ -571,7 +617,7 @@ class NitrogenDAO {
         }
     }
 
-    // --- SÁLA DO QUIZ DO BEM (AGORA SEMANÁRIO EDUCACIONAL) ---
+    // --- SALA DO QUIZ DO BEM (SEMANÁRIO EDUCACIONAL) ---
 
     abrirQuizPainel() {
         const content = document.getElementById('panel-content');
@@ -667,7 +713,7 @@ class NitrogenDAO {
                 <code style="font-size: 0.65rem; color: #007BFF; word-break: break-all; display: block; margin-bottom: 15px;">
                     ${enderecoCofre}
                 </code>
-                <button id="btn-sincronizar-cofre" style="background: #007BFF; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%;">
+                <button id="btn-sincronizar-cofre" style="background: #007BFF; color: white; border: none; padding: 10px 166px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%;">
                     SINCRONIZAR COFRE REAL
                 </button>
             </div>
@@ -680,12 +726,12 @@ class NitrogenDAO {
                 btnSincronizar.innerText = "CONECTANDO NA BLOCKCHAIN...";
                 btnSincronizar.disabled = true;
                 btnSincronizar.style.background = "#666";
-                await this.ejecutarSincronizacaoReal(enderecoCofre);
+                await this.executarSincronizacaoReal(enderecoCofre);
             };
         }
     }
 
-    async ejecutarSincronizacaoReal(enderecoCofre) {
+    async executarSincronizacaoReal(enderecoCofre) {
         const containerDados = document.getElementById('dados-reais-tesouraria');
         const areaStatus = document.getElementById('area-status-cofre');
         const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
@@ -834,7 +880,7 @@ class NitrogenDAO {
         }, 1000);
     }
 
-    // --- MÉTODOS DA ROLETA (MANTIDOS DENTRO DA CLASSE) ---
+    // --- MÉTODOS DA ROLETA ---
 
     abrirRoletaPainel() {
         const content = document.getElementById('panel-content');
@@ -976,5 +1022,5 @@ class NitrogenDAO {
     }
 }
 
-// INICIALIZAÇÃO DA CLASSE (Instanciando após a declaração completa)
+// INICIALIZAÇÃO DA CLASSE
 const App = new NitrogenDAO();
