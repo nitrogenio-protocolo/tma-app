@@ -363,7 +363,7 @@ class NitrogenDAO {
         // Método vazio ou reserva se necessário
     }
 
-    async executarColetaEfetiva(quantidade, nonce) {
+    async ejecutarColetaEfetiva(quantidade, nonce) {
         const btn = document.getElementById('confirmar-coleta');
         try {
             if (btn) { 
@@ -502,7 +502,7 @@ class NitrogenDAO {
             <div style="padding: 15px; text-align: left;">
                 <p style="font-size: 0.75rem; font-weight: bold; color: #007BFF; letter-spacing: 1px; margin-bottom: 10px;">SEGURANÇA WEB3</p>
                 <p style="font-size: 0.95rem; font-weight: bold; color: #1a1a1a; line-height: 1.4; margin-bottom: 20px;">
-                    Se alguém fingir ser do suporte do Protocolo Nitrogênio e pedir as suas 12 palavras-chave (frase de recuperação) da MetaMask para resolver um problema, o que você faz?
+                    Se alguém fingir ser do suporte do Protocolo Nitrogênio e pedir as suas 12 palavras-chave (frase de recuperação) da MetaMask para resolver um problem, o que você faz?
                 </p>
                 
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -692,15 +692,13 @@ class NitrogenDAO {
         }
     }
 
-        iniciarBotoes() {
-        // 1. Vincula os botões das folhas de ações principais
+    iniciarBotoes() {
         const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
         for (let id in btns) {
             const el = document.getElementById(id);
             if (el) el.onclick = () => this.abrirFolha(btns[id]);
         }
         
-        // 2. Vincula os botões de controle inferiores e cabeçalho
         const dt = document.getElementById('btn-tesouraria');
         if (dt) dt.onclick = () => this.abrirTesouraria();
 
@@ -710,47 +708,37 @@ class NitrogenDAO {
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
 
-        // ==========================================
-        // ENGENHARIA CIRÚRGICA: CONTROLE DA SPLASH
-        // ==========================================
-
-        // Botão PROSSEGUIR (Muda do Slide 1 para o Slide 2)
+        // CONTROLE DA SPLASH
         const btnNextSlide = document.querySelector('.btn-next-slide');
         if (btnNextSlide) {
-            btnNextSlide.removeAttribute('onclick'); // Limpa o lixo do HTML antigo
+            btnNextSlide.removeAttribute('onclick'); 
             btnNextSlide.onclick = () => this.nextSplashSlide();
         }
 
-        // Botão de Seleção "LI" (Folha 2)
         const btnRead = document.getElementById('btn-read');
         if (btnRead) {
             btnRead.removeAttribute('onclick');
             btnRead.onclick = () => this.toggleRead();
         }
 
-        // Botão de Seleção "CONCORDO" (Folha 2)
         const btnAgree = document.getElementById('btn-agree');
         if (btnAgree) {
             btnAgree.removeAttribute('onclick');
             btnAgree.onclick = () => this.toggleAgree();
         }
 
-        // Botão ACESSAR HOME (Finaliza a Splash)
         const btnEnterHome = document.getElementById('btn-enter-home');
         if (btnEnterHome) {
             btnEnterHome.removeAttribute('onclick');
             btnEnterHome.onclick = () => this.finishSplash();
         }
         
-        // 3. Auto-conexão se a carteira já estiver ativa no navegador dApp
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
         }, 1000);
     }
-    }
-}
 
-            // --- SISTEMA DA ROLETA DE APOIO SOCIAL COM ÁUDIO SINTETIZADO ---
+    // --- MÉTODOS DA ROLETA (MANTIDOS DENTRO DA CLASSE) ---
 
     abrirRoletaPainel() {
         const content = document.getElementById('panel-content');
@@ -776,18 +764,17 @@ class NitrogenDAO {
         `;
     }
 
-    // Gerador de Som Nativo (Web Audio API) - Sem arquivos externos!
     tocarSomClick() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             
-            osc.type = 'triangle'; // Som estalado e limpo estilo industrial
-            osc.frequency.setValueAtTime(600, ctx.currentTime); // Frequência do estalo
+            osc.type = 'triangle'; 
+            osc.frequency.setValueAtTime(600, ctx.currentTime); 
             
             gain.gain.setValueAtTime(0.15, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05); // Curto e rápido
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05); 
             
             osc.connect(gain);
             gain.connect(ctx.destination);
@@ -804,9 +791,9 @@ class NitrogenDAO {
             const gain = ctx.createGain();
             
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // Nota Dó
-            osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // Nota Mi
-            osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // Nota Sol (Acorde Maior)
+            osc.frequency.setValueAtTime(523.25, ctx.currentTime); 
+            osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); 
+            osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); 
             
             gain.gain.setValueAtTime(0.2, ctx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
@@ -829,7 +816,6 @@ class NitrogenDAO {
 
         const disco = document.getElementById('disco-roleta');
         
-        // Sorteia um dos 12 meses (0 a 11)
         const mesesCampanhas = [
             { mes: "Janeiro Branco", desc: "Quem cuida da mente, cuida da vida! Saúde mental importa.", cor: "🤍" },
             { mes: "Fevereiro Roxo", desc: "Combate ao Lúpus, Alzheimer e Fibromialgia. Conscientize-se!", cor: "💜" },
@@ -848,32 +834,26 @@ class NitrogenDAO {
         const índiceSorteado = Math.floor(Math.random() * 12);
         const escolha = mesesCampanhas[índiceSorteado];
         
-        // Calcula os graus: cada fatia tem 30 graus (360 / 12).
-        // Dá de 4 a 6 voltas completas para gerar o suspense e para na fatia certa.
         const grausPorFatia = 30;
         const voltasCompletas = (4 + Math.floor(Math.random() * 3)) * 360;
         const grausAlvo = voltasCompletas + (índiceSorteado * grausPorFatia);
         
         disco.style.transform = `rotate(-${grausAlvo}deg)`;
 
-        // Simulação do som mecânico "tic-tic" acompanhando o giro gráfico
         let progressoGiro = 0;
         const totalPassosSom = 40; 
         
         for (let i = 0; i < totalPassosSom; i++) {
-            // Cria um atraso que vai aumentando gradativamente (efeito de frenagem)
             const atrasoSom = Math.pow(i / totalPassosSom, 2) * 4000; 
             setTimeout(() => {
                 if (this.roletaGirando) this.tocarSomClick();
             }, atrasoSom);
         }
 
-        // Aguarda os 4 segundos da transição do CSS para abrir a caixa e dar o prêmio
         setTimeout(() => {
             this.roletaGirando = false;
             this.tocarSomVitoria();
 
-            // Sorteia uma quantidade de tokens justa do fundo (Ex: entre 5 e 50 N)
             const tokensGanhos = Math.floor(Math.random() * 46) + 5;
             this.saldoAppN += tokensGanhos;
 
@@ -898,5 +878,7 @@ class NitrogenDAO {
 
         }, 4000);
     }
+}
 
+// INICIALIZAÇÃO DA CLASSE (Instanciando após a declaração completa)
 const App = new NitrogenDAO();
