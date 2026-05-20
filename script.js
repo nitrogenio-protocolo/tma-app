@@ -714,4 +714,153 @@ class NitrogenDAO {
     }
 }
 
+            // --- SISTEMA DA ROLETA DE APOIO SOCIAL COM ÁUDIO SINTETIZADO ---
+
+    abrirRoletaPainel() {
+        const content = document.getElementById('panel-content');
+        const title = document.getElementById('panel-title');
+        
+        title.innerText = "ROLETA DO BEM";
+
+        content.innerHTML = `
+            <div class="roleta-wrapper">
+                <p class="perfil-label" style="text-align: center;">MISTÉRIO DA COMUNIDADE</p>
+                <small style="color: #666; font-size: 0.8rem; display:block; text-align:center; margin-bottom: 10px;">
+                    Cada fatia guarda um mês de apoio social e prêmios surpresa em Token N.
+                </small>
+
+                <div class="roleta-container">
+                    <div class="roleta-ponteiro"></div>
+                    <div id="disco-roleta" class="roleta-disco"></div>
+                    <button id="btn-start-giro" class="btn-roleta-centro" onclick="App.girarRoletaEfetivo()">GIRAR</button>
+                </div>
+
+                <div id="revelacao-area" style="width: 100%;"></div>
+            </div>
+        `;
+    }
+
+    // Gerador de Som Nativo (Web Audio API) - Sem arquivos externos!
+    tocarSomClick() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'triangle'; // Som estalado e limpo estilo industrial
+            osc.frequency.setValueAtTime(600, ctx.currentTime); // Frequência do estalo
+            
+            gain.gain.setValueAtTime(0.15, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05); // Curto e rápido
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + 0.06);
+        } catch(e) { console.log("Áudio não suportado"); }
+    }
+
+    tocarSomVitoria() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // Nota Dó
+            osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // Nota Mi
+            osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // Nota Sol (Acorde Maior)
+            
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + 0.5);
+        } catch(e) { console.log("Áudio não suportado"); }
+    }
+
+    girarRoletaEfetivo() {
+        if (this.roletaGirando || this.girosDisponiveis <= 0) return;
+
+        this.roletaGirando = true;
+        this.girosDisponiveis -= 1;
+        document.getElementById('btn-start-giro').disabled = true;
+        document.getElementById('revelacao-area').innerHTML = "";
+
+        const disco = document.getElementById('disco-roleta');
+        
+        // Sorteia um dos 12 meses (0 a 11)
+        const mesesCampanhas = [
+            { mes: "Janeiro Branco", desc: "Quem cuida da mente, cuida da vida! Saúde mental importa.", cor: "🤍" },
+            { mes: "Fevereiro Roxo", desc: "Combate ao Lúpus, Alzheimer e Fibromialgia. Conscientize-se!", cor: "💜" },
+            { mes: "Março Azul Marinho", desc: "Prevenção contra o câncer colorretal. Cuide da sua saúde!", cor: "💙" },
+            { mes: "Abril Azul Claro", desc: "Inclusão e conscientização sobre o Autismo. Respeito total!", cor: "🩵" },
+            { mes: "Maio Amarelo", desc: "Atenção pela vida! Paz e segurança no trânsito todos os dias.", cor: "💛" },
+            { mes: "Junho Vermelho", desc: "Doar sangue salva vidas. Apoie a sua comunidade local!", cor: "❤️" },
+            { mes: "Julho Verde Amarelo", desc: "Combate às hepatites virais e cuidado integral da saúde.", cor: "💚" },
+            { mes: "Agosto Dourado", desc: "Informação e apoio ao aleitamento materno. Sustento da vida.", cor: "💛" },
+            { mes: "Setembro Amarelo", desc: "Valorização da vida! Você não está sozinho, peça ajuda.", cor: "💛" },
+            { mes: "Outubro Rosa", desc: "Prevenção e diagnóstico precoce do câncer de mama. Apoie!", cor: "🩷" },
+            { mes: "Novembro Azul", desc: "Saúde do homem em foco. Prevenção é o melhor caminho!", cor: "💙" },
+            { mes: "Dezembro Vermelho", desc: "Grande mobilização nacional na luta contra o HIV e ISTs.", cor: "❤️" }
+        ];
+
+        const índiceSorteado = Math.floor(Math.random() * 12);
+        const escolha = mesesCampanhas[índiceSorteado];
+        
+        // Calcula os graus: cada fatia tem 30 graus (360 / 12).
+        // Dá de 4 a 6 voltas completas para gerar o suspense e para na fatia certa.
+        const grausPorFatia = 30;
+        const voltasCompletas = (4 + Math.floor(Math.random() * 3)) * 360;
+        const grausAlvo = voltasCompletas + (índiceSorteado * grausPorFatia);
+        
+        disco.style.transform = `rotate(-${grausAlvo}deg)`;
+
+        // Simulação do som mecânico "tic-tic" acompanhando o giro gráfico
+        let progressoGiro = 0;
+        const totalPassosSom = 40; 
+        
+        for (let i = 0; i < totalPassosSom; i++) {
+            // Cria um atraso que vai aumentando gradativamente (efeito de frenagem)
+            const atrasoSom = Math.pow(i / totalPassosSom, 2) * 4000; 
+            setTimeout(() => {
+                if (this.roletaGirando) this.tocarSomClick();
+            }, atrasoSom);
+        }
+
+        // Aguarda os 4 segundos da transição do CSS para abrir a caixa e dar o prêmio
+        setTimeout(() => {
+            this.roletaGirando = false;
+            this.tocarSomVitoria();
+
+            // Sorteia uma quantidade de tokens justa do fundo (Ex: entre 5 e 50 N)
+            const tokensGanhos = Math.floor(Math.random() * 46) + 5;
+            this.saldoAppN += tokensGanhos;
+
+            const areaRevelacao = document.getElementById('revelacao-area');
+            areaRevelacao.innerHTML = `
+                <div class="revelacao-popup">
+                    <h3 style="color: #007bff; font-size: 1.1rem; font-weight: bold; margin-bottom: 6px;">
+                        ${escolha.cor} ${escolha.mes.toUpperCase()}
+                    </h3>
+                    <p style="font-size: 0.85rem; color: #333; line-height: 1.4; margin-bottom: 12px;">
+                        "${escolha.desc}"
+                    </p>
+                    <div style="background: rgba(40, 167, 69, 0.05); border: 1px dashed #28a745; padding: 10px; border-radius: 8px;">
+                        <span style="font-size: 0.75rem; color: #666; font-weight: bold; display:block;">RECOMPENSA DE ENGAJAMENTO</span>
+                        <strong style="color: #28a745; font-size: 1.3rem;">+${tokensGanhos} Token N</strong>
+                    </div>
+                    <button class="btn-resgatar-vault" onclick="App.mudarAba('perfil')" style="background: #333333; width: 100%; margin-top: 12px; padding: 10px; font-size:0.8rem;">
+                        CONCLUIR E VOLTAR
+                    </button>
+                </div>
+            `;
+
+        }, 4000);
+    }
+
 const App = new NitrogenDAO();
