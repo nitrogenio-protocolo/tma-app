@@ -246,7 +246,6 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     width: 100%; 
     aspect-ratio: 1 / 1; 
     border-radius: 12px; 
-    /* Aumentado de 1.2rem para 1.8rem (aprox. 50% maior) */
     font-size: 1.8rem; 
     font-weight: 900; 
     color: var(--blue); 
@@ -255,7 +254,6 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     justify-content: center; 
     cursor: pointer; 
     transition: 0.2s; 
-    /* Garante que o ícone não saia do limite se crescer muito */
     overflow: hidden; 
 }
 .btn-act:active { transform: scale(0.95); background: #f8f9fa; }
@@ -294,7 +292,6 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     display: none !important;
 }
 
-/* Isso força o vídeo da câmera a preencher o espaço do card */
 #reader video {
     width: 100% !important;
     height: 100% !important;
@@ -376,9 +373,9 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     flex: 1;
     height: 100%;
     cursor: pointer;
-    color: #a0a5b5; /* Cinza suave industrial */
+    color: #a0a5b5; 
     transition: all 0.2s ease;
-    -webkit-tap-highlight-color: transparent; /* Remove o flash preto ao tocar no mobile */
+    -webkit-tap-highlight-color: transparent; 
 }
 
 /* O tamanho e peso dos símbolos industriais */
@@ -395,9 +392,118 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     letter-spacing: 1px;
 }
 
-/* ==========================================================================
-   ESTADO ATIVO - ACENDE EM AZUL FORTE (BLUEBERRY BLUE)
-   ========================================================================== */
+/* ESTADO ATIVO - ACENDE EM AZUL FORTE */
 .nav-item.active {
-    color: #007bff; /* Seu azul forte padrão */
+    color: #007bff; 
+}
+
+/* ==========================================================================
+   BLOCO NOVO: INTERFACE DO PERFIL DO USUÁRIO
+   ========================================================================== */
+
+/* Ajuste específico para o ícone PNG da raposa no rodapé */
+.nav-icon-raposa {
+    transition: filter 0.2s ease;
+}
+
+/* Faz a raposa acender em azul quando a aba do perfil estiver selecionada */
+.nav-item.active .nav-icon-raposa {
+    filter: invert(34%) sepia(85%) saturate(2245%) hue-rotate(201deg) brightness(101%) contrast(105%);
+}
+
+/* Container do Perfil */
+.perfil-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 4px;
+}
+
+/* Card Principal do Saldo Interno */
+.perfil-card-interno, .perfil-card-giros {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+    text-align: left; /* Alinhamento correto de extrato */
+}
+
+.perfil-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #666666;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.perfil-saldo-pontos {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+}
+
+.token-symbol {
+    color: #007bff; 
+    font-size: 20px;
+}
+
+.perfil-subtext {
+    font-size: 12px;
+    color: #999999;
+    margin-bottom: 12px;
+}
+
+/* Botão de Resgate Azul Forte */
+.btn-resgatar-vault {
+    width: 100%;
+    background: #007bff; 
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-resgatar-vault:active {
+    background: #0056b3;
+}
+
+/* Card de Giros */
+.perfil-giros-count {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 0;
+}
+
+/* Histórico */
+.perfil-label-historico {
+    font-size: 11px;
+    font-weight: bold;
+    color: #888888;
+    margin-bottom: 8px;
+    padding-left: 4px;
+    text-align: left;
+}
+
+.historico-item {
+    display: flex;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
+    border-left: 4px solid #007bff;
+    text-align: left;
+}
+
+.historico-positivo {
+    color: #28a745;
+    font-weight: bold;
 }
