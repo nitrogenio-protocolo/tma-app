@@ -401,15 +401,7 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
    BLOCO NOVO: INTERFACE DO PERFIL DO USUÁRIO
    ========================================================================== */
 
-/* Ajuste específico para o ícone PNG da raposa no rodapé */
-.nav-icon-raposa {
-    transition: filter 0.2s ease;
-}
 
-/* Faz a raposa acender em azul quando a aba do perfil estiver selecionada */
-.nav-item.active .nav-icon-raposa {
-    filter: invert(34%) sepia(85%) saturate(2245%) hue-rotate(201deg) brightness(101%) contrast(105%);
-}
 
 /* Container do Perfil */
 .perfil-container {
