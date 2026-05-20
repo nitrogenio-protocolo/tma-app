@@ -6,10 +6,9 @@ class NitrogenDAO {
         this.scanner = null;
         this.cotacaoBNB = 3400.00; 
         this.ultimaAtualizacao = 0;
-        this.saldoAppN = 1000;         // Saldo acumulado inicial interno
-        this.girosDisponiveis = 2;     // Quantidade de giros iniciais
+        this.saldoAppN = 1000;            // Saldo acumulado inicial interno
+        this.girosDisponiveis = 2;        // Quantidade de giros iniciais
         this.fluxoQuizRespondido = false; // Evita responder o quiz várias vezes
-        // ===============================================================
         
         // Propriedades de controle da Splash Screen
         this.readAccepted = false;
@@ -359,7 +358,11 @@ class NitrogenDAO {
         }
     }
 
-    async ejecutarColetaEfetiva(quantidade, nonce) {
+    async identificarGuardiãoEfetivo(quantidade, nonce) {
+        // Método vazio ou reserva se necessário
+    }
+
+    async executarColetaEfetiva(quantidade, nonce) {
         const btn = document.getElementById('confirmar-coleta');
         try {
             if (btn) { 
@@ -405,111 +408,27 @@ class NitrogenDAO {
 
     // --- SESSÃO INTEGRADA DO PERFIL E ABAS ---
 
-        mudarAba(aba) {
-        // Seleciona todos os botões de navegação no rodapé e desativa o azul deles
+    mudarAba(aba) {
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         navItems.forEach(item => item.classList.remove('active'));
 
-            if (aba === 'perfil') {
-            // Adiciona o destaque visual (Azul Blueberry) no botão Perfil do rodapé
+        if (aba === 'perfil') {
             const btnPerfil = document.getElementById('nav-perfil');
             if (btnPerfil) btnPerfil.classList.add('active');
 
-                abrirQuizPainel() {
-        const content = document.getElementById('panel-content');
-        const title = document.getElementById('panel-title');
-        
-        title.innerText = "QUIZ DO BEM";
-
-        // Verifica se o usuário já fez o quiz do dia
-        if (this.fluxoQuizRespondido) {
-            content.innerHTML = `
-                <div class="converter-box">
-                    <p style="font-size: 1rem; color: #333; font-weight: bold; margin-bottom: 10px;">Tarefa Diária Concluída!</p>
-                    <p style="font-size: 0.85rem; color: #666; line-height: 1.4;">Você já garantiu seu giro de hoje. Volte no próximo ciclo para aprender mais e ganhar mais prêmios!</p>
-                    <button class="btn-confirm" onclick="App.mudarAba('perfil')" style="background: #007BFF; margin-top: 20px;">VOLTAR AO PERFIL</button>
-                </div>
-            `;
-            return;
-        }
-
-        // Renderiza a pergunta educativa de segurança
-        content.innerHTML = `
-            <div class="converter-box" style="text-align: left; padding: 15px;">
-                <p class="perfil-label" style="color: #007BFF; margin-bottom: 10px;">PERGUNTA DE SEGURANÇA WEB3</p>
-                <p style="font-size: 0.95rem; font-weight: bold; color: #1a1a1a; line-height: 1.4; margin-bottom: 20px;">
-                    Se alguém entrar em contato fingindo ser do suporte do Protocolo Nitrogênio e pedir as suas 12 palavras-chave (frase de recuperação) da MetaMask para resolver um problema, o que você faz?
-                </p>
-                
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <button class="btn-small-toggle" id="op-a" onclick="App.verificarRespostaQuiz('errada', 'op-a')" style="text-align: left; padding: 12px; font-weight: normal;">
-                        <strong>A)</strong> Forneço as palavras, afinal é o suporte oficial ajudando.
-                    </button>
-                    <button class="btn-small-toggle" id="op-b" onclick="App.verificarRespostaQuiz('correta', 'op-b')" style="text-align: left; padding: 12px; font-weight: normal;">
-                        <strong>B)</strong> Não envio em hipótese alguma. O protocolo é descentralizado e ninguém jamais pedirá minhas chaves.
-                    </button>
-                    <button class="btn-small-toggle" id="op-c" onclick="App.verificarRespostaQuiz('errada', 'op-c')" style="text-align: left; padding: 12px; font-weight: normal;">
-                        <strong>C)</strong> Envio apenas metade das palavras por segurança.
-                    </button>
-                </div>
-                
-                <div id="quiz-feedback" style="margin-top: 25px; text-align: center; display: none;"></div>
-            </div>
-        `;
-    }
-
-    verificarRespostaQuiz(tipo, idBotao) {
-        // Desativa todos os botões do quiz após o clique para o usuário não clicar de novo
-        document.getElementById('op-a').disabled = true;
-        document.getElementById('op-b').disabled = true;
-        document.getElementById('op-c').disabled = true;
-
-        const feedback = document.getElementById('quiz-feedback');
-        feedback.style.display = "block";
-
-        if (tipo === 'correta') {
-            document.getElementById(idBotao).style.background = "#28A745";
-            document.getElementById(idBotao).style.color = "#FFFFFF";
-            
-            // Recompensa o motorista/usuário com +1 giro
-            this.girosDisponiveis += 1;
-            this.fluxoQuizRespondido = true;
-
-            feedback.innerHTML = `
-                <h4 style="color: #28A745; font-weight: bold; margin-bottom: 5px;">Resposta Correta! 🤜🤛</h4>
-                <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Você aprendeu a se proteger e ganhou <strong>+1 Giro</strong> para usar na roleta.</p>
-                <button class="btn-confirm" onclick="App.mudarAba('perfil')" style="background: #28A745; margin: 0;">ATUALIZAR PERFIL</button>
-            `;
-        } else {
-            document.getElementById(idBotao).style.background = "#FF3B30";
-            document.getElementById(idBotao).style.color = "#FFFFFF";
-
-            feedback.innerHTML = `
-                <h4 style="color: #FF3B30; font-weight: bold; margin-bottom: 5px;">Resposta Incorreta! ❌</h4>
-                <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Lembre-se: Suas palavras dão controle total aos seus fundos. Nunca compartilhe com ninguém!</p>
-                <button class="btn-confirm" onclick="App.abrirQuizPainel()" style="background: #333333; margin: 0;">TENTAR NOVAMENTE</button>
-            `;
-        }
-    }
-                
-            // Abre o painel lateral padrão do seu app
             const panel = document.getElementById('side-panel');
             const content = document.getElementById('panel-content');
             const title = document.getElementById('panel-title');
             
             if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
             
-            // Define o título do painel superior
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
-            // Define se o botão da roleta fica cinza ou ativo com base nos giros
             const travaBotaoGiro = this.girosDisponiveis > 0 ? '' : 'disabled style="background: #cccccc; cursor: not-allowed;"';
             
-            // Injeta o HTML com o Hub do Perfil (Saldo, Quiz e Giro integrados)
             content.innerHTML = `
                 <div class="perfil-container">
-                    
                     <div class="perfil-card-interno">
                         <p class="perfil-label">SALDO ACUMULADO (APP)</p>
                         <h3 class="perfil-saldo-pontos">${this.saldoAppN} <span class="token-symbol">N</span></h3>
@@ -547,23 +466,22 @@ class NitrogenDAO {
             `;
             
         } else if (aba === 'home') {
-            // Se clicar em Home, fecha a folha lateral com a animação nativa
             this.fecharFolha();
         }
     }
 
     executarResgate() {
         alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
-        // Futura integração com o ethers.js
     }
 
-        abrirQuizPainel() {
+    // --- SALA DO QUIZ DO BEM ---
+
+    abrirQuizPainel() {
         const content = document.getElementById('panel-content');
         const title = document.getElementById('panel-title');
         
         title.innerText = "QUIZ DO BEM";
 
-        // Verifica se o motorista já respondeu hoje para não burlar o sistema
         if (this.fluxoQuizRespondido) {
             content.innerHTML = `
                 <div style="padding: 20px; text-align: center;">
@@ -579,7 +497,6 @@ class NitrogenDAO {
             return;
         }
 
-        // Renderiza a pergunta educativa de segurança na tela
         content.innerHTML = `
             <div style="padding: 15px; text-align: left;">
                 <p style="font-size: 0.75rem; font-weight: bold; color: #007BFF; letter-spacing: 1px; margin-bottom: 10px;">SEGURANÇA WEB3</p>
@@ -605,7 +522,6 @@ class NitrogenDAO {
     }
 
     verificarRespostaQuiz(tipo, idBotao) {
-        // Trava os botões para o usuário não clicar em mais de um após responder
         document.getElementById('op-a').disabled = true;
         document.getElementById('op-b').disabled = true;
         document.getElementById('op-c').disabled = true;
@@ -614,10 +530,7 @@ class NitrogenDAO {
         feedback.style.display = "block";
 
         if (tipo === 'correta') {
-            // Pinta o botão clicado de verde
             document.getElementById(idBotao).style.background = "#28A745";
-            
-            // Computa a recompensa internamente no app
             this.girosDisponiveis += 1;
             this.fluxoQuizRespondido = true;
 
@@ -627,7 +540,6 @@ class NitrogenDAO {
                 <button class="btn-resgatar-vault" onclick="App.mudarAba('perfil')" style="background: #28A745; width: 100%;">VOLTAR AO PERFIL</button>
             `;
         } else {
-            // Pinta o botão clicado de vermelho de erro
             document.getElementById(idBotao).style.background = "#FF3B30";
 
             feedback.innerHTML = `
@@ -683,7 +595,6 @@ class NitrogenDAO {
         
         try {
             if (!this.provider || !this.account) {
-                console.log("Detectada falta de conexão. Ativando carteira primeiro...");
                 await this.conectar();
             }
 
@@ -771,7 +682,6 @@ class NitrogenDAO {
         } catch (error) {
             console.error("Erro na leitura da rede:", error);
             alert("Falha ao ler dados da blockchain. Reiniciando a tela da tesouraria...");
-            
             if (btnSincronizar) {
                 btnSincronizar.innerText = "SINCRONIZAR COFRE REAL";
                 btnSincronizar.disabled = false;
@@ -793,6 +703,7 @@ class NitrogenDAO {
 
         const bc = document.getElementById('btn-conectar');
         if (bc) bc.onclick = () => this.conectar();
+        
         const cp = document.getElementById('close-panel');
         if (cp) cp.onclick = () => this.fecharFolha();
         
