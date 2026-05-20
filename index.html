@@ -93,23 +93,26 @@
     </div>
 
     <footer class="bottom-nav">
-        <button class="nav-item active" onclick="App.mudarAba('home')">
-            <span class="nav-icon">⌂</span>
-            <span class="nav-text">HOME</span>
-        </button>
-        <button class="nav-item" onclick="window.open('https://getsession.org/', '_blank')">
-            <span class="nav-icon">⚡</span>
-            <span class="nav-text">SESSION</span>
-        </button>
-        <button class="nav-item" onclick="window.open('https://t.me/seu_canal', '_blank')">
-            <span class="nav-icon">▲</span>
-            <span class="nav-text">TELEGRAM</span>
-        </button>
-        <button class="nav-item" onclick="window.open('https://bscscan.com/', '_blank')">
-            <span class="nav-icon">┱</span>
-            <span class="nav-text">BSCSCAN</span>
-        </button>
-    </footer>
+    <button class="nav-item active" onclick="App.mudarAba('home')">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">HOME</span>
+    </button>
+    
+    <button class="nav-item" id="nav-perfil" onclick="App.mudarAba('perfil')">
+        <img src="assets/raposa-menu.png" alt="🦊" class="nav-icon-raposa" style="width: 20px; height: 20px; object-fit: contain; margin-bottom: 2px;">
+        <span class="nav-text">PERFIL</span>
+    </button>
+    
+    <button class="nav-item" onclick="window.open('https://t.me/seu_canal', '_blank')">
+        <span class="nav-icon">▲</span>
+        <span class="nav-text">TELEGRAM</span>
+    </button>
+    
+    <button class="nav-item" onclick="window.open('https://bscscan.com/', '_blank')">
+        <span class="nav-icon">┱</span>
+        <span class="nav-text">BSCSCAN</span>
+    </button>
+</footer>
     
     <script src="script.js"></script>
 </body>
