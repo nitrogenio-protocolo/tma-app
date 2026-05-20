@@ -556,6 +556,88 @@ class NitrogenDAO {
         alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
         // Futura integração com o ethers.js
     }
+
+        abrirQuizPainel() {
+        const content = document.getElementById('panel-content');
+        const title = document.getElementById('panel-title');
+        
+        title.innerText = "QUIZ DO BEM";
+
+        // Verifica se o motorista já respondeu hoje para não burlar o sistema
+        if (this.fluxoQuizRespondido) {
+            content.innerHTML = `
+                <div style="padding: 20px; text-align: center;">
+                    <p style="font-size: 1.1rem; color: #28a745; font-weight: bold; margin-bottom: 10px;">Tarefa Diária Concluída! ✔️</p>
+                    <p style="font-size: 0.85rem; color: #666; line-height: 1.5; margin-bottom: 20px;">
+                        Você já garantiu seu prêmio por hoje. Estude mais amanhã para proteger sua carteira e ganhar mais giros!
+                    </p>
+                    <button class="btn-resgatar-vault" onclick="App.mudarAba('perfil')" style="background: #007BFF; width: 100%;">
+                        VOLTAR AO PERFIL
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        // Renderiza a pergunta educativa de segurança na tela
+        content.innerHTML = `
+            <div style="padding: 15px; text-align: left;">
+                <p style="font-size: 0.75rem; font-weight: bold; color: #007BFF; letter-spacing: 1px; margin-bottom: 10px;">SEGURANÇA WEB3</p>
+                <p style="font-size: 0.95rem; font-weight: bold; color: #1a1a1a; line-height: 1.4; margin-bottom: 20px;">
+                    Se alguém fingir ser do suporte do Protocolo Nitrogênio e pedir as suas 12 palavras-chave (frase de recuperação) da MetaMask para resolver um problema, o que você faz?
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="btn-confirm" id="op-a" onclick="App.verificarRespostaQuiz('errada', 'op-a')" style="background: #333; text-align: left; padding: 15px; font-size: 0.85rem; font-weight: normal; text-transform: none; line-height: 1.3; margin: 0; width: 100%;">
+                        <strong>A)</strong> Forneço as palavras, afinal é o suporte oficial ajudando no grupo.
+                    </button>
+                    <button class="btn-confirm" id="op-b" onclick="App.verificarRespostaQuiz('correta', 'op-b')" style="background: #333; text-align: left; padding: 15px; font-size: 0.85rem; font-weight: normal; text-transform: none; line-height: 1.3; margin: 0; width: 100%;">
+                        <strong>B)</strong> Não envio jamais! O protocolo é descentralizado e ninguém nunca vai pedir minhas chaves privadas.
+                    </button>
+                    <button class="btn-confirm" id="op-c" onclick="App.verificarRespostaQuiz('errada', 'op-c')" style="background: #333; text-align: left; padding: 15px; font-size: 0.85rem; font-weight: normal; text-transform: none; line-height: 1.3; margin: 0; width: 100%;">
+                        <strong>C)</strong> Envio apenas metade das palavras para que eles possam testar o sistema.
+                    </button>
+                </div>
+                
+                <div id="quiz-feedback" style="margin-top: 25px; text-align: center; display: none;"></div>
+            </div>
+        `;
+    }
+
+    verificarRespostaQuiz(tipo, idBotao) {
+        // Trava os botões para o usuário não clicar em mais de um após responder
+        document.getElementById('op-a').disabled = true;
+        document.getElementById('op-b').disabled = true;
+        document.getElementById('op-c').disabled = true;
+
+        const feedback = document.getElementById('quiz-feedback');
+        feedback.style.display = "block";
+
+        if (tipo === 'correta') {
+            // Pinta o botão clicado de verde
+            document.getElementById(idBotao).style.background = "#28A745";
+            
+            // Computa a recompensa internamente no app
+            this.girosDisponiveis += 1;
+            this.fluxoQuizRespondido = true;
+
+            feedback.innerHTML = `
+                <h4 style="color: #28A745; font-weight: bold; margin-bottom: 5px;">Resposta Correta! 🤜</h4>
+                <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Excelente! Você protegeu seus fundos e ganhou <strong>+1 Giro</strong> para a roleta.</p>
+                <button class="btn-resgatar-vault" onclick="App.mudarAba('perfil')" style="background: #28A745; width: 100%;">VOLTAR AO PERFIL</button>
+            `;
+        } else {
+            // Pinta o botão clicado de vermelho de erro
+            document.getElementById(idBotao).style.background = "#FF3B30";
+
+            feedback.innerHTML = `
+                <h4 style="color: #FF3B30; font-weight: bold; margin-bottom: 5px;">Resposta Incorreta! ❌</h4>
+                <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Atenção: Suas 12 palavras são o seu segredo. Quem tem acesso a elas, rouba seus tokens!</p>
+                <button class="btn-resgatar-vault" onclick="App.abrirQuizPainel()" style="background: #333333; width: 100%;">TENTAR NOVAMENTE</button>
+            `;
+        }
+    }
+    
     // --- SESSÃO INTEGRADA DA TESOURARIA REAL ---
     
     abrirTesouraria() {
