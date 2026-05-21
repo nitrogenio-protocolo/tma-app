@@ -16,6 +16,14 @@ class NitrogenDAO {
         this.diasPoupancaRestantes = 0;   // Contador visual de tempo da poupança (0 significa liberado)
         this.checkInRealizadoHoje = false;// Evita check-in duplo no mesmo dia
         
+        // --- NOVAS TRAVAS ANTI-BURLAR (POUPANÇA TRADICIONAL) ---
+        this.ultimoMesColetaGiroPoupanca = null; // Armazena o mês (ex: "2026-05") para travar 1x por mês
+        this.progressoTokensParaGiro = 0;       // Acumula os tokens depositados até bater a meta
+        this.metaTokensPoupanca = 1000;         // Quantidade justa de tokens para liberar o direito ao bônus
+        
+        // --- TRAVA CÓDIGO DA COMUNIDADE (SEMANAL) ---
+        this.codigoSemanalUtilizado = false;    // Trava para impedir reuso na mesma semana
+
         // Propriedades de controle da Splash Screen
         this.readAccepted = false;
         this.agreeAccepted = false;
@@ -293,7 +301,7 @@ class NitrogenDAO {
             </div>`;
     }
 
-    async executar(para, quanto) {
+    async ejecutar(para, quanto) {
         const btn = document.getElementById('confirm-final');
         try {
             if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
@@ -544,26 +552,52 @@ class NitrogenDAO {
 
     enviarParaPoupanca() {
         if (this.saldoAppN <= 0) {
-            alert("Você não possui saldo disponível no aplicativo para guardar na poupança.");
+            alert("Você não possui saldo disponível para guardar na poupança.");
             return;
         }
 
-        const valorParaGuardar = prompt(`Você possui ${this.saldoAppN} N. Quanto deseja guardar na poupança por 30 dias?`, this.saldoAppN);
+        const valorParaGuardar = prompt(`Quanto deseja guardar na poupança? (Meta atual: ${this.metaTokensPoupanca} N)`, this.saldoAppN);
         const quantidade = parseInt(valorParaGuardar);
 
         if (isNaN(quantidade) || quantidade <= 0 || quantidade > this.saldoAppN) {
-            alert("Quantidade inválida ou insuficiente.");
+            alert("Quantidade inválida.");
             return;
         }
 
-        // Executa a descida de saldo (Mecânica de Mini-Staking)
+        // Move o saldo do App para a poupança interna
         this.saldoAppN -= quantidade;
         this.saldoPoupancaN += quantidade;
-        this.diasPoupancaRestantes = 30; // Define o bloqueio regulamentar
-        this.girosDisponiveis += 2;      // Recompensa instantânea por poupar
+        this.diasPoupancaRestantes = 30; // Define o bloqueio visual e mecânico de 30 dias
+        
+        // Alimenta o progresso para a meta de giros bônus
+        this.progressoTokensParaGiro += quantidade;
 
-        alert(`Sucesso! ${quantidade} Token N foram movidos para a sua Poupança. Você ganhou +2 Giros de bônus por fortalecer o protocolo! 🤜🤛`);
-        this.mudarAba('perfil'); // Recarrega a tela atualizando os números
+        let mensagemSucesso = `Sucesso! Guardou ${quantidade} N na poupança por 30 dias.`;
+
+        // Obtém o mês/ano atual para a trava de tempo (ex: "2026-4")
+        const dataAtual = new Date();
+        const mesAnoAtual = `${dataAtual.getFullYear()}-${dataAtual.getMonth()}`;
+
+        // LÓGICA DE VALIDAÇÃO: Bateu a quantidade E respeitou o prazo de 1x por mês?
+        if (this.progressoTokensParaGiro >= this.metaTokensPoupanca) {
+            if (this.ultimoMesColetaGiroPoupanca !== mesAnoAtual) {
+                
+                // Libera o prêmio de forma blindada
+                this.girosDisponiveis += 2;
+                this.ultimoMesColetaGiroPoupanca = mesAnoAtual; // Bloqueia o mês atual
+                this.progressoTokensParaGiro = 0;              // Reseta o contador para o próximo mês
+                
+                mensagemSucesso += `\n\n🎯 Parabéns! Você atingiu a meta de depósitos acumulados e faturou +2 Giros de bônus!`;
+            } else {
+                mensagemSucesso += `\n\n⚠️ Você atingiu a meta de quantidade, mas o bônus de giro da poupança é estritamente limitado a 1x por mês. Seu progresso extra ficou salvo para o próximo ciclo!`;
+            }
+        } else {
+            const restante = this.metaTokensPoupanca - this.progressoTokensParaGiro;
+            mensagemSucesso += `\n\nFaltam apenas ${restante} N guardados para você habilitar o bônus mensal de giros!`;
+        }
+
+        alert(mensagemSucesso);
+        this.mudarAba('perfil'); // Recarrega a aba para atualizar o painel visual
     }
 
     clamarPoupanca() {
@@ -606,14 +640,21 @@ class NitrogenDAO {
         if (!input) return;
 
         const codigo = input.value.trim().toUpperCase();
-        const codigoValidoSecreto = "NITRO2026"; // Exemplo de código distribuído na comunidade
+        const codigoSemanalValido = "NITROSEMANAL"; // Código atualizado conforme sua revisão
 
-        if (codigo === codigoValidoSecreto) {
-            this.girosDisponiveis += 1; // Premia o boca a boca
-            alert("Código da Comunidade Validado! O motorista que te indicou ajudou o protocolo. Você recebeu +1 Giro! 🎯");
+        // Trava de segurança lógica para impedir uso consecutivo infinito
+        if (this.codigoSemanalUtilizado) {
+            alert("Você já resgatou o Código da Comunidade desta semana! Fique de olho nos canais oficiais para o próximo lançamento. 🏹");
+            return;
+        }
+
+        if (codigo === codigoSemanalValido) {
+            this.girosDisponiveis += 1;
+            this.codigoSemanalUtilizado = true; // Ativa a trava
+            alert("Código Semanal Validado! Você recebeu +1 Giro na Roleta do Bem! 🎯");
             this.mudarAba('perfil');
         } else {
-            alert("Código inválido ou já expirado. Busque códigos atualizados nos grupos oficiais!");
+            alert("Código inválido ou já expirado. Busque as chaves corretas nos grupos oficiais ou via rádio!");
         }
     }
 
