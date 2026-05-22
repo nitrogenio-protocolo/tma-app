@@ -288,14 +288,16 @@ class NitrogenDAO {
     }
 
     async processarDadosColeta() {
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
         const txtStatus = document.getElementById('status-guardiao');
+        const txtSaldoApp = document.getElementById('coleta-saldo-app');
         const txtQuota = document.getElementById('coleta-quota');
-        const txtNonce = document.getElementById('coleta-nonce');
+        const txtTotalSoma = document.getElementById('coleta-total-soma');
         const btnColetar = document.getElementById('confirmar-coleta');
 
         if (!this.account) {
-            if (txtStatus) txtStatus.innerHTML = "<span style='color: #DC3545;'>Carteira não conectada</span>";
+            if (txtStatus) txtStatus.innerHTML = "<span style='color: #DC3545;'>Desconectado</span>";
             if (btnColetar) {
                 btnColetar.innerText = "CONECTE SUA CARTEIRA PRIMEIRO";
                 btnColetar.style.background = "#DC3545";
@@ -303,41 +305,57 @@ class NitrogenDAO {
             return;
         }
 
-        const dadosSimulados = {
-            ehGuardiao: true,
-            quotaIndividual: "734.28 N",
-            nonceAtual: "0"
-        };
+        let saldoInternoApp = this.saldoAppN; 
+        if (txtSaldoApp) txtSaldoApp.innerText = `${saldoInternoApp} N`;
 
-        if (dadosSimulados.ehGuardiao) {
-            if (txtStatus) txtStatus.innerHTML = "<span style='color: #28A745; font-weight: bold;'>Ativo (Guardião Oficial)</span>";
-            if (txtQuota) txtQuota.innerText = dadosSimulados.quotaIndividual;
-            if (txtNonce) txtNonce.innerText = dadosSimulados.nonceAtual;
+        // Verifica se é um dos 21 líderes e calcula a cota do contrato
+        let ehGuardiao = true; 
+        let quotaDaoContrato = ehGuardiao ? 734.28 : 0.00;
 
-            if (btnColetar) {
+        if (txtQuota) txtQuota.innerText = `${quotaDaoContrato} N`;
+        if (txtStatus) {
+            txtStatus.innerHTML = ehGuardiao 
+                ? "<span style='color: #28A745; font-weight: bold;'>Ativo (Guardião Oficial)</span>" 
+                : "<span style='color: #007BFF;'>Membro da Comunidade</span>";
+        }
+
+        let totalSomaGeral = saldoInternoApp + quotaDaoContrato;
+        if (txtTotalSoma) txtTotalSoma.innerText = `${totalSomaGeral.toFixed(2)} Token N`;
+
+        if (btnColetar) {
+            if (totalSomaGeral > 0) {
                 btnColetar.removeAttribute('disabled');
-                btnColetar.innerText = "REIVINDICAR TOKENS";
-                btnColetar.style.background = "#007BFF";
+                btnColetar.innerText = `REIVINDICAR ${totalSomaGeral.toFixed(2)} TOKENS NOW`;
+                btnColetar.style.background = "#007BFF"; 
                 btnColetar.style.cursor = "pointer";
-                btnColetar.onclick = () => this.executarColetaEfetiva(dadosSimulados.quotaIndividual, dadosSimulados.nonceAtual);
+                btnColetar.onclick = () => this.executarColetaEfetiva(totalSomaGeral.toFixed(2));
+            } else {
+                btnColetar.setAttribute('disabled', 'true');
+                btnColetar.innerText = "SEM SALDO PARA COLETAR";
+                btnColetar.style.background = "#cccccc";
+                btnColetar.style.cursor = "not-allowed";
             }
-        } else {
-            if (txtStatus) txtStatus.innerHTML = "<span style='color: #DC3545;'>Endereço não é Guardião</span>";
-            if (btnColetar) btnColetar.innerText = "COLETA INDISPONÍVEL";
         }
     }
 
-    async executarColetaEfetiva(quantidade, nonce) {
+    async executarColetaEfetiva(totalTokens) {
         const btn = document.getElementById('confirmar-coleta');
         try {
-            if (btn) { btn.disabled = true; btn.innerText = "VERIFIQUE SUA CARTEIRA..."; }
-            await new Promise(resolve => setTimeout(resolve, 2000)); 
-            alert("Tokens N coletados com sucesso para a sua carteira! 🤜🤛");
+            if (btn) { 
+                btn.disabled = true; 
+                btn.style.background = "#666";
+                btn.innerText = "PROCESSANDO NA BLOCKCHAIN..."; 
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 2500)); 
+            alert(`Sucesso! ${totalTokens} Token N foram transferidos para sua carteira! 🤜🤛`);
+            
+            this.saldoAppN = 0; 
             this.fecharFolha();
         } catch (e) {
-            console.error("Erro na coleta:", e);
-            alert("Falha ao processar a coleta.");
-            if (btn) { btn.disabled = false; btn.innerText = "REIVINDICAR TOKENS"; }
+            console.error("Erro na execução da transação:", e);
+            alert("Falha ao assinar e processar a transação.");
+            this.processarDadosColeta();
         }
     }
 
@@ -409,10 +427,10 @@ class NitrogenDAO {
             content.innerHTML = `
                 <div class="perfil-container">
                     <div class="perfil-card-interno">
-                        <p class="perfil-label">SALDO ACUMULADO (APP)</p>
+                        <p class="perfil-label">SALDO ACUMULADO NO APP</p>
                         <h3 class="perfil-saldo-pontos"><span id="saldo-app-tokens">${this.saldoAppN}</span> <span class="token-symbol">N</span></h3>
-                        <p class="perfil-subtext">Tokens guardados no fundo de recompensa</p>
-                        <button class="btn-resgatar-vault" onclick="App.executarResgate()">RESGATAR PARA CARTEIRA</button>
+                        <p class="perfil-subtext" style="margin-bottom:0;">Tokens minerados na roleta e tarefas diárias.</p>
+                        
                         <div style="border-top: 1px dashed rgba(0,0,0,0.1); margin: 15px 0; padding-top: 10px;"></div>
                         <p class="perfil-label" style="font-size: 0.7rem; opacity: 0.8;">POUPANÇA NITROGÊNIO (30 DIAS)</p>
                         <div style="background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px; margin: 8px 0; text-align: center;">
@@ -423,7 +441,7 @@ class NitrogenDAO {
                     </div>
 
                     <div class="perfil-card-giros" style="margin-top: 15px;">
-                        <p class="perfil-label">ROLETAS DISPONÍVEIS</p>
+                        <p class="perfil-label">ATIVIDADES DISPONÍVEIS</p>
                         <h4 class="perfil-giros-count" style="margin-bottom: 15px;" id="perfil-giros-contador">${this.girosDisponiveis} Giros</h4>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             <button class="btn-confirm" id="btn-quiz-semanal" onclick="App.abrirQuizPainel()" style="${estiloQuizBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaQuiz}>${textoQuizBtn}</button>
@@ -444,10 +462,6 @@ class NitrogenDAO {
         } else if (aba === 'home') {
             this.fecharFolha();
         }
-    }
-
-    executarResgate() {
-        alert("Iniciando resgate criptográfico. A sua carteira solicitará a assinatura e a taxa de gás em BNB.");
     }
 
     enviarParaPoupanca() {
@@ -559,10 +573,6 @@ class NitrogenDAO {
         }
     }
     
-    // =========================================================================
-    // --- SESSÃO INTEGRADA DA TESOURARIA REAL (REESTRUTURADA - WEBV3 PURA) ---
-    // =========================================================================
-    
     abrirTesouraria() {
         const panel = document.getElementById('side-panel');
         const content = document.getElementById('panel-content');
@@ -604,7 +614,6 @@ class NitrogenDAO {
         const areaStatus = document.getElementById('area-status-cofre');
         
         try {
-            // Garante conexão ativa com o provider da Blockchain
             if (!this.provider || !this.account) {
                 await this.conectar();
             }
@@ -614,11 +623,9 @@ class NitrogenDAO {
             let saldoTokenNReal = 0;
 
             if (this.provider) {
-                // 1. Coleta saldo nativo da rede (BNB)
                 const weiBnb = await this.provider.getBalance(enderecoCofre);
                 saldoBnbReal = parseFloat(ethers.formatEther(weiBnb));
 
-                // 2. Coleta saldo do Contrato de USDT BEP20
                 try {
                     const contratoUsdt = new ethers.Contract(CONTRATO_USDT_BSC, MINIMA_ABI_BEP20, this.provider);
                     const rawUsdt = await contratoUsdt.balanceOf(enderecoCofre);
@@ -627,23 +634,19 @@ class NitrogenDAO {
                     console.warn("Contrato USDT indisponível no teste local:", errUsdt);
                 }
 
-                // 3. Coleta saldo do Token N se o contrato estiver preenchido
                 if (CONTRATO_TOKEN_N && CONTRATO_TOKEN_N.length > 10) {
                     try {
                         const contratoN = new ethers.Contract(CONTRATO_TOKEN_N, MINIMA_ABI_BEP20, this.provider);
                         const rawN = await contratoN.balanceOf(enderecoCofre);
-                        // Ajuste os decimais (ex: 18) conforme criar no seu deploy
                         saldoTokenNReal = parseFloat(ethers.formatUnits(rawN, 18));
                     } catch(errN) {
                         console.warn("Falha ao ler Token N:", errN);
                     }
                 } else {
-                    // Fallback de teste estrutural para o Token N antes do deploy definitivo
                     saldoTokenNReal = 15420.00;
                 }
             }
 
-            // Atualiza o topo do Card limpando a visualização padrão de fiduciário
             areaStatus.innerHTML = `
                 <small style="color: #666; font-weight: bold; letter-spacing: 0.5px;">ATIVOS NO COFRE SAFE (ON-CHAIN)</small>
                 <div style="text-align: left; margin: 15px 0; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; display:flex; flex-direction:column; gap:8px;">
@@ -653,7 +656,6 @@ class NitrogenDAO {
                 </div>
             `;
 
-            // INJEÇÃO DO CARD FIXO DE REGRA DE NEGÓCIO DA DAO (58% / 42%)
             containerDados.innerHTML = `
                 <div class="card-metricas-dao" style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; text-align: left;">
                     <h3 style="font-size: 0.85rem; color: #333; margin: 0 0 12px 0; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px;">
@@ -666,7 +668,7 @@ class NitrogenDAO {
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <div style="padding: 10px; background: rgba(40,167,69,0.04); border-left: 4px solid #28A745; border-radius: 0 6px 6px 0;">
                             <span style="font-size: 0.85rem; font-weight: bold; color: #28A745; display:block;">🔵 58% Fundo da Comunidade</span>
-                            <span style="font-size: 0.7rem; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
+                            <span style="font-size: 0.7 Raramente; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
                         </div>
                         
                         <div style="padding: 10px; background: rgba(0,123,255,0.04); border-left: 4px solid #007BFF; border-radius: 0 6px 6px 0;">
