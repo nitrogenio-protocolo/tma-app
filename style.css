@@ -81,13 +81,18 @@
     display: none;
     width: 100%;
     max-width: 400px;
-    height: 100%;
-    padding: 40px 24px;
+    height: 100vh; /* Força a usar exatamente a altura visível do celular */
+    padding: 20px 24px 70px 24px; /* Diminuímos o topo e aumentamos embaixo para subir o botão de vez */
     box-sizing: border-box;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     text-align: center;
+}
+
+/* Bloqueia a exibição da Home durante o processo de Splash/Termos */
+header, main, .bottom-nav {
+    display: none !important;
 }
 
 /* Slide ativo com animação suave de entrada */
