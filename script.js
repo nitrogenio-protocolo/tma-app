@@ -40,36 +40,52 @@ class NitrogenDAO {
     }
 
         verificarSplashInicial() {
-        const splash = document.getElementById('splash-screen');
+        const raposaAzul = document.getElementById('tela-azul-raposa');
+        const termosOverlay = document.getElementById('splash-screen-termos');
         
-        if (splash) {
-            // Garante que a tela azul com a raposa comece 100% visível
-            splash.style.display = 'flex';
-            splash.style.opacity = '1';
+        // Garante que a tela azul da raposa comece 100% visível e por cima
+        if (raposaAzul) {
+            raposaAzul.style.display = 'flex';
+            raposaAzul.style.opacity = '1';
         }
 
-        // Conta 5 segundos (5000 milissegundos) com a raposa na tela
+        // Conta 5 segundos (5000 milissegundos) com a raposa ativa na tela
         setTimeout(() => {
-            if (splash) {
-                // Aplica o efeito suave de sumir
-                splash.style.transition = "opacity 0.5s ease-out";
-                splash.style.opacity = '0';
+            if (raposaAzul) {
+                // Inicia o efeito de sumiço suave (fade-out)
+                raposaAzul.style.transition = "opacity 0.5s ease-out";
+                raposaAzul.style.opacity = '0';
                 
-                // Espera a animação de sumir terminar (500ms) para fechar de vez
+                // Aguarda 0.5 segundos para o efeito acabar e remove a raposa da tela
                 setTimeout(() => {
-                    splash.style.display = 'none';
+                    raposaAzul.style.display = 'none';
                     
-                    // DEPOIS dos 5 segundos, verifica se o usuário já aceitou os termos antes:
+                    // DEPOIS que a raposa sai, verifica as diretrizes:
                     if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
-                        // Se já aceitou, não faz nada (a Home limpa que está atrás já fica visível)
+                        // Se já aceitou os termos antes, pula direto para a Home
+                        if (termosOverlay) termosOverlay.style.display = 'none';
                     } else {
-                        // Se for a primeira vez, garante que o primeiro slide dos termos apareça na tela
-                        const slide1 = document.getElementById('slide-1');
-                        if (slide1) slide1.classList.add('active');
+                        // Se for o primeiro acesso, exibe a tela de termos para aceite
+                        if (termosOverlay) termosOverlay.style.display = 'flex';
                     }
                 }, 500);
             }
         }, 5000);
+    }
+
+    finishSplash() {
+        const termosOverlay = document.getElementById('splash-screen-termos');
+        
+        // Faz a tela de termos sumir de forma suave ao clicar em "Acessar Home"
+        if (termosOverlay) {
+            termosOverlay.style.transition = "opacity 0.5s ease-out";
+            termosOverlay.style.opacity = '0';
+            setTimeout(() => {
+                termosOverlay.style.display = 'none';
+            }, 500);
+        }
+        // Grava no navegador que o usuário aceitou as diretrizes
+        localStorage.setItem('nitrogenio_terms_accepted', 'true');
     }
 
     nextSplashSlide() {
