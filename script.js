@@ -205,15 +205,17 @@ class NitrogenDAO {
             content.innerHTML = `
                 <div class="converter-box" style="text-align: center; display: flex; flex-direction: column; gap: 15px; align-items: center; padding-top: 10px;">
                     <div class="detalhes-coleta" style="width: 100%; text-align: left; background: rgba(0,0,0,0.03); padding: 14px; border-radius: 8px; font-size: 0.85rem; box-sizing: border-box;">
-                        <p style="margin: 6px 0;"><strong>Status Guardião:</strong> <span id="status-guardiao" style="color: #666;">Verificando lista...</span></p>
-                        <p style="margin: 6px 0;"><strong>Sua Quota Semanal:</strong> <span id="coleta-quota" style="color: #666;">Calculando...</span></p>
-                        <p style="margin: 6px 0;"><strong>Nonce de Segurança:</strong> <span id="coleta-nonce" style="color: #666;">-#</span></p>
+                        <p style="margin: 6px 0;"><strong>Status na DAO:</strong> <span id="status-guardiao" style="color: #666;">Verificando carteira...</span></p>
+                        <p style="margin: 6px 0;"><strong>Saldo Acumulado (App):</strong> <span id="coleta-saldo-app" style="color: #007BFF; font-weight: bold;">0 N</span></p>
+                        <p style="margin: 6px 0;"><strong>Sua Quota Semanal (DAO):</strong> <span id="coleta-quota" style="color: #007BFF; font-weight: bold;">0 N</span></p>
+                        <div style="border-top: 1px dashed rgba(0,0,0,0.1); margin: 8px 0; padding-top: 8px;"></div>
+                        <p style="margin: 6px 0; font-size: 0.95rem;"><strong>TOTAL A RECEBER:</strong> <span id="coleta-total-soma" style="color: #28A745; font-weight: bold;">0 N</span></p>
                     </div>
-                    <small style="color: #666; font-size: 0.8rem; line-height: 1.3; padding: 0 5px;">
-                        Cada guardião assina a transação individualmente e paga sua própria taxa de gás.
+                    <small style="color: #666; font-size: 0.75rem; line-height: 1.3; padding: 0 5px;">
+                        O sistema unifica suas recompensas do aplicativo e da governança da DAO em uma única transação segura.
                     </small>
-                    <button class="btn-confirm" id="confirmar-coleta" disabled style="background: #cccccc; cursor: not-allowed; width: 100%; margin-top: 5px;">
-                        AGUARDANDO DADOS...
+                    <button class="btn-confirm" id="confirmar-coleta" disabled style="background: #cccccc; cursor: not-allowed; width: 100%; margin-top: 5px; font-weight: bold;">
+                        AGUARDANDO CONEXÃO...
                     </button>
                 </div>`;
             this.processarDadosColeta();
