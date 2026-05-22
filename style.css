@@ -5,6 +5,38 @@
     --red: #FF3B30; 
     --green: #28A745;
 }
+
+/* ==========================================================================
+   TELA DA RAPOSA (SPLASH INICIAL - 5 SEGUNDOS)
+   ========================================================================== */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--blue); /* Usa o azul forte definido no seu :root */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Fica um nível acima da overlay de termos (9999) */
+    opacity: 1;
+    transition: opacity 0.5s ease-out; /* Garante o efeito suave ao sumir */
+}
+
+/* Estilo para a imagem da raposa ficar no centro */
+.splash-logo-raposa {
+    width: 140px; /* Ajuste o tamanho da raposa aqui se precisar */
+    height: auto;
+    animation: pulsarRaposa 2s infinite ease-in-out;
+}
+
+@keyframes pulsarRaposa {
+    0% { transform: scale(0.95); opacity: 0.85; }
+    50% { transform: scale(1.02); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.85; }
+}
+
 /* ==========================================================================
    SPLASH SCREEN - ESTILO CYBER-INDUSTRIAL
    ========================================================================== */
