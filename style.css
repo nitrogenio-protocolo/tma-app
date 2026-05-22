@@ -1,1 +1,636 @@
 
+:root { 
+    --blue: #007BFF; 
+    --white: #FFFFFF; 
+    --bg: #F4F7FA; 
+    --red: #FF3B30; 
+    --green: #28A745;
+}
+
+/* ==========================================================================
+   TELA DA RAPOSA (SPLASH INICIAL - 5 SEGUNDOS)
+   ========================================================================== */
+#tela-azul-raposa {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--blue); /* Usa o azul forte do seu protocolo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20000; /* Fica acima de absolutamente tudo */
+    opacity: 1;
+    transition: opacity 0.5s ease-out; /* Sumiço suave da raposa */
+}
+
+.raposa-splash-img {
+    width: 140px; /* Tamanho ideal para a logo no mobile */
+    height: auto;
+    animation: pulsarRaposa 2s infinite ease-in-out;
+}
+
+@keyframes pulsarRaposa {
+    0% { transform: scale(0.95); opacity: 0.85; }
+    50% { transform: scale(1.02); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.85; }
+}
+
+/* ==========================================================================
+   SPLASH SCREEN - ESTILO CYBER-INDUSTRIAL (TERMOS DE USO)
+   ========================================================================== */
+#splash-screen-termos {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f4f6f9; /* Fundo cinza limpo */
+    display: none; /* Começa escondido enquanto a raposa executa */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Fica logo abaixo da tela azul */
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.splash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f6f9;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Esconder a splash inteira quando terminar */
+.splash-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Configuração geral dos slides/folhas */
+.splash-slide {
+    display: none;
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    padding: 40px 24px;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* Slide ativo com animação suave de entrada */
+.splash-slide.active {
+    display: flex;
+    animation: slideFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes slideFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- FOLHA 1: ANIMAÇÃO DO LOGO --- */
+.splash-logo-box {
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.logo-animation {
+    font-size: 32px;
+    font-weight: 800;
+    color: #007bff;
+    letter-spacing: 2px;
+    margin: 0;
+    opacity: 0;
+    animation: fadeInReveal 0.8s ease-out 0.2s forwards;
+}
+
+.subtitle-animation {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    letter-spacing: 6px;
+    margin: 5px 0 0 0;
+    opacity: 0;
+    animation: fadeInReveal 0.8s ease-out 0.6s forwards;
+}
+
+.logo-line {
+    width: 0;
+    height: 3px;
+    background-color: #007bff;
+    margin: 15px auto 0 auto;
+    animation: expandLine 0.6s ease-out 1s forwards;
+}
+
+.splash-text-intro {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: auto;
+    opacity: 0;
+    animation: fadeInReveal 0.8s ease-out 1.2s forwards;
+}
+
+@keyframes fadeInReveal {
+    to { opacity: 1; }
+}
+
+@keyframes expandLine {
+    to { width: 60px; }
+}
+
+/* Botão Prosseguir */
+.btn-next-slide {
+    width: 100%;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+/* --- FOLHA 2: REGRAS E BOTÕES --- */
+.rules-container {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.rules-container h3 {
+    color: #333;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+}
+
+.rules-text {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 16px;
+    max-height: 55vh;
+    overflow-y: auto;
+    border: 1px solid #eef0f5;
+}
+
+.rules-text p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #444;
+    margin: 0 0 16px 0;
+}
+
+.rules-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Rodapé e Botões Pequenos */
+.rules-footer {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.checkbox-area {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Botões Pequenos Estilo Alternador */
+.btn-small-toggle {
+    flex: 1;
+    background-color: #ffffff;
+    color: #555555;
+    border: 1px solid #dcdcdc;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-small-toggle.checked {
+    background-color: #333333;
+    color: #ffffff;
+    border-color: #333333;
+}
+
+/* Botão de Entrar Desativado */
+.btn-disabled {
+    width: 100%;
+    background-color: #e0e0e0;
+    color: #a0a0a0;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+/* Botão de Entrar Ativado */
+.btn-activated {
+    width: 100%;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background: var(--bg); color: #333; overflow-x: hidden; }
+
+/* HEADER */
+header { background: var(--white); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #EEE; }
+header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
+.btn-wallet { background: var(--blue); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+
+/* CARD DE SALDO */
+.card-master { background: var(--white); margin: 15px; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+.balance-info h2 { font-size: 1.6rem; }
+.balance-info h2 span { font-size: 0.8rem; color: var(--blue); }
+
+/* GRADE DE AÇÕES */
+.nav-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-top: 20px; }
+.action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.btn-act { 
+    background: var(--white); 
+    border: 2px solid #F0F0F0; 
+    width: 100%; 
+    aspect-ratio: 1 / 1; 
+    border-radius: 12px; 
+    font-size: 1.8rem; 
+    font-weight: 900; 
+    color: var(--blue); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    overflow: hidden; 
+}
+.btn-act:active { transform: scale(0.95); background: #f8f9fa; }
+.btn-label { font-size: 0.65rem; font-weight: 900; color: var(--blue); text-transform: uppercase; }
+
+/* PAINEL LATERAL */
+.side-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background: var(--white); transition: right 0.4s ease; z-index: 5000; display: flex; flex-direction: column; }
+.side-panel.active { right: 0; }
+.panel-header { background: var(--white); padding: 20px; display: flex; align-items: center; border-bottom: 2px solid #EEE; gap: 15px; }
+.btn-back { background: none; border: none; color: var(--blue); font-weight: bold; font-size: 1rem; cursor: pointer; }
+.panel-body { padding: 20px; flex: 1; overflow-y: auto; text-align: center; }
+
+/* BLOCO MÍSTICA (PAGAMENTO E CÂMERA) */
+.card-pagamento-fixo {
+    position: relative; 
+    width: 100%;
+    height: 320px; 
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #333;
+    margin: 15px 0;
+}
+
+#reader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100% !important;
+    z-index: 10;
+    background: #000;
+    display: none !important;
+}
+
+#reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+#info-pagamento {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+.label-clean { color: #888; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+
+.txt-destino {
+    color: var(--blue);
+    font-family: monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+    margin: 10px 0 20px 0;
+}
+
+.input-transparente {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #333;
+    color: #FFF;
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: bold;
+    width: 100%;
+    outline: none;
+}
+
+/* CONVERTER BOX */
+.converter-box { background: #F8F9FA; padding: 20px; border-radius: 15px; margin: 15px 0; border: 1px solid #EEE; }
+.input-brl { width: 100%; border: none; background: transparent; font-size: 2.2rem; font-weight: bold; color: var(--blue); text-align: center; outline: none; }
+.label-bnb { display: block; color: var(--green); font-size: 0.9rem; font-weight: bold; margin-top: 10px; }
+
+/* GRID INFERIOR (SALAS) */
+.grid-dao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
+.sala { background: var(--white); padding: 25px; border-radius: 15px; text-align: center; font-weight: bold; font-size: 0.8rem; border: 1px solid #F0F0F0; }
+
+/* BOTÕES DE AÇÃO */
+.btn-confirm { background: var(--blue); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+.btn-confirm.green { background: var(--green); }
+.btn-confirm.blue { background: var(--blue); font-size: 0.8rem; }
+
+/* EFEITO CONECTADO */
+.btn-wallet.conectado {
+    background: var(--green) !important;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+/* Container do Rodapé Fixo */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: #ffffff;
+    border-top: 1px solid #eef0f5;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 999;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.02);
+}
+
+/* Itens de navegação */
+.nav-item {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+    color: #a0a5b5; 
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent; 
+}
+
+.nav-icon {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.nav-text {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ESTADO ATIVO */
+.nav-item.active {
+    color: #007bff; 
+}
+
+/* ==========================================================================
+   INTERFACE DO PERFIL DO USUÁRIO
+   ========================================================================== */
+.perfil-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 4px;
+}
+
+.perfil-card-interno, .perfil-card-giros {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+    text-align: left;
+}
+
+.perfil-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #666666;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.perfil-saldo-pontos {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+}
+
+.token-symbol {
+    color: #007bff; 
+    font-size: 20px;
+}
+
+.perfil-subtext {
+    font-size: 12px;
+    color: #999999;
+    margin-bottom: 12px;
+}
+
+.btn-resgatar-vault {
+    width: 100%;
+    background: #007bff; 
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-resgatar-vault:active {
+    background: #0056b3;
+}
+
+.perfil-giros-count {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 0;
+}
+
+.perfil-label-historico {
+    font-size: 11px;
+    font-weight: bold;
+    color: #888888;
+    margin-bottom: 8px;
+    padding-left: 4px;
+    text-align: left;
+}
+
+.historico-item {
+    display: flex;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
+    border-left: 4px solid #007bff;
+    text-align: left;
+}
+
+.historico-positivo {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   SESSÃO DE APOIO SOCIAL (ROLETA)
+   ========================================================================== */
+.roleta-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    position: relative;
+}
+
+.roleta-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 20px auto;
+}
+
+.roleta-ponteiro {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 22px solid #007bff;
+    z-index: 100;
+}
+
+.roleta-disco {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid #333333;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    position: relative;
+    overflow: hidden;
+    transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1);
+    background: conic-gradient(
+        #ffffff 0deg 30deg, #f4f6f9 30deg 60deg,
+        #ffffff 60deg 90deg, #f4f6f9 90deg 120deg,
+        #ffffff 120deg 150deg, #f4f6f9 150deg 180deg,
+        #ffffff 180deg 210deg, #f4f6f9 210deg 240deg,
+        #ffffff 240deg 270deg, #f4f6f9 270deg 300deg,
+        #ffffff 300deg 330deg, #f4f6f9 330deg 360deg
+    );
+}
+
+.roleta-fatia-icone {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.btn-roleta-centro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: #007bff;
+    color: #ffffff;
+    border: 4px solid #333333;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 50;
+}
+
+.btn-roleta-centro:active {
+    background: #0056b3;
+}
+
+.revelacao-popup {
+    background: #ffffff;
+    border: 1px solid #eef0f5;
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    animation: popupEntrada 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popupEntrada {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
