@@ -147,29 +147,6 @@ class NitrogenDAO {
             }
         }
     }
-
-    finishSplash() {
-        const splashContainer = document.getElementById('splash-screen');
-        
-        if (splashContainer) {
-            splashContainer.style.transition = "opacity 0.5s ease-out";
-            splashContainer.style.opacity = '0';
-            
-            setTimeout(() => {
-                splashContainer.remove(); // Deleta a estrutura inicial para nunca duplicar a raposa
-                
-                // Força a exibição imediata da Home sem precisar atualizar a página
-                const elementosHome = document.querySelectorAll('header, main, .bottom-nav');
-                elementosHome.forEach(el => el.style.setProperties ? el.style.setProperty('display', 'flex', 'important') : el.style.display = 'flex');
-                
-                // Se o seu 'main' usar block em vez de flex, usamos essa linha de segurança:
-                const mainElement = document.querySelector('main');
-                if (mainElement) mainElement.style.setProperty('display', 'block', 'important');
-                
-            }, 500);
-        }
-        localStorage.setItem('nitrogenio_terms_accepted', 'true');
-    }
     
     async conectar() {
         if (!window.ethereum) {
