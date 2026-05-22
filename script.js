@@ -102,6 +102,12 @@ class NitrogenDAO {
         }
         // Grava a confirmação permanente
         localStorage.setItem('nitrogenio_terms_accepted', 'true');
+
+        // >>> O PULO DO GATO ENTRA BEM AQUI: <<<
+        // Aguarda 300 milissegundos para o efeito visual fechar e reinicia a página sozinho!
+        setTimeout(() => {
+            location.reload();
+        }, 300);
     }
 
     nextSplashSlide() {
