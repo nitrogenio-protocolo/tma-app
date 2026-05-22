@@ -39,11 +39,37 @@ class NitrogenDAO {
         this.verificarSplashInicial();
     }
 
-    verificarSplashInicial() {
-        if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
-            const splash = document.getElementById('splash-screen');
-            if (splash) splash.style.display = 'none';
+        verificarSplashInicial() {
+        const splash = document.getElementById('splash-screen');
+        
+        if (splash) {
+            // Garante que a tela azul com a raposa comece 100% visível
+            splash.style.display = 'flex';
+            splash.style.opacity = '1';
         }
+
+        // Conta 5 segundos (5000 milissegundos) com a raposa na tela
+        setTimeout(() => {
+            if (splash) {
+                // Aplica o efeito suave de sumir
+                splash.style.transition = "opacity 0.5s ease-out";
+                splash.style.opacity = '0';
+                
+                // Espera a animação de sumir terminar (500ms) para fechar de vez
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    
+                    // DEPOIS dos 5 segundos, verifica se o usuário já aceitou os termos antes:
+                    if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
+                        // Se já aceitou, não faz nada (a Home limpa que está atrás já fica visível)
+                    } else {
+                        // Se for a primeira vez, garante que o primeiro slide dos termos apareça na tela
+                        const slide1 = document.getElementById('slide-1');
+                        if (slide1) slide1.classList.add('active');
+                    }
+                }, 500);
+            }
+        }, 5000);
     }
 
     nextSplashSlide() {
