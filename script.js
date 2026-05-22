@@ -112,14 +112,16 @@ class NitrogenDAO {
     }
 
     validateRulesForm() {
-        const btnEnter = document.getElementById('btn-enter-home');
+        const btnEnter = document.getElementById('btn-enter-home'); // O botão de acessar a home
+        
         if (btnEnter) {
+            // Verifica se ambas as flags de aceite estão marcadas como true
             if (this.readAccepted && this.agreeAccepted) {
-                btnEnter.removeAttribute('disabled');
-                btnEnter.className = 'btn-activated';
+                btnEnter.disabled = false; // Libera o clique mecânico
+                btnEnter.className = 'btn-activated'; // Aplica o estilo CSS azul ativo
             } else {
-                btnEnter.setAttribute('disabled', 'true');
-                btnEnter.className = 'btn-disabled';
+                btnEnter.disabled = true;
+                btnEnter.className = 'btn-disabled'; // Mantém cinza se desmarcar
             }
         }
     }
