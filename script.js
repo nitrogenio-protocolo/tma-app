@@ -43,29 +43,36 @@ class NitrogenDAO {
         const raposaAzul = document.getElementById('tela-azul-raposa');
         const termosOverlay = document.getElementById('splash-screen-termos');
         
-        // Garante que a tela azul da raposa comece 100% visível e por cima
+        // Elementos da Home para liberação limpa
+        const header = document.querySelector('header');
+        const main = document.querySelector('main');
+        const bottomNav = document.querySelector('.bottom-nav');
+
         if (raposaAzul) {
             raposaAzul.style.display = 'flex';
             raposaAzul.style.opacity = '1';
         }
 
-        // Conta 5 segundos (5000 milissegundos) com a raposa ativa na tela
+        // Conta 5 segundos com a raposa ativa na tela
         setTimeout(() => {
             if (raposaAzul) {
-                // Inicia o efeito de sumiço suave (fade-out)
                 raposaAzul.style.transition = "opacity 0.5s ease-out";
                 raposaAzul.style.opacity = '0';
                 
-                // Aguarda 0.5 segundos para o efeito acabar e remove a raposa da tela
                 setTimeout(() => {
                     raposaAzul.style.display = 'none';
-                    
-                    // DEPOIS que a raposa sai, verifica as diretrizes:
+                    raposaAzul.remove(); // Limpa a raposa do mapa para não duplicar na Home
+
+                    // Verifica se as diretrizes já foram aceitas em acessos passados
                     if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
-                        // Se já aceitou os termos antes, pula direto para a Home
-                        if (termosOverlay) termosOverlay.style.display = 'none';
+                        if (termosOverlay) termosOverlay.remove();
+                        
+                        // Liga a Home instantaneamente tirando o display: none !important do CSS
+                        if (header) header.style.setProperty('display', 'flex', 'important');
+                        if (main) main.style.setProperty('display', 'block', 'important');
+                        if (bottomNav) bottomNav.style.setProperty('display', 'flex', 'important');
                     } else {
-                        // Se for o primeiro acesso, exibe a tela de termos para aceite
+                        // Se for primeiro acesso, chama os Termos na tela
                         if (termosOverlay) termosOverlay.style.display = 'flex';
                     }
                 }, 500);
@@ -74,17 +81,26 @@ class NitrogenDAO {
     }
 
     finishSplash() {
+        // ID CORRIGIDA DE ACORDO COM SEU HTML (era splash-screen, agora é splash-screen-termos)
         const termosOverlay = document.getElementById('splash-screen-termos');
+        const header = document.querySelector('header');
+        const main = document.querySelector('main');
+        const bottomNav = document.querySelector('.bottom-nav');
         
-        // Faz a tela de termos sumir de forma suave ao clicar em "Acessar Home"
         if (termosOverlay) {
             termosOverlay.style.transition = "opacity 0.5s ease-out";
             termosOverlay.style.opacity = '0';
+            
             setTimeout(() => {
-                termosOverlay.style.display = 'none';
+                termosOverlay.remove(); // Apaga do HTML para evitar que vire fantasma
+                
+                // MONTA A HOME NA TELA SEM PRECISAR DE REFRESH/ATUALIZAR
+                if (header) header.style.setProperty('display', 'flex', 'important');
+                if (main) main.style.setProperty('display', 'block', 'important');
+                if (bottomNav) bottomNav.style.setProperty('display', 'flex', 'important');
             }, 500);
         }
-        // Grava no navegador que o usuário aceitou as diretrizes
+        // Grava a confirmação permanente
         localStorage.setItem('nitrogenio_terms_accepted', 'true');
     }
 
