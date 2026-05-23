@@ -881,3 +881,128 @@ class NitrogenDAO {
 }
 
 const App = new NitrogenDAO();
+
+
+// ==========================================================================
+// CONTROLE DOS PAINÉIS DA POUPANÇA E CHECK-IN (PROTOCOLO NITROGÊNIO)
+// ==========================================================================
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Captura os botões novos que adicionamos no HTML
+    const btnAbrirPoupanca = document.getElementById("btn-abrir-poupanca");
+    const btnAbrirCheckin = document.getElementById("btn-abrir-checkin");
+    
+    // Captura os elementos do seu painel lateral existente
+    const sidePanel = document.getElementById("side-panel");
+    const panelTitle = document.getElementById("panel-title");
+    const panelContent = document.getElementById("panel-content");
+
+    // Ação ao clicar no botão "GUARDAR NA POUPANÇA"
+    if (btnAbrirPoupanca) {
+        btnAbrirPoupanca.addEventListener("click", function() {
+            // Define o título do seu painel existente
+            panelTitle.innerText = "POUPANÇA NITROGÊNIO";
+            
+            // Injeta o HTML cirúrgico dos níveis dentro do corpo do seu painel
+            panelContent.innerHTML = `
+                <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Renda fixa descentralizada com bônus de giros.</p>
+                
+                <div style="background-color: #f4f5f6; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px;">
+                    <span style="font-weight: bold;">Rendimento Ativo:</span>
+                    <span style="color: #007bff; font-weight: bold;">+10% APY (30 Dias)</span>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #eee; color: #888;">
+                            <th style="padding: 8px 0;">Tokens</th>
+                            <th style="padding: 8px 0; text-align: right;">Bônus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0;"><strong>100 N</strong></td>
+                            <td style="padding: 10px 0; text-align: right; color: #007bff; font-weight: bold;">+2 Giros</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0;"><strong>500 N</strong></td>
+                            <td style="padding: 10px 0; text-align: right; color: #007bff; font-weight: bold;">+10 Giros</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0;"><strong>1.000 N</strong></td>
+                            <td style="padding: 10px 0; text-align: right; color: #007bff; font-weight: bold;">+20 Giros</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px 0;"><strong>5.000 N</strong></td>
+                            <td style="padding: 10px 0; text-align: right; color: #007bff; font-weight: bold;">+50 Giros</td>
+                        </tr>
+                        <tr style="background-color: #f0f7ff;">
+                            <td style="padding: 10px 4px;"><strong>10.000 N</strong></td>
+                            <td style="padding: 10px 4px; text-align: right; color: #007bff; font-weight: bold;">+150 Giros 🥶</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="btn-confirm" style="width: 100%;">CONFIRMAR ALOCAÇÃO</button>
+            `;
+            
+            // Abre o painel deslizando (reaproveitando a sua classe original)
+            sidePanel.classList.add("active");
+        });
+    }
+
+    // Ação ao clicar no botão "CHECK-IN DIÁRIO REALIZADO"
+    if (btnAbrirCheckin) {
+        btnAbrirCheckin.addEventListener("click", function() {
+            // Define o título do seu painel existente
+            panelTitle.innerText = "CHECK-IN DIÁRIO";
+            
+            // Injeta a grade dos 7 dias da semana dentro do corpo do seu painel
+            panelContent.innerHTML = `
+                <p style="font-size: 13px; color: #666; margin-bottom: 25px;">Acompanhe sua sequência de acessos semanais.</p>
+                
+                <div class="grade-dias" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <div class="dia-card concluido" style="background: #f0f7ff; border: 1px solid #007bff; border-radius: 8px; padding: 10px; font-size: 12px;">
+                        <div style="color: #888; font-weight: bold;">Seg</div>
+                        <div style="color: #007bff; font-size: 16px; font-weight: bold; margin: 4px 0;">✓</div>
+                        <div style="color: #666; font-size: 11px;">+1 Giro</div>
+                    </div>
+                    <div class="dia-card concluido" style="background: #f0f7ff; border: 1px solid #007bff; border-radius: 8px; padding: 10px; font-size: 12px;">
+                        <div style="color: #888; font-weight: bold;">Ter</div>
+                        <div style="color: #007bff; font-size: 16px; font-weight: bold; margin: 4px 0;">✓</div>
+                        <div style="color: #666; font-size: 11px;">+1 Giro</div>
+                    </div>
+                    <div class="dia-card atual" style="background: #fff; border: 2px dashed #007bff; border-radius: 8px; padding: 10px; font-size: 12px;">
+                        <div style="color: #1a1a1a; font-weight: bold;">Qua</div>
+                        <div style="color: #1a1a1a; font-size: 14px; font-weight: bold; margin: 4px 0;">Hoje</div>
+                        <div style="color: #007bff; font-size: 11px; font-weight: bold;">+1 Giro</div>
+                    </div>
+                    <div class="dia-card" style="background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; padding: 10px; font-size: 12px;">
+                        <div style="color: #888; font-weight: bold;">Qui</div>
+                        <div style="color: #ccc; font-size: 16px; margin: 4px 0;">-</div>
+                        <div style="color: #666; font-size: 11px;">+1 Giro</div>
+                    </div>
+                    <div class="dia-card" style="background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; padding: 10px; font-size: 12px;">
+                        <div style="color: #888; font-weight: bold;">Sex</div>
+                        <div style="color: #ccc; font-size: 16px; margin: 4px 0;">-</div>
+                        <div style="color: #666; font-size: 11px;">+1 Giro</div>
+                    </div>
+                    <div class="dia-card" style="background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; padding: 10px; font-size: 12px;">
+                        <div style="color: #888; font-weight: bold;">Sáb</div>
+                        <div style="color: #ccc; font-size: 16px; margin: 4px 0;">-</div>
+                        <div style="color: #666; font-size: 11px;">+1 Giro</div>
+                    </div>
+                    <div class="dia-card bônus-domingo" style="grid-column: span 3; background: #1a1a1a; color: #fff; border-radius: 8px; padding: 12px; margin-top: 5px;">
+                        <div style="color: #aaa; font-size: 11px; font-weight: bold;">DOMINGO (PRÊMIO MÁXIMO)</div>
+                        <div style="color: #007bff; font-size: 18px; font-weight: 900; margin-top: 4px;">+10 GIROS 🎯</div>
+                    </div>
+                </div>
+
+                <button class="btn-confirm" style="width: 100%; background-color: #28A745;">REIVINDICAR ACESSO</button>
+            `;
+            
+            // Abre o painel deslizando (reaproveitando a sua classe original)
+            sidePanel.classList.add("active");
+        });
+    }
+});
