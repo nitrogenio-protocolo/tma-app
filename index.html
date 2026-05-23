@@ -1,1 +1,125 @@
 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nitrogênio Protocolo | DAO</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+
+    <div id="tela-azul-raposa">
+        <img src="raposa.png" class="raposa-splash-img" alt="Nitrogênio Protocolo">
+    </div>
+
+    <div id="splash-screen-termos" class="splash-overlay">
+        <div class="splash-slide active" id="slide-1">
+            <div class="splash-logo-box">
+                <h1 class="logo-animation">NITROGÊNIO</h1>
+                <p class="subtitle-animation">PROTOCOLO</p>
+                <div class="logo-line"></div>
+            </div>
+            <p class="splash-text-intro">Bem-vindo ao ecossistema descentralizado.</p>
+            <button type="button" class="btn-next-slide" onclick="App.nextSplashSlide()">PROSSEGUIR</button>
+        </div>
+
+        <div class="splash-slide" id="slide-2">
+            <div class="rules-container">
+                <h3>TERMOS E DIRETRIZES</h3>
+                <div class="rules-text">
+                    <p><strong>1. Leitura de Ativos:</strong> O app lê saldos e NFTs da sua carteira para liberar funções. Não armazenamos seus dados ou ativos; toda ação exige sua assinatura.</p>
+                    <p><strong>2. Comunidade e Guardiões:</strong> A governança é descentralizada. Votos ocorrem na blockchain e as decisões são auditadas pelo conselho dos 21 Guardiões.</p>
+                    <p><strong>3. Taxa do Token N:</strong> Movimentações no ecossistema possuem taxa automatizada de 1% via smart contract, destinada às regras do protocolo.</p>
+                    <p><strong>4. Acesso via NFT:</strong> A entrada na Home e o uso das ferramentas profissionais exigem a posse do NFT oficial do protocolo na carteira conectada.</p>
+                </div>
+            </div>
+
+            <div class="rules-footer">
+                <div class="checkbox-area">
+                    <button type="button" id="btn-read" class="btn-small-toggle" onclick="App.toggleRead()">LI</button>
+                    <button type="button" id="btn-agree" class="btn-small-toggle" onclick="App.toggleAgree()">CONCORDO</button>
+                </div>
+                <button type="button" id="btn-enter-home" class="btn-disabled" disabled onclick="App.finishSplash()">ACESSAR HOME</button>
+            </div>
+        </div> 
+    </div>
+
+    <header>
+        <div class="logo-area">
+            <h1>NITROGÊNIO <span></span></h1>
+            <p class="network-label">PROTOCOLO</p>
+        </div>
+        <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
+    </header>
+
+    <main>
+        <section class="card-master">
+            <div class="balance-info">
+                <p class="label">SALDO DA CONTA CONECTADA</p>
+                <h2 id="display-bnb">0.00 BNB <span></span></h2>
+            </div> 
+        </section>
+
+        <nav class="nav-actions">
+            <div class="action-item">
+                <button class="btn-act" id="btn-pagar">↑</button>
+                <span class="btn-label">PAGAR</span>
+            </div>
+            <div class="action-item">
+                <button class="btn-act" id="btn-receber">↓</button>
+                <span class="btn-label">RECEBER</span>
+            </div>
+            <div class="action-item">
+                <button class="btn-act" id="btn-coletar">↓</button>
+                <span class="btn-label">COLETAR</span>
+            </div>
+            <div class="action-item">
+                <button class="btn-act" id="btn-trocar">⇄</button>
+                <span class="btn-label">TROCAR</span>
+            </div>
+        </nav>
+
+        <section class="grid-dao">
+            <div class="sala" id="btn-tesouraria" style="cursor: pointer;">TESOURARIA</div>
+            <div class="sala">GOVERNANÇA</div>
+            <div class="sala">COMUNIDADE</div>
+            <div class="sala">TRANSPARÊNCIA</div>
+        </section>
+    </main>
+
+    <div id="side-panel" class="side-panel">
+        <div class="panel-header">
+            <button id="close-panel" class="btn-back">← VOLTAR</button>
+            <h2 id="panel-title">AÇÃO</h2>
+        </div>
+        <div id="panel-content" class="panel-body"></div>
+    </div>
+
+    <footer class="bottom-nav">
+        <button class="nav-item active" onclick="App.mudarAba('home')">
+            <span class="nav-icon">⌂</span>
+            <span class="nav-text">HOME</span>
+        </button>
+        
+        <button id="nav-perfil" class="nav-item" onclick="App.mudarAba('perfil')">
+            <div class="nav-icon">👤</div>
+            <span class="nav-text">PERFIL</span>
+        </button>
+        
+        <button class="nav-item" onclick="window.open('https://t.me/seu_canal', '_blank')">
+            <span class="nav-icon">▲</span>
+            <span class="nav-text">TELEGRAM</span>
+        </button>
+        
+        <button class="nav-item" onclick="window.open('https://bscscan.com/', '_blank')">
+            <span class="nav-icon">┱</span>
+            <span class="nav-text">BSCSCAN</span>
+        </button>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
