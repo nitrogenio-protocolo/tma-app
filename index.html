@@ -55,40 +55,83 @@
     </header>
 
     <main>
-        <section class="card-master">
-            <div class="balance-info">
-                <p class="label">SALDO DA CONTA CONECTADA</p>
-                <h2 id="display-bnb">0.00 BNB <span></span></h2>
-            </div> 
-        </section>
+        <!-- CONTEÚDO PRINCIPAL (HOME) -->
+        <div id="conteudo-home">
+            <section class="card-master">
+                <div class="balance-info">
+                    <p class="label">SALDO DA CONTA CONECTADA</p>
+                    <h2 id="display-bnb">0.00 BNB <span></span></h2>
+                </div> 
+            </section>
 
-        <nav class="nav-actions">
-            <div class="action-item">
-                <button class="btn-act" id="btn-pagar">↑</button>
-                <span class="btn-label">PAGAR</span>
-            </div>
-            <div class="action-item">
-                <button class="btn-act" id="btn-receber">↓</button>
-                <span class="btn-label">RECEBER</span>
-            </div>
-            <div class="action-item">
-                <button class="btn-act" id="btn-coletar">↓</button>
-                <span class="btn-label">COLETAR</span>
-            </div>
-            <div class="action-item">
-                <button class="btn-act" id="btn-trocar">⇄</button>
-                <span class="btn-label">TROCAR</span>
-            </div>
-        </nav>
+            <nav class="nav-actions">
+                <div class="action-item">
+                    <button class="btn-act" id="btn-pagar">↑</button>
+                    <span class="btn-label">PAGAR</span>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-receber">↓</button>
+                    <span class="btn-label">RECEBER</span>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-coletar">↓</button>
+                    <span class="btn-label">COLETAR</span>
+                </div>
+                <div class="action-item">
+                    <button class="btn-act" id="btn-trocar">⇄</button>
+                    <span class="btn-label">TROCAR</span>
+                </div>
+            </nav>
 
-        <section class="grid-dao">
-            <div class="sala" id="btn-tesouraria" style="cursor: pointer;">TESOURARIA</div>
-            <div class="sala">GOVERNANÇA</div>
-            <div class="sala">COMUNIDADE</div>
-            <div class="sala">TRANSPARÊNCIA</div>
-        </section>
+            <section class="grid-dao">
+                <div class="sala" id="btn-tesouraria" style="cursor: pointer;">TESOURARIA</div>
+                <div class="sala">GOVERNANÇA</div>
+                <div class="sala">COMUNIDADE</div>
+                <div class="sala">TRANSPARÊNCIA</div>
+            </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- NOVO BLOCO: ABA PERFIL (Conforme imagem Screenshot_20260523-011713.png) -->
+        <!-- ========================================== -->
+        <div id="conteudo-perfil" style="display: none;">
+            <!-- Bloco do Saldo Minerado e Poupança -->
+            <section class="card-master">
+                <div class="balance-info">
+                    <p class="label">SALDO ACUMULADO NO APP</p>
+                    <h2>0 <span class="txt-azul">N</span></h2>
+                    <p class="sub-info">Tokens minerados na roleta e tarefas diárias.</p>
+                </div>
+                
+                <hr class="divisor-linha">
+
+                <div class="poupanca-info">
+                    <p class="label">POUPANÇA NITROGÊNIO (30 DIAS)</p>
+                    <div class="box-saldo-poupanca">
+                        <span class="valor-poupanca">1045 N</span>
+                        <p class="status-poupanca">Libera em 30 dias (Rendimento Ativo)</p>
+                    </div>
+                    <!-- Botão que vai abrir o detalhamento da poupança -->
+                    <button class="btn-poupanca-guardar" id="btn-abrir-poupanca">GUARDAR NA POUPANÇA (+2 GIROS)</button>
+                </div>
+            </section>
+
+            <!-- Bloco de Atividades Disponíveis -->
+            <section class="card-master mt-16">
+                <p class="label">ATIVIDADES DISPONÍVEIS</p>
+                <h2 class="txt-azul">5 Giros</h2>
+
+                <div class="lista-tarefas">
+                    <button class="btn-tarefa-concluida" disabled>✓ QUIZ SEMANAL CONCLUÍDO</button>
+                    <!-- Botão que vai abrir o detalhamento do Check-in -->
+                    <button class="btn-tarefa-concluida" id="btn-abrir-checkin">✓ CHECK-IN DIÁRIO REALIZADO</button>
+                    <button class="btn-roleta-ir">🎯 IR PARA A ROLETA</button>
+                </div>
+            </section>
+        </div>
     </main>
 
+    <!-- Seu painel lateral existente que vamos reaproveitar -->
     <div id="side-panel" class="side-panel">
         <div class="panel-header">
             <button id="close-panel" class="btn-back">← VOLTAR</button>
