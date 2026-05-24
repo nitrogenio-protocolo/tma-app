@@ -417,22 +417,7 @@ class NitrogenDAO {
         if (btnHome) btnHome.classList.add('active');
     }
 
-    mudarAba(aba) {
-        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-        navItems.forEach(item => item.classList.remove('active'));
-
-        if (aba === 'perfil') {
-            const btnPerfil = document.getElementById('nav-perfil');
-            if (btnPerfil) btnPerfil.classList.add('active');
-
-            const panel = document.getElementById('side-panel');
-            const content = document.getElementById('panel-content');
-            const title = document.getElementById('panel-title');
-            
-            if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-            title.innerText = "MEU PERFIL";
-            panel.classList.add('active');
-            
+    
       mudarAba(aba) {
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         navItems.forEach(item => item.classList.remove('active'));
