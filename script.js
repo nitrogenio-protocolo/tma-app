@@ -20,18 +20,7 @@ class NitrogenDAO {
         this.ultimaAtualizacao = 0;
         this.saldoAppN = 1045;            
         this.girosDisponiveis = 0;        
-        this.fluxoQuizRespondido = false; 
         this.roletaGirando = false; 
-        
-        this.saldoPoupancaN = 0;          
-        this.diasPoupancaRestantes = 0;   
-        this.checkInRealizadoHoje = false;
-        
-        this.ultimoMesColetaGiroPoupanca = null; 
-        this.progressoTokensParaGiro = 0;       
-        this.metaTokensPoupanca = 1000;         
-        
-        this.codigoSemanalUtilizado = false;    
 
         this.readAccepted = false;
         this.agreeAccepted = false;
@@ -54,7 +43,7 @@ class NitrogenDAO {
             raposaAzul.style.opacity = '1';
         }
 
-        // Conta 5 segundos com a raposa ativa na tela
+        // Conta 5 segundos com a raposa activa na tela
         setTimeout(() => {
             if (raposaAzul) {
                 raposaAzul.style.transition = "opacity 0.5s ease-out";
@@ -444,198 +433,16 @@ class NitrogenDAO {
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
-            const travaBotaoGiro = this.girosDisponiveis > 0 ? '' : 'disabled style="background: #cccccc; cursor: not-allowed;"';
-            const estiloQuizBtn = this.fluxoQuizRespondido ? 'background: #cccccc; cursor: not-allowed;' : 'background: #333333;';
-            const textoQuizBtn = this.fluxoQuizRespondido ? '✔️ QUIZ SEMANAL CONCLUÍDO' : '📚 QUIZ SEMANAL';
-            const travaQuiz = this.fluxoQuizRespondido ? 'disabled' : '';
-
-            const estiloCheckInBtn = this.checkInRealizadoHoje ? 'background: #cccccc; cursor: not-allowed;' : 'background: #333333;';
-            const textoCheckInBtn = this.checkInRealizadoHoje ? '✔️ CHECK-IN DIÁRIO REALIZADO' : '📆 CHECK-IN DIÁRIO';
-            const travaCheckIn = this.checkInRealizadoHoje ? 'disabled' : '';
-            
-            const textoTempoPoupanca = this.saldoPoupancaN > 0 
-                ? (this.diasPoupancaRestantes > 0 ? `Libera em ${this.diasPoupancaRestantes} dias (Rendimento Ativo)` : '🔓 Saldo Liberado para Resgate!') 
-                : 'Nenhum token retido para bônus';
-
-            let blocoBotoesPoupanca = '';
-            if (this.saldoPoupancaN > 0 && this.diasPoupancaRestantes <= 0) {
-                blocoBotoesPoupanca = `
-                    <div style="display: flex; gap: 8px; margin-top: 8px; width: 100%;">
-                        <button type="button" class="btn-confirm" id="btn-clamar-poup" style="background: #28A745; margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
-                            🔓 CLAMAR DE VOLTA
-                        </button>
-                        <button type="button" class="btn-confirm blue" id="btn-renovar-poup" style="margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
-                            🔄 RENOVAR (+2 GIROS)
-                        </button>
-                    </div>
-                `;
-            } else {
-                blocoBotoesPoupanca = `
-                    <button type="button" class="btn-confirm" id="btn-guardar-poup" style="background: #333333; margin: 8px 0 0 0; padding: 10px; font-size: 0.8rem; width: 100%;">
-                        GUARDAR NA POUPANÇA (+2 GIROS)
-                    </button>
-                `;
-            }
-
+            // CONTEÚDO LIMPO: Mantém apenas o ícone físico inicial, pronto para reconstrução individual.
             content.innerHTML = `
-                <div class="perfil-container">
-                    <div class="perfil-card-interno">
-                        <p class="perfil-label">SALDO ACUMULADO NO APP</p>
-                        <h3 class="perfil-saldo-pontos"><span id="saldo-app-tokens">${this.saldoAppN}</span> <span class="token-symbol">N</span></h3>
-                        <p class="perfil-subtext" style="margin-bottom:0;">Tokens minerados na roleta e tarefas diárias.</p>
-                        
-                        <div style="border-top: 1px dashed rgba(0,0,0,0.1); margin: 15px 0; padding-top: 10px;"></div>
-                        <p class="perfil-label" style="font-size: 0.7rem; opacity: 0.8;">POUPANÇA NITROGÊNIO (30 DIAS)</p>
-                        <div style="background: rgba(0,0,0,0.03); padding: 10px; border-radius: 6px; margin: 8px 0; text-align: center;">
-                            <strong style="font-size: 1.1rem; color: #007BFF; display: block;" id="saldo-poupanca-tokens">${this.saldoPoupancaN} N</strong>
-                            <small style="font-size: 0.65rem; color: #666;" id="tempo-poupanca-restante">${textoTempoPoupanca}</small>
-                        </div>
-                        ${blocoBotoesPoupanca}
-                    </div>
-
-                    <div class="perfil-card-giros" style="margin-top: 15px;">
-                        <p class="perfil-label">ATIVIDADES DISPONÍVEIS</p>
-                        <h4 class="perfil-giros-count" style="margin-bottom: 15px;" id="perfil-giros-contador">${this.girosDisponiveis} Giros</h4>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <button class="btn-confirm" id="btn-quiz-semanal" style="${estiloQuizBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaQuiz}>${textoQuizBtn}</button>
-                            <button class="btn-confirm" id="btn-checkin-diario" style="${estiloCheckInBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaCheckIn}>${textoCheckInBtn}</button>
-                            <button class="btn-confirm blue" id="btn-abrir-giro" ${travaBotaoGiro}>🎯 IR PARA A ROLETA</button>
-                        </div>
-                    </div>
-
-                    <div class="perfil-card-interno" style="margin-top: 15px; text-align: left;">
-                        <p class="perfil-label">CÓDIGO DA COMUNIDADE</p>
-                        <div style="display: flex; gap: 8px; margin-top: 5px;">
-                            <input type="text" id="input-codigo-comunidade" placeholder="Digite o código..." autocomplete="off" style="flex: 1; padding: 10px; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; font-size: 0.85rem; outline: none;">
-                            <button type="button" id="btn-validar-cod" style="background: #007BFF; color: white; border: none; padding: 0 15px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">VALIDAR</button>
-                        </div>
-                    </div>
+                <div class="perfil-container" style="padding: 20px; text-align: center; color: #666;">
+                    <span style="font-size: 3.5rem; display: block; margin-bottom: 10px;">👤</span>
+                    <p style="font-size: 0.9rem;">Espaço reservado para o novo Perfil Modular.</p>
                 </div>
             `;
 
-            // Atrelando eventos mecânicos de forma segura via JavaScript estruturado
-            if (document.getElementById('btn-guardar-poup')) document.getElementById('btn-guardar-poup').onclick = () => this.enviarParaPoupanca();
-            if (document.getElementById('btn-clamar-poup')) document.getElementById('btn-clamar-poup').onclick = () => this.clamarPoupanca();
-            if (document.getElementById('btn-renovar-poup')) document.getElementById('btn-renovar-poup').onclick = () => this.renovarPoupanca();
-            if (document.getElementById('btn-quiz-semanal') && !this.fluxoQuizRespondido) document.getElementById('btn-quiz-semanal').onclick = () => this.abrirQuizPainel();
-            if (document.getElementById('btn-checkin-diario') && !this.checkInRealizadoHoje) document.getElementById('btn-checkin-diario').onclick = () => this.executarCheckInDiario();
-            if (document.getElementById('btn-abrir-giro') && this.girosDisponiveis > 0) document.getElementById('btn-abrir-giro').onclick = () => this.abrirRoletaPainel();
-            if (document.getElementById('btn-validar-cod')) document.getElementById('btn-validar-cod').onclick = () => this.validarCodigoComunidade();
-
         } else if (aba === 'home') {
             this.fecharFolha();
-        }
-    }
-
-    enviarParaPoupanca() {
-        if (this.saldoAppN <= 0) return alert("Você não possui saldo disponível.");
-        const valorParaGuardar = prompt(`Quanto deseja guardar na poupança?`, this.saldoAppN);
-        const quantidade = parseInt(valorParaGuardar);
-        if (isNaN(quantidade) || quantidade <= 0 || quantidade > this.saldoAppN) return alert("Quantidade inválida.");
-
-        this.saldoAppN -= quantidade;
-        this.saldoPoupancaN += quantidade;
-        this.diasPoupancaRestantes = 30; 
-        this.progressoTokensParaGiro += quantidade;
-
-        let msg = `Sucesso! Guardou ${quantidade} N na poupança por 30 dias.`;
-        const dataAtual = new Date();
-        const mesAnoAtual = `${dataAtual.getFullYear()}-${dataAtual.getMonth()}`;
-
-        if (this.progressoTokensParaGiro >= this.metaTokensPoupanca) {
-            if (this.ultimoMesColetaGiroPoupanca !== mesAnoAtual) {
-                this.girosDisponiveis += 2;
-                this.ultimoMesColetaGiroPoupanca = mesAnoAtual;
-                this.progressoTokensParaGiro = 0;
-                msg += `\n\n🎯 +2 Giros de bônus liberados!`;
-            }
-        }
-        alert(msg);
-        this.mudarAba('perfil'); 
-    }
-
-    clamarPoupanca() {
-        if (this.saldoPoupancaN <= 0) return;
-        const v = this.saldoPoupancaN;
-        this.saldoAppN += v;
-        this.saldoPoupancaN = 0;
-        this.diasPoupancaRestantes = 0;
-        alert(`🔓 Seus ${v} Token N voltaram para o saldo principal!`);
-        this.mudarAba('perfil'); 
-    }
-
-    renovarPoupanca() {
-        if (this.saldoPoupancaN <= 0) return;
-        this.diasPoupancaRestantes = 30;
-        this.girosDisponiveis += 2;
-        alert(`🔄 Poupança Renovada! +2 Giros concedidos.`);
-        this.mudarAba('perfil'); 
-    }
-
-    executarCheckInDiario() {
-        if (this.checkInRealizadoHoje) return;
-        this.checkInRealizadoHoje = true;
-        this.girosDisponiveis += 1;
-        alert("Check-in Diário Concluído! +1 Giro ganho. 📆");
-        this.mudarAba('perfil');
-    }
-
-    validarCodigoComunidade() {
-        const input = document.getElementById('input-codigo-comunidade');
-        if (!input) return;
-        const codigo = input.value.trim().toUpperCase();
-        if (this.codigoSemanalUtilizado) return alert("Código já utilizado nesta semana!");
-
-        if (codigo === "NITROSEMANAL") {
-            this.girosDisponiveis += 1;
-            this.codigoSemanalUtilizado = true;
-            alert("Código Semanal Validado! +1 Giro! 🎯");
-            this.mudarAba('perfil');
-        } else {
-            alert("Código inválido ou já expirado.");
-        }
-    }
-
-    abrirQuizPainel() {
-        const content = document.getElementById('panel-content');
-        const title = document.getElementById('panel-title');
-        title.innerText = "QUIZ DO BEM";
-
-        if (this.fluxoQuizRespondido) {
-            content.innerHTML = `<div style="padding: 20px; text-align: center;"><p style="color:#28a745; font-weight:bold;">Tarefa Semanal Concluída! ✔️</p></div>`;
-            return;
-        }
-
-        content.innerHTML = `
-            <div style="padding: 15px; text-align: left;">
-                <p class="pergunta-quiz">
-                    Se alguém pedir as suas 12 palavras-chave (frase de recuperação) o que você faz?
-                </p>
-                <div class="quiz-opcoes">
-                    <button class="btn-quiz-opcao" id="op-a">A) Forneço as palavras.</button>
-                    <button class="btn-quiz-opcao" id="op-b">B) Não envio jamais!</button>
-                </div>
-                <div id="quiz-feedback" style="margin-top: 25px; text-align: center; display: none;"></div>
-            </div>`;
-
-        document.getElementById('op-a').onclick = () => this.verificarRespostaQuiz('errada', 'op-a');
-        document.getElementById('op-b').onclick = () => this.verificarRespostaQuiz('correta', 'op-b');
-    }
-
-    verificarRespostaQuiz(tipo, idBotao) {
-        document.getElementById('op-a').disabled = true;
-        document.getElementById('op-b').disabled = true;
-        const feedback = document.getElementById('quiz-feedback');
-        feedback.style.display = "block";
-
-        if (tipo === 'correta') {
-            document.getElementById(idBotao).classList.add('correto');
-            this.girosDisponiveis += 1;
-            this.fluxoQuizRespondido = true;
-            feedback.innerHTML = `<h4 style="color: #28A745; font-weight: bold; margin-top: 10px;">Correto! +1 Giro ganho 🎯</h4>`;
-        } else {
-            document.getElementById(idBotao).classList.add('errado');
-            feedback.innerHTML = `<h4 style="color: #FF3B30; font-weight: bold; margin-top: 10px;">Incorreto! Tente novamente na próxima.</h4>`;
         }
     }
     
@@ -675,7 +482,7 @@ class NitrogenDAO {
         }
     }
 
-    async executarSincronizacaoReal(enderecoCofre) {
+    async ejecutarSincronizacaoReal(enderecoCofre) {
         const containerDados = document.getElementById('dados-reais-tesouraria');
         const areaStatus = document.getElementById('area-status-cofre');
         
@@ -734,12 +541,12 @@ class NitrogenDAO {
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <div style="padding: 10px; background: rgba(40,167,69,0.04); border-left: 4px solid #28A745; border-radius: 0 6px 6px 0;">
                             <span style="font-size: 0.85rem; font-weight: bold; color: #28A745; display:block;">🔵 58% Fundo da Comunidade</span>
-                            <span style="font-size: 0.7rem; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
+                            <span style="font-size: 0.7 Rar; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
                         </div>
                         
                         <div style="padding: 10px; background: rgba(0,123,255,0.04); border-left: 4px solid #007BFF; border-radius: 0 6px 6px 0;">
                             <span style="font-size: 0.85rem; font-weight: bold; color: #007BFF; display:block;">⚪ 42% Conselho de Guardiões</span>
-                            <span style="font-size: 0.7rem; color: #555;">Fundo estratégico de governança e auditoria de blocos, distribuído proporcionalmente aos 21 líderes ativos.</span>
+                            <span style="font-size: 0.7 Rar; color: #555;">Fundo estratégico de governança e auditoria de blocos, distribuído proporcionalmente aos 21 líderes ativos.</span>
                         </div>
                     </div>
                 </div>
@@ -793,23 +600,6 @@ class NitrogenDAO {
         }, 1000);
     }
 
-    abrirRoletaPainel() {
-        const content = document.getElementById('panel-content');
-        const title = document.getElementById('panel-title');
-        title.innerText = "ROLETA DO BEM";
-        content.innerHTML = `
-            <div class="roleta-wrapper">
-                <div class="roleta-container">
-                    <div class="roleta-ponteiro"></div>
-                    <div id="disco-roleta" class="roleta-disco"></div>
-                    <button id="btn-start-giro" class="btn-roleta-centro">GIRAR</button>
-                </div>
-                <div id="revelacao-area" style="width: 100%;"></div>
-            </div>`;
-        
-        document.getElementById('btn-start-giro').onclick = () => this.girarRoletaEfetivo();
-    }
-
     tocarSomClick() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -838,62 +628,6 @@ class NitrogenDAO {
             osc.connect(gain); gain.connect(ctx.destination);
             osc.start(); osc.stop(ctx.currentTime + 0.5);
         } catch(e) {}
-    }
-
-    girarRoletaEfetivo() {
-        if (this.roletaGirando || this.girosDisponiveis <= 0) return;
-        this.roletaGirando = true;
-        this.girosDisponiveis -= 1;
-        document.getElementById('btn-start-giro').disabled = true;
-        document.getElementById('revelacao-area').innerHTML = "";
-        const disco = document.getElementById('disco-roleta');
-        
-        const mesesCampanhas = [
-            { mes: "Janeiro Branco", desc: "Saúde mental importa.", cor: "🤍" },
-            { mes: "Fevereiro Roxo", desc: "Combate ao Alzheimer e Fibromialgia.", cor: "💜" },
-            { mes: "Março Azul Marinho", desc: "Prevenção contra o câncer colorretal.", cor: "💙" },
-            { mes: "Abril Azul Claro", desc: "Conscientização sobre o Autismo.", cor: "🩵" },
-            { mes: "Maio Amarelo", desc: "Atenção pela vida! Paz no trânsito.", cor: "💛" },
-            { mes: "Junho Vermelho", desc: "Doar sangue salva vidas.", cor: "❤️" },
-            { mes: "Julho Verde Amarelo", desc: "Combate às hepatites virais.", cor: "💚" },
-            { mes: "Agosto Dourado", desc: "Apoio ao aleitamento materno.", cor: "💛" },
-            { mes: "Setembro Amarelo", desc: "Valorização da vida! Peça ajuda.", cor: "💛" },
-            { mes: "Outubro Rosa", desc: "Prevenção do câncer de mama.", cor: "🩷" },
-            { mes: "Novembro Azul", desc: "Saúde do homem em foco.", cor: "💙" },
-            { mes: "Dezembro Vermelho", desc: "Mobilização nacional contra o HIV.", cor: "❤️" }
-        ];
-
-        const índiceSorteado = Math.floor(Math.random() * 12);
-        const escolha = mesesCampanhas[índiceSorteado];
-        const grausPorFatia = 30;
-        const voltasCompletas = (4 + Math.floor(Math.random() * 3)) * 360;
-        const grausAlvo = voltasCompletas + (índiceSorteado * grausPorFatia);
-        disco.style.transform = `rotate(-${grausAlvo}deg)`;
-
-        const totalPassosSom = 40; 
-        for (let i = 0; i < totalPassosSom; i++) {
-            const atrasoSom = Math.pow(i / totalPassosSom, 2) * 4000; 
-            setTimeout(() => { if (this.roletaGirando) this.tocarSomClick(); }, atrasoSom);
-        }
-
-        setTimeout(() => {
-            this.roletaGirando = false;
-            this.tocarSomVitoria();
-            const tokensGanhos = Math.floor(Math.random() * 46) + 5;
-            this.saldoAppN += tokensGanhos;
-
-            document.getElementById('revelacao-area').innerHTML = `
-                <div class="revelacao-popup">
-                    <h3>${escolha.cor} ${escolha.mes.toUpperCase()}</h3>
-                    <p>"${escolha.desc}"</p>
-                    <div style="background: rgba(40, 167, 69, 0.05); border: 1px dashed #28a745; padding: 10px; border-radius: 8px;">
-                        <strong style="color: #28a745; font-size: 1.3rem;">+${tokensGanhos} N</strong>
-                    </div>
-                    <button class="btn-resgatar-vault" id="btn-concluir-roleta" style="background: #333333; width: 100%; margin-top: 12px;">CONCLUIR</button>
-                </div>`;
-                
-            document.getElementById('btn-concluir-roleta').onclick = () => this.mudarAba('perfil');
-        }, 4000);
     }
 }
 
