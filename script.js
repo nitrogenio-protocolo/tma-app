@@ -1,4 +1,6 @@
+// ==========================================================================
 // --- ENDEREÇOS DOS CONTRATOS DO PROTOCOLO (REDES BLOCKCHAIN) ---
+// ==========================================================================
 const CONTRATO_TOKEN_N = ""; // <--- COLOQUE O CONTRATO DO TOKEN N AQUI QUANDO ELE CHEGAR!
 const CONTRATO_USDT_BSC = "0x55d398326f99059fF775485246999027B3197955"; // Contrato estável oficial do USDT BEP20 na BSC
 
@@ -39,11 +41,10 @@ class NitrogenDAO {
         this.verificarSplashInicial();
     }
 
-        verificarSplashInicial() {
+    verificarSplashInicial() {
         const raposaAzul = document.getElementById('tela-azul-raposa');
         const termosOverlay = document.getElementById('splash-screen-termos');
         
-        // Elementos da Home para liberação limpa
         const header = document.querySelector('header');
         const main = document.querySelector('main');
         const bottomNav = document.querySelector('.bottom-nav');
@@ -61,18 +62,16 @@ class NitrogenDAO {
                 
                 setTimeout(() => {
                     raposaAzul.style.display = 'none';
-                    raposaAzul.remove(); // Limpa a raposa do mapa para não duplicar na Home
+                    raposaAzul.remove(); 
 
-                    // Verifica se as diretrizes já foram aceitas em acessos passados
+                    // Verifica se os termos já foram aceitos antes
                     if (localStorage.getItem('nitrogenio_terms_accepted') === 'true') {
                         if (termosOverlay) termosOverlay.remove();
                         
-                        // Liga a Home instantaneamente tirando o display: none !important do CSS
                         if (header) header.style.setProperty('display', 'flex', 'important');
                         if (main) main.style.setProperty('display', 'block', 'important');
                         if (bottomNav) bottomNav.style.setProperty('display', 'flex', 'important');
                     } else {
-                        // Se for primeiro acesso, chama os Termos na tela
                         if (termosOverlay) termosOverlay.style.display = 'flex';
                     }
                 }, 500);
@@ -81,7 +80,6 @@ class NitrogenDAO {
     }
 
     finishSplash() {
-        // ID CORRIGIDA DE ACORDO COM SEU HTML (era splash-screen, agora é splash-screen-termos)
         const termosOverlay = document.getElementById('splash-screen-termos');
         const header = document.querySelector('header');
         const main = document.querySelector('main');
@@ -92,19 +90,15 @@ class NitrogenDAO {
             termosOverlay.style.opacity = '0';
             
             setTimeout(() => {
-                termosOverlay.remove(); // Apaga do HTML para evitar que vire fantasma
+                termosOverlay.remove(); 
                 
-                // MONTA A HOME NA TELA SEM PRECISAR DE REFRESH/ATUALIZAR
                 if (header) header.style.setProperty('display', 'flex', 'important');
                 if (main) main.style.setProperty('display', 'block', 'important');
                 if (bottomNav) bottomNav.style.setProperty('display', 'flex', 'important');
             }, 500);
         }
-        // Grava a confirmação permanente
         localStorage.setItem('nitrogenio_terms_accepted', 'true');
 
-        // >>> O PULO DO GATO ENTRA BEM AQUI: <<<
-        // Aguarda 300 milissegundos para o efeito visual fechar e reinicia a página sozinho!
         setTimeout(() => {
             location.reload();
         }, 300);
@@ -134,23 +128,22 @@ class NitrogenDAO {
     }
 
     validateRulesForm() {
-        const btnEnter = document.getElementById('btn-enter-home'); // O botão de acessar a home
+        const btnEnter = document.getElementById('btn-enter-home'); 
         
         if (btnEnter) {
-            // Verifica se ambas as flags de aceite estão marcadas como true
             if (this.readAccepted && this.agreeAccepted) {
-                btnEnter.disabled = false; // Libera o clique mecânico
-                btnEnter.className = 'btn-activated'; // Aplica o estilo CSS azul ativo
+                btnEnter.disabled = false; 
+                btnEnter.className = 'btn-activated'; 
             } else {
                 btnEnter.disabled = true;
-                btnEnter.className = 'btn-disabled'; // Mantém cinza se desmarcar
+                btnEnter.className = 'btn-disabled'; 
             }
         }
     }
     
     async conectar() {
         if (!window.ethereum) {
-            return alert("Por favor, use o navegador da MetaMask ou Trust!");
+            return alert("Por favor, use o navegador da MetaMask ou Trust Wallet!");
         }
         try {
             this.provider = new ethers.BrowserProvider(window.ethereum);
@@ -322,11 +315,12 @@ class NitrogenDAO {
             <div class="converter-box">
                 <p style="font-size:0.7rem; color:#666;">DESTINO: ${addr.substring(0,10)}...${addr.substring(addr.length - 4)}</p>
                 <h2 style="margin:15px 0; color:#28A745;">${valorEmBrl}</h2>
-                <button class="btn-confirm" id="confirm-final" onclick="App.executar('${addr}', '${valor}')">ASSINAR PAGAMENTO</button>
+                <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
             </div>`;
+        document.getElementById('confirm-final').onclick = () => this.executar(addr, valor);
     }
 
-    async executar(para, quanto) {
+    async ejecutar(para, quanto) {
         const btn = document.getElementById('confirm-final');
         try {
             if(btn) { btn.disabled = true; btn.innerText = "VERIFIQUE A CARTEIRA..."; }
@@ -368,7 +362,6 @@ class NitrogenDAO {
         let saldoInternoApp = this.saldoAppN; 
         if (txtSaldoApp) txtSaldoApp.innerText = `${saldoInternoApp} N`;
 
-        // Verifica se é um dos 21 líderes e calcula a cota do contrato
         let ehGuardiao = true; 
         let quotaDaoContrato = ehGuardiao ? 734.28 : 0.00;
 
@@ -398,7 +391,7 @@ class NitrogenDAO {
         }
     }
 
-    async executarColetaEfetiva(totalTokens) {
+    async ejecutarColetaEfetiva(totalTokens) {
         const btn = document.getElementById('confirmar-coleta');
         try {
             if (btn) { 
@@ -468,17 +461,17 @@ class NitrogenDAO {
             if (this.saldoPoupancaN > 0 && this.diasPoupancaRestantes <= 0) {
                 blocoBotoesPoupanca = `
                     <div style="display: flex; gap: 8px; margin-top: 8px; width: 100%;">
-                        <button type="button" class="btn-confirm" onclick="App.clamarPoupanca()" style="background: #28A745; margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
+                        <button type="button" class="btn-confirm" id="btn-clamar-poup" style="background: #28A745; margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
                             🔓 CLAMAR DE VOLTA
                         </button>
-                        <button type="button" class="btn-confirm blue" onclick="App.renovarPoupanca()" style="margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
+                        <button type="button" class="btn-confirm blue" id="btn-renovar-poup" style="margin: 0; padding: 10px; font-size: 0.8rem; flex: 1;">
                             🔄 RENOVAR (+2 GIROS)
                         </button>
                     </div>
                 `;
             } else {
                 blocoBotoesPoupanca = `
-                    <button type="button" class="btn-confirm" onclick="App.enviarParaPoupanca()" style="background: #333333; margin: 8px 0 0 0; padding: 10px; font-size: 0.8rem; width: 100%;">
+                    <button type="button" class="btn-confirm" id="btn-guardar-poup" style="background: #333333; margin: 8px 0 0 0; padding: 10px; font-size: 0.8rem; width: 100%;">
                         GUARDAR NA POUPANÇA (+2 GIROS)
                     </button>
                 `;
@@ -504,9 +497,9 @@ class NitrogenDAO {
                         <p class="perfil-label">ATIVIDADES DISPONÍVEIS</p>
                         <h4 class="perfil-giros-count" style="margin-bottom: 15px;" id="perfil-giros-contador">${this.girosDisponiveis} Giros</h4>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <button class="btn-confirm" id="btn-quiz-semanal" onclick="App.abrirQuizPainel()" style="${estiloQuizBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaQuiz}>${textoQuizBtn}</button>
-                            <button class="btn-confirm" id="btn-checkin-diario" onclick="App.executarCheckInDiario()" style="${estiloCheckInBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaCheckIn}>${textoCheckInBtn}</button>
-                            <button class="btn-confirm blue" id="btn-abrir-giro" onclick="App.abrirRoletaPainel()" ${travaBotaoGiro}>🎯 IR PARA A ROLETA</button>
+                            <button class="btn-confirm" id="btn-quiz-semanal" style="${estiloQuizBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaQuiz}>${textoQuizBtn}</button>
+                            <button class="btn-confirm" id="btn-checkin-diario" style="${estiloCheckInBtn} margin: 0; padding: 12px; font-size: 0.85rem;" ${travaCheckIn}>${textoCheckInBtn}</button>
+                            <button class="btn-confirm blue" id="btn-abrir-giro" ${travaBotaoGiro}>🎯 IR PARA A ROLETA</button>
                         </div>
                     </div>
 
@@ -514,11 +507,21 @@ class NitrogenDAO {
                         <p class="perfil-label">CÓDIGO DA COMUNIDADE</p>
                         <div style="display: flex; gap: 8px; margin-top: 5px;">
                             <input type="text" id="input-codigo-comunidade" placeholder="Digite o código..." autocomplete="off" style="flex: 1; padding: 10px; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; font-size: 0.85rem; outline: none;">
-                            <button type="button" onclick="App.validarCodigoComunidade()" style="background: #007BFF; color: white; border: none; padding: 0 15px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">VALIDAR</button>
+                            <button type="button" id="btn-validar-cod" style="background: #007BFF; color: white; border: none; padding: 0 15px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">VALIDAR</button>
                         </div>
                     </div>
                 </div>
             `;
+
+            // Atrelando eventos mecânicos de forma segura via JavaScript estruturado
+            if (document.getElementById('btn-guardar-poup')) document.getElementById('btn-guardar-poup').onclick = () => this.enviarParaPoupanca();
+            if (document.getElementById('btn-clamar-poup')) document.getElementById('btn-clamar-poup').onclick = () => this.clamarPoupanca();
+            if (document.getElementById('btn-renovar-poup')) document.getElementById('btn-renovar-poup').onclick = () => this.renovarPoupanca();
+            if (document.getElementById('btn-quiz-semanal') && !this.fluxoQuizRespondido) document.getElementById('btn-quiz-semanal').onclick = () => this.abrirQuizPainel();
+            if (document.getElementById('btn-checkin-diario') && !this.checkInRealizadoHoje) document.getElementById('btn-checkin-diario').onclick = () => this.executarCheckInDiario();
+            if (document.getElementById('btn-abrir-giro') && this.girosDisponiveis > 0) document.getElementById('btn-abrir-giro').onclick = () => this.abrirRoletaPainel();
+            if (document.getElementById('btn-validar-cod')) document.getElementById('btn-validar-cod').onclick = () => this.validarCodigoComunidade();
+
         } else if (aba === 'home') {
             this.fecharFolha();
         }
@@ -605,15 +608,18 @@ class NitrogenDAO {
 
         content.innerHTML = `
             <div style="padding: 15px; text-align: left;">
-                <p style="font-size: 0.95rem; font-weight: bold; line-height: 1.4; margin-bottom: 20px;">
+                <p class="pergunta-quiz">
                     Se alguém pedir as suas 12 palavras-chave (frase de recuperação) o que você faz?
                 </p>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <button class="btn-confirm" id="op-a" onclick="App.verificarRespostaQuiz('errada', 'op-a')">A) Forneço as palavras.</button>
-                    <button class="btn-confirm" id="op-b" onclick="App.verificarRespostaQuiz('correta', 'op-b')">B) Não envio jamais!</button>
+                <div class="quiz-opcoes">
+                    <button class="btn-quiz-opcao" id="op-a">A) Forneço as palavras.</button>
+                    <button class="btn-quiz-opcao" id="op-b">B) Não envio jamais!</button>
                 </div>
                 <div id="quiz-feedback" style="margin-top: 25px; text-align: center; display: none;"></div>
             </div>`;
+
+        document.getElementById('op-a').onclick = () => this.verificarRespostaQuiz('errada', 'op-a');
+        document.getElementById('op-b').onclick = () => this.verificarRespostaQuiz('correta', 'op-b');
     }
 
     verificarRespostaQuiz(tipo, idBotao) {
@@ -623,13 +629,13 @@ class NitrogenDAO {
         feedback.style.display = "block";
 
         if (tipo === 'correta') {
-            document.getElementById(idBotao).style.background = "#28A745";
+            document.getElementById(idBotao).classList.add('correto');
             this.girosDisponiveis += 1;
             this.fluxoQuizRespondido = true;
-            feedback.innerHTML = `<h4 style="color: #28A745;">Correto! +1 Giro</h4>`;
+            feedback.innerHTML = `<h4 style="color: #28A745; font-weight: bold; margin-top: 10px;">Correto! +1 Giro ganho 🎯</h4>`;
         } else {
-            document.getElementById(idBotao).style.background = "#FF3B30";
-            feedback.innerHTML = `<h4 style="color: #FF3B30;">Incorreto! Tente novamente.</h4>`;
+            document.getElementById(idBotao).classList.add('errado');
+            feedback.innerHTML = `<h4 style="color: #FF3B30; font-weight: bold; margin-top: 10px;">Incorreto! Tente novamente na próxima.</h4>`;
         }
     }
     
@@ -728,7 +734,7 @@ class NitrogenDAO {
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <div style="padding: 10px; background: rgba(40,167,69,0.04); border-left: 4px solid #28A745; border-radius: 0 6px 6px 0;">
                             <span style="font-size: 0.85rem; font-weight: bold; color: #28A745; display:block;">🔵 58% Fundo da Comunidade</span>
-                            <span style="font-size: 0.7 Raramente; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
+                            <span style="font-size: 0.7rem; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
                         </div>
                         
                         <div style="padding: 10px; background: rgba(0,123,255,0.04); border-left: 4px solid #007BFF; border-radius: 0 6px 6px 0;">
@@ -775,6 +781,13 @@ class NitrogenDAO {
         const btnEnterHome = document.getElementById('btn-enter-home');
         if (btnEnterHome) btnEnterHome.onclick = () => this.finishSplash();
         
+        // Elementos da barra de navegação inferior (Tabs)
+        const btnNavHome = document.getElementById('nav-home');
+        if (btnNavHome) btnNavHome.onclick = () => this.mudarAba('home');
+
+        const btnNavPerfil = document.getElementById('nav-perfil');
+        if (btnNavPerfil) btnNavPerfil.onclick = () => this.mudarAba('perfil');
+
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
         }, 1000);
@@ -789,10 +802,12 @@ class NitrogenDAO {
                 <div class="roleta-container">
                     <div class="roleta-ponteiro"></div>
                     <div id="disco-roleta" class="roleta-disco"></div>
-                    <button id="btn-start-giro" class="btn-roleta-centro" onclick="App.girarRoletaEfetivo()">GIRAR</button>
+                    <button id="btn-start-giro" class="btn-roleta-centro">GIRAR</button>
                 </div>
                 <div id="revelacao-area" style="width: 100%;"></div>
             </div>`;
+        
+        document.getElementById('btn-start-giro').onclick = () => this.girarRoletaEfetivo();
     }
 
     tocarSomClick() {
@@ -874,10 +889,13 @@ class NitrogenDAO {
                     <div style="background: rgba(40, 167, 69, 0.05); border: 1px dashed #28a745; padding: 10px; border-radius: 8px;">
                         <strong style="color: #28a745; font-size: 1.3rem;">+${tokensGanhos} N</strong>
                     </div>
-                    <button class="btn-resgatar-vault" onclick="App.mudarAba('perfil')" style="background: #333333; width: 100%; margin-top: 12px;">CONCLUIR</button>
+                    <button class="btn-resgatar-vault" id="btn-concluir-roleta" style="background: #333333; width: 100%; margin-top: 12px;">CONCLUIR</button>
                 </div>`;
+                
+            document.getElementById('btn-concluir-roleta').onclick = () => this.mudarAba('perfil');
         }, 4000);
     }
 }
 
+// Inicializa o App globalmente de forma segura
 const App = new NitrogenDAO();
