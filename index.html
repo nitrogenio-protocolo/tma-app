@@ -123,3 +123,87 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+<!-- CONTAINER PRINCIPAL DO PERFIL (Injetado dentro de #panel-content) -->
+<div class="perfil-container">
+
+    <!-- CARD SUPERIOR: SALDO DE ACÚMULO TOTAL -->
+    <div class="perfil-card-interno">
+        <span class="perfil-label">MINERAÇÃO TOTAL ACUMULADA</span>
+        <h2 class="perfil-saldo-pontos">0.00 <span class="token-symbol">N</span></h2>
+        <p class="perfil-subtext">Seus tokens acumulados estão salvos no perfil. O resgate para sua carteira é feito exclusivamente na Home através do botão Coletar.</p>
+    </div>
+
+    <!-- MENU DO PERFIL: OS 4 BOTÕES DAS SEÇÕES -->
+    <div class="perfil-menu-grid">
+        <button class="btn-perfil-menu" onclick="App.abrirSubSecao('poupanca')">💼 POUPANÇA</button>
+        <button class="btn-perfil-menu" onclick="App.abrirSubSecao('quiz')">🧠 QUIZ SEMANAL</button>
+        <button class="btn-perfil-menu" onclick="App.abrirSubSecao('checkin')">📅 CHECK-IN DIÁRIO</button>
+        <button class="btn-perfil-menu" onclick="App.abrirSubSecao('roleta')">🏹 ROLETA DO BEM</button>
+    </div>
+
+    <!-- ==========================================
+         SESSÃO 1: POUPANÇA NITROGÊNIO
+         ========================================== -->
+    <div id="sec-poupanca" class="subsec-perfil">
+        <button class="btn-voltar-menu" onclick="App.fecharSubSecao()">← Voltar ao Menu</button>
+        <h3>💼 Poupança Nitrogênio</h3>
+        <p class="txt-explicativo">A Poupança funciona como um funil de controle para equilibrar a entrada de tokens no mercado. Os rendimentos seguem a realidade da poupança tradicional e a saúde da piscina disponível.</p>
+        
+        <div class="card-status-info">
+            <p><strong>Prazo:</strong> 30 dias de bloqueio</p>
+            <p><strong>Benefício:</strong> +2 Giros na Roleta imediatamente</p>
+        </div>
+
+        <input type="number" class="input-poupanca" placeholder="Quantidade de N">
+        <button class="btn-confirm blue">GUARDAR NA POUPANÇA</button>
+    </div>
+
+    <!-- ==========================================
+         SESSÃO 2: QUIZ SEMANAL (4 OPÇÕES)
+         ========================================== -->
+    <div id="sec-quiz" class="subsec-perfil">
+        <button class="btn-voltar-menu" onclick="App.fecharSubSecao()">← Voltar ao Menu</button>
+        <h3>🧠 Quiz Semanal</h3>
+        <p class="pergunta-quiz">Se alguém solicitar as suas 12 palavras-chave de segurança, qual deve ser a sua ação?</p>
+        
+        <div class="quiz-opcoes">
+            <button class="btn-quiz-opcao" onclick="App.responderQuiz(this, false)">A) Forneço apenas para o suporte oficial do app.</button>
+            <button class="btn-quiz-opcao" onclick="App.responderQuiz(this, true)">B) Não envio jamais sob nenhuma circunstância! 💚</button>
+            <button class="btn-quiz-opcao" onclick="App.responderQuiz(this, false)">C) Envio somente se prometerem bônus em tokens.</button>
+            <button class="btn-quiz-opcao" onclick="App.responderQuiz(this, false)">D) Compartilho apenas com amigos de total confiança.</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SESSÃO 3: CHECK-IN DIÁRIO (CARD SEMANAl)
+         ========================================== -->
+    <div id="sec-checkin" class="subsec-perfil">
+        <button class="btn-voltar-menu" onclick="App.fecharSubSecao()">← Voltar ao Menu</button>
+        <h3>📅 Check-in Diário</h3>
+        <p class="txt-explicativo">Marque sua presença diariamente. Se esquecer de marcar um único dia, o progresso resgata e o bônus extra não acende!</p>
+        
+        <!-- O Card de Segunda a Domingo -->
+        <div class="calendario-checkin">
+            <div class="dia-box concluido"><span>SEG</span><div class="status-circulo">✓</div></div>
+            <div class="dia-box concluido"><span>TER</span><div class="status-circulo">✓</div></div>
+            <div class="dia-box atual"><span>QUA</span><div class="status-circulo"></div></div>
+            <div class="dia-box"><span>QUI</span><div class="status-circulo"></div></div>
+            <div class="dia-box"><span>SEX</span><div class="status-circulo"></div></div>
+            <div class="dia-box"><span>SÁB</span><div class="status-circulo"></div></div>
+            <div class="dia-box bonus"><span>DOM</span><div class="status-circulo">🎁</div></div>
+        </div>
+
+        <button class="btn-confirm green">REALIZAR CHECK-IN DE HOJE</button>
+    </div>
+
+    <!-- ==========================================
+         SESSÃO 4: ROLETA DO BEM
+         ========================================== -->
+    <div id="sec-roleta" class="subsec-perfil">
+        <button class="btn-voltar-menu" onclick="App.fecharSubSecao()">← Voltar ao Menu</button>
+        <h3>🏹 Roleta do Bem</h3>
+        <!-- Aqui entra a estrutura da roleta que você já tem pronta -->
+    </div>
+
+</div>
