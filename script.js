@@ -433,18 +433,13 @@ class NitrogenDAO {
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
-            // CONTEÚDO LIMPO: Mantém apenas o ícone físico inicial, pronto para reconstrução individual.
-            content.innerHTML = `
-                <div class="perfil-container" style="padding: 20px; text-align: center; color: #666;">
-                    <span style="font-size: 3.5rem; display: block; margin-bottom: 10px;">👤</span>
-                    <p style="font-size: 0.9rem;">Espaço reservado para o novo Perfil Modular.</p>
-                </div>
-            `;
+            // Apenas abre o painel lateral para mostrar a carcaça que está no HTML
+const panel = document.getElementById('side-panel');
+if (panel) panel.classList.add('active');
 
-        } else if (aba === 'home') {
-            this.fecharFolha();
-        }
-    }
+} else if (aba === 'home') {
+    this.fecharFolha();
+}
     
     abrirTesouraria() {
         const panel = document.getElementById('side-panel');
