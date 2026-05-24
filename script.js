@@ -433,13 +433,25 @@ class NitrogenDAO {
             title.innerText = "MEU PERFIL";
             panel.classList.add('active');
             
-            // Apenas abre o painel lateral para mostrar a carcaça que está no HTML
-const panel = document.getElementById('side-panel');
-if (panel) panel.classList.add('active');
+      mudarAba(aba) {
+        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
 
-} else if (aba === 'home') {
-    this.fecharFolha();
-}
+        if (aba === 'perfil') {
+            const btnPerfil = document.getElementById('nav-perfil');
+            if (btnPerfil) btnPerfil.classList.add('active');
+
+            const panel = document.getElementById('side-panel');
+            
+            if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+            
+            // Apenas abre o painel lateral para mostrar a carcaça limpa do HTML
+            if (panel) panel.classList.add('active');
+
+        } else if (aba === 'home') {
+            this.fecharFolha();
+        }
+    }
     
     abrirTesouraria() {
         const panel = document.getElementById('side-panel');
