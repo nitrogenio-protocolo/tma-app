@@ -109,10 +109,76 @@
             <span class="nav-text">HOME</span>
         </button>
         
-        <button id="nav-perfil" class="nav-item" onclick="App.mudarAba('perfil')">
-            <div class="nav-icon">👤</div>
-            <span class="nav-text">PERFIL</span>
-        </button>
+        <    <div id="side-panel" class="side-panel">
+        <div class="panel-header">
+            <button id="close-panel" class="btn-back" onclick="App.mudarAba('home')">← VOLTAR</button>
+            <h2 id="panel-title">MEU PERFIL</h2>
+        </div>
+        <div id="panel-content" class="panel-body">
+            
+            <div class="perfil-container">
+                
+                <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
+                    
+                    <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
+                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">GIROS E JUROS</p>
+                        <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
+                            <span id="perfil-saldo-tokens">0</span> 
+                            <span class="token-symbol" style="font-size: 14px;">N</span>
+                        </h4>
+                    </div>
+
+                    <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px; text-align: right;">
+                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA / NFT</p>
+                        <p id="perfil-txt-carteira" style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            Desconectado
+                        </p>
+                    </div>
+
+                </div>
+
+                <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); margin-bottom: 15px;">
+                    <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
+                    <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0 0 12px 0;">
+                        Os seus tokens estão garantidos pela pool de distribuição. Você pode realizar o resgate a **qualquer momento**, sendo apenas necessário cobrir a taxa de gás da rede **BNB Chain** para a execução do contrato.
+                    </p>
+                    
+                    <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px;">CÓDIGO DA COMUNIDADE</p>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="input-cod-comunidade" placeholder="Insira o código aqui" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #E0E0E0; font-size: 0.85rem; outline: none; font-weight: bold;">
+                        <button type="button" style="background: var(--blue); color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; cursor: pointer;">ENVIAR</button>
+                    </div>
+                </div>
+
+                <div style="text-align: left; margin: 5px 4px;">
+                    <p style="font-size: 0.7rem; font-weight: bold; color: #999; letter-spacing: 0.5px; text-transform: uppercase;">Ações e Recursos</p>
+                </div>
+
+                <div class="perfil-menu-grid">
+                    <button type="button" class="btn-perfil-menu" id="menu-poupanca" onclick="App.abrirSubModulo('poupanca')">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">💰</span>
+                        POUPANÇA
+                    </button>
+                    <button type="button" class="btn-perfil-menu" id="menu-quiz" onclick="App.abrirSubModulo('quiz')">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">📚</span>
+                        QUIZ SEMANAL
+                    </button>
+                    <button type="button" class="btn-perfil-menu" id="menu-checkin" onclick="App.abrirSubModulo('checkin')">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">📆</span>
+                        CHECK-IN DIÁRIO
+                    </button>
+                    <button type="button" class="btn-perfil-menu" id="menu-roleta" onclick="App.abrirSubModulo('roleta')">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">🎯</span>
+                        ROLETA DO BEM
+                    </button>
+                </div>
+
+                <div id="subsecao-perfil-container" class="subsec-perfil"></div>
+
+            </div>
+
+        </div>
+    </div>
         
         <button class="nav-item" onclick="window.open('https://t.me/seu_canal', '_blank')">
             <span class="nav-icon">▲</span>
