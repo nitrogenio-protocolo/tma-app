@@ -611,3 +611,172 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
 }
+
+/* GRID DE BOTÕES DO PERFIL */
+.perfil-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-perfil-menu {
+    background: var(--white);
+    border: 1px solid #E0E0E0;
+    padding: 20px 10px;
+    border-radius: 14px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    transition: 0.2s;
+}
+
+.btn-perfil-menu:active {
+    transform: scale(0.95);
+    background: #F4F7FA;
+}
+
+/* SUBSEÇÕES OCULTAS DO PERFIL */
+.subsec-perfil {
+    display: none; /* Oculto por padrão, aberto via JS */
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 10px;
+    border: 1px solid #F0F0F0;
+    text-align: left;
+}
+
+.btn-voltar-menu {
+    background: none;
+    border: none;
+    color: var(--blue);
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.txt-explicativo {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+    margin: 10px 0 15px 0;
+}
+
+/* ESTILIZAÇÃO DO QUIZ (4 BOTÕES) */
+.pergunta-quiz {
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin: 10px 0 20px 0;
+    color: #1a1a1a;
+}
+
+.quiz-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-quiz-opcao {
+    background: var(--bg);
+    border: 1px solid #E0E0E0;
+    padding: 14px;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* CORES VISUAIS DO QUIZ (MUDANÇA DE ESTADO) */
+.btn-quiz-opcao.correto {
+    background-color: var(--green) !important;
+    color: white !important;
+    border-color: var(--green) !important;
+}
+
+.btn-quiz-opcao.errado {
+    background-color: var(--red) !important;
+    color: white !important;
+    border-color: var(--red) !important;
+}
+
+.btn-quiz-opcao.opaco {
+    opacity: 0.4;
+}
+
+/* ESTILIZAÇÃO DO CARD DO CHECK-IN */
+.calendario-checkin {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin: 20px 0;
+}
+
+.dia-box {
+    background: var(--bg);
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.dia-box span {
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: #888;
+}
+
+.status-circulo {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+/* Estados do Check-in */
+.dia-box.concluido { border-color: var(--green); background: #E8F5E9; }
+.dia-box.concluido .status-circulo { background: var(--green); color: white; }
+.dia-box.concluido span { color: var(--green); }
+
+.dia-box.atual { border-color: var(--blue); background: #E3F2FD; animation: pulsarAtual 1.5s infinite alternate; }
+.dia-box.atual .status-circulo { background: var(--blue); color: white; }
+
+.dia-box.bonus { border-color: #FFB300; background: #FFF8E1; }
+
+@keyframes pulsarAtual {
+    from { box-shadow: 0 0 0 rgba(0, 123, 255, 0); }
+    to { box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); }
+}
+
+/* CAMPO INPUT DA POUPANÇA */
+.input-poupanca {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid #E0E0E0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    outline: none;
+    margin-bottom: 10px;
+    background: var(--bg);
+}
+.input-poupanca:focus { border-color: var(--blue); }
+.card-status-info { background: var(--bg); padding: 12px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 15px; border-left: 4px solid var(--blue); }
