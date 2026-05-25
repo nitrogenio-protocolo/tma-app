@@ -421,11 +421,11 @@ class NitrogenDAO {
     }
 
     
-      mudarAba(aba) {
+           mudarAba(aba) {
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         navItems.forEach(item => item.classList.remove('active'));
 
-            if (aba === 'perfil') {
+        if (aba === 'perfil') {
             const btnPerfil = document.getElementById('nav-perfil');
             if (btnPerfil) btnPerfil.classList.add('active');
 
@@ -434,8 +434,11 @@ class NitrogenDAO {
             
             if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
             
-            // Limpa qualquer ação aberta (Pancake, Coleta, etc.) para a carcaça mestre reaparecer limpa
-            if (subContainer) subContainer.innerHTML = "";
+            // Limpa o conteúdo interno e oculta o container para voltar a carcaça original do Perfil
+            if (subContainer) {
+                subContainer.innerHTML = "";
+                subContainer.style.display = "none";
+            }
             
             const title = document.getElementById('panel-title');
             if (title) title.innerText = "MEU PERFIL";
