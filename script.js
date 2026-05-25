@@ -490,25 +490,45 @@ class NitrogenDAO {
         }
     }
 
-    abrirSubModulo(modulo) {
-        const container = document.getElementById('subsecao-perfil-container');
-        if (!container) return;
+        abrirSubModulo(modulo) {
+        // Em vez de colocar abaixo do perfil, usamos a folha lateral nativa do seu DApp!
+        const content = document.getElementById('panel-content');
+        const title = document.getElementById('panel-title');
+        const panel = document.getElementById('side-panel');
         
+        if (!content || !panel) return;
+
+        // Definimos o título da folha dinamicamente com base no recurso clicado
         let templateId = '';
-        if (modulo === 'poupanca') templateId = 'tela-poupanca';
-        if (modulo === 'quiz') templateId = 'tela-quiz';
-        if (modulo === 'checkin') templateId = 'tela-checkin';
-        if (modulo === 'roleta') templateId = 'tela-roleta';
+        if (modulo === 'poupanca') {
+            if (title) title.innerText = "POUPANÇA NITROGEN";
+            templateId = 'tela-poupanca';
+        }
+        if (modulo === 'quiz') {
+            if (title) title.innerText = "QUIZ SEMANAL";
+            templateId = 'tela-quiz';
+        }
+        if (modulo === 'checkin') {
+            if (title) title.innerText = "CHECK-IN DIÁRIO";
+            templateId = 'tela-checkin';
+        }
+        if (modulo === 'roleta') {
+            if (title) title.innerText = "ROLETA DO BEM";
+            templateId = 'tela-roleta';
+        }
         
         const temp = document.getElementById(templateId);
-        if(temp) {
-            container.innerHTML = '';
-            container.appendChild(temp.content.cloneNode(true));
-            container.style.display = 'block';
+        if (temp) {
+            // Limpa a folha lateral e clona o template para dentro dela
+            content.innerHTML = '';
+            content.appendChild(temp.content.cloneNode(true));
             
-            // Inicializadores gráficos dos módulos ativos
-            if(modulo === 'poupanca') this.atualizarLayoutPoupança();
-            if(modulo === 'checkin') this.atualizarLayoutCheckIn();
+            // Inicializa layouts ou dados internos específicos de cada tela
+            if (modulo === 'poupanca') this.atualizarLayoutPoupança();
+            if (modulo === 'checkin') this.atualizarLayoutCheckIn();
+            
+            // Abre a folha deslizando-a para a tela
+            panel.classList.add('active');
         }
     }
 
