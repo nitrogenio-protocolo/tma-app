@@ -89,6 +89,7 @@
         </section>
     </main>
 
+    <!-- PAINEL LATERAL DINÂMICO UNIFICADO -->
     <div id="side-panel" class="side-panel">
         <div class="panel-header">
             <button id="close-panel" class="btn-back" onclick="App.mudarAba('home')">← VOLTAR</button>
@@ -96,20 +97,25 @@
         </div>
         <div id="panel-content" class="panel-body">
             
-            <div class="perfil-container">
+            <!-- O CONTEÚDO BASE DO PERFIL (DAPP INFO) -->
+            <div class="perfil-container" id="perfil-view-base">
                 
                 <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
                     
                     <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
-                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">GIROS E JUROS</p>
+                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">SALDO ACUMULADO DAPP</p>
                         <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
-                            <span id="perfil-saldo-tokens">0</span> 
-                            <span class="token-symbol" style="font-size: 14px;">N</span>
+                            <span id="perfil-saldo-tokens">0.00</span> 
+                            <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
                         </h4>
+                        <!-- Exibição de Giros Disponíveis solicitada -->
+                        <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
+                            🎯 GIROS DISPONÍVEIS: <span id="perfil-giros-contagem">3</span>
+                        </p>
                     </div>
 
                     <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px; text-align: right;">
-                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA / NFT</p>
+                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA WEB3</p>
                         <p id="perfil-txt-carteira" style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                             Desconectado
                         </p>
@@ -120,7 +126,7 @@
                 <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); margin-bottom: 15px;">
                     <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
                     <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0 0 12px 0;">
-                        Os seus tokens estão garantidos pela pool de distribuição. Você pode realizar o resgate a **qualquer momento**, sendo apenas necessário cobrir a taxa de gás da rede **BNB Chain** para a execução do contrato.
+                        Os tokens acumulados aqui são internos do DApp. Para enviá-los para sua carteira MetaMask, vá até a ação <strong>COLETAR</strong> na Home para resgatar via contrato pool cobrindo a taxa de gás da rede BNB Chain.
                     </p>
                     
                     <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px;">CÓDIGO DA COMUNIDADE</p>
@@ -153,14 +159,16 @@
                     </button>
                 </div>
 
-                <div id="subsecao-perfil-container" class="subsec-perfil"></div>
+                <!-- Onde as telas dos templates serão exibidas abaixo dos botões -->
+                <div id="subsecao-perfil-container" class="subsec-perfil" style="margin-top: 15px; width: 100%;"></div>
 
             </div>
         </div>
     </div>
 
+    <!-- RODAPÉ CORRIGIDO COM LINKS E MENUS EM HARMONIA -->
     <footer class="bottom-nav">
-        <button class="nav-item active" onclick="App.mudarAba('home')">
+        <button id="nav-home" class="nav-item active" onclick="App.mudarAba('home')">
             <span class="nav-icon">⌂</span>
             <span class="nav-text">HOME</span>
         </button>
@@ -180,6 +188,45 @@
             <span class="nav-text">BSCSCAN</span>
         </button>
     </footer>
+
+    <!-- ========================================== -->
+    <!-- TEMPLATES ESCONDIDOS (NÃO INFLAM O JS)     -->
+    <!-- ========================================== -->
+    
+    <template id="tela-poupanca">
+        <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a;">💰 Poupança Nitrogen</h4>
+            <p style="font-size: 11px; color: #666; margin: 0 0 12px 0;">Rendimento DApp de 1% ao mês (Sem taxa de gás para aplicar).</p>
+            <input type="number" class="input-transparente" placeholder="0.00 N" style="width: 100%; border-bottom: 2px solid var(--blue); padding: 8px 0; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem;">
+            <button type="button" class="btn-confirm" style="width:100%;" onclick="alert('Alocado na Poupança DApp!')">APLICAR JUROS</button>
+        </div>
+    </template>
+
+    <template id="tela-quiz">
+        <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
+            <h4 style="margin: 0 0 8px 0; color: #1a1a1a;">📚 Quiz Interativo</h4>
+            <p style="font-size: 12px; font-weight: bold; color: #333; margin-bottom: 12px;">Qual a utilidade dos 21 Guardiões no ecossistema?</p>
+            <button type="button" class="btn-confirm blue" style="width:100%; margin-bottom: 6px; font-size: 11px;" onclick="alert('Correto! Ganhou 2 N no saldo DApp.')">Auditar blocos e governança on-chain</button>
+            <button type="button" class="btn-confirm" style="width:100%; background: #aeaeae; font-size: 11px;" onclick="alert('Incorreto. Tente novamente!')">Centralizar tokens de liquidez</button>
+        </div>
+    </template>
+
+    <template id="tela-checkin">
+        <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left;">📆 Check-In Diário</h4>
+            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Acumule frações diárias por interagir com a plataforma.</p>
+            <button type="button" class="btn-confirm green" style="width:100%;" onclick="alert('Check-In registrado +0.50 N adicionado!')">REIVINDICAR PRESENÇA</button>
+        </div>
+    </template>
+
+    <template id="tela-roleta">
+        <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left;">🎯 Roleta do Bem</h4>
+            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 15px 0;">Use seus giros disponíveis para pontuar.</p>
+            <div style="width: 80px; height: 80px; border-radius: 50%; border: 5px dashed var(--blue); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold;">🎁</div>
+            <button type="button" class="btn-confirm" style="width:100%; background: #ff9500;" onclick="alert('Girando... Você faturou 1 N!')">GIRAR (-1 GIRO)</button>
+        </div>
+    </template>
     
     <script src="script.js"></script>
 </body>
