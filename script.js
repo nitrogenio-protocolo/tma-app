@@ -187,12 +187,13 @@ class NitrogenDAO {
 
     abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
-        const content = document.getElementById('panel-content');
+      
+        const content = document.getElementById('subsecao-perfil-container') || document.getElementById('panel-content');
         const title = document.getElementById('panel-title');
         
         if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-        content.innerHTML = ""; 
-        panel.classList.add('active');
+        
+        if (panel) panel.classList.add('active');
 
         if (tipo === 'receber') {
             title.innerText = "GERAR COBRANÇA";
