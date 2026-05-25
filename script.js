@@ -419,29 +419,86 @@ class NitrogenDAO {
 
     
       mudarAba(aba) {
-        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-        navItems.forEach(item => item.classList.remove('active'));
+    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+    navItems.forEach(item => item.classList.remove('active'));
 
-            if (aba === 'perfil') {
-            const btnPerfil = document.getElementById('nav-perfil');
-            if (btnPerfil) btnPerfil.classList.add('active');
+    if (aba === 'perfil') {
+        const btnPerfil = document.getElementById('nav-perfil');
+        if (btnPerfil) btnPerfil.classList.add('active');
 
-            const panel = document.getElementById('side-panel');
-            const subContainer = document.getElementById('subsecao-perfil-container');
-            
-            if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-            
-            // Limpa qualquer ação aberta (Pancake, Coleta, etc.) para a carcaça mestre reaparecer limpa
-            if (subContainer) subContainer.innerHTML = "";
-            
-            const title = document.getElementById('panel-title');
-            if (title) title.innerText = "MEU PERFIL";
-            if (panel) panel.classList.add('active');
+        const panel = document.getElementById('side-panel');
+        const content = document.getElementById('panel-content');
+        const title = document.getElementById('panel-title');
+        
+        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+        
+        if (title) title.innerText = "MEU PERFIL";
+        if (panel) panel.classList.add('active');
 
-        } else if (aba === 'home') {
-            this.fecharFolha();
+        // Formata o endereço da carteira se estiver conectada
+        const txtCarteira = this.account 
+            ? `${this.account.substring(0, 6)}...${this.account.substring(this.account.length - 4)}` 
+            : "Desconectado";
+
+        // Injeta a estrutura do Perfil atualizada dinamicamente com os dados OFF-CHAIN do constructor
+        if (content) {
+            content.innerHTML = `
+                <div class="perfil-container">
+                    <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
+                        
+                        <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
+                            <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">GIROS E JUROS (OFF-CHAIN)</p>
+                            <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
+                                <span>${this.saldoAppN}</span> 
+                                <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
+                            </h4>
+                            <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
+                                🎯 GIROS: <span>${this.girosDisponiveis}</span>
+                            </p>
+                        </div>
+
+                        <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px; text-align: right;">
+                            <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA WEB3</p>
+                            <p style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                ${txtCarteira}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
+                        <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
+                        <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0 0 12px 0;">
+                            Os seus tokens estão garantidos pela pool de distribuição do DApp. Você pode realizar o resgate para sua carteira real a qualquer momento na ação <strong>COLETAR</strong> na Home, cobrindo apenas a taxa de gás BNB.
+                        </p>
+                        
+                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px;">CÓDIGO DA COMUNIDADE</p>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="input-cod-comunidade" placeholder="Insira o código aqui" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #E0E0E0; font-size: 0.85rem; outline: none; font-weight: bold;">
+                            <button type="button" style="background: var(--blue); color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; cursor: pointer;">ENVIAR</button>
+                        </div>
+                    </div>
+
+                    <div style="text-align: left; margin: 5px 4px;">
+                        <p style="font-size: 0.7rem; font-weight: bold; color: #999; letter-spacing: 0.5px; text-transform: uppercase;">Ações e Recursos</p>
+                    </div>
+
+                    <div class="perfil-menu-grid">
+                        <button type="button" class="btn-perfil-menu" onclick="App.abrirSubModulo('poupanca')">💰 POUPANÇA</button>
+                        <button type="button" class="btn-perfil-menu" onclick="App.abrirSubModulo('quiz')">📚 QUIZ SEMANAL</button>
+                        <button type="button" class="btn-perfil-menu" onclick="App.abrirSubModulo('checkin')">📆 CHECK-IN DIÁRIO</button>
+                        <button type="button" class="btn-perfil-menu" onclick="App.abrirSubModulo('roleta')">🎯 ROLETA DO BEM</button>
+                    </div>
+
+                    <div id="subsecao-perfil-container" class="subsec-perfil" style="margin-top: 15px; width: 100%;"></div>
+                </div>
+            `;
         }
+
+    } else if (aba === 'home') {
+        this.fecharFolha();
     }
+}
     
     abrirTesouraria() {
         const panel = document.getElementById('side-panel');
