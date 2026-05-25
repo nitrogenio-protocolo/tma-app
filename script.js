@@ -185,15 +185,17 @@ class NitrogenDAO {
         }
     }
 
-    abrirFolha(tipo) {
+        abrirFolha(tipo) {
         const panel = document.getElementById('side-panel');
-      
-        const content = document.getElementById('subsecao-perfil-container') || document.getElementById('panel-content');
+        // Usamos sempre a subseção para ações não destruírem a estrutura mestre do perfil
+        const content = document.getElementById('subsecao-perfil-container');
         const title = document.getElementById('panel-title');
         
         if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
         
         if (panel) panel.classList.add('active');
+        // Garante que o container de subseções fique visível quando abrir uma ação
+        if (content) content.style.display = 'block';
 
         if (tipo === 'receber') {
             title.innerText = "GERAR COBRANÇA";
@@ -230,7 +232,7 @@ class NitrogenDAO {
                 const reader = document.getElementById('reader');
                 const infoPagamento = document.getElementById('info-pagamento');
                 if(infoPagamento) infoPagamento.style.display = 'none';
-                reader.style.setProperty('display', 'block', 'important');
+                if(reader) reader.style.setProperty('display', 'block', 'important');
                 this.iniciarScanner(); 
             };
 
