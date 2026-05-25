@@ -850,3 +850,18 @@ header h1 {
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
 }
+
+/* --- ESTILOS EXTRA PARA MECÂNICAS DA ROLETA --- */
+.roleta-disco.girando {
+    transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1) !important;
+}
+
+.dia-box.concluido .status-circulo {
+    background: var(--green) !important;
+    color: white !important;
+}
+
+.dia-box.atual {
+    border: 2px solid var(--blue) !important;
+    background: #e3f2fd !important;
+}
