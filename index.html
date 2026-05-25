@@ -195,10 +195,19 @@
     
     <template id="tela-poupanca">
         <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
-            <h4 style="margin: 0 0 4px 0; color: #1a1a1a;">💰 Poupança Nitrogen</h4>
-            <p style="font-size: 11px; color: #666; margin: 0 0 12px 0;">Rendimento DApp de 1% ao mês (Sem taxa de gás para aplicar).</p>
-            <input type="number" class="input-transparente" placeholder="0.00 N" style="width: 100%; border-bottom: 2px solid var(--blue); padding: 8px 0; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem;">
-            <button type="button" class="btn-confirm" style="width:100%;" onclick="alert('Alocado na Poupança DApp!')">APLICAR JUROS</button>
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; font-weight: bold;">💰 Poupança Nitrogen</h4>
+            <div id="poupanca-status-info" class="card-status-info" style="margin-top: 8px; font-size: 11px;">
+                Carregando dados da poupança...
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 11px; line-height: 1.4; color: #555;">
+                <strong>🧠 Por que poupar os seus Tokens N?</strong><br>
+                No mundo real da Web3, deixar ativos parados não gera valor. Trancando seus tokens por 30 dias, você minera <strong>1% de juros</strong>. Mantendo um saldo mínimo de <strong>1000 N</strong> na poupança, você destrava <strong>Giros de Bônus automáticos</strong> para tentar a sorte na Roleta!
+            </div>
+
+            <input type="number" id="input-qtd-poupanca" class="input-transparente" placeholder="0.00 N" style="width: 100%; border-bottom: 2px solid var(--blue); padding: 8px 0; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; color: #1a1a1a;">
+            <button type="button" id="btn-travar-poupanca" class="btn-confirm" style="width:100%;" onclick="App.aplicarPoupança()">TRAVAR AGORA (30 DIAS)</button>
+            <button type="button" id="btn-resgatar-poupanca" class="btn-confirm green" style="width:100%; display:none; margin-top: 8px;" onclick="App.resgatarPoupança()">REMOVER E COLETAR JUROS</button>
         </div>
     </template>
 
@@ -213,18 +222,37 @@
 
     <template id="tela-checkin">
         <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
-            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left;">📆 Check-In Diário</h4>
-            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Acumule frações diárias por interagir com a plataforma.</p>
-            <button type="button" class="btn-confirm green" style="width:100%;" onclick="alert('Check-In registrado +0.50 N adicionado!')">REIVINDICAR PRESENÇA</button>
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left; font-weight: bold;">📆 Check-In Diário</h4>
+            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Cumpra a sequência de 7 dias para ganhar +5 Giros de Bônus!</p>
+            
+            <div class="calendario-checkin">
+                <div class="dia-box" id="checkin-d1"><span>D1</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d2"><span>D2</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d3"><span>D3</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d4"><span>D4</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d5"><span>D5</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d6"><span>D6</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box bonus" id="checkin-d7"><span>D7</span><div class="status-circulo">🎁</div></div>
+            </div>
+
+            <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
         </div>
     </template>
 
     <template id="tela-roleta">
         <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
-            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left;">🎯 Roleta do Bem</h4>
-            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 15px 0;">Use seus giros disponíveis para pontuar.</p>
-            <div style="width: 80px; height: 80px; border-radius: 50%; border: 5px dashed var(--blue); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold;">🎁</div>
-            <button type="button" class="btn-confirm" style="width:100%; background: #ff9500;" onclick="alert('Girando... Você faturou 1 N!')">GIRAR (-1 GIRO)</button>
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left; font-weight: bold;">🎯 Roleta do Bem</h4>
+            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 15px 0;">Rode e mine prêmios off-chain para o seu Airdrop.</p>
+            
+            <div class="roleta-wrapper">
+                <div class="roleta-container">
+                    <div class="roleta-ponteiro"></div>
+                    <div id="disco-roleta" class="roleta-disco"></div>
+                    <div class="btn-roleta-centro" onclick="App.girarRoleta()">GIRAR!</div>
+                </div>
+            </div>
+
+            <div id="roleta-popup-resultado" class="revelacao-popup" style="display: none; font-weight: bold; font-size: 14px; color: var(--green);"></div>
         </div>
     </template>
     
