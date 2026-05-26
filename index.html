@@ -221,23 +221,31 @@
     </template>
 
     <template id="tela-checkin">
-        <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
-            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left; font-weight: bold;">📆 Check-In Diário</h4>
-            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Cumpra a sequência de 7 dias para ganhar +5 Giros de Bônus!</p>
-            
-            <div class="calendario-checkin">
-                <div class="dia-box" id="checkin-d1"><span>D1</span><div class="status-circulo">+1</div></div>
-                <div class="dia-box" id="checkin-d2"><span>D2</span><div class="status-circulo">+1</div></div>
-                <div class="dia-box" id="checkin-d3"><span>D3</span><div class="status-circulo">+1</div></div>
-                <div class="dia-box" id="checkin-d4"><span>D4</span><div class="status-circulo">+1</div></div>
-                <div class="dia-box" id="checkin-d5"><span>D5</span><div class="status-circulo">+1</div></div>
-                <div class="dia-box" id="checkin-d6"><span>D6</span><div class="status-circulo">+1</div></div>
-                <div class="dia-box bonus" id="checkin-d7"><span>D7</span><div class="status-circulo">🎁</div></div>
-            </div>
-
-            <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
+    <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
+        <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left; font-weight: bold;">📆 Check-In Diário</h4>
+        <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Cumpra a sequência de 7 dias e acenda a Caixa Surpresa para faturar super bônus!</p>
+        
+        <div class="calendario-checkin">
+            <div class="dia-box" id="checkin-d1"><span>D1</span><div class="status-circulo">+1</div></div>
+            <div class="dia-box" id="checkin-d2"><span>D2</span><div class="status-circulo">+1</div></div>
+            <div class="dia-box" id="checkin-d3"><span>D3</span><div class="status-circulo">+1</div></div>
+            <div class="dia-box" id="checkin-d4"><span>D4</span><div class="status-circulo">+1</div></div>
+            <div class="dia-box" id="checkin-d5"><span>D5</span><div class="status-circulo">+1</div></div>
+            <div class="dia-box" id="checkin-d6"><span>D6</span><div class="status-circulo">+1</div></div>
+            <div class="dia-box" id="checkin-d7"><span>D7</span><div class="status-circulo">+1</div></div>
         </div>
-    </template>
+
+        <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%; margin-bottom: 15px;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
+
+        <div id="caixa-presente-surpresa" class="apagado" style="background: #f8f9fa; border: 2px dashed #ccc; padding: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease;">
+            <span style="font-size: 1.6rem;">🎁</span>
+            <div style="text-align: left;">
+                <p style="margin: 0; font-size: 12px; font-weight: bold; color: #333;">PRESENTE SURPRESA DO MÊS</p>
+                <small style="font-size: 10px; color: #666; display: block;">Bloqueado até o 7º dia consecutivo</small>
+            </div>
+        </div>
+    </div>
+</template>
 
     <template id="tela-roleta">
         <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
