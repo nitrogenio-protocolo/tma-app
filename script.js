@@ -541,6 +541,21 @@ class NitrogenDAO {
         }
     }
 
+           responderQuiz(opcaoCorreta) {
+        if (opcaoCorreta) {
+            this.saldoAppN += 2; 
+            this.girosDisponiveis += 1; 
+            
+            this.tocarSomVitoria();
+            alert("Correto! Ganhou 2 N no saldo dAPP e +1 Giro para a Roleta! 🚀");
+            
+            this.atualizarSaldosInterface(); 
+            this.fecharFolha(); 
+        } else {
+            alert("Resposta incorreta. Estude mais um pouco e tente novamente!");
+        }
+    }
+    
     // ==========================================
     // LÓGICA CORE: CÓDIGO DA COMUNIDADE
     // ==========================================
