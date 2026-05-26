@@ -826,19 +826,31 @@ atualizarLayoutCheckIn() {
     }
 }
 
-executarCheckIn() {
+    executarCheckIn() {
     const hoje = new Date();
-    const hojeString = hoje.toISOString().split('T')[0];
+    // Força o formato de data local padrão AAAA-MM-DD sem problemas de fuso horário
+    const hojeString = hoje.getFullYear() + '-' + 
+                       String(hoje.getMonth() + 1).padStart(2, '0') + '-' + 
+                       String(hoje.getDate()).padStart(2, '0');
     
+    // 1ª BARREIRA DE SEGURANÇA: Bloqueia se já fez check-in hoje
     if (this.checkinUltimaData === hojeString) {
-        return alert("Você já garantiu seu giro de hoje. Volte amanhã para o próximo quadrante!");
+        return alert("Você já garantiu seu giro hoje. Volte amanhã!");
+    }
+    
+    // Correção do NaN: Garante que dias consecutivos seja um número válido
+    if (isNaN(this.checkinDiasConsecutivos) || this.checkinDiasConsecutivos === null || this.checkinDiasConsecutivos === undefined) {
+        this.checkinDiasConsecutivos = 0;
     }
     
     let quebrouSequencia = true;
     if (this.checkinUltimaData) {
         const ontem = new Date();
         ontem.setDate(ontem.getDate() - 1);
-        const ontemString = ontem.toISOString().split('T')[0];
+        const ontemString = ontem.getFullYear() + '-' + 
+                            String(ontem.getMonth() + 1).padStart(2, '0') + '-' + 
+                            String(ontem.getDate()).padStart(2, '0');
+                            
         if (this.checkinUltimaData === ontemString) {
             quebrouSequencia = false;
         }
@@ -846,17 +858,30 @@ executarCheckIn() {
         quebrouSequencia = false; 
     }
     
-    // Se quebrou a sequência diária ou se já passou do 7º dia, reinicia a contagem da semana
+    // Define o dia atual na sequência
     if (quebrouSequencia || this.checkinDiasConsecutivos >= 7) {
         this.checkinDiasConsecutivos = 1;
-        localStorage.removeItem('nitrogenio_checkin_surpresa_coletado'); // Reseta trava do presente para a nova semana
     } else {
         this.checkinDiasConsecutivos += 1;
     }
     
+    // 2ª BARREIRA DE SEGURANÇA: Salva a data imediatamente antes dos alertas para evitar fraudes
     this.checkinUltimaData = hojeString;
-    this.girosDisponiveis += 1; // Sempre ganha 1 giro garantido referente ao dia
     
+    if (this.checkinDiasConsecutivos === 7) {
+        // Se for o 7º dia, NÃO dá os giros direto, apenas avisa para abrir a caixinha
+        this.tocarSomVitoria();
+        alert("🔥 Incrível! Você completou a sequência de 7 dias! A CAIXA SURPRESA FOI DESBLOQUEADA, clique nela abaixo para resgatar seu prêmio especial! 🎉");
+    } else {
+        this.girosDisponiveis += 1; 
+        this.tocarSomClick();
+        alert(`Check-in confirmado! +1 Giro adicionado ao seu perfil (Dia ${this.checkinDiasConsecutivos}/7).`);
+    }
+    
+    // 3ª BARREIRA DE SEGURANÇA: Grava no LocalStorage/Banco do DApp na mesma hora
+    this.salvarDadosDApp();
+    this.atualizarLayoutCheckIn();
+}
     // Toca o som agradável de vitória/sucesso unificado para o ecossistema
     this.tocarSomVitoria();
 
