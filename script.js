@@ -493,6 +493,9 @@ class NitrogenDAO {
                         <div id="subsecao-perfil-container" class="subsec-perfil" style="margin-top: 15px; width: 100%;"></div>
                     </div>
                 `;
+                this.atualizarSaldosInterface();
+            }
+        }
             }
         } else if (aba === 'home') {
             this.fecharFolha();
