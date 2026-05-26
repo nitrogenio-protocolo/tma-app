@@ -545,7 +545,7 @@ class NitrogenDAO {
     }
 
             responderQuiz(opcaoCorreta) {
-        // Se receber true do HTML, ou se o parâmetro vier preenchido com o texto do prêmio (ex: "ganhou 2 N")
+        // Se receber true do HTML, ou se o parâmetro vier preenchido com o texto do prêmio (ex: "ganhou 1 giro")
         if (opcaoCorreta) { 
             this.girosDisponiveis += 1; // Adiciona o giro bônus
             
