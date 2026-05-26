@@ -46,9 +46,24 @@ class NitrogenDAO {
         this.readAccepted = false;
         this.agreeAccepted = false;
         
+        // === RECUPERAÇÃO AUTOMÁTICA DE DADOS SALVOS ===
+        if (localStorage.getItem('nitrogenio_saldo_app')) {
+            this.saldoAppN = parseFloat(localStorage.getItem('nitrogenio_saldo_app'));
+        }
+        if (localStorage.getItem('nitrogenio_giros')) {
+            this.girosDisponiveis = parseInt(localStorage.getItem('nitrogenio_giros'));
+        }
+
         this.iniciarBotoes();
         this.iniciarAutomacao();
         this.verificarSplashInicial();
+    }
+
+    // === MÉTODO QUE ESTAVA FALTANDO PARA SALVAR OS DADOS ===
+    salvarDadosDApp() {
+        localStorage.setItem('nitrogenio_saldo_app', this.saldoAppN);
+        localStorage.setItem('nitrogenio_giros', this.girosDisponiveis);
+        console.log("Dados do ecossistema Nitrogen salvos localmente.");
     }
 
     verificarSplashInicial() {
