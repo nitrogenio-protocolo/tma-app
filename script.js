@@ -439,7 +439,7 @@ class NitrogenDAO {
                 ? `${this.account.substring(0, 6)}...${this.account.substring(this.account.length - 4)}` 
                 : "Desconectado";
 
-            if (content) {
+             if (content) {
                 content.innerHTML = `
                     <div class="perfil-container">
                         <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
