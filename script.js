@@ -503,14 +503,12 @@ class NitrogenDAO {
     }
 
         abrirSubModulo(modulo) {
-        // Em vez de colocar abaixo do perfil, usamos a folha lateral nativa do seu DApp!
         const content = document.getElementById('panel-content');
         const title = document.getElementById('panel-title');
         const panel = document.getElementById('side-panel');
         
         if (!content || !panel) return;
 
-        // Definimos o título da folha dinamicamente com base no recurso clicado
         let templateId = '';
         if (modulo === 'poupanca') {
             if (title) title.innerText = "POUPANÇA NITROGEN";
@@ -518,7 +516,11 @@ class NitrogenDAO {
         }
         if (modulo === 'quiz') {
             if (title) title.innerText = "QUIZ SEMANAL";
-            templateId = 'tela-quiz';
+            // Reseta para a primeira pergunta sempre que abrir o Quiz
+            this.perguntaAtualIndex = 0; 
+            panel.classList.add('active');
+            this.renderizarPerguntaQuiz(); 
+            return; // Interrompe aqui pois o HTML será gerado dinamicamente
         }
         if (modulo === 'checkin') {
             if (title) title.innerText = "CHECK-IN DIÁRIO";
@@ -531,13 +533,13 @@ class NitrogenDAO {
         
         const temp = document.getElementById(templateId);
         if (temp) {
-            // Limpa a folha lateral e clona o template para dentro dela
             content.innerHTML = '';
             content.appendChild(temp.content.cloneNode(true));
-            
-            // Inicializa layouts ou dados internos específicos de cada tela
             if (modulo === 'poupanca') this.atualizarLayoutPoupança();
             if (modulo === 'checkin') this.atualizarLayoutCheckIn();
+            panel.classList.add('active');
+        }
+    }
             
             // Abre a folha deslizando-a para a tela
             panel.classList.add('active');
