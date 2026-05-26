@@ -713,13 +713,13 @@ class NitrogenDAO {
     // ==========================================
     // LÓGICA CORE: ROLETA DO BEM (ANIMADA CSS)
     // ==========================================
-    girarRoleta() {
+        girarRoleta() {
         if(this.roletaGirando) return;
         if(this.girosDisponiveis <= 0) return alert("Você não possui Giros Disponíveis. Conclua tarefas do Perfil para ganhar mais!");
         
         this.roletaGirando = true;
-        this.girosDisponiveis -= 1;
-        this.salvarDadosDApp();
+        this.girosDisponiveis -= 1; // Desconta o giro
+        this.atualizarSaldosInterface(); // Atualiza os contadores na tela imediatamente
         this.tocarSomClick();
         
         const disco = document.getElementById('disco-roleta');
@@ -743,16 +743,16 @@ class NitrogenDAO {
         const grausRotacaoTotal = 1800 + (indiceSorteado * grausPorFatia);
         
         if(disco) {
+            disco.style.transition = "transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)";
             disco.style.transform = `rotate(${grausRotacaoTotal}deg)`;
-            disco.classList.add('girando');
         }
         
         setTimeout(() => {
             this.roletaGirando = false;
             const ganho = fatiasPrêmios[indiceSorteado];
             
-            this.saldoAppN += ganho.premio;
-            this.salvarDadosDApp();
+            this.saldoAppN += ganho.premio; // Soma o prêmio ganho ao saldo
+            this.atualizarSaldosInterface(); // Atualiza a tela com o novo saldo
             this.tocarSomVitoria();
             
             if(popup) {
@@ -762,10 +762,10 @@ class NitrogenDAO {
             
             // Reseta ângulo do CSS de forma suave para permitir novas rotações consecutivas
             if(disco) {
-                disco.classList.remove('girando');
+                disco.style.transition = "none";
                 disco.style.transform = `rotate(${grausRotacaoTotal % 360}deg)`;
             }
-        }, 4000); // 4 segundos batendo com a transição do CSS
+        }, 4000); // 4 segundos batendo com a animação
     }
     
     abrirTesouraria() {
