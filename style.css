@@ -764,6 +764,36 @@ header h1 {
     to { box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); }
 }
 
+/* Quando a caixa estiver apagada/bloqueada */
+#caixa-presente-surpresa.apagado {
+    background: #f8f9fa !important;
+    border-color: #ccc !important;
+    opacity: 0.5;
+}
+
+/* Quando ela ACENDER no 7º dia */
+#caixa-presente-surpresa.aceso {
+    background: #fff3cd !important; /* Amarelo ouro suave */
+    border: 2px solid #ffc107 !important; /* Borda dourada */
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+    animation: pulsarPresente 1.5s infinite alternate;
+}
+
+#caixa-presente-surpresa.aceso p {
+    color: #856404 !important; /* Texto combinando com o dourado */
+}
+
+#caixa-presente-surpresa.aceso small {
+    color: #b58105 !important;
+    content: "CLIQUE PARA ABRIR SEU PRÊMIO! 🎉"; /* Muda o texto dinamicamente */
+}
+
+/* Animação para fazer a caixinha ficar pulsando na tela chamando atenção */
+@keyframes pulsarPresente {
+    from { transform: scale(1); }
+    to { transform: scale(1.03); }
+}
+
 /* ==========================================================================
    ROLETA DO BEM
    ========================================================================== */
