@@ -661,7 +661,7 @@ class NitrogenDAO {
         if(!input || !input.value.trim()) return alert("Digite um código válido.");
         
         const cod = input.value.trim().toUpperCase();
-        if(cod === "AIRDROPJUSTO" || cod === "NANA30") {
+        if(cod === "COMUNIDADE" || cod === "NANA30") {
             this.girosDisponiveis += 3;
             this.salvarDadosDApp();
             this.tocarSomVitoria();
