@@ -560,6 +560,100 @@ class NitrogenDAO {
             alert("Resposta incorreta. Estude mais um pouco e tente novamente!");
         }
     }
+
+         renderizarPerguntaQuiz() {
+        const content = document.getElementById('panel-content');
+        if (!content) return;
+
+        // Verifica se já respondeu todas as 3 perguntas
+        if (this.perguntaAtualIndex >= this.perguntasQuiz.length) {
+            alert("Quiz finalizado! Use seus giros na Roleta do Bem. 🎯");
+            this.fecharFolha();
+            return;
+        }
+
+        const dadosQuiz = this.perguntasQuiz[this.perguntaAtualIndex];
+        
+        // Monta os botões (opções) dinamicamente usando a mesma classe azul nativa do seu app
+        let botoesHTML = "";
+        dadosQuiz.opcoes.forEach((opcao, index) => {
+            botoesHTML += `
+                <button 
+                    type="button" 
+                    id="btn-quiz-opcao-${index}" 
+                    style="background: #007BFF; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 0.85rem; cursor: pointer; width: 100%; text-align: center; transition: background 0.3s;"
+                    onclick="App.verificarRespostaQuiz(${index})"
+                >
+                    ${opcao}
+                </button>
+            `;
+        });
+
+        // Injeta a estrutura de cards na folha lateral mantendo o padrão visual
+        content.innerHTML = `
+            <div class="quiz-container" style="padding: 10px 0; display: flex; flex-direction: column; gap: 15px;">
+                <div style="background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; text-align: left;">
+                    <span style="font-size: 0.75rem; color: #666; font-weight: bold;">Pergunta ${this.perguntaAtualIndex + 1} de 3</span>
+                    <h3 style="margin: 8px 0 0 0; font-size: 1.05rem; color: #1a1a1a; font-weight: 800; line-height: 1.4;">
+                        ${dadosQuiz.pergunta}
+                    </h3>
+                </div>
+
+                <div id="quiz-opcoes-lista" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    ${botoesHTML}
+                </div>
+
+                <div id="quiz-feedback" style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 5px;"></div>
+            </div>
+        `;
+    }
+
+    verificarRespostaQuiz(indiceSelecionado) {
+        const dadosQuiz = this.perguntasQuiz[this.perguntaAtualIndex];
+        const feedback = document.getElementById('quiz-feedback');
+        
+        // Desabilita as opções para o usuário não clicar várias vezes na mesma resposta
+        dadosQuiz.opcoes.forEach((_, index) => {
+            const btn = document.getElementById(`btn-quiz-opcao-${index}`);
+            if (btn) btn.disabled = true;
+        });
+
+        // Caso acerte: o botão fica VERDE e soma +1 Giro
+        if (indiceSelecionado === dadosQuiz.correta) {
+            const btnCerto = document.getElementById(`btn-quiz-opcao-${indiceSelecionado}`);
+            if (btnCerto) btnCerto.style.background = "#28A745"; // Verde
+            
+            if (feedback) {
+                feedback.style.color = "#28A745";
+                feedback.innerText = "🎉 Correto! +1 Giro adicionado!";
+            }
+            
+            this.girosDisponiveis += 1; // Dá o giro para rodar na roleta
+            this.atualizarSaldosInterface();
+            this.tocarSomVitoria();
+        } 
+        // Caso erre: o selecionado fica VERMELHO e o correto fica VERDE
+        else {
+            const btnErrado = document.getElementById(`btn-quiz-opcao-${indiceSelecionado}`);
+            if (btnErrado) btnErrado.style.background = "#DC3545"; // Vermelho
+            
+            const btnCerto = document.getElementById(`btn-quiz-opcao-${dadosQuiz.correta}`);
+            if (btnCerto) btnCerto.style.background = "#28A745"; // Mostra o correto em Verde
+            
+            if (feedback) {
+                feedback.style.color = "#DC3545";
+                feedback.innerText = "❌ Incorreto! Sem giros por essa.";
+            }
+            this.tocarSomClick();
+        }
+
+        // Aguarda 2.5 segundos para mostrar o resultado visual e pula para a próxima pergunta
+        setTimeout(() => {
+            this.perguntaAtualIndex++;
+            this.renderizarPerguntaQuiz();
+        }, 2500);
+    }
+
     // ==========================================
     // LÓGICA CORE: CÓDIGO DA COMUNIDADE
     // ==========================================
