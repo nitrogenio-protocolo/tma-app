@@ -752,79 +752,148 @@ class NitrogenDAO {
         this.atualizarLayoutPoupança();
     }
 
-    atualizarLayoutCheckIn() {
-        const hojeString = new Date().toISOString().split('T')[0];
-        const btn = document.getElementById('btn-executar-checkin');
-        
-        for(let i=1; i<=7; i++) {
-            const caixa = document.getElementById(`checkin-d${i}`);
-            if(caixa) {
-                caixa.classList.remove('concluido', 'atual');
-            }
+    // ==========================================================================
+// --- MÉTODOS DE CONTROLE DO NOVO CHECK-IN DIÁRIO GAMIFICADO ---
+// ==========================================================================
+
+atualizarLayoutCheckIn() {
+    const hojeString = new Date().toISOString().split('T')[0];
+    const btn = document.getElementById('btn-executar-checkin');
+    
+    // Configuração global do prêmio surpresa do mês (Altere aqui o valor quando quiser!)
+    this.premioSurpresaGiros = 50; 
+
+    // Limpa as classes de todos os blocos antes de renderizar os estados atualizados
+    for(let i=1; i<=7; i++) {
+        const caixa = document.getElementById(`checkin-d${i}`);
+        if(caixa) {
+            caixa.classList.remove('concluido', 'atual');
         }
-        
-        for(let i = 1; i <= this.checkinDiasConsecutivos; i++) {
-            const caixa = document.getElementById(`checkin-d${i}`);
-            if(caixa) caixa.classList.add('concluido');
+    }
+    
+    // Deixa VERDE (concluído) os dias que ele já marcou presença na semana
+    for(let i = 1; i <= this.checkinDiasConsecutivos; i++) {
+        const caixa = document.getElementById(`checkin-d${i}`);
+        if(caixa) {
+            caixa.classList.add('concluido'); // Classe correspondente ao verde com som agradável
         }
-        
-        if (this.checkinUltimaData === hojeString) {
-            if(btn) {
-                btn.disabled = true;
-                btn.innerText = "CHECK-IN CONCLUÍDO HOJE";
-                btn.style.background = "#ccc";
-            }
-        } else {
-            if(btn) {
-                btn.disabled = false;
-                btn.innerText = "REIVINDICAR PRESENÇA";
-                btn.style.background = "var(--blue)";
-            }
-            const proximoDia = (this.checkinDiasConsecutivos % 7) + 1;
-            const caixaAtual = document.getElementById(`checkin-d${proximoDia}`);
-            if(caixaAtual) caixaAtual.classList.add('atual');
+    }
+    
+    // Controla o comportamento do botão principal de presença diária
+    if (this.checkinUltimaData === hojeString) {
+        if(btn) {
+            btn.disabled = true;
+            btn.innerText = "PRESENÇA GARANTIDA HOJE";
+            btn.style.background = "#ccc";
+            btn.style.cursor = "not-allowed";
         }
+    } else {
+        if(btn) {
+            btn.disabled = false;
+            btn.innerText = "REIVINDICAR PRESENÇA";
+            btn.style.background = "var(--blue)";
+            btn.style.cursor = "pointer";
+        }
+        // Destaca em modo "foco/atual" qual o próximo quadrado que ele deve clicar
+        const proximoDia = (this.checkinDiasConsecutivos % 7) + 1;
+        const caixaAtual = document.getElementById(`checkin-d${proximoDia}`);
+        if(caixaAtual) caixaAtual.classList.add('atual');
     }
 
-    executarCheckIn() {
-        const hoje = new Date();
-        const hojeString = hoje.toISOString().split('T')[0];
-        
-        if (this.checkinUltimaData === hojeString) return alert("Você já garantiu seu giro hoje. Volte amanhã!");
-        
-        let quebrouSequencia = true;
-        if (this.checkinUltimaData) {
-            const ontem = new Date();
-            ontem.setDate(ontem.getDate() - 1);
-            const ontemString = ontem.toISOString().split('T')[0];
-            if (this.checkinUltimaData === ontemString) {
-                quebrouSequencia = false;
-            }
+    // === GERENCIAMENTO DA CAIXA DE PRESENTE SURPRESA ===
+    const caixaPresente = document.getElementById('caixa-presente-surpresa');
+    if(caixaPresente) {
+        // Verifica se completou o ciclo de 7 dias e se já não coletou o bônus surpresa do ciclo atual
+        const jaColetouSurpresa = localStorage.getItem('nitrogenio_checkin_surpresa_coletado') === hojeString;
+
+        if (this.checkinDiasConsecutivos === 7 && !jaColetouSurpresa) {
+            // ACENDE A CAIXA: Adiciona classes visuais de brilho/animação e ativa o clique
+            caixaPresente.classList.add('aceso');
+            caixaPresente.classList.remove('apagado');
+            caixaPresente.style.opacity = "1";
+            caixaPresente.style.cursor = "pointer";
+            caixaPresente.onclick = () => this.resgatarPresenteSurpresa();
         } else {
-            quebrouSequencia = false; 
+            // APAGA A CAIXA: Estado desativado cinza padrão enquanto cumpre a semana
+            caixaPresente.classList.add('apagado');
+            caixaPresente.classList.remove('aceso');
+            caixaPresente.style.opacity = "0.4";
+            caixaPresente.style.cursor = "not-allowed";
+            caixaPresente.onclick = () => {
+                alert(`🎁 Esta Caixa contém uma Recompensa Surpresa de Giros! Complete o ciclo de 7 dias consecutivos para destrancá-la.`);
+            };
         }
-        
-        if (quebrouSequencia || this.checkinDiasConsecutivos >= 7) {
-            this.checkinDiasConsecutivos = 1;
-        } else {
-            this.checkinDiasConsecutivos += 1;
-        }
-        
-        this.checkinUltimaData = hojeString;
-        
-        if(this.checkinDiasConsecutivos === 7) {
-            this.girosDisponiveis += 6; 
-            this.tocarSomVitoria();
-            alert("🔥 Parabéns, Boss! Você completou o ciclo perfeito de 7 dias consecutivos e faturou 1 Giro Diário + 5 Giros Extras de Bônus!");
-        } else {
-            this.girosDisponiveis += 1; 
-            this.tocarSomClick();
-            alert(`Check-in confirmado! +1 Giro adicionado ao seu perfil (Dia ${this.checkinDiasConsecutivos}/7).`);
-        }
-        
-        this.salvarDadosDApp();
-        this.atualizarLayoutCheckIn();
     }
+}
+
+executarCheckIn() {
+    const hoje = new Date();
+    const hojeString = hoje.toISOString().split('T')[0];
+    
+    if (this.checkinUltimaData === hojeString) {
+        return alert("Você já garantiu seu giro de hoje. Volte amanhã para o próximo quadrante!");
+    }
+    
+    let quebrouSequencia = true;
+    if (this.checkinUltimaData) {
+        const ontem = new Date();
+        ontem.setDate(ontem.getDate() - 1);
+        const ontemString = ontem.toISOString().split('T')[0];
+        if (this.checkinUltimaData === ontemString) {
+            quebrouSequencia = false;
+        }
+    } else {
+        quebrouSequencia = false; 
+    }
+    
+    // Se quebrou a sequência diária ou se já passou do 7º dia, reinicia a contagem da semana
+    if (quebrouSequencia || this.checkinDiasConsecutivos >= 7) {
+        this.checkinDiasConsecutivos = 1;
+        localStorage.removeItem('nitrogenio_checkin_surpresa_coletado'); // Reseta trava do presente para a nova semana
+    } else {
+        this.checkinDiasConsecutivos += 1;
+    }
+    
+    this.checkinUltimaData = hojeString;
+    this.girosDisponiveis += 1; // Sempre ganha 1 giro garantido referente ao dia
+    
+    // Toca o som agradável de vitória/sucesso unificado para o ecossistema
+    this.tocarSomVitoria();
+
+    if(this.checkinDiasConsecutivos === 7) {
+        alert(`🎯 Quadrante do Dia 7 Concluído com sucesso! +1 Giro Diário adicionado.\n\n🔥 ATENÇÃO BOSS: A sua Caixa de Presente Surpresa abaixo acabou de ACENDER! Clique nela imediatamente para resgatar sua recompensa extraordinária!`);
+    } else {
+        alert(`Check-in confirmado! O quadrante ficou verde e +1 Giro foi adicionado ao seu perfil (Dia ${this.checkinDiasConsecutivos}/7).`);
+    }
+    
+    this.salvarDadosDApp();
+    this.atualizarLayoutCheckIn();
+    this.atualizarSaldosInterface();
+}
+
+resgatarPresenteSurpresa() {
+    const hojeString = new Date().toISOString().split('T')[0];
+    
+    // Proteção extra contra cliques duplicados ou trapaças no mesmo ciclo de 7 dias
+    if(localStorage.getItem('nitrogenio_checkin_surpresa_coletado') === hojeString) {
+        return alert("Você já resgatou o prêmio surpresa desse ciclo!");
+    }
+
+    // Injeta a quantidade de giros configurada para o mês corrente dinamicamente
+    this.girosDisponiveis += this.premioSurpresaGiros;
+    
+    // Salva a trava temporal no localStorage para registrar o resgate da semana
+    localStorage.setItem('nitrogenio_checkin_surpresa_coletado', hojeString);
+    
+    // Efeito sonoro master de premiação
+    this.tocarSomVitoria();
+    
+    alert(`🎁 SENSACIONAL, BOSS!\n\nVocê abriu a Caixa Surpresa e faturou mais de +${this.premioSurpresaGiros} GIROS EXTRAS direto na sua conta!\n\nAproveite esse impulso do mês e quebre a banca na Roleta do Bem! 🚀`);
+    
+    this.salvarDadosDApp();
+    this.atualizarLayoutCheckIn();
+    this.atualizarSaldosInterface();
+}
 
     girarRoleta() {
         if(this.roletaGirando) return;
