@@ -541,13 +541,13 @@ class NitrogenDAO {
         }
     }
 
-           responderQuiz(opcaoCorreta) {
-        if (opcaoCorreta) {
-            this.saldoAppN += 2; 
-            this.girosDisponiveis += 1; 
+            responderQuiz(opcaoCorreta) {
+        // Se receber true do HTML, ou se o parâmetro vier preenchido com o texto do prêmio (ex: "ganhou 2 N")
+        if (opcaoCorreta) { 
+            this.girosDisponiveis += 1; // Adiciona o giro bônus
             
             this.tocarSomVitoria();
-            alert("Correto! Ganhou 2 N no saldo dAPP e +1 Giro para a Roleta! 🚀");
+            alert("Correto! Ganhou +1 Giro para a Roleta! 🚀");
             
             this.atualizarSaldosInterface(); 
             this.fecharFolha(); 
@@ -555,7 +555,6 @@ class NitrogenDAO {
             alert("Resposta incorreta. Estude mais um pouco e tente novamente!");
         }
     }
-    
     // ==========================================
     // LÓGICA CORE: CÓDIGO DA COMUNIDADE
     // ==========================================
