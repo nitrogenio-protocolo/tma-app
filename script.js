@@ -22,6 +22,26 @@ class NitrogenDAO {
         this.girosDisponiveis = 0;        
         this.roletaGirando = false; 
 
+        // === CONTROLE DO QUIZ (ADICIONEI AQUI) ===
+        this.perguntaAtualIndex = 0;
+        this.perguntasQuiz = [
+            {
+                pergunta: "Qual a utilidade dos 21 Guardiões no ecossistema?",
+                opcoes: ["Auditar blocos e governança on-chain", "Centralizar tokens de liquidez"],
+                correta: 0
+            },
+            {
+                pergunta: "Qual tecnologia garante a segurança e transparência do DApp?",
+                opcoes: ["Servidor Central Cloud", "Rede Blockchain (On-Chain)"],
+                correta: 1
+            },
+            {
+                pergunta: "Como você coleta seus tokens Nitrogen (N) acumulados?",
+                opcoes: ["Através do menu Coletar na Home", "Enviando uma mensagem no suporte"],
+                correta: 0
+            }
+        ];
+
         this.readAccepted = false;
         this.agreeAccepted = false;
         
