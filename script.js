@@ -417,6 +417,15 @@ class NitrogenDAO {
         if (btnHome) btnHome.classList.add('active');
     }
 
+        atualizarSaldosInterface() {
+        const txtSaldo = document.getElementById('perfil-saldo-tokens'); 
+        const txtGiros = document.getElementById('perfil-giros-contagem'); 
+        const txtGirosRoleta = document.getElementById('roleta-giros-disponiveis'); // Caso queira usar dentro da folha da roleta
+
+        if (txtSaldo) txtSaldo.innerText = this.saldoAppN.toFixed(2);
+        if (txtGiros) txtGiros.innerText = this.girosDisponiveis;
+        if (txtGirosRoleta) txtGirosRoleta.innerText = this.girosDisponiveis;
+    }
     
       mudarAba(aba) {
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
