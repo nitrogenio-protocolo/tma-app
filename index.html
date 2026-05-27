@@ -167,10 +167,20 @@
     </div>
 
     <!-- RODAPÉ CORRIGIDO COM LINKS E MENUS EM HARMONIA -->
-    <footer class="bottom-nav">
+        <footer class="bottom-nav">
         <button id="nav-home" class="nav-item active" onclick="App.mudarAba('home')">
             <span class="nav-icon">⌂</span>
             <span class="nav-text">HOME</span>
+        </button>
+        
+        <button id="nav-nft" class="nav-item" onclick="App.mudarAba('nft')">
+            <span class="nav-icon">🖼️</span>
+            <span class="nav-text">NFT</span>
+        </button>
+
+        <button id="nav-governanca" class="nav-item" onclick="App.mudarAba('governanca')">
+            <span class="nav-icon">⚖️</span>
+            <span class="nav-text">GOVERNANÇA</span>
         </button>
         
         <button id="nav-perfil" class="nav-item" onclick="App.mudarAba('perfil')">
@@ -178,14 +188,9 @@
             <span class="nav-text">PERFIL</span>
         </button>
         
-        <button class="nav-item" onclick="window.open('https://t.me/seu_canal', '_blank')">
-            <span class="nav-icon">▲</span>
-            <span class="nav-text">TELEGRAM</span>
-        </button>
-        
-        <button class="nav-item" onclick="window.open('https://bscscan.com/', '_blank')">
-            <span class="nav-icon">┱</span>
-            <span class="nav-text">BSCSCAN</span>
+        <button id="nav-redes" class="nav-item" onclick="App.mudarAba('redes')">
+            <span class="nav-icon">🌐</span>
+            <span class="nav-text">REDES</span>
         </button>
     </footer>
 
