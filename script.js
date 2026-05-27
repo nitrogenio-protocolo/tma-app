@@ -447,8 +447,9 @@ class NitrogenDAO {
         if(info) info.style.display = 'block'; 
         document.getElementById('side-panel').classList.remove('active');
         
+        // Garante que ao fechar uma folha, apenas o botão HOME ganha a farda azul de volta!
         document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
-        const btnHome = document.querySelector('.bottom-nav .nav-item:first-child');
+        const btnHome = document.getElementById('nav-home');
         if (btnHome) btnHome.classList.add('active');
     }
 
