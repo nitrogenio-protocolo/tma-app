@@ -551,7 +551,7 @@ class NitrogenDAO {
                     <div style="padding: 15px; text-align: center;">
                         <h3>Galeria de NFTs</h3>
                         <p style="font-size: 0.85rem; color:#666;">Aqui o JS fica em modo de espera (Off-chain). Ele só requisitará dados on-chain se o usuário clicar para atualizar ou interagir com o contrato.</p>
-                        </div>`;
+                    </div>`;
             }
         } 
         else if (aba === 'governanca') {
