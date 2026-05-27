@@ -1137,11 +1137,12 @@ class NitrogenDAO {
         const btnEnterHome = document.getElementById('btn-enter-home');
         if (btnEnterHome) btnEnterHome.onclick = () => this.finishSplash();
         
-        const btnNavHome = document.getElementById('nav-home');
-        if (btnNavHome) btnNavHome.onclick = () => this.mudarAba('home');
-
-        const btnNavPerfil = document.getElementById('nav-perfil');
-        if (btnNavPerfil) btnNavPerfil.onclick = () => this.mudarAba('perfil');
+        // Substitua os antigos ouvintes do nav-home e nav-perfil por esta lista atualizada:
+        const abasMenu = ['home', 'nft', 'governanca', 'perfil', 'redes'];
+        abasMenu.forEach(aba => {
+            const el = document.getElementById(`nav-${aba}`);
+            if (el) el.onclick = () => this.mudarAba(aba);
+        });
 
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
