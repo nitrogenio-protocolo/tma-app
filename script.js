@@ -530,7 +530,9 @@ class NitrogenDAO {
                 `;
                 this.atualizarSaldosInterface();
             }
-        } else if (aba === 'home') {
+        } 
+        
+        else if (aba === 'home') {
             this.fecharFolha();
         }
     }
