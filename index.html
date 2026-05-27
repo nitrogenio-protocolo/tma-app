@@ -46,7 +46,7 @@
         </div> 
     </div>
 
-    <header>
+    <header class="oculto-init">
         <div class="logo-area">
             <h1>NITROGÊNIO <span></span></h1>
             <p class="network-label">PROTOCOLO</p>
@@ -54,7 +54,7 @@
         <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
     </header>
 
-    <main>
+    <main class="oculto-init">
         <section class="card-master">
             <div class="balance-info">
                 <p class="label">SALDO DA CONTA CONECTADA</p>
@@ -89,7 +89,6 @@
         </section>
     </main>
 
-    <!-- PAINEL LATERAL DINÂMICO UNIFICADO -->
     <div id="side-panel" class="side-panel">
         <div class="panel-header">
             <button id="close-panel" class="btn-back" onclick="App.mudarAba('home')">← VOLTAR</button>
@@ -97,7 +96,6 @@
         </div>
         <div id="panel-content" class="panel-body">
             
-            <!-- O CONTEÚDO BASE DO PERFIL (DAPP INFO) -->
             <div class="perfil-container" id="perfil-view-base">
                 
                 <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
@@ -108,7 +106,6 @@
                             <span id="perfil-saldo-tokens">0.00</span> 
                             <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
                         </h4>
-                        <!-- Exibição de Giros Disponíveis solicitada -->
                         <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
                             🎯 GIROS DISPONÍVEIS: <span id="perfil-giros-contagem">3</span>
                         </p>
@@ -159,15 +156,13 @@
                     </button>
                 </div>
 
-                <!-- Onde as telas dos templates serão exibidas abaixo dos botões -->
                 <div id="subsecao-perfil-container" class="subsec-perfil" style="margin-top: 15px; width: 100%;"></div>
 
             </div>
         </div>
     </div>
 
-    <!-- RODAPÉ CORRIGIDO COM LINKS E MENUS EM HARMONIA -->
-        <footer class="bottom-nav">
+    <footer class="bottom-nav oculto-init">
         <button id="nav-home" class="nav-item active" onclick="App.mudarAba('home')">
             <span class="nav-icon">⌂</span>
             <span class="nav-text">HOME</span>
@@ -194,10 +189,6 @@
         </button>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- TEMPLATES ESCONDIDOS (NÃO INFLAM O JS)     -->
-    <!-- ========================================== -->
-    
     <template id="tela-poupanca">
         <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
             <h4 style="margin: 0 0 4px 0; color: #1a1a1a; font-weight: bold;">💰 Poupança Nitrogen</h4>
@@ -226,31 +217,31 @@
     </template>
 
     <template id="tela-checkin">
-    <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
-        <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left; font-weight: bold;">📆 Check-In Diário</h4>
-        <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Cumpra a sequência de 7 dias e acenda a Caixa Surpresa para faturar super bônus!</p>
-        
-        <div class="calendario-checkin">
-            <div class="dia-box" id="checkin-d1"><span>D1</span><div class="status-circulo">+1</div></div>
-            <div class="dia-box" id="checkin-d2"><span>D2</span><div class="status-circulo">+1</div></div>
-            <div class="dia-box" id="checkin-d3"><span>D3</span><div class="status-circulo">+1</div></div>
-            <div class="dia-box" id="checkin-d4"><span>D4</span><div class="status-circulo">+1</div></div>
-            <div class="dia-box" id="checkin-d5"><span>D5</span><div class="status-circulo">+1</div></div>
-            <div class="dia-box" id="checkin-d6"><span>D6</span><div class="status-circulo">+1</div></div>
-            <div class="dia-box" id="checkin-d7"><span>D7</span><div class="status-circulo">+1</div></div>
-        </div>
+        <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
+            <h4 style="margin: 0 0 4px 0; color: #1a1a1a; text-align: left; font-weight: bold;">📆 Check-In Diário</h4>
+            <p style="font-size: 11px; color: #666; text-align: left; margin: 0 0 12px 0;">Cumpra a sequência de 7 dias e acenda a Caixa Surpresa para faturar super bônus!</p>
+            
+            <div class="calendario-checkin">
+                <div class="dia-box" id="checkin-d1"><span>D1</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d2"><span>D2</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d3"><span>D3</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d4"><span>D4</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d5"><span>D5</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d6"><span>D6</span><div class="status-circulo">+1</div></div>
+                <div class="dia-box" id="checkin-d7"><span>D7</span><div class="status-circulo">+1</div></div>
+            </div>
 
-        <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%; margin-bottom: 15px;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
+            <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%; margin-bottom: 15px;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
 
-        <div id="caixa-presente-surpresa" class="apagado" style="background: #f8f9fa; border: 2px dashed #ccc; padding: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease;">
-            <span style="font-size: 1.6rem;">🎁</span>
-            <div style="text-align: left;">
-                <p style="margin: 0; font-size: 12px; font-weight: bold; color: #333;">PRESENTE SURPRESA DO MÊS</p>
-                <small style="font-size: 10px; color: #666; display: block;">Bloqueado até o 7º dia consecutivo</small>
+            <div id="caixa-presente-surpresa" class="apagado" style="background: #f8f9fa; border: 2px dashed #ccc; padding: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease;">
+                <span style="font-size: 1.6rem;">🎁</span>
+                <div style="text-align: left;">
+                    <p style="margin: 0; font-size: 12px; font-weight: bold; color: #333;">PRESENTE SURPRESA DO MÊS</p>
+                    <small style="font-size: 10px; color: #666; display: block;">Bloqueado até o 7º dia consecutivo</small>
+                </div>
             </div>
         </div>
-    </div>
-</template>
+    </template>
 
     <template id="tela-roleta">
         <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
