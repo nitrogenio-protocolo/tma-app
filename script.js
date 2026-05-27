@@ -576,11 +576,6 @@ class NitrogenDAO {
             }
         }
     }
-        
-        else if (aba === 'home') {
-            this.fecharFolha();
-        }
-    }
 
     abrirSubModulo(modulo) {
         const content = document.getElementById('panel-content');
