@@ -462,23 +462,35 @@ class NitrogenDAO {
         if (txtGirosRoleta) txtGirosRoleta.innerText = this.girosDisponiveis;
     }
     
-    mudarAba(aba) {
+        mudarAba(aba) {
+        // 1. O Gerente Geral (JS) remove a farda azul (.active) de TODO MUNDO antes de decidir o próximo
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         navItems.forEach(item => item.classList.remove('active'));
 
+        // Se o scanner de QR code estava ligado por algum motivo, desliga ele por segurança
+        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+
+        // 2. Aplica a classe active especificamente no botão clicado
+        const botaoAtivo = document.getElementById(`nav-${aba}`);
+        if (botaoAtivo) botaoAtivo.classList.add('active');
+
+        // 3. Gerencia o comportamento das telas (Folhas)
+        const panel = document.getElementById('side-panel');
+        const content = document.getElementById('panel-content');
+        const title = document.getElementById('panel-title');
+
+        if (aba === 'home') {
+            // Apenas recolhe o painel lateral e volta para a tela principal (JS Off-chain descansando)
+            this.fecharFolha(); 
+            return;
+        }
+
+        // Para todas as outras abas, nós usaremos o painel lateral dinâmico
+        if (panel) panel.classList.add('active');
+
         if (aba === 'perfil') {
-            const btnPerfil = document.getElementById('nav-perfil');
-            if (btnPerfil) btnPerfil.classList.add('active');
-
-            const panel = document.getElementById('side-panel');
-            const content = document.getElementById('panel-content');
-            const title = document.getElementById('panel-title');
-            
-            if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-            
             if (title) title.innerText = "MEU PERFIL";
-            if (panel) panel.classList.add('active');
-
+            
             const txtCarteira = this.account 
                 ? `${this.account.substring(0, 6)}...${this.account.substring(this.account.length - 4)}` 
                 : "Desconectado";
@@ -531,6 +543,38 @@ class NitrogenDAO {
                 this.atualizarSaldosInterface();
             }
         } 
+        else if (aba === 'nft') {
+            if (title) title.innerText = "MEUS NFTS";
+            if (content) {
+                content.innerHTML = `
+                    <div style="padding: 15px; text-align: center;">
+                        <h3>Galeria de NFTs</h3>
+                        <p style="font-size: 0.85rem; color:#666;">Aqui o JS fica em modo de espera (Off-chain). Ele só requisitará dados on-chain se o usuário clicar para atualizar ou interagir com o contrato.</p>
+                        </div>`;
+            }
+        } 
+        else if (aba === 'governanca') {
+            if (title) title.innerText = "GOVERNANÇA DAO";
+            if (content) {
+                content.innerHTML = `
+                    <div style="padding: 15px; text-align: center;">
+                        <h3>Votações e Propostas</h3>
+                        <p style="font-size: 0.85rem; color:#666;">Seção de Governança. O JS permanece inativo até que seja disparada uma votação que exija validação da MetaMask.</p>
+                    </div>`;
+            }
+        } 
+        else if (aba === 'redes') {
+            if (title) title.innerText = "COMUNIDADE E REDES";
+            if (content) {
+                content.innerHTML = `
+                    <div style="padding: 15px; display: flex; flex-direction: column; gap: 12px;">
+                        <p style="font-size: 0.85rem; color:#666; text-align: center;">Acesse nossos canais oficiais diretamente por aqui, sem poluir a navegação base.</p>
+                        <button class="btn-confirm blue" style="width: 100%;" onclick="window.open('https://t.me/seu_canal', '_blank')">▲ TELEGRAM OFICIAL</button>
+                        <button class="btn-confirm" style="width: 100%; background: #343a40;" onclick="window.open('https://bscscan.com/', '_blank')">┱ VISUALIZAR NO BSCSCAN</button>
+                    </div>`;
+            }
+        }
+    }
         
         else if (aba === 'home') {
             this.fecharFolha();
