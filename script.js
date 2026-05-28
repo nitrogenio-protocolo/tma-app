@@ -481,22 +481,27 @@ class NitrogenDAO {
         if (txtGirosRoleta) txtGirosRoleta.innerText = this.girosDisponiveis;
     }
     
-    mudarAba(aba) {
-        // 1. O Gerente Geral (JS) remove a farda azul (.active) de TODO MUNDO antes de decidir o próximo
-        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-        navItems.forEach(item => item.classList.remove('active'));
+        mudarAba(aba) {
+        // 1. Remove a farda azul (.active) de todos os itens do rodapé
+        document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
 
-        // Se o scanner de QR code estava ligado por algum motivo, desliga ele por segurança
         if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
 
         // 2. Aplica a classe active especificamente no botão clicado
         const botaoAtivo = document.getElementById(`nav-${aba}`);
         if (botaoAtivo) botaoAtivo.classList.add('active');
 
-        // 3. Gerencia o comportamento das telas (Folhas)
-        const panel = document.getElementById('side-panel');
-        const content = document.getElementById('panel-content');
-        const title = document.getElementById('panel-title');
+        // 3. Se for Home, apenas recolhe todas as novas salas e fecha tudo
+        if (aba === 'home') {
+            ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => this.fecharFolhaSala(f));
+            return;
+        }
+
+        // 4. Caso contrário, abre a folha/sala correspondente (NFT, Recompensas, Governança, Perfil)
+        this.abrirFolhaSala(aba);
+    }
 
         if (aba === 'home') {
             // Apenas recolhe o painel lateral e volta para a tela principal (JS Off-chain descansando)
