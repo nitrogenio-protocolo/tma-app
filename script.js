@@ -1213,11 +1213,16 @@ class NitrogenDAO {
         const btnEnterHome = document.getElementById('btn-enter-home');
         if (btnEnterHome) btnEnterHome.onclick = () => this.finishSplash();
         
-        // Substitua os antigos ouvintes do nav-home e nav-perfil por esta lista atualizada:
-        const abasMenu = ['home', 'nft', 'governanca', 'perfil', 'redes'];
+       // Configuração dos gatilhos do menu inferior atualizado
+        const abasMenu = ['home', 'nft', 'governanca', 'recompensas', 'perfil'];
         abasMenu.forEach(aba => {
             const el = document.getElementById(`nav-${aba}`);
-            if (el) el.onclick = () => this.mudarAba(aba);
+            if (el) {
+                el.onclick = () => {
+                    this.tocarSomClick();
+                    this.mudarAba(aba);
+                };
+            }
         });
 
         setTimeout(() => {
