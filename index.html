@@ -150,7 +150,31 @@
     </div>
             
     <div class="perfil-container" id="perfil-view-base">
-     
+        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
+            <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
+                <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">SALDO ACUMULADO DAPP</p>
+                <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
+                    <span id="perfil-saldo-tokens">0.00</span> 
+                    <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
+                </h4>
+                <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
+                    🎯 GIROS DISPONÍVEIS: <span id="perfil-giros-contagem">3</span>
+                </p>
+            </div>
+
+            <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px; text-align: right;">
+                <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA WEB3</p>
+                <p id="perfil-txt-carteira" style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    Desconectado
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); margin-bottom: 15px;">
+            <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
+            <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0 0 12px 0;">
+                Os tokens acumulados aqui são internos do DApp. Para enviá-los para sua carteira MetaMask, vá até a ação <strong>COLETAR</strong> na Home para resgatar via contrato pool cobrindo a taxa de gás da rede BNB Chain.
+            </p>
             
             <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px;">CÓDIGO DA COMUNIDADE</p>
             <div style="display: flex; gap: 8px;">
