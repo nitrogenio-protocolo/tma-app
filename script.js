@@ -503,6 +503,40 @@ class NitrogenDAO {
         this.abrirFolhaSala(aba);
     }
 
+          abrirFolhaSala(idFolha) {
+        // Fecha qualquer outra folha de aba ativa antes para não empilhar na tela
+        ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => {
+            if (f !== idFolha) this.fecharFolhaSala(f);
+        });
+
+        // Adiciona a classe que faz a folha deslizar para dentro da tela
+        const painel = document.getElementById(`sheet-${idFolha}`);
+        if (painel) {
+            painel.classList.add('active');
+        }
+
+        // LÓGICA COMPLEMENTAR DA SUA CLASSE: Injeta o Quiz/Roleta dinamicamente se abrir 'recompensas'
+        if (idFolha === 'recompensas' && !document.getElementById('input-cod-comunidade')) {
+            // Executa a montagem do layout do perfil/recompensas se necessário
+            this.abrirSubModulo('quiz'); 
+        }
+    }
+
+    fecharFolhaSala(idFolha) {
+        const painel = document.getElementById(`sheet-${idFolha}`);
+        if (painel) {
+            painel.classList.remove('active');
+        }
+        
+        // Se todas as folhas secundárias forem fechadas na seta voltar, devolve o azul para a Home
+        const nenhumaAtiva = !Array.from(document.querySelectorAll('.side-panel')).some(p => p.classList.contains('active'));
+        if (nenhumaAtiva) {
+            document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => item.classList.remove('active'));
+            const btnHome = document.getElementById('nav-home');
+            if (btnHome) btnHome.classList.add('active');
+        }
+    }
+    
         if (aba === 'home') {
             // Apenas recolhe o painel lateral e volta para a tela principal (JS Off-chain descansando)
             this.fecharFolha(); 
