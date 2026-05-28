@@ -226,11 +226,22 @@
         <span>Governança</span>
       </button>
       
-      <button onclick="ativarAba(this)" class="cmc-nav-item">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cmc-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        <span>Sociais</span>
-      </button>
-      
+      <button id="nav-recompensas" onclick="ativarAba(this)" class="cmc-nav-item">
+  <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+    <!-- Desenho da Medalha de Recompensa (Círculo externo com Estrela) -->
+    <circle cx="14" cy="7" r="5" />
+    <polygon points="14,4.5 15.3,7.2 18.2,7.6 16.1,9.7 16.6,12.6 14,11.2 11.4,12.6 11.9,9.7 9.8,7.6 12.7,7.2" fill="currentColor" />
+    
+    <!-- Fitas da Medalha penduradas -->
+    <path d="M11 11.5l-1.5 3.5 2 1" />
+    <path d="M17 11.5l1.5 3.5-2 1" />
+    
+    <!-- Desenho da Mão Segurando/Suportando por baixo -->
+    <path d="M2 15h3a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H3" />
+    <path d="M7 18h9.5a2.5 2.5 0 0 0 0-5H12" />
+  </svg>
+  <span>Recompensas</span>
+</button>
       <button onclick="ativarAba(this)" class="cmc-nav-item">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cmc-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         <span>Perfil</span>
