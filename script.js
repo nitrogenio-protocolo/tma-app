@@ -543,19 +543,7 @@ class NitrogenDAO {
                     <div class="perfil-container">
                         <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
                             <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
-                                <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">SALDO ACUMULADO DAPP</p>
-                                <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
-                                    <span id="perfil-saldo-tokens">${this.saldoAppN.toFixed(2)}</span> 
-                                    <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
-                                </h4>
-                                <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
-                                    🎯 GIROS: <span id="perfil-giros-contagem">${this.girosDisponiveis}</span>
-                                </p>
-                            </div>
-                            <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px; text-align: right;">
-                                <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA WEB3</p>
-                                <p style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    ${txtCarteira}
+                                
                                 </p>
                             </div>
                         </div>
