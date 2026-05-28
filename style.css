@@ -21,7 +21,7 @@ body {
     background: var(--bg); 
     color: #333; 
     overflow-x: hidden; 
-    padding-bottom: 75px; /* Margem de segurança para o rodapé */
+    padding-bottom: 75px; 
 }
 
 .oculto-init {
@@ -95,9 +95,10 @@ body {
 header { 
     background: var(--white); padding: 15px 20px; 
     display: flex; justify-content: space-between; align-items: center; 
-    border-bottom: 2px solid #EEE; 
+    border-bottom: 1px solid #EFF2F5; 
 }
 header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
+.network-label { font-size: 10px; color: #666; letter-spacing: 2px; font-weight: bold; }
 
 .btn-wallet { background: var(--blue); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 .btn-wallet.conectado { background: var(--green) !important; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3); }
@@ -106,7 +107,8 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     background: var(--white); margin: 15px; padding: 20px; border-radius: 20px; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; 
 }
-.balance-info h2 { font-size: 1.6rem; }
+.balance-info h2 { font-size: 1.6rem; margin-top: 4px; }
+.balance-info .label { font-size: 10px; color: #666; font-weight: bold; }
 
 /* GRADE DE AÇÕES */
 .nav-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-top: 20px; }
@@ -127,7 +129,7 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     top: 0; 
     right: -100%; 
     width: 100%; 
-    height: calc(100vh - 65px); /* Desconta o tamanho exato do footer */
+    height: calc(100vh - 65px); 
     background: var(--bg); 
     transition: right 0.35s cubic-bezier(0.25, 1, 0.5, 1); 
     z-index: 1500; 
@@ -166,9 +168,9 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 .btn-perfil-menu { 
     background: var(--white); border: 1px solid #E0E0E0; padding: 18px 10px; 
     border-radius: 14px; font-weight: bold; font-size: 0.8rem; color: #333; cursor: pointer; 
+    text-align: center;
 }
-
-.subsec-perfil { display: none; background: var(--white); border-radius: 16px; padding: 20px; border: 1px solid #F0F0F0; }
+.btn-perfil-menu:active { transform: scale(0.97); background: #fafafa; }
 
 /* COMPONENTES DOS SUB-MÓDULOS */
 .calendario-checkin { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 20px 0; }
@@ -202,8 +204,10 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 
 .cmc-icon { width: 23px; height: 23px; margin-bottom: 3px; }
 .cmc-nav-item.active { color: #3861fb !important; }
-.cmc-nav-item.active .cmc-icon { stroke: #3861fb !important; }
+.cmc-nav-item.active .cmc-icon { stroke: #3861fb !important; fill: none; }
 
 /* ELEMENTOS GERAIS */
 .btn-confirm { background: var(--blue); color: white; border: none; padding: 14px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.btn-confirm.green { background: var(--green); }
+.btn-confirm.blue { background: var(--blue); }
 .input-transparente { background: transparent; border: none; border-bottom: 2px solid #333; text-align: center; font-size: 1.5rem; font-weight: bold; width: 100%; outline: none; }
