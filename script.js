@@ -531,23 +531,6 @@ class NitrogenDAO {
             return; // Interrompe o fluxo para não carregar a aba real
         }
 
-        if (aba === 'perfil') {
-            if (title) title.innerText = "MEU PERFIL";
-            
-            const txtCarteira = this.account 
-                ? `${this.account.substring(0, 6)}...${this.account.substring(this.account.length - 4)}` 
-                : "Desconectado";
-
-            if (content) {
-                content.innerHTML = `
-                    <div class="perfil-container">
-                        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
-                            <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
-                                
-                                </p>
-                            </div>
-                        </div>
-
                         <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
                             <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
                             <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0 0 12px 0;">
