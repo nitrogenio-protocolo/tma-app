@@ -130,7 +130,7 @@
     </div>
 
     <!-- ABA: CENTRAL DE RECOMPENSAS (REESTRUTURADA AQUI) -->
-    <div id="sheet-recompensas" class="side-panel">
+        <div id="sheet-recompensas" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="App.mudarAba('home')">
                 <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
@@ -141,21 +141,6 @@
         <div class="side-panel-content">
             <div class="perfil-container" style="padding-top: 5px;">
                 
-                <!-- Card informativo de Saldos vinculados às Tarefas -->
-                <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 5px;">
-                    <div class="perfil-card-interno" style="flex: 1; padding: 12px;">
-                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">SALDO ACUMULADO DAPP</p>
-                        <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
-                            <span id="perfil-saldo-tokens">0.00</span> 
-                            <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
-                        </h4>
-                        <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
-                            🎯 GIROS DISPONÍVEIS: <span id="roleta-giros-disponiveis">3</span>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Código Comunitário -->
                 <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 5px;">
                     <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px;">CÓDIGO DA COMUNIDADE</p>
                     <div style="display: flex; gap: 8px;">
@@ -164,7 +149,6 @@
                     </div>
                 </div>
 
-                <!-- Grade de Módulos de Recompensas -->
                 <div class="perfil-menu-grid">
                     <button type="button" class="btn-perfil-menu" id="menu-poupanca" onclick="App.abrirSubModulo('poupanca')">
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">💰</span>
@@ -182,6 +166,46 @@
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">🎯</span>
                         ROLETA DO BEM
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sheet-perfil" class="side-panel">
+        <div class="side-panel-header">
+            <button class="back-arrow-btn" onclick="App.mudarAba('home')">
+                <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <h3>👤 Meu Perfil Web3</h3>
+        </div>
+        <div class="side-panel-content">
+            <div class="perfil-container" style="padding-top: 5px;">
+                
+                <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 5px;">
+                    <div class="perfil-card-interno" style="flex: 1; padding: 12px;">
+                        <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">SALDO ACUMULADO DAPP</p>
+                        <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
+                            <span id="perfil-saldo-tokens">0.00</span> 
+                            <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
+                        </h4>
+                        <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
+                            🎯 GIROS DISPONÍVEIS: <span id="roleta-giros-disponiveis">3</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="perfil-card-interno" style="margin-bottom: 5px;">
+                    <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA WEB3</p>
+                    <p id="perfil-txt-carteira" style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        Desconectado
+                    </p>
+                </div>
+
+                <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0;">
+                    <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
+                    <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0;">
+                        Os tokens acumulados no ecossistema são gerenciados de forma segura. Para enviá-los para sua carteira fria/MetaMask, vá até a ação <strong>COLETAR</strong> no painel inicial.
+                    </p>
                 </div>
             </div>
         </div>
