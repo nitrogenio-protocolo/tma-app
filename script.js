@@ -3,7 +3,7 @@
 // --- CONFIGURAÇÃO DE MOCK / DESENVOLVIMENTO (TESTE SEM NFT) ---
 // ==========================================================================
 const DEV_MODE = {
-    forcarPossuiNFT: false // 🔴 MUDE PARA true QUANDO QUISER TESTAR AS ABAS LIBERADAS!
+    forcarPossuiNFT: true // 🔴 MUDE PARA true QUANDO QUISER TESTAR AS ABAS LIBERADAS!
 };
 
 // ==========================================================================
