@@ -623,7 +623,6 @@ class NitrogenDAO {
     }
 
     fecharFolhaSala(idFolha) {
-        // Remove a classe active de qualquer folha ou painel lateral aberto
         const painelAbas = document.getElementById(`sheet-${idFolha}`);
         if (painelAbas) {
             painelAbas.classList.remove('active');
@@ -634,10 +633,14 @@ class NitrogenDAO {
             painelLateral.classList.remove('active');
         }
         
-        // Corrige o comportamento da seta voltar redefinindo a aba ativa no bottom-nav para a Home
+        // Remove active de todas as abas e força o foco visual na Home
         document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
         const btnHome = document.getElementById('nav-home');
         if (btnHome) btnHome.classList.add('active');
+
+        // Reset do conteúdo do painel lateral para evitar retenção de lixo visual
+        const content = document.getElementById('panel-content');
+        if (content && !painelAbas) content.innerHTML = '';
     }
 
     abrirSubModulo(modulo) {
