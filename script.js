@@ -484,10 +484,15 @@ class NitrogenDAO {
         if (aba === 'home') {
             this.fecharFolha();
             ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => this.fecharFolhaSala(f));
+            // Força o recarregamento visual da Home se necessário
+            const content = document.getElementById('panel-content');
+            if (content && document.getElementById('side-panel')?.classList.contains('active')) {
+                this.fecharFolha();
+            }
             return;
         }
 
-        // --- SEÇÃO COM CIRURGIA WEB3 INTEGRADA DIRETAMENTE NA MUDANÇA DE ABA ---
+        // --- CIRURGIA WEB3 INTEGRADA DIRETAMENTE NA MUDANÇA DE ABA ---
         if ((aba === 'perfil' || aba === 'nft' || aba === 'governanca') && !this.usuarioPossuiNFT()) {
             const panel = document.getElementById('side-panel');
             const title = document.getElementById('panel-title');
@@ -506,7 +511,7 @@ class NitrogenDAO {
                         <button type="button" class="btn-confirm blue" style="width: 100%; font-weight: bold; padding: 16px; border-radius: 12px; font-size: 0.9rem;" onclick="window.open('https://pancakeswap.finance/', '_blank')">
                             MINTAR NFT DE GUARDIÃO
                         </button>
-                        <small style="color: #999; font-size: 0.7 her; margin-top: 15px; font-weight: 500;">
+                        <small style="color: #999; font-size: 0.7rem; margin-top: 15px; font-weight: 500;">
                             Protocolo de Segurança On-Chain Ativo.
                         </small>
                     </div>
@@ -515,50 +520,45 @@ class NitrogenDAO {
             return; 
         }
 
-        // Fluxo para renderização de abas válidas e liberadas
+        // Fluxo para renderização do Card de Visitas / Perfil Público (Saldos zerados para visitantes)
         if (aba === 'perfil') {
             const title = document.getElementById('panel-title');
             const content = document.getElementById('panel-content');
             const panel = document.getElementById('side-panel');
             
             if (panel) panel.classList.add('active');
-            if (title) title.innerText = "MEU PERFIL";
+            if (title) title.innerText = "PERFIL PÚBLICO";
             
-            const txtCarteira = this.account 
-                ? `${this.account.substring(0, 6)}...${this.account.substring(this.account.length - 4)}` 
-                : "Desconectado";
-
             if (content) {
                 content.innerHTML = `
-                    <div class="perfil-container">
-                        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
-                            <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px;">
-                                <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">SALDO ACUMULADO DAPP</p>
-                                <h4 style="font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 0;">
-                                    <span id="perfil-saldo-tokens">${this.saldoAppN.toFixed(2)}</span> 
-                                    <span class="token-symbol" style="font-size: 14px; color: var(--blue);">N</span>
-                                </h4>
-                                <p style="font-size: 9px; color: #666; margin: 4px 0 0 0; font-weight: bold;">
-                                    🎯 GIROS: <span id="perfil-giros-contagem">${this.girosDisponiveis}</span>
-                                </p>
-                            </div>
-                            <div class="perfil-card-interno" style="flex: 1; margin: 0; padding: 12px; text-align: right;">
-                                <p class="perfil-label" style="font-size: 9px; margin-bottom: 2px;">CARTEIRA WEB3</p>
-                                <p style="font-size: 0.75rem; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    ${txtCarteira}
-                                </p>
-                            </div>
+                    <div class="card-perfil-publico" style="background: #1a1a1a; color: #fff; border-radius: 16px; padding: 20px; text-align: left; font-family: sans-serif;">
+                        <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+                            <span style="font-size: 2rem;">😎</span>
+                            <h2 style="margin: 5px 0; font-size: 1.4rem; color: #00ff88;">Olá, Boss!!!</h2>
+                            <p style="margin: 0; font-size: 0.8rem; color: #666;">Membro Oficial da DAO Nitrogênio</p>
                         </div>
 
-                        <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
-                            <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Boss!</h3>
-                            <p style="font-size: 0.8rem; color: #666; line-height: 1.4; margin: 0 0 12px 0;">
-                                Os seus tokens estão garantidos pela pool do DApp. Colete para sua carteira on-chain no menu da Home.
-                            </p>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
+                                <span style="font-weight: bold; color: #00ff88;">💰 Saldo N:</span>
+                                <span style="font-family: monospace; font-size: 1.1rem;">0.00 N</span>
+                            </div>
+
+                            <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
+                                <span style="font-weight: bold; color: #ffbb00;">🎰 Giros Restantes:</span>
+                                <span style="font-family: monospace; font-size: 1.1rem;">0</span>
+                            </div>
+
+                            <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; border: 1px solid #222;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-weight: bold; color: #ff4444;">🔒 Poupança Bloqueada:</span>
+                                    <span style="font-family: monospace; font-size: 1.1rem;">0.00 N</span>
+                                </div>
+                                <small style="color: #555; font-size: 0.7rem; text-align: right;">⏱️ Prazo de Bloqueio: 30 Dias</small>
+                            </div>
                         </div>
                     </div>
                 `;
-                this.atualizarSaldosInterface();
             }
         } else {
             this.abrirFolhaSala(aba);
