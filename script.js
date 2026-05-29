@@ -590,41 +590,53 @@ class NitrogenDAO {
                 </div>`;
         } 
         
-        // --- MODIFICAÇÃO DIRETA NA GOVERNANÇA COM VALIDAÇÃO DE NFT APENAS NO CLIQUE ---
-        else if (idFolha === 'governanca' && title && content) {
-            title.innerText = "GOVERNANÇA DAO";
-            content.innerHTML = `
-                <div style="padding: 20px; font-family: sans-serif; text-align: left;">
-                    <div style="background: #f4f6f9; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 5px solid var(--blue, #007BFF);">
-                        <h4 style="margin: 0 0 5px 0; color: #007BFF; font-size: 0.95rem; font-weight: bold;">🗳️ Painel de Decisões Comunitárias</h4>
-                        <p style="margin: 0; font-size: 0.8rem; color: #666; line-height: 1.4;">
-                            Abaixo estão listadas as pautas abertas. Qualquer usuário logado pode acompanhar, mas apenas carteiras com o <strong>NFT de Guardião</strong> têm poder de voto legalizado em contrato.
-                        </p>
-                    </div>
+        // --- 🟢 SEÇÃO DA GOVERNANÇA CORRIGIDA: ATIVA O MENU DAS 4 SALAS DO SEU HTML ---
+        else if (idFolha === 'governanca') {
+            const painelLiberado = document.getElementById('governanca-liberada');
+            if (painelLiberado) {
+                // Força o painel com as 4 salas a aparecer na tela
+                painelLiberado.style.display = 'block';
+            }
+            
+            // Cria o container dinâmico de respostas caso ele ainda não exista no seu HTML
+            if (!document.getElementById('conteudo-subsala-governanca')) {
+                const containerGov = document.querySelector('#sheet-governanca .side-panel-content');
+                if (containerGov) {
+                    const divRespostas = document.createElement('div');
+                    divRespostas.id = 'conteudo-subsala-governanca';
+                    divRespostas.style.cssText = 'margin-top: 15px; width: 100%; padding: 0 5px;';
+                    containerGov.appendChild(divRespostas);
+                }
+            }
+        }
+    }
 
-                    <!-- Proposta Ativa -->
-                    <div class="card-proposta" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                        <span style="background: #e1f5fe; color: #0288d1; font-size: 0.7rem; font-weight: bold; padding: 4px 8px; border-radius: 20px; display: inline-block; margin-bottom: 10px;">
-                            PAUTA #01 - EM VOTAÇÃO
-                        </span>
-                        <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; color: #1a1a1a; font-weight: bold;">Destinação do Fundo de Manutenção</h3>
-                        <p style="margin: 0 0 15px 0; font-size: 0.8rem; color: #555; line-height: 1.4;">
-                            Aprovação de subsídio emergencial de 2% sobre as receitas coletadas neste mês para apoiar motoristas na troca e manutenção mecânica dos veículos da frota local.
-                        </p>
+    // --- 🟢 FUNÇÃO NOVA: ADICIONADA PARA FAZER OS BOTÕES DO SEU HTML (G21, TESO...) FUNCIONAREM ---
+    abrirSalaInterna(idSala) {
+        const container = document.getElementById('conteudo-subsala-governanca');
+        if (!container) return;
 
-                        <!-- Botões de Ação com Teste de NFT ao Clicar -->
-                        <div style="display: flex; gap: 10px;">
-                            <button type="button" style="flex: 1; padding: 12px; font-weight: bold; border-radius: 8px; font-size: 0.85rem; background: var(--blue, #007BFF); color: white; border: none; cursor: pointer;" 
-                                onclick="if(App.usuarioPossuiNFT()){ alert('Seu voto SIM foi registrado na blockchain!'); } else { alert('🥶 Acesso Restrito: Seu saldo de NFT de Guardião é 0. Adquira o token oficial para registrar seu voto.'); }">
-                                👍 CONCORDO
-                            </button>
-                            <button type="button" style="flex: 1; padding: 12px; font-weight: bold; border-radius: 8px; font-size: 0.85rem; background: #e0e0e0; color: #333; border: none; cursor: pointer;" 
-                                onclick="if(App.usuarioPossuiNFT()){ alert('Seu voto NÃO foi registrado na blockchain!'); } else { alert('🥶 Acesso Restrito: Seu saldo de NFT de Guardião é 0. Adquira o token oficial para registrar seu voto.'); }">
-                                👎 REJEITO
-                            </button>
-                        </div>
-                    </div>
-                </div>`;
+        // Limpa a tela antes de abrir a nova sala clicada
+        container.innerHTML = '';
+
+        if (idSala === 'g21') {
+            const template = document.getElementById('sala-g21');
+            if (template) container.appendChild(template.content.cloneNode(true));
+        } 
+        else if (idSala === 'teso') {
+            const template = document.getElementById('sala-teso');
+            if (template) {
+                container.appendChild(template.content.cloneNode(true));
+                if (typeof this.atualizarSaldosCofre === 'function') this.atualizarSaldosCofre();
+            }
+        } 
+        else if (idSala === 'comunidade') {
+            const template = document.getElementById('sala-comunidade');
+            if (template) container.appendChild(template.content.cloneNode(true));
+        } 
+        else if (idSala === 'recom') {
+            const template = document.getElementById('sala-recom');
+            if (template) container.appendChild(template.content.cloneNode(true));
         }
     }
 
@@ -647,6 +659,10 @@ class NitrogenDAO {
         // Reset do conteúdo do painel lateral para evitar retenção de lixo visual
         const content = document.getElementById('panel-content');
         if (content && !painelAbas) content.innerHTML = '';
+        
+        // Limpa o conteúdo interno da governança ao fechar para não ficar acumulado
+        const containerGov = document.getElementById('conteudo-subsala-governanca');
+        if (containerGov) containerGov.innerHTML = '';
     }
 
     abrirSubModulo(modulo) {
