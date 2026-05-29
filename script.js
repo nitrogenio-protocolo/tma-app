@@ -1165,7 +1165,7 @@ class NitrogenDAO {
         if (dc) dc.onclick = () => this.conectar();
         
         const cp = document.getElementById('close-panel');
-        if (cp) cp.onclick = () => this.fecharFolhaSala('recompensas'); // Ajustado para fechar as folhas de aba com segurança
+        if (cp) cp.onclick = () => this.fecharFolhaSala('recompensas');
 
         const btnNextSlide = document.querySelector('.btn-next-slide');
         if (btnNextSlide) btnNextSlide.onclick = () => this.nextSplashSlide();
@@ -1190,7 +1190,15 @@ class NitrogenDAO {
             }
         });
 
-        // Evento específico para a seta de voltar nativa do painel de recompensas, caso exista no HTML
+        // ==========================================================================
+        // --- 🔌 NOVAS CONEXÕES E WIRES DO FORMULÁRIO DE PERFIL ---
+        // ==========================================================================
+        // Monitora o clique no botão de salvar o Perfil Expandido
+        const btnSalvarPerfil = document.getElementById('btn-salvar-perfil');
+        if (btnSalvarPerfil) {
+            btnSalvarPerfil.onclick = () => this.salvarDadosPerfilExpandido();
+        }
+
         const setaVoltarRecompensas = document.querySelector('#sheet-recompensas .back-button, #sheet-recompensas #close-panel');
         if (setaVoltarRecompensas) {
             setaVoltarRecompensas.onclick = () => this.fecharFolhaSala('recompensas');
