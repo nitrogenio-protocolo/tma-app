@@ -1143,6 +1143,27 @@ class NitrogenDAO {
                 </div>
             `;
             containerDados.style.display = "block";
+            // ==========================================================================
+            // --- 👁️ PORTA DOS FUNDOS (DETECÇÃO DA CARTEIRA DO ADMINISTRADOR) ---
+            // ==========================================================================
+            // ATENÇÃO SIDNEY: Mude o endereço abaixo para a carteira MetaMask que você usa para testar!
+            const ADDR_ADMIN_SIDNEY = "0x8898716238712638126381263128361283716238"; 
+
+            if (this.account && this.account.toLowerCase() === ADDR_ADMIN_SIDNEY.toLowerCase()) {
+                const backdoorDiv = document.createElement('div');
+                backdoorDiv.style.cssText = "margin-top: 15px; padding: 15px; background: #FFF3CD; border: 2px dashed #FFC107; border-radius: 10px; text-align: left;";
+                backdoorDiv.innerHTML = `
+                    <h4 style="margin: 0 0 5px 0; color: #856404; font-weight: 800; font-size:0.85rem;">🛠️ BACKDOOR CONTROL ACTIVATED</h4>
+                    <p style="font-size: 0.7rem; color: #856404; margin: 0 0 10px 0;">Acesso de Coordenador detectado com sucesso. Use os injetores para testes rápidos de interface.</p>
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" style="flex:1; background:#28A745; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.saldoAppN += 1000; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+1000 N Injetados!');">INJETAR +1000 N</button>
+                        <button type="button" style="flex:1; background:#007BFF; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.girosDisponiveis += 10; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+10 Giros Injetados!');">INJETAR +10 GIROS</button>
+                    </div>
+                `;
+                containerDados.appendChild(backdoorDiv);
+            }
+
+        } catch (error) {
 
         } catch (error) {
             console.error("Erro na leitura da rede:", error);
