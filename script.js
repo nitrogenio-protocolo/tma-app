@@ -1211,19 +1211,15 @@ class NitrogenDAO {
             }
         });
 
-        // ==========================================================================
-        // --- 🔌 NOVAS CONEXÕES E WIRES DO FORMULÁRIO DE PERFIL ---
-        // ==========================================================================
-        // Monitora o clique no botão de salvar o Perfil Expandido
-        const btnSalvarPerfil = document.getElementById('btn-salvar-perfil');
-        if (btnSalvarPerfil) {
-            btnSalvarPerfil.onclick = () => this.salvarDadosPerfilExpandido();
-        }
-
-        const setaVoltarRecompensas = document.querySelector('#sheet-recompensas .back-button, #sheet-recompensas #close-panel');
-        if (setaVoltarRecompensas) {
-            setaVoltarRecompensas.onclick = () => this.fecharFolhaSala('recompensas');
-        }
+        // --- 🎯 CAPTURA DA SETA DE VOLTAR DE REDES / RECOMPENSAS / SUBMÓDULOS ---
+        const setasVoltarGerais = document.querySelectorAll('.back-button, .close-panel-btn, #close-panel');
+        setasVoltarGerais.forEach(seta => {
+            seta.onclick = () => {
+                this.tocarSomClick();
+                this.fecharFolhaSala('recompensas');
+                this.mudarAba('home');
+            };
+        });
 
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
