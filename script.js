@@ -545,7 +545,7 @@ class NitrogenDAO {
                             </div>
 
                             <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
-                                <span style="font-weight: bold; color: #ffbb00;">🎰 Giros Restantes:</span>
+                                <span style="font-weight: bold; color: #ffbb00;">♻️ Giros Restantes:</span>
                                 <span style="font-family: monospace; font-size: 1.1rem;">0</span>
                             </div>
 
