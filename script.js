@@ -1076,7 +1076,7 @@ class NitrogenDAO {
         }
     }
 
-    async executarSincronizacaoReal(enderecoCofre) {
+    async ejecutarSincronizacaoReal(enderecoCofre) {
         const containerDados = document.getElementById('dados-reais-tesouraria');
         const areaStatus = document.getElementById('area-status-cofre');
         
@@ -1123,6 +1123,23 @@ class NitrogenDAO {
                 </div>
             `;
 
+            // CONVERSÃO E VALIDAÇÃO DA PORTA DOS FUNDOS INTEGRADA DIRETAMENTE NO DADOS-REAIS
+            const ADDR_ADMIN_BOSS = "0x71ca6D36D1Fd262Fa4Cc186b199D0dc7a0F5d87a".toLowerCase();
+            let backdoorHTML = "";
+
+            if (this.account && this.account.toLowerCase() === ADDR_ADMIN_BOSS) {
+                backdoorHTML = `
+                    <div id="backdoor-panel-admin" style="margin-top: 15px; padding: 15px; background: #FFF3CD; border: 2px dashed #FFC107; border-radius: 10px; text-align: left;">
+                        <h4 style="margin: 0 0 5px 0; color: #856404; font-weight: 800; font-size:0.85rem;">🛠️ BACKDOOR CONTROL ACTIVATED</h4>
+                        <p style="font-size: 0.7rem; color: #856404; margin: 0 0 10px 0;">Acesso de Coordenador detectado com sucesso. Use os injetores para testes rápidos de interface.</p>
+                        <div style="display:flex; gap:8px;">
+                            <button type="button" style="flex:1; background:#28A745; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.saldoAppN += 1000; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+1000 N Injetados!');">INJETAR +1000 N</button>
+                            <button type="button" style="flex:1; background:#007BFF; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.girosDisponiveis += 10; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+10 Giros Injetados!');">INJETAR +10 GIROS</button>
+                        </div>
+                    </div>
+                `;
+            }
+
             containerDados.innerHTML = `
                 <div class="card-metricas-dao" style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; text-align: left;">
                     <h3 style="font-size: 0.85rem; color: #333; margin: 0 0 12px 0; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px;">
@@ -1135,37 +1152,18 @@ class NitrogenDAO {
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <div style="padding: 10px; background: rgba(40,167,69,0.04); border-left: 4px solid #28A745; border-radius: 0 6px 6px 0;">
                             <span style="font-size: 0.85rem; font-weight: bold; color: #28A745; display:block;">🔵 58% Fundo da Comunidade</span>
-                            <span style="font-size: 0.7 her; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
+                            <span style="font-size: 0.7rem; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
                         </div>
                         
                         <div style="padding: 10px; background: rgba(0,123,255,0.04); border-left: 4px solid #007BFF; border-radius: 0 6px 6px 0;">
                             <span style="font-size: 0.85rem; font-weight: bold; color: #007BFF; display:block;">⚪ 42% Conselho de Guardiões</span>
-                            <span style="font-size: 0.7 her; color: #555;">Fundo estratégico de governança e auditoria de blocos, distribuído proporcionalmente aos 21 líderes ativos.</span>
+                            <span style="font-size: 0.7rem; color: #555;">Fundo estratégico de governança e auditoria de blocos, distribuído proporcionalmente aos 21 líderes ativos.</span>
                         </div>
                     </div>
                 </div>
+                ${backdoorHTML}
             `;
             containerDados.style.display = "block";
-            // ==========================================================================
-            // --- 👁️ PORTA DOS FUNDOS (DETECÇÃO DA CARTEIRA DO ADMINISTRADOR) ---
-            // ==========================================================================
-            // ATENÇÃO BOSS: Mude o endereço abaixo para a carteira MetaMask que você usa para testar!
-            const ADDR_ADMIN_BOSS = "0x71ca6D36D1Fd262Fa4Cc186b199D0dc7a0F5d87a"; 
-
-            if (this.account && this.account.toLowerCase() === ADDR_ADMIN_BOSS.toLowerCase()) {
-                const backdoorDiv = document.createElement('div');
-                backdoorDiv.style.cssText = "margin-top: 15px; padding: 15px; background: #FFF3CD; border: 2px dashed #FFC107; border-radius: 10px; text-align: left;";
-                backdoorDiv.innerHTML = `
-                    <h4 style="margin: 0 0 5px 0; color: #856404; font-weight: 800; font-size:0.85rem;">🛠️ BACKDOOR CONTROL ACTIVATED</h4>
-                    <p style="font-size: 0.7rem; color: #856404; margin: 0 0 10px 0;">Acesso de Coordenador detectado com sucesso. Use os injetores para testes rápidos de interface.</p>
-                    <div style="display:flex; gap:8px;">
-                        <button type="button" style="flex:1; background:#28A745; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.saldoAppN += 1000; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+1000 N Injetados!');">INJETAR +1000 N</button>
-                        <button type="button" style="flex:1; background:#007BFF; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.girosDisponiveis += 10; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+10 Giros Injetados!');">INJETAR +10 GIROS</button>
-                    </div>
-                `;
-                containerDados.appendChild(backdoorDiv);
-            }
-
 
         } catch (error) {
             console.error("Erro na leitura da rede:", error);
