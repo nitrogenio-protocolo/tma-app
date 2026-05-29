@@ -1146,10 +1146,10 @@ class NitrogenDAO {
             // ==========================================================================
             // --- 👁️ PORTA DOS FUNDOS (DETECÇÃO DA CARTEIRA DO ADMINISTRADOR) ---
             // ==========================================================================
-            // ATENÇÃO SIDNEY: Mude o endereço abaixo para a carteira MetaMask que você usa para testar!
-            const ADDR_ADMIN_SIDNEY = "0x8898716238712638126381263128361283716238"; 
+            // ATENÇÃO BOSS: Mude o endereço abaixo para a carteira MetaMask que você usa para testar!
+            const ADDR_ADMIN_BOSS = "0x71ca6D36D1Fd262Fa4Cc186b199D0dc7a0F5d87a"; 
 
-            if (this.account && this.account.toLowerCase() === ADDR_ADMIN_SIDNEY.toLowerCase()) {
+            if (this.account && this.account.toLowerCase() === ADDR_ADMIN_BOSS.toLowerCase()) {
                 const backdoorDiv = document.createElement('div');
                 backdoorDiv.style.cssText = "margin-top: 15px; padding: 15px; background: #FFF3CD; border: 2px dashed #FFC107; border-radius: 10px; text-align: left;";
                 backdoorDiv.innerHTML = `
@@ -1163,7 +1163,6 @@ class NitrogenDAO {
                 containerDados.appendChild(backdoorDiv);
             }
 
-        } catch (error) {
 
         } catch (error) {
             console.error("Erro na leitura da rede:", error);
