@@ -471,23 +471,33 @@ class NitrogenDAO {
     }
     
     mudarAba(aba) {
-        document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => {
+        // --- CORREÇÃO DE SINCRONIZAÇÃO GLOBAL DOS BOTÕES ---
+        // 1. Apaga TODAS as classes ativas de qualquer menu inferior que você use
+        document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item, .bottom-nav-btn').forEach(item => {
             item.classList.remove('active');
         });
 
         if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
 
+        // 2. Acende o botão correto com precisão
         const botaoAtivo = document.getElementById(`nav-${aba}`);
         if (botaoAtivo) botaoAtivo.classList.add('active');
 
+        // 3. Gerenciamento inteligente das folhas para NÃO TRAVAR NUNCA
         if (aba === 'home') {
             this.fecharFolha();
-            ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => this.fecharFolhaSala(f));
+            ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
             const content = document.getElementById('panel-content');
             if (content && document.getElementById('side-panel')?.classList.contains('active')) {
                 this.fecharFolha();
             }
             return;
+        }
+
+        // Se clicou em qualquer outra aba, garante que fecha a folha de Redes se ela estiver travando
+        const folhaRedes = document.getElementById('sheet-redes');
+        if (folhaRedes && aba !== 'redes') {
+            folhaRedes.classList.remove('active');
         }
 
         if (aba === 'perfil') {
@@ -533,7 +543,7 @@ class NitrogenDAO {
             this.abrirFolhaSala(aba);
         }
     }
-
+    
     abrirFolhaSala(idFolha) {
         ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => {
             if (f !== idFolha) this.fecharFolhaSala(f);
