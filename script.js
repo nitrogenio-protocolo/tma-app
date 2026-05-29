@@ -1,12 +1,10 @@
 
-// ==========================================================================
+/// ==========================================================================
 // --- CONFIGURAÇÃO DE MOCK / DESENVOLVIMENTO (TESTE SEM NFT) ---
 // ==========================================================================
 const DEV_MODE = {
-    usuarioPossuiNFT() {
-    // Força o desbloqueio total de todas as abas no seu ambiente de teste
-    return true; 
-}
+    forcarPossuiNFT: true // 🔴 MUDE PARA true QUANDO QUISER TESTAR AS ABAS LIBERADAS!
+};
 
 // ==========================================================================
 // --- ENDEREÇOS DOS CONTRATOS DO PROTOCOLO (REDES BLOCKCHAIN) ---
