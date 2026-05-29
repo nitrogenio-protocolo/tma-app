@@ -113,13 +113,37 @@
             <h3>🏛️ Governança & DAO</h3>
         </div>
         
-        <div id="sheet-governanca" class="side-panel">
-        <div class="side-panel-header">
-            <button class="back-arrow-btn" onclick="App.mudarAba('home')">
-                <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            </button>
-            <h3>🏛️ Governança & DAO</h3>
+        <div class="side-panel-content">
+            <div id="governanca-liberada" class="perfil-container" style="padding-top: 5px; display: block;">
+                <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Membro!</h3>
+                    <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0 0;">Bem-vindo ao centro administrativo descentralizado.</p>
+                </div>
+
+                <div class="perfil-menu-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button type="button" class="btn-perfil-menu" id="menu-g21" onclick="App.abrirSalaInterna('g21')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">⚖️</span>
+                        G21
+                    </button>
+                    <button type="button" class="btn-perfil-menu" id="menu-teso" onclick="App.abrirSalaInterna('teso')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">🏛️</span>
+                        TESO
+                    </button>
+                    <button type="button" class="btn-perfil-menu" id="menu-comunidade" onclick="App.abrirSalaInterna('comunidade')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">💬</span>
+                        COMUNIDADE
+                    </button>
+                    <button type="button" class="btn-perfil-menu" id="menu-recom" onclick="App.abrirSalaInterna('recom')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
+                        <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">🎁</span>
+                        RECOM
+                    </button>
+                </div>
+
+                <div id="subsecao-governanca-container" style="margin-top: 15px; width: 100%;"></div>
+            </div>
         </div>
+    </div> ```
+
         
         <div class="side-panel-content">
             <!-- 🟢 Destrancado: Removido a div de bloqueio e ativado o painel de salas diretamente -->
