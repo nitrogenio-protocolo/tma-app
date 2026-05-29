@@ -484,7 +484,6 @@ class NitrogenDAO {
         if (aba === 'home') {
             this.fecharFolha();
             ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => this.fecharFolhaSala(f));
-            // Força o recarregamento visual da Home se necessário
             const content = document.getElementById('panel-content');
             if (content && document.getElementById('side-panel')?.classList.contains('active')) {
                 this.fecharFolha();
@@ -492,35 +491,9 @@ class NitrogenDAO {
             return;
         }
 
-        // --- CIRURGIA WEB3 INTEGRADA DIRETAMENTE NA MUDANÇA DE ABA ---
-        if ((aba === 'perfil' || aba === 'nft' || aba === 'governanca') && !this.usuarioPossuiNFT()) {
-            const panel = document.getElementById('side-panel');
-            const title = document.getElementById('panel-title');
-            const content = document.getElementById('panel-content');
-            
-            if (panel) panel.classList.add('active');
-            if (title) title.innerText = "ACESSO RESTRITO";
-            if (content) {
-                content.innerHTML = `
-                    <div style="padding: 30px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; box-sizing: border-box;">
-                        <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.15));">🥶</div>
-                        <h2 style="font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin: 0 0 10px 0; letter-spacing: -0.5px;">Aba Exclusiva Trancada</h2>
-                        <p style="font-size: 0.85rem; color: #666; line-height: 1.5; margin: 0 0 25px 0; max-width: 280px;">
-                            Esta seção exige o <strong>NFT de Guardião Oficial</strong> da NitrogenDAO na sua carteira para liberar os módulos sociais, quiz e governança.
-                        </p>
-                        <button type="button" class="btn-confirm blue" style="width: 100%; font-weight: bold; padding: 16px; border-radius: 12px; font-size: 0.9rem;" onclick="window.open('https://pancakeswap.finance/', '_blank')">
-                            MINTAR NFT DE GUARDIÃO
-                        </button>
-                        <small style="color: #999; font-size: 0.7rem; margin-top: 15px; font-weight: 500;">
-                            Protocolo de Segurança On-Chain Ativo.
-                        </small>
-                    </div>
-                `;
-            }
-            return; 
-        }
+        // --- 🔓 SALAS DESTRANCADAS PARA VISUALIZAÇÃO DIRETA ---
+        // Removemos o bloqueio do NFT daqui para você conseguir entrar e ver tudo livremente
 
-        // Fluxo para renderização do Card de Visitas / Perfil Público (Saldos zerados para visitantes)
         if (aba === 'perfil') {
             const title = document.getElementById('panel-title');
             const content = document.getElementById('panel-content');
@@ -545,7 +518,7 @@ class NitrogenDAO {
                             </div>
 
                             <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
-                                <span style="font-weight: bold; color: #ffbb00;">♻️ Giros Restantes:</span>
+                                <span style="font-weight: bold; color: #ffbb00;">🎰 Giros Restantes:</span>
                                 <span style="font-family: monospace; font-size: 1.1rem;">0</span>
                             </div>
 
@@ -561,9 +534,11 @@ class NitrogenDAO {
                 `;
             }
         } else {
+            // Abre as telas normais de NFT, Governança ou Redes sem pedir validação
             this.abrirFolhaSala(aba);
         }
     }
+
 
     abrirFolhaSala(idFolha) {
         ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => {
