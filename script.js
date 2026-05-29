@@ -1213,15 +1213,24 @@ class NitrogenDAO {
             }
         });
 
-        // --- 🎯 CAPTURA DA SETA DE VOLTAR DE REDES / RECOMPENSAS / SUBMÓDULOS ---
-        const setasVoltarGerais = document.querySelectorAll('.back-button, .close-panel-btn, #close-panel');
-        setasVoltarGerais.forEach(seta => {
-            seta.onclick = () => {
-                this.tocarSomClick();
-                this.fecharFolhaSala('recompensas');
-                this.mudarAba('home');
-            };
-        });
+        // ==========================================================================
+// --- 🎯 CAPTURA GLOBAL DE TODAS AS SETAS DE VOLTAR DE QUALQUER ABA ---
+// ==========================================================================
+// Captura elementos com classe .back-button, #close-panel ou setas dentro das folhas
+const todasAsSetasVoltar = document.querySelectorAll('.back-button, .close-panel-btn, #close-panel, [class*="back"]');
+
+todasAsSetasVoltar.forEach(seta => {
+    seta.onclick = (e) => {
+        e.preventDefault(); // Evita qualquer comportamento fantasma do navegador
+        this.tocarSomClick();
+        
+        // Fecha as gavetas e painéis abertos
+        ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
+        
+        // Força a interface a focar visualmente na Home
+        this.mudarAba('home');
+    };
+});
 
         setTimeout(() => {
             if (window.ethereum && window.ethereum.selectedAddress) this.conectar();
