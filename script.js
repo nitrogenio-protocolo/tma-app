@@ -502,84 +502,91 @@ class NitrogenDAO {
     }
     
     mudarAba(aba) {
-    // 1. Remove a cor ativa de TODOS os itens de menu e botões de rodapé imediatamente
+    // 1. Sincroniza o rodapé azul imediatamente no clique
     document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item, .bottom-nav-btn').forEach(item => {
         item.classList.remove('active');
     });
-
-    // Parar o scanner se estiver ativo
-    if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-
-    // 2. Acende a cor azul no ícone do rodapé clicado NO MESMO SEGUNDO
     const botaoAtivo = document.getElementById(`nav-${aba}`);
     if (botaoAtivo) botaoAtivo.classList.add('active');
 
-    // 3. Efeito de Apagar: Remove a classe 'active' de todas as folhas para iniciar o fade out
-    document.querySelectorAll('.side-panel, #side-panel').forEach(painel => {
-        painel.classList.remove('active');
-    });
+    if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
 
-    // 4. Se o destino for a Home, limpa tudo e encerra
+    // Identifica qual tela está ativa na tela no momento do clique
+    const painelAtual = document.querySelector('.side-panel.active, #side-panel.active');
+
+    // 2. Se o usuário clicou para voltar para a Home
     if (aba === 'home') {
+        document.querySelectorAll('.side-panel, #side-panel').forEach(p => {
+            p.classList.remove('active');
+            p.classList.remove('saindo-esquerda');
+        });
         this.fecharFolha();
         ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
         return;
     }
 
-    // 5. O TRUQUE DAS LUZES: Espera 150 milissegundos (tempo da folha antiga sumir)
-    // Isso evita conflito no JS e deixa a transição extremamente leve
-    setTimeout(() => {
+    // 3. Empurra a tela atual (antiga) para a esquerda se ela existir
+    if (painelAtual) {
+        painelAtual.classList.remove('active');
+        painelAtual.classList.add('saindo-esquerda');
+    }
+
+    // 4. Injeta o conteúdo e ativa a nova tela (ela entrará deslizando da direita)
+    if (aba === 'perfil') {
+        const title = document.getElementById('panel-title');
+        const content = document.getElementById('panel-content');
+        const panel = document.getElementById('side-panel');
         
-        if (aba === 'perfil') {
-            const title = document.getElementById('panel-title');
-            const content = document.getElementById('panel-content');
-            const panel = document.getElementById('side-panel');
-            
-            if (title) title.innerText = "PERFIL PÚBLICO";
-            if (content) {
-                content.innerHTML = `
-                    <div class="card-perfil-publico" style="background: #1a1a1a; color: #fff; border-radius: 16px; padding: 20px; text-align: left; font-family: sans-serif;">
-                        <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;">
-                            <span style="font-size: 2rem;">😎</span>
-                            <h2 style="margin: 5px 0; font-size: 1.4rem; color: #00ff88;">Olá, Boss!!!</h2>
-                            <p style="margin: 0; font-size: 0.8rem; color: #666;">Membro Oficial da DAO Nitrogênio</p>
+        if (title) title.innerText = "PERFIL PÚBLICO";
+        if (content) {
+            content.innerHTML = `
+                <div class="card-perfil-publico" style="background: #1a1a1a; color: #fff; border-radius: 16px; padding: 20px; text-align: left; font-family: sans-serif;">
+                    <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+                        <span style="font-size: 2rem;">😎</span>
+                        <h2 style="margin: 5px 0; font-size: 1.4rem; color: #00ff88;">Olá, Boss!!!</h2>
+                        <p style="margin: 0; font-size: 0.8rem; color: #666;">Membro Oficial da DAO Nitrogênio</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
+                            <span style="font-weight: bold; color: #00ff88;">💰 Saldo N:</span>
+                            <span id="perfil-dinamico-saldo" style="font-family: monospace; font-size: 1.1rem;">${this.saldoAppN.toFixed(2)} N</span>
                         </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
-                                <span style="font-weight: bold; color: #00ff88;">💰 Saldo N:</span>
-                                <span id="perfil-dinamico-saldo" style="font-family: monospace; font-size: 1.1rem;">${this.saldoAppN.toFixed(2)} N</span>
+                        <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
+                            <span style="font-weight: bold; color: #ffbb00;">🎰 Giros Restantes:</span>
+                            <span id="perfil-dinamico-giros" style="font-family: monospace; font-size: 1.1rem;">${this.girosDisponiveis}</span>
+                        </div>
+                        <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; border: 1px solid #222;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; color: #ff4444;">🔒 Poupança Bloqueada:</span>
+                                <span style="font-family: monospace; font-size: 1.1rem;">${this.poupancaSaldo.toFixed(2)} N</span>
                             </div>
-
-                            <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
-                                <span style="font-weight: bold; color: #ffbb00;">🎰 Giros Restantes:</span>
-                                <span id="perfil-dinamico-giros" style="font-family: monospace; font-size: 1.1rem;">${this.girosDisponiveis}</span>
-                            </div>
-
-                            <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; border: 1px solid #222;">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-weight: bold; color: #ff4444;">🔒 Poupança Bloqueada:</span>
-                                    <span style="font-family: monospace; font-size: 1.1rem;">${this.poupancaSaldo.toFixed(2)} N</span>
-                                </div>
-                                <small style="color: #555; font-size: 0.7rem; text-align: right;">⏱️ Prazo de Bloqueio: 30 Dias</small>
-                            </div>
+                            <small style="color: #555; font-size: 0.7rem; text-align: right;">⏱️ Prazo de Bloqueio: 30 Dias</small>
                         </div>
                     </div>
-                `;
-            }
-            // Acende o painel do perfil suavemente
-            if (panel) panel.classList.add('active');
-            
-        } else {
-            // Executa a abertura padrão das outras salas (NFT, Governança, Redes)
-            this.abrirFolhaSala(aba);
-            
-            // Garante que a folha específica ganhe a classe active para dar o Fade In
-            const folhaEspecifica = document.getElementById(`sheet-${aba}`);
-            if (folhaEspecifica) folhaEspecifica.classList.add('active');
+                </div>
+            `;
         }
+        if (panel) {
+            panel.classList.remove('saindo-esquerda'); // Garante que não tenha travas antigas
+            panel.classList.add('active');
+        }
+        
+    } else {
+        this.abrirFolhaSala(aba);
+        const folhaEspecifica = document.getElementById(`sheet-${aba}`);
+        if (folhaEspecifica) {
+            folhaEspecifica.classList.remove('saindo-esquerda');
+            folhaEspecifica.classList.add('active');
+        }
+    }
 
-    }, 150); // 150 milissegundos de delay para a troca suave de luzes
+    // 5. O SEGREDO DO DESEMPENHO: Depois que a animação acabar (350ms), limpamos a tela que foi para a esquerda
+    // para ela voltar para a direita em background, pronta para o próximo clique
+    setTimeout(() => {
+        if (painelAtual && painelAtual.id !== `sheet-${aba}` && painelAtual.id !== 'side-panel') {
+            painelAtual.classList.remove('saindo-esquerda');
+        }
+    }, 350);
 }
     
     abrirFolhaSala(idFolha) {
