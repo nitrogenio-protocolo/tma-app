@@ -497,7 +497,7 @@ class NitrogenDAO {
         if (txtGirosPerfilDinamico) txtGirosPerfilDinamico.innerText = this.girosDisponiveis;
     }
     
-    mmudarAba(aba) {
+    mudarAba(aba) {
     // 1. Sincroniza o rodapé azul imediatamente no clique
     document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => {
         item.classList.remove('active');
