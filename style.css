@@ -122,7 +122,7 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 .btn-label { font-size: 0.65rem; font-weight: 900; color: var(--blue); text-transform: uppercase; }
 
 /* ==========================================================================
-   SISTEMA DE TELAS LATERAIS (FLUXO CONTÍNUO: DIREITA -> ESQUERDA)
+   SISTEMA DE TELAS LATERAIS (ENTRA PELA DIREITA / VOLTA PARA A DIREITA)
    ========================================================================== */
 .side-panel { 
     position: fixed; 
@@ -130,34 +130,27 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     left: 0; 
     width: 100%; 
     height: 100vh; 
-    background: var(--bg); 
+    background: var(--bg); /* Fundo sólido para cobrir a Home perfeitamente */
     z-index: 1500; 
     display: flex; 
     flex-direction: column; 
 
-    /* Começa totalmente empurrada para a DIREITA (fora da tela) e invisível */
+    /* Começa totalmente guardada na DIREITA (fora da tela) */
     transform: translateX(100%);
-    opacity: 0;
     pointer-events: none; 
 
-    /* Transição de movimento ultra suave usando aceleração de hardware */
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+    /* Transição suave apenas de movimento */
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* ESTADO 1: Tela entra e fica ativa no CENTRO */
+/* Quando o JS ativa, ela desliza para o CENTRO cobrindo tudo */
 .side-panel.active { 
     transform: translateX(0);
-    opacity: 1;
     pointer-events: auto;
-    z-index: 1600; /* Fica acima da tela que está saindo */
+    z-index: 1600; /* Fica no topo */
 }
 
-/* ESTADO 2: Tela antiga é empurrada para a ESQUERDA e desaparece */
-.side-panel.saindo-esquerda {
-    transform: translateX(-100%);
-    opacity: 0;
-    pointer-events: none;
-}
+/* Nota: Removemos completamente a classe 'saindo-esquerda' daqui */
 
 .side-panel-header { 
     padding: 16px 20px; 
