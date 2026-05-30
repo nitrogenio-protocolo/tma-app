@@ -502,21 +502,28 @@ class NitrogenDAO {
     }
     
     mudarAba(aba) {
-    // 1. Sincroniza o rodapé azul imediatamente no clique
-    document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item, .bottom-nav-btn').forEach(item => {
+    // 1. Sincroniza o rodapé azul imediatamente no clique (Limpo e focado)
+    document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => {
         item.classList.remove('active');
     });
+    
     const botaoAtivo = document.getElementById(`nav-${aba}`);
-    if (botaoAtivo) botaoAtivo.classList.add('active');
+    if (botaoAtivo) {
+        botaoAtivo.classList.add('active');
+    }
 
-    if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+    // Para o scanner de QR Code se ele estiver ativo ao mudar de aba
+    if (this.scanner) { 
+        this.scanner.stop().catch(() => {}); 
+        this.scanner = null; 
+    }
 
-    // Identifica qual tela está ativa na tela no momento do clique
-    const painelAtual = document.querySelector('.side-panel.active, #side-panel.active');
+    // Identifica qual tela está ativa no momento do clique
+    const painelAtual = document.querySelector('.side-panel.active');
 
     // 2. Se o usuário clicou para voltar para a Home
     if (aba === 'home') {
-        document.querySelectorAll('.side-panel, #side-panel').forEach(p => {
+        document.querySelectorAll('.side-panel').forEach(p => {
             p.classList.remove('active');
             p.classList.remove('saindo-esquerda');
         });
@@ -525,70 +532,29 @@ class NitrogenDAO {
         return;
     }
 
-    // 3. Empurra a tela atual (antiga) para a esquerda se ela existir
+    // 3. Empurra a tela antiga para a esquerda se ela existir
     if (painelAtual) {
         painelAtual.classList.remove('active');
         painelAtual.classList.add('saindo-esquerda');
     }
 
-    // 4. Injeta o conteúdo e ativa a nova tela (ela entrará deslizando da direita)
-    if (aba === 'perfil') {
-        const title = document.getElementById('panel-title');
-        const content = document.getElementById('panel-content');
-        const panel = document.getElementById('side-panel');
-        
-        if (title) title.innerText = "PERFIL PÚBLICO";
-        if (content) {
-            content.innerHTML = `
-                <div class="card-perfil-publico" style="background: #1a1a1a; color: #fff; border-radius: 16px; padding: 20px; text-align: left; font-family: sans-serif;">
-                    <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;">
-                        <span style="font-size: 2rem;">😎</span>
-                        <h2 style="margin: 5px 0; font-size: 1.4rem; color: #00ff88;">Olá, Boss!!!</h2>
-                        <p style="margin: 0; font-size: 0.8rem; color: #666;">Membro Oficial da DAO Nitrogênio</p>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
-                            <span style="font-weight: bold; color: #00ff88;">💰 Saldo N:</span>
-                            <span id="perfil-dinamico-saldo" style="font-family: monospace; font-size: 1.1rem;">${this.saldoAppN.toFixed(2)} N</span>
-                        </div>
-                        <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222;">
-                            <span style="font-weight: bold; color: #ffbb00;">🎰 Giros Restantes:</span>
-                            <span id="perfil-dinamico-giros" style="font-family: monospace; font-size: 1.1rem;">${this.girosDisponiveis}</span>
-                        </div>
-                        <div style="background: #111; padding: 12px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; border: 1px solid #222;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-weight: bold; color: #ff4444;">🔒 Poupança Bloqueada:</span>
-                                <span style="font-family: monospace; font-size: 1.1rem;">${this.poupancaSaldo.toFixed(2)} N</span>
-                            </div>
-                            <small style="color: #555; font-size: 0.7rem; text-align: right;">⏱️ Prazo de Bloqueio: 30 Dias</small>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        if (panel) {
-            panel.classList.remove('saindo-esquerda'); // Garante que não tenha travas antigas
-            panel.classList.add('active');
-        }
-        
-    } else {
-        this.abrirFolhaSala(aba);
-        const folhaEspecifica = document.getElementById(`sheet-${aba}`);
-        if (folhaEspecifica) {
-            folhaEspecifica.classList.remove('saindo-esquerda');
-            folhaEspecifica.classList.add('active');
-        }
+    // 4. Abre a folha correspondente do seu HTML de forma padrão e limpa
+    this.abrirFolhaSala(aba);
+    const folhaEspecifica = document.getElementById(`sheet-${aba}`);
+    if (folhaEspecifica) {
+        folhaEspecifica.classList.remove('saindo-esquerda');
+        folhaEspecifica.classList.add('active');
     }
 
-    // 5. O SEGREDO DO DESEMPENHO: Depois que a animação acabar (350ms), limpamos a tela que foi para a esquerda
-    // para ela voltar para a direita em background, pronta para o próximo clique
+    // 5. Limpa a tela que foi para a esquerda após o término da animação
     setTimeout(() => {
-        if (painelAtual && painelAtual.id !== `sheet-${aba}` && painelAtual.id !== 'side-panel') {
+        if (painelAtual && painelAtual.id !== `sheet-${aba}`) {
             painelAtual.classList.remove('saindo-esquerda');
         }
     }, 350);
 }
-    
+
+     
     abrirFolhaSala(idFolha) {
         ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => {
             if (f !== idFolha) this.fecharFolhaSala(f);
