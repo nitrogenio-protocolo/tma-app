@@ -468,22 +468,18 @@ class NitrogenDAO {
     }
 
     async fecharFolha() {
-        if (this.scanner) {
-            try { await this.scanner.stop(); } catch (e) {}
-            this.scanner = null;
-        }
-        const r = document.getElementById('reader'); 
-        const info = document.getElementById('info-pagamento');
-        if(r) r.style.setProperty('display', 'none', 'important');
-        if(info) info.style.display = 'block'; 
-        
-        const sidePanel = document.getElementById('side-panel');
-        if(sidePanel) sidePanel.classList.remove('active');
-        
-        document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
-        const btnHome = document.getElementById('nav-home');
-        if (btnHome) btnHome.classList.add('active');
+    if (this.scanner) {
+        try { await this.scanner.stop(); } catch (e) {}
+        this.scanner = null;
     }
+    const r = document.getElementById('reader'); 
+    const info = document.getElementById('info-pagamento');
+    if(r) r.style.setProperty('display', 'none', 'important');
+    if(info) info.style.display = 'block'; 
+    
+    const sidePanel = document.getElementById('side-panel');
+    if(sidePanel) sidePanel.classList.remove('active');
+}
 
     atualizarSaldosInterface() {
         const txtSaldo = document.getElementById('perfil-saldo-tokens'); 
