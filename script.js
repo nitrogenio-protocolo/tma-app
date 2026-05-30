@@ -497,8 +497,8 @@ class NitrogenDAO {
         if (txtGirosPerfilDinamico) txtGirosPerfilDinamico.innerText = this.girosDisponiveis;
     }
     
-    mudarAba(aba) {
-    // 1. Sincroniza o rodapé azul imediatamente no clique (Limpo e focado)
+    mmudarAba(aba) {
+    // 1. Sincroniza o rodapé azul imediatamente no clique
     document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => {
         item.classList.remove('active');
     });
@@ -508,13 +508,11 @@ class NitrogenDAO {
         botaoAtivo.classList.add('active');
     }
 
-    // Para o scanner de QR Code se ele estiver ativo ao mudar de aba
     if (this.scanner) { 
         this.scanner.stop().catch(() => {}); 
         this.scanner = null; 
     }
 
-    // Identifica qual tela está ativa no momento do clique
     const painelAtual = document.querySelector('.side-panel.active');
 
     // 2. Se o usuário clicou para voltar para a Home
@@ -525,6 +523,10 @@ class NitrogenDAO {
         });
         this.fecharFolha();
         ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
+        
+        // Garante que a Home fique acesa visualmente ao voltar
+        const btnHome = document.getElementById('nav-home');
+        if (btnHome) btnHome.classList.add('active');
         return;
     }
 
@@ -534,7 +536,7 @@ class NitrogenDAO {
         painelAtual.classList.add('saindo-esquerda');
     }
 
-    // 4. Abre a folha correspondente do seu HTML de forma padrão e limpa
+    // 4. Abre a folha correspondente de forma padrão e limpa
     this.abrirFolhaSala(aba);
     const folhaEspecifica = document.getElementById(`sheet-${aba}`);
     if (folhaEspecifica) {
@@ -542,7 +544,7 @@ class NitrogenDAO {
         folhaEspecifica.classList.add('active');
     }
 
-    // 5. Limpa a tela que foi para a esquerda após o término da animação
+    // 5. Limpa a tela antiga após a animação
     setTimeout(() => {
         if (painelAtual && painelAtual.id !== `sheet-${aba}`) {
             painelAtual.classList.remove('saindo-esquerda');
