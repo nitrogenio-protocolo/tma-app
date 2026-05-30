@@ -502,34 +502,40 @@ class NitrogenDAO {
     }
     
     mudarAba(aba) {
-        document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item, .bottom-nav-btn').forEach(item => {
-            item.classList.remove('active');
-        });
+    // 1. Remove a cor ativa de TODOS os itens de menu e botões de rodapé imediatamente
+    document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item, .bottom-nav-btn').forEach(item => {
+        item.classList.remove('active');
+    });
 
-        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+    // Parar o scanner se estiver ativo
+    if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
 
-        const botaoAtivo = document.getElementById(`nav-${aba}`);
-        if (botaoAtivo) botaoAtivo.classList.add('active');
+    // 2. Acende a cor azul no ícone do rodapé clicado NO MESMO SEGUNDO
+    const botaoAtivo = document.getElementById(`nav-${aba}`);
+    if (botaoAtivo) botaoAtivo.classList.add('active');
 
-        if (aba === 'home') {
-            this.fecharFolha();
-            ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
-            return;
-        }
+    // 3. Efeito de Apagar: Remove a classe 'active' de todas as folhas para iniciar o fade out
+    document.querySelectorAll('.side-panel, #side-panel').forEach(painel => {
+        painel.classList.remove('active');
+    });
 
-        const folhaRedes = document.getElementById('sheet-redes');
-        if (folhaRedes && aba !== 'redes') {
-            folhaRedes.classList.remove('active');
-        }
+    // 4. Se o destino for a Home, limpa tudo e encerra
+    if (aba === 'home') {
+        this.fecharFolha();
+        ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
+        return;
+    }
 
+    // 5. O TRUQUE DAS LUZES: Espera 150 milissegundos (tempo da folha antiga sumir)
+    // Isso evita conflito no JS e deixa a transição extremamente leve
+    setTimeout(() => {
+        
         if (aba === 'perfil') {
             const title = document.getElementById('panel-title');
             const content = document.getElementById('panel-content');
             const panel = document.getElementById('side-panel');
             
-            if (panel) panel.classList.add('active');
             if (title) title.innerText = "PERFIL PÚBLICO";
-            
             if (content) {
                 content.innerHTML = `
                     <div class="card-perfil-publico" style="background: #1a1a1a; color: #fff; border-radius: 16px; padding: 20px; text-align: left; font-family: sans-serif;">
@@ -561,10 +567,20 @@ class NitrogenDAO {
                     </div>
                 `;
             }
+            // Acende o painel do perfil suavemente
+            if (panel) panel.classList.add('active');
+            
         } else {
+            // Executa a abertura padrão das outras salas (NFT, Governança, Redes)
             this.abrirFolhaSala(aba);
+            
+            // Garante que a folha específica ganhe a classe active para dar o Fade In
+            const folhaEspecifica = document.getElementById(`sheet-${aba}`);
+            if (folhaEspecifica) folhaEspecifica.classList.add('active');
         }
-    }
+
+    }, 150); // 150 milissegundos de delay para a troca suave de luzes
+}
     
     abrirFolhaSala(idFolha) {
         ['nft', 'governanca', 'recompensas', 'perfil'].forEach(f => {
