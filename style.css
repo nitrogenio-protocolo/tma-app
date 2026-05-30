@@ -122,29 +122,41 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
 .btn-label { font-size: 0.65rem; font-weight: 900; color: var(--blue); text-transform: uppercase; }
 
 /* ==========================================================================
-   SISTEMA DE TELAS LATERAIS (UNIFICADO COM FADE - SUAVE)
+   SISTEMA DE TELAS LATERAIS (FLUXO CONTÍNUO: DIREITA -> ESQUERDA)
    ========================================================================== */
 .side-panel { 
     position: fixed; 
     top: 0; 
-    left: 0; /* Alinhado permanentemente na tela */
+    left: 0; 
     width: 100%; 
-    height: 100vh; /* Ocupa 100% da altura para cobrir o fundo perfeitamente */
+    height: 100vh; 
     background: var(--bg); 
     z-index: 1500; 
     display: flex; 
     flex-direction: column; 
 
-    /* Configuração para o efeito de "Troca de Luzes" (Fade) */
+    /* Começa totalmente empurrada para a DIREITA (fora da tela) e invisível */
+    transform: translateX(100%);
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease-in-out, visibility 0.25s ease-in-out;
+    pointer-events: none; 
+
+    /* Transição de movimento ultra suave usando aceleração de hardware */
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
 }
 
-/* Quando o JS ativa a folha, ela surge suavemente no mesmo lugar */
+/* ESTADO 1: Tela entra e fica ativa no CENTRO */
 .side-panel.active { 
+    transform: translateX(0);
     opacity: 1;
-    visibility: visible;
+    pointer-events: auto;
+    z-index: 1600; /* Fica acima da tela que está saindo */
+}
+
+/* ESTADO 2: Tela antiga é empurrada para a ESQUERDA e desaparece */
+.side-panel.saindo-esquerda {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
 }
 
 .side-panel-header { 
@@ -155,17 +167,8 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
     background: var(--white); 
 }
-
 .side-panel-header h3 { margin: 0; color: #1a1a1a; font-size: 18px; font-weight: 600; }
-
-/* Adicionamos uma margem interna de 75px na parte de baixo do conteúdo */
-/* Isso garante que nenhum botão ou texto das salas fique escondido atrás do rodapé fixo */
-.side-panel-content { 
-    flex: 1; 
-    overflow-y: auto; 
-    padding: 20px; 
-    padding-bottom: 75px; 
-}
+.side-panel-content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 75px; }
 
 .back-arrow-btn { background: none; border: none; padding: 6px; cursor: pointer; display: flex; align-items: center; border-radius: 50%; }
 .back-arrow-btn svg { width: 24px; height: 24px; fill: none; stroke: #333; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
