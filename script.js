@@ -645,26 +645,22 @@ class NitrogenDAO {
     }
 
     fecharFolhaSala(idFolha) {
-        const painelAbas = document.getElementById(`sheet-${idFolha}`);
-        if (painelAbas) {
-            painelAbas.classList.remove('active');
-        }
-        
-        const painelLateral = document.getElementById('side-panel');
-        if (painelLateral) {
-            painelLateral.classList.remove('active');
-        }
-        
-        document.querySelectorAll('.cmc-footer-nav .cmc-nav-item, .bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
-        const btnHome = document.getElementById('nav-home');
-        if (btnHome) btnHome.classList.add('active');
-
-        const content = document.getElementById('panel-content');
-        if (content && !painelAbas) content.innerHTML = '';
-        
-        const containerGov = document.getElementById('conteudo-subsala-governanca');
-        if (containerGov) containerGov.innerHTML = '';
+    const painelAbas = document.getElementById(`sheet-${idFolha}`);
+    if (painelAbas) {
+        painelAbas.classList.remove('active');
     }
+    
+    const painelLateral = document.getElementById('side-panel');
+    if (painelLateral) {
+        painelLateral.classList.remove('active');
+    }
+
+    const content = document.getElementById('panel-content');
+    if (content && !painelAbas) content.innerHTML = '';
+    
+    const containerGov = document.getElementById('conteudo-subsala-governanca');
+    if (containerGov) containerGov.innerHTML = '';
+}
 
     abrirSubModulo(modulo) {
         const content = document.getElementById('panel-content');
