@@ -196,15 +196,46 @@ header h1 { color: var(--blue); font-weight: 900; font-size: 1.2rem; }
     z-index: 9990; box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.04);
 }
 
-.cmc-nav-item {
-    background: none; border: none; outline: none;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #58667e; font-size: 11px; font-weight: 600; width: 20%; height: 100%; cursor: pointer;
+/* 1. Estado Padrão (Todos os 5 ícones começam "apagados"/cinzas) */
+.bottom-nav .nav-item,
+.cmc-footer-nav .cmc-nav-item,
+footer nav a {
+    background: none; border: none; outline: none; font-size: 11px; font-weight: 600; width: 20%; height: 100%; cursor: pointer; /* Mantém a estrutura original */
+    color: #888888 !important;            /* Cinza fosco */
+    transition: all 0.25s ease-in-out;    /* Transição suave ao tocar */
+    border-radius: 16px;                  /* Arredonda o fundo suave */
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.cmc-icon { width: 23px; height: 23px; margin-bottom: 3px; }
-.cmc-nav-item.active { color: #3861fb !important; }
-.cmc-nav-item.active .cmc-icon { stroke: #3861fb !important; fill: none; }
+/* Garante que a imagem/ícone padrão também fique cinza */
+.cmc-icon, .bottom-nav .nav-item svg, .bottom-nav .nav-item i,
+footer nav a svg, footer nav a i {
+    width: 23px; height: 23px; margin-bottom: 3px; /* Mantém o tamanho do seu ícone original */
+    fill: #888888 !important;
+    color: #888888 !important;
+    stroke: #888888 !important;
+}
+
+/* 2. Estado Ativo (Apenas o ícone selecionado "acende") */
+.bottom-nav .nav-item.active,
+.cmc-footer-nav .cmc-nav-item.active,
+footer nav a.active {
+    color: #3861fb !important;             /* Azul aceso igual ao do CoinMarketCap */
+    background-color: rgba(56, 97, 251, 0.08) !important; /* Pílula de fundo azul bem transparente */
+}
+
+/* Força o ícone/SVG ativo a herdar o azul aceso */
+.bottom-nav .nav-item.active svg, .bottom-nav .nav-item.active i,
+.cmc-footer-nav .cmc-nav-item.active .cmc-icon,
+footer nav a.active svg, footer nav a.active i {
+    fill: #3861fb !important;
+    color: #3861fb !important;
+    stroke: #3861fb !important;
+}
 
 /* ELEMENTOS GERAIS */
 .btn-confirm { background: var(--blue); color: white; border: none; padding: 14px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
