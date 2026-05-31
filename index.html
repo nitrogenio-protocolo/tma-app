@@ -112,6 +112,132 @@
             </button>
             <h3>🏛️ Governança & DAO</h3>
         </div>
+
+        <!-- ==========================================
+     SUB-FOLHAS DO MENU DA GOVERNANÇA 
+     ========================================== -->
+
+<!-- 1. Folha G21#nonce -->
+<div id="sheet-g21" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-g21')"><i class="fas fa-arrow-left"></i></button>
+        <h3>G21 #nonce</h3>
+    </div>
+    <div class="panel-content-inner">
+        <!-- O conteúdo antigo do G21 entra aqui -->
+        <p style="padding: 20px; color: #666;">Aguardando assinaturas do cofre Safe...</p>
+    </div>
+</div>
+
+<!-- 2. Folha Tesouraria -->
+<div id="sheet-tesouraria" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-tesouraria')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Tesouraria</h3>
+    </div>
+    <div class="panel-content-inner">
+        <p style="padding: 20px; color: #666;">Dados financeiros e saldos do protocolo.</p>
+    </div>
+</div>
+
+<!-- 3. Folha Comunidade -->
+<div id="sheet-comunidade" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-comunidade')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Comunidade</h3>
+    </div>
+    <div class="panel-content-inner">
+        <p style="padding: 20px; color: #666;">Canais de comunicação e chat dos membros.</p>
+    </div>
+</div>
+
+<!-- 4. Folha Recompensas (Menu Principal de Recompensas) -->
+<div id="sheet-recompensas" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-recompensas')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Recompensas</h3>
+    </div>
+    <div class="panel-content-inner" style="padding: 15px;">
+        
+        <!-- Campo do Código da Comunidade (Visível no topo do menu de recompensas) -->
+        <div style="background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <label style="font-size: 11px; font-weight: bold; color: #888; text-transform: uppercase;">Código da Comunidade</label>
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <input type="text" placeholder="Insira o código aqui" style="flex: 1; padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                <button style="background: #007bff; color: white; border: none; padding: 0 15px; border-radius: 8px; font-weight: bold;">ENVIAR</button>
+            </div>
+        </div>
+
+        <!-- Botões para abrir as sub-folhas de Recompensas -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="menu-item-card" onclick="abrirSubFolha('sheet-poupanca')" style="cursor:pointer; background:#fff; padding:20px; text-align:center; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <span style="font-size:24px;">💰</span>
+                <h4 style="margin-top:10px; font-size:12px;">POUPANÇA</h4>
+            </div>
+            <div class="menu-item-card" onclick="abrirSubFolha('sheet-quiz')" style="cursor:pointer; background:#fff; padding:20px; text-align:center; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <span style="font-size:24px;">📚</span>
+                <h4 style="margin-top:10px; font-size:12px;">QUIZ SEMANAL</h4>
+            </div>
+            <div class="menu-item-card" onclick="abrirSubFolha('sheet-checkin')" style="cursor:pointer; background:#fff; padding:20px; text-align:center; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <span style="font-size:24px;">📅</span>
+                <h4 style="margin-top:10px; font-size:12px;">CHECK-IN DIÁRIO</h4>
+            </div>
+            <div class="menu-item-card" onclick="abrirSubFolha('sheet-roleta')" style="cursor:pointer; background:#fff; padding:20px; text-align:center; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <span style="font-size:24px;">🎯</span>
+                <h4 style="margin-top:10px; font-size:12px;">ROLETA DO BEM</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================
+     SUB-SUB-FOLHAS (DENTRO DE RECOMPENSAS)
+     ========================================== -->
+
+<!-- 5. Folha Poupança -->
+<div id="sheet-poupanca" class="side-panel">
+    <div class="header-com-volta">
+        <!-- Volta para a folha de recompensas -->
+        <button onclick="fecharSubFolha('sheet-poupanca')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Poupança</h3>
+    </div>
+    <div class="panel-content-inner">
+        <p style="padding: 20px; color: #666;">Detalhes dos rendimentos travados e anti-despejo.</p>
+    </div>
+</div>
+
+<!-- 6. Folha Quiz Semanal -->
+<div id="sheet-quiz" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-quiz')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Quiz Semanal</h3>
+    </div>
+    <div class="panel-content-inner">
+        <p style="padding: 20px; color: #666;">Responda às perguntas e acumule tokens.</p>
+    </div>
+</div>
+
+<!-- 7. Folha Check-in Diário -->
+<div id="sheet-checkin" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-checkin')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Check-in Diário</h3>
+    </div>
+    <div class="panel-content-inner">
+        <p style="padding: 20px; color: #666;">Trilha de Segunda a Domingo (Não quebre a sequência!).</p>
+    </div>
+</div>
+
+<!-- 8. Folha Roleta do Bem -->
+<div id="sheet-roleta" class="side-panel">
+    <div class="header-com-volta">
+        <button onclick="fecharSubFolha('sheet-roleta')"><i class="fas fa-arrow-left"></i></button>
+        <h3>Roleta do Bem</h3>
+    </div>
+    <div class="panel-content-inner">
+        <p style="padding: 20px; color: #666;">Gire a roleta e teste sua sorte.</p>
+    </div>
+</div>
         
         <div class="side-panel-content">
             <div id="governanca-liberada" class="perfil-container" style="padding-top: 5px; display: block;">
