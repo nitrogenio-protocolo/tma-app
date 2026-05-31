@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,10 +12,12 @@
 </head>
 <body>
 
+    <!-- SPLASH SCREEN ANIMAÇÃO RAPOSA -->
     <div id="tela-azul-raposa">
         <img src="raposa.png" class="raposa-splash-img" alt="Nitrogênio Protocolo">
     </div>
 
+    <!-- SPLASH SCREEN TERMOS DE USO -->
     <div id="splash-screen-termos" class="splash-overlay">
         <div class="splash-slide active" id="slide-1">
             <div class="splash-logo-box">
@@ -49,6 +50,7 @@
         </div> 
     </div>
 
+    <!-- APP HEADER -->
     <header class="oculto-init">
         <div class="logo-area">
             <h1>NITROGÊNIO</h1>
@@ -57,6 +59,7 @@
         <button id="btn-conectar" class="btn-wallet">CONECTAR</button>
     </header>
 
+    <!-- CONTEÚDO PRINCIPAL (HOME) -->
     <main class="oculto-init">
         <section class="card-master">
             <div class="balance-info">
@@ -85,8 +88,7 @@
         </nav>
     </main>
 
-    <!-- FOLHAS PRINCIPAIS DO SISTEMA -->
-
+    <!-- PAINEL LATERAL PARA FLUXOS DA HOME (PAGAR / RECEBER / COLETAR / TROCAR) -->
     <div id="side-panel" class="side-panel">
         <div class="side-panel-header">
             <button id="close-panel" class="back-arrow-btn" onclick="App.fecharFolhaSala()">
@@ -97,6 +99,12 @@
         <div id="panel-content" class="side-panel-content"></div>
     </div>
 
+
+    <!-- ==========================================================================
+         FOLHAS PRINCIPAIS DO MENU INFERIOR (RODAPÉ AZUL)
+         ========================================================================== -->
+
+    <!-- ABA 1: GALERIA NFT -->
     <div id="sheet-nft" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="App.mudarAba('home')">
@@ -104,12 +112,12 @@
             </button>
             <h3>🎨 Galeria NFT</h3>
         </div>
-        <div class="side-panel-content">
+        <div class="side-panel-content" style="padding: 15px;">
             <p>Área de coleções e mint do protocolo...</p>
         </div>
     </div>
 
-    <!-- TELA DA GOVERNANÇA PRINCIPAL -->
+    <!-- ABA 2: GOVERNANÇA PRINCIPAL & DAO -->
     <div id="sheet-governanca" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="App.mudarAba('home')">
@@ -118,14 +126,14 @@
             <h3>🏛️ Governança & DAO</h3>
         </div>
         
-        <div class="side-panel-content">
+        <div class="side-panel-content" style="padding: 15px;">
             <div id="governanca-liberada" class="perfil-container" style="padding-top: 5px; display: block;">
                 <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
                     <h3 style="margin: 0; font-size: 1.1rem; color: #1a1a1a; font-weight: 800;">Olá, Membro!</h3>
                     <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0 0;">Bem-vindo ao centro administrativo descentralizado.</p>
                 </div>
 
-                <!-- Mudamos o onclick aqui para abrir as novas sub-folhas direto -->
+                <!-- Grid de Sub-folhas Administrativas -->
                 <div class="perfil-menu-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <button type="button" class="btn-perfil-menu" id="menu-g21" onclick="abrirSubFolha('sheet-g21')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">⚖️</span>
@@ -144,17 +152,70 @@
                         RECOMPENSAS 
                     </button>
                 </div>
-
                 <div id="subsecao-governanca-container" style="margin-top: 15px; width: 100%;"></div>
             </div>
         </div>
     </div> 
 
-    <!-- ==========================================
-         AS NOVAS SUB-FOLHAS INDEPENDENTES (SOLTAS NO BODY)
-         ========================================== -->
+    <!-- ABA 3: REDES SOCIAIS (Aba Corrigida) -->
+    <div id="sheet-redes" class="side-panel">
+        <div class="side-panel-header">
+            <button class="back-arrow-btn" onclick="App.mudarAba('home')">
+                <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <h3>🌐 Redes Sociais</h3>
+        </div>
+        <div class="side-panel-content" style="padding: 15px;">
+            <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: center;">
+                <p style="font-size: 13px; color: #555; margin-bottom: 15px; font-weight: bold;">Siga nossos canais oficiais para novidades e anúncios de Airdrops:</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="#" style="background: #0088cc; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: block;">✈️ TELEGRAM</a>
+                    <a href="#" style="background: #1da1f2; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: block;">🕊️ TWITTER / X</a>
+                    <a href="#" style="background: #5865f2; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: block;">🔮 DISCORD</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- 1. Folha G21#nonce -->
+    <!-- ABA 4: MEU PERFIL (Aba Corrigida e Isolada de Recompensas) -->
+    <div id="sheet-perfil" class="side-panel">
+        <div class="side-panel-header">
+            <button class="back-arrow-btn" onclick="App.mudarAba('home')">
+                <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <h3>👤 Meu Perfil</h3>
+        </div>
+        <div class="side-panel-content" style="padding: 15px;">
+            <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 5px;">🤖</div>
+                    <h4 style="margin: 0; font-size: 16px; font-weight: 800;">Membro do Protocolo</h4>
+                    <small id="perfil-status-web3" style="color: #666; font-size: 11px;">Carteira não conectada</small>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; background: #f8f9fa; padding: 12px; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold;">
+                        <span style="color:#666;">Saldo Acumulado:</span>
+                        <strong style="color: #007BFF;"><span id="perfil-saldo-tokens">0.00</span> N</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold;">
+                        <span style="color:#666;">Giros da Roleta:</span>
+                        <strong><span id="perfil-giros-contagem">0</span> disponíveis</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold;">
+                        <span style="color:#666;">Status de Validação:</span>
+                        <strong style="color: #28A745;">Passe Verificado ✔</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================================================
+         SUB-FOLHAS DE GOVERNANÇA (DISPARADAS VIA ONCLICK INTERNO)
+         ========================================================================== -->
+
+    <!-- 1. SUB-FOLHA: G21#nonce -->
     <div id="sheet-g21" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-g21')">
@@ -164,21 +225,21 @@
         </div>
         <div class="side-panel-content" style="padding: 15px;">
             <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
-                <p style="font-size: 10px; color: var(--blue); font-weight: bold; margin: 0 0 5px 0;">CONSELHO DOS GUARDIÕES</p>
+                <p style="font-size: 10px; color: #007BFF; font-weight: bold; margin: 0 0 5px 0;">CONSELHO DOS GUARDIÕES</p>
                 <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; border: 1px solid #e0e0e0; margin-bottom: 10px;">
                     <h4 style="margin: 0 0 5px 0; font-size: 13px;">PROPOSTA EM PAUTA:</h4>
                     <p style="margin: 0; font-size: 11px; color: #555; font-weight: bold;">Ajustar a queima interna de tokens para 1.2% neste mês?</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-confirm" style="flex: 1; background: #2e7d32;" onclick="App.votarG21('sim')">SIM</button>
-                    <button type="button" class="btn-confirm" style="flex: 1; background: #c62828;" onclick="App.votarG21('nao')">NÃO</button>
+                    <button type="button" class="btn-confirm" style="flex: 1; background: #2e7d32; color:white; padding:10px; border:none; border-radius:6px; font-weight:bold;" onclick="App.votarG21('sim')">SIM</button>
+                    <button type="button" class="btn-confirm" style="flex: 1; background: #c62828; color:white; padding:10px; border:none; border-radius:6px; font-weight:bold;" onclick="App.votarG21('nao')">NÃO</button>
                 </div>
                 <p style="margin-top: 15px; font-size: 11px; color: #666; text-align: center;">Aguardando assinaturas do cofre Safe (Janela de 11h)...</p>
             </div>
         </div>
     </div>
 
-    <!-- 2. Folha Tesouraria -->
+    <!-- 2. SUB-FOLHA: Tesouraria -->
     <div id="sheet-tesouraria" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-tesouraria')">
@@ -189,7 +250,7 @@
         <div class="side-panel-content" style="padding: 15px;">
             <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
                 <p style="font-size: 10px; color: #666; font-weight: bold; margin: 0 0 2px 0;">ENDEREÇO DO COFRE (SAFE WALLET)</p>
-                <p style="font-size: 11px; font-family: monospace; font-weight: bold; color: var(--blue); margin: 0 0 15px 0; background: #f0f4f8; padding: 8px; border-radius: 6px; overflow: hidden; text-overflow: ellipsis;">
+                <p style="font-size: 11px; font-family: monospace; font-weight: bold; color: #007BFF; margin: 0 0 15px 0; background: #f0f4f8; padding: 8px; border-radius: 6px; overflow: hidden; text-overflow: ellipsis;">
                     0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219
                 </p>
                 <div style="display: flex; flex-direction: column; gap: 8px;">
@@ -207,7 +268,7 @@
         </div>
     </div>
 
-    <!-- 3. Folha Comunidade -->
+    <!-- 3. SUB-FOLHA: Comunidade -->
     <div id="sheet-comunidade" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-comunidade')">
@@ -225,7 +286,7 @@
         </div>
     </div>
 
-    <!-- 4. Folha Recompensas (Menu de 4 botões + Código em cima) -->
+    <!-- 4. SUB-FOLHA: Recompensas (Apenas os Módulos do Ecossistema) -->
     <div id="sheet-recompensas" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-recompensas')">
@@ -235,27 +296,27 @@
         </div>
         <div class="side-panel-content" style="padding: 15px;">
             <div class="perfil-container" style="padding-top: 0px;">
-                <!-- Código da Comunidade Fixo no Topo -->
+                <!-- Validador de Código Promocional -->
                 <div style="text-align: left; background: #ffffff; padding: 12px; border-radius: 12px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
-                    <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px;">CÓDIGO DA COMUNIDADE</p>
+                    <p style="font-size: 9px; margin: 0 0 6px 0; font-weight: bold; color: #666;">CÓDIGO DA COMUNIDADE</p>
                     <div style="display: flex; gap: 8px;">
                         <input type="text" id="input-cod-comunidade" placeholder="Insira o código aqui" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #E0E0E0; font-size: 0.85rem; outline: none; font-weight: bold;">
-                        <button type="button" onclick="App.validarCodigoComunidade()" style="background: var(--blue); color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; cursor: pointer;">ENVIAR</button>
+                        <button type="button" onclick="App.validarCodigoComunidade()" style="background: #007BFF; color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; cursor: pointer;">ENVIAR</button>
                     </div>
                 </div>
 
-                <!-- Grid de 4 Sub-módulos que agora abrem folhas independentes -->
+                <!-- Grid de Atividades Internas -->
                 <div class="perfil-menu-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button type="button" class="btn-perfil-menu" id="menu-poupanca" onclick="abrirSubFolha('sheet-poupanca')" style="padding: 14px; border-radius: 12px; font-weight: bold;">
+                    <button type="button" class="btn-perfil-menu" id="menu-poupanca" onclick="abrirSubFolha('sheet-poupanca')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">💰</span>POUPANÇA
                     </button>
-                    <button type="button" class="btn-perfil-menu" id="menu-quiz" onclick="abrirSubFolha('sheet-quiz')" style="padding: 14px; border-radius: 12px; font-weight: bold;">
+                    <button type="button" class="btn-perfil-menu" id="menu-quiz" onclick="abrirSubFolha('sheet-quiz')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">📚</span>QUIZ SEMANAL
                     </button>
-                    <button type="button" class="btn-perfil-menu" id="menu-checkin" onclick="abrirSubFolha('sheet-checkin')" style="padding: 14px; border-radius: 12px; font-weight: bold;">
+                    <button type="button" class="btn-perfil-menu" id="menu-checkin" onclick="abrirSubFolha('sheet-checkin')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">📆</span>CHECK-IN DIÁRIO
                     </button>
-                    <button type="button" class="btn-perfil-menu" id="menu-roleta" onclick="abrirSubFolha('sheet-roleta')" style="padding: 14px; border-radius: 12px; font-weight: bold;">
+                    <button type="button" class="btn-perfil-menu" id="menu-roleta" onclick="abrirSubFolha('sheet-roleta')" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 5px;">🎯</span>ROLETA DO BEM
                     </button>
                 </div>
@@ -263,7 +324,7 @@
         </div>
     </div>
 
-    <!-- 5. Folha Sub-Módulo: Poupança -->
+    <!-- 5. SUB-FOLHA DE ATIVIDADE: Poupança -->
     <div id="sheet-poupanca" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-poupanca')">
@@ -280,14 +341,14 @@
                     <strong>🧠 Por que poupar os seus Tokens N?</strong><br>
                     Trancando seus tokens por 30 dias, você minera <strong>1% de juros</strong>. Mantendo um saldo mínimo de <strong>1000 N0</strong> na poupança, você destrava <strong>Giros de Bônus automáticos</strong> para a Roleta!
                 </div>
-                <input type="number" id="input-qtd-poupanca" class="input-transparente" placeholder="0.00 N0" style="width: 100%; border-bottom: 2px solid var(--blue); padding: 8px 0; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; color: #1a1a1a;">
-                <button type="button" id="btn-travar-poupanca" class="btn-confirm" style="width:100%;" onclick="App.aplicarPoupança()">TRAVAR AGORA (30 DIAS)</button>
-                <button type="button" id="btn-resgatar-poupanca" class="btn-confirm green" style="width:100%; display:none; margin-top: 8px;" onclick="App.resgatarPoupança()">REMOVER E COLETAR JUROS</button>
+                <input type="number" id="input-qtd-poupanca" class="input-transparente" placeholder="0.00 N0" style="width: 100%; border: none; border-bottom: 2px solid #007BFF; padding: 8px 0; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; color: #1a1a1a; outline: none;">
+                <button type="button" id="btn-travar-poupanca" class="btn-confirm" style="width:100%; background:#007BFF; color:white; padding:12px; border:none; border-radius:8px; font-weight:bold;" onclick="App.aplicarPoupança()">TRAVAR AGORA (30 DIAS)</button>
+                <button type="button" id="btn-resgatar-poupanca" class="btn-confirm green" style="width:100%; display:none; margin-top: 8px; background:#28A745; color:white; padding:12px; border:none; border-radius:8px; font-weight:bold;" onclick="App.resgatarPoupança()">REMOVER E COLETAR JUROS</button>
             </div>
         </div>
     </div>
 
-    <!-- 6. Folha Sub-Módulo: Quiz Semanal -->
+    <!-- 6. SUB-FOLHA DE ATIVIDADE: Quiz Semanal -->
     <div id="sheet-quiz" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-quiz')">
@@ -298,12 +359,12 @@
         <div class="side-panel-content" style="padding: 15px;">
             <div style="background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; text-align: left;">
                 <p style="color:#666; font-size:13px;">Responda corretamente às perguntas sobre o ecossistema Web3 e fature recompensas diretas na sua conta.</p>
-                <p style="text-align:center; font-weight:bold; color:var(--blue); margin-top:20px;">Próximo quiz disponível em breve!</p>
+                <p style="text-align:center; font-weight:bold; color:#007BFF; margin-top:20px;">Próximo quiz disponível em breve!</p>
             </div>
         </div>
     </div>
 
-    <!-- 7. Folha Sub-Módulo: Check-in Diário -->
+    <!-- 7. SUB-FOLHA DE ATIVIDADE: Check-in Diário -->
     <div id="sheet-checkin" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-checkin')">
@@ -323,7 +384,7 @@
                     <div class="dia-box" id="checkin-d6"><span>D6</span><div class="status-circulo">+1</div></div>
                     <div class="dia-box" id="checkin-d7"><span>D7</span><div class="status-circulo">+1</div></div>
                 </div>
-                <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%; margin-bottom: 15px;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
+                <button type="button" id="btn-executar-checkin" class="btn-confirm" style="width:100%; background:#007BFF; color:white; padding:12px; border:none; border-radius:8px; font-weight:bold; margin-bottom: 15px;" onclick="App.executarCheckIn()">REIVINDICAR PRESENÇA</button>
                 <div id="caixa-presente-surpresa" class="apagado" style="background: #f8f9fa; border: 2px dashed #ccc; padding: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <span style="font-size: 1.6rem;">🎁</span>
                     <div style="text-align: left;">
@@ -335,7 +396,7 @@
         </div>
     </div>
 
-    <!-- 8. Folha Sub-Módulo: Roleta do Bem -->
+    <!-- 8. SUB-FOLHA DE ATIVIDADE: Roleta do Bem -->
     <div id="sheet-roleta" class="side-panel">
         <div class="side-panel-header">
             <button class="back-arrow-btn" onclick="fecharSubFolha('sheet-roleta')">
@@ -353,17 +414,19 @@
                         <div class="btn-roleta-centro" onclick="App.girarRoleta()">GIRAR!</div>
                     </div>
                 </div>
-                <div id="roleta-popup-resultado" class="revelacao-popup" style="display: none; font-weight: bold; font-size: 14px; color: var(--green); margin-top:10px;"></div>
+                <div id="roleta-popup-resultado" class="revelacao-popup" style="display: none; font-weight: bold; font-size: 14px; color: #28A745; margin-top:10px;"></div>
             </div>
         </div>
     </div>
 
 
-    <!-- MENU INFERIOR FIXO -->
+    <!-- ==========================================================================
+         MENU INFERIOR FIXO (RODAPÉ)
+         ========================================================================== -->
     <div class="cmc-footer-nav">
-      <button id="nav-home" class="cmc-nav-item " onclick="App.mudarAba('home')">
+      <button id="nav-home" class="cmc-nav-item" onclick="App.mudarAba('home')">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cmc-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        <span>HOM</span>
+        <span>HOME</span>
       </button>
       
       <button id="nav-nft" class="cmc-nav-item" onclick="App.mudarAba('nft')">
@@ -386,8 +449,6 @@
         <span>PERFIL</span>
       </button>
     </div>
-
-    <!-- REMOVEMOS OS TEMPLATES ANTIGOS DAQUI PORQUE ELES JÁ ESTÃO RENDERIZADOS DIRETO NAS SUAS FOLHAS OFICIAIS -->
 
     <script src="script.js"></script>
 </body>
