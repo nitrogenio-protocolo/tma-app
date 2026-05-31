@@ -1277,5 +1277,20 @@ class NitrogenDAO {
         } catch(e) {}
     }
 }
+// Abre qualquer folha ou sub-folha adicionando a classe active
+function abrirSubFolha(idFolha) {
+    const folha = document.getElementById(idFolha);
+    if (folha) {
+        folha.classList.add('active');
+    }
+}
+
+// Fecha apenas a folha atual ao clicar na seta voltar, revelando a tela anterior
+function fecharSubFolha(idFolha) {
+    const folha = document.getElementById(idFolha);
+    if (folha) {
+        folha.classList.remove('active');
+    }
+}
 
 const App = new NitrogenDAO();
