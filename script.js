@@ -515,47 +515,67 @@ class NitrogenDAO {
 
     const painelAtual = document.querySelector('.side-panel.active');
 
+    // LISTA COMPLETA DE TODAS AS TELAS/SUB-FOLHAS DO SEU SISTEMA
+    const todasAsFolhas = [
+        'sheet-nft', 'sheet-governanca', 'sheet-redes', 'sheet-perfil',
+        'sheet-g21', 'sheet-tesouraria', 'sheet-comunidade', 'sheet-recompensas',
+        'sheet-poupanca', 'sheet-quiz', 'sheet-checkin', 'sheet-roleta'
+    ];
+
     // 2. Se o usuário clicou para voltar para a Home
     if (aba === 'home') {
-        document.querySelectorAll('.side-panel').forEach(p => {
-            p.classList.remove('active');
-            p.classList.remove('saindo-esquerda');
+        todasAsFolhas.forEach(id => {
+            const f = document.getElementById(id);
+            if (f) {
+                f.classList.remove('active');
+                f.classList.remove('saindo-esquerda');
+            }
         });
-        this.fecharFolha();
-        ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => this.fecharFolhaSala(f));
         
-        // Garante que a Home fique acesa visualmente ao voltar
-        const btnHome = document.getElementById('nav-home');
-        if (btnHome) btnHome.classList.add('active');
+        if (typeof this.fecharFolha === 'function') this.fecharFolha();
+        ['nft', 'governanca', 'recompensas', 'perfil', 'redes'].forEach(f => {
+            if (typeof this.fecharFolhaSala === 'function') this.fecharFolhaSala(f);
+        });
+        
         return;
     }
-     // Limpa todas as sub-folhas abertas de uma vez quando vai para a Home
-['sheet-g21', 'sheet-tesouraria', 'sheet-comunidade', 'sheet-recompensas', 'sheet-poupanca', 'sheet-quiz', 'sheet-checkin', 'sheet-roleta'].forEach(id => {
-    const f = document.getElementById(id);
-    if(f) f.classList.remove('active');
-});
 
-    // 3. Empurra a tela antiga para a esquerda se ela existir
-    if (painelAtual) {
+    // 3. Se mudou para QUALQUER outra aba (NFT, Governança, Redes, Perfil)
+    // Transiciona o painel atual para a esquerda se ele for diferente da nova aba
+    if (painelAtual && painelAtual.id !== `sheet-${aba}`) {
         painelAtual.classList.remove('active');
         painelAtual.classList.add('saindo-esquerda');
     }
 
-    // 4. Abre a folha correspondente de forma padrão e limpa
-    this.abrirFolhaSala(aba);
+    // 4. Abre a folha correspondente (Removendo travas e adicionando active)
     const folhaEspecifica = document.getElementById(`sheet-${aba}`);
     if (folhaEspecifica) {
         folhaEspecifica.classList.remove('saindo-esquerda');
         folhaEspecifica.classList.add('active');
     }
 
-    // 5. Limpa a tela antiga após a animação
+    // Se você estiver mudando entre abas principais, garante que as sub-folhas internas fechem
+    if (['nft', 'governanca', 'redes', 'perfil'].includes(aba)) {
+        const subFolhas Internas = ['sheet-g21', 'sheet-tesouraria', 'sheet-comunidade', 'sheet-recompensas', 'sheet-poupanca', 'sheet-quiz', 'sheet-checkin', 'sheet-roleta'];
+        subFolhasInternas.forEach(id => {
+            if (id !== `sheet-${aba}`) {
+                const f = document.getElementById(id);
+                if (f) f.classList.remove('active');
+            }
+        });
+    }
+
+    // 5. Limpa a classe de animação antiga após terminar a transição
     setTimeout(() => {
-        if (painelAtual && painelAtual.id !== `sheet-${aba}`) {
-            painelAtual.classList.remove('saindo-esquerda');
-        }
+        todasAsFolhas.forEach(id => {
+            if (id !== `sheet-${aba}`) {
+                const f = document.getElementById(id);
+                if (f) f.classList.remove('saindo-esquerda');
+            }
+        });
     }, 350);
 }
+        
 
      
     abrirFolhaSala(idFolha) {
