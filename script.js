@@ -529,6 +529,11 @@ class NitrogenDAO {
         if (btnHome) btnHome.classList.add('active');
         return;
     }
+     // Limpa todas as sub-folhas abertas de uma vez quando vai para a Home
+['sheet-g21', 'sheet-tesouraria', 'sheet-comunidade', 'sheet-recompensas', 'sheet-poupanca', 'sheet-quiz', 'sheet-checkin', 'sheet-roleta'].forEach(id => {
+    const f = document.getElementById(id);
+    if(f) f.classList.remove('active');
+});
 
     // 3. Empurra a tela antiga para a esquerda se ela existir
     if (painelAtual) {
