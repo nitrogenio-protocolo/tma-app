@@ -541,22 +541,21 @@ class NitrogenDAO {
     }
 
     // 3. Se mudou para QUALQUER outra aba (NFT, Governança, Redes, Perfil)
-    // Transiciona o painel atual para a esquerda se ele for diferente da nova aba
     if (painelAtual && painelAtual.id !== `sheet-${aba}`) {
         painelAtual.classList.remove('active');
         painelAtual.classList.add('saindo-esquerda');
     }
 
-    // 4. Abre a folha correspondente (Removendo travas e adicionando active)
+    // 4. Abre a folha correspondente
     const folhaEspecifica = document.getElementById(`sheet-${aba}`);
     if (folhaEspecifica) {
         folhaEspecifica.classList.remove('saindo-esquerda');
         folhaEspecifica.classList.add('active');
     }
 
-    // Se você estiver mudando entre abas principais, garante que as sub-folhas internas fechem
+    // Se estiver mudando entre abas principais, fecha as sub-folhas internas (Corrigido sem espaço)
     if (['nft', 'governanca', 'redes', 'perfil'].includes(aba)) {
-        const subFolhas Internas = ['sheet-g21', 'sheet-tesouraria', 'sheet-comunidade', 'sheet-recompensas', 'sheet-poupanca', 'sheet-quiz', 'sheet-checkin', 'sheet-roleta'];
+        const subFolhasInternas = ['sheet-g21', 'sheet-tesouraria', 'sheet-comunidade', 'sheet-recompensas', 'sheet-poupanca', 'sheet-quiz', 'sheet-checkin', 'sheet-roleta'];
         subFolhasInternas.forEach(id => {
             if (id !== `sheet-${aba}`) {
                 const f = document.getElementById(id);
