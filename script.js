@@ -948,14 +948,45 @@ class NitrogenDAO {
         }
     }
 
-    executarCheckIn() {
-        const hoje = new Date();
-        const hojeString = hoje.getFullYear() + '-' + 
-                           String(hoje.getMonth() + 1).padStart(2, '0') + '-' + 
-                           String(hoje.getDate()).padStart(2, '0');
+    e    async executarCheckIn() {
+        const btn = document.getElementById('btn-executar-checkin');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "VERIFICANDO HORA...";
+        }
+
+        let hojeString;
+        let ontemString;
+
+        try {
+            // Busca o horário oficial do servidor da Binance para evitar fraudes com o relógio local
+            const response = await fetch('https://api.binance.com/api/v3/time');
+            const data = await response.json();
+            
+            // O servidor retorna em milissegundos (timestamp)
+            const dataServidor = new Date(data.serverTime);
+            
+            hojeString = dataServidor.getFullYear() + '-' + 
+                         String(dataServidor.getMonth() + 1).padStart(2, '0') + '-' + 
+                         String(dataServidor.getDate()).padStart(2, '0');
+
+            const dataOntem = new Date(data.serverTime);
+            dataOntem.setDate(dataOntem.getDate() - 1);
+            ontemString = dataOntem.getFullYear() + '-' + 
+                          String(dataOntem.getMonth() + 1).padStart(2, '0') + '-' + 
+                          String(dataOntem.getDate()).padStart(2, '0');
+
+        } catch (error) {
+            console.error("Erro ao buscar horário do servidor:", error);
+            alert("Falha de sincronização de rede. Verifique sua conexão para fazer o Check-in.");
+            this.atualizarLayoutCheckIn();
+            return;
+        }
         
         if (this.checkinUltimaData === hojeString) {
-            return alert("Você já garantiu seu giro hoje. Volte amanhã!");
+            alert("Você já garantiu seu giro hoje. Volte amanhã!");
+            this.atualizarLayoutCheckIn();
+            return;
         }
         
         if (isNaN(this.checkinDiasConsecutivos) || this.checkinDiasConsecutivos === null || this.checkinDiasConsecutivos === undefined) {
@@ -964,12 +995,6 @@ class NitrogenDAO {
         
         let quebrouSequencia = true;
         if (this.checkinUltimaData) {
-            const ontem = new Date();
-            ontem.setDate(ontem.getDate() - 1);
-            const ontemString = ontem.getFullYear() + '-' + 
-                                String(ontem.getMonth() + 1).padStart(2, '0') + '-' + 
-                                String(ontem.getDate()).padStart(2, '0');
-                                
             if (this.checkinUltimaData === ontemString) {
                 quebrouSequencia = false;
             }
