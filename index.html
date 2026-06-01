@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nitrogênio Protocolo</title>
-    <section id="tela-home" class="ativa">
+    <!-- CONEXÃO CORRETA COM O SEU CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -20,7 +21,8 @@
 
         <main id="conteudo-principal">
 
-            <section id="tela-home">
+            <!-- AQUI: Adicionamos a classe 'ativa' na seção correta para ela aparecer sozinha -->
+            <section id="tela-home" class="ativa">
                 <div class="balance-card">
                     <p class="balance-title">SALDO DA CONTA CONECTADA</p>
                     <p class="balance-value">0.00 BNB</p>
@@ -54,7 +56,6 @@
                 </div>
             </section>
 
-
             <section id="tela-receber">
                 <button class="btn-voltar">← Voltar</button>
                 <h2>Ação: Receber</h2>
@@ -77,7 +78,6 @@
                 </div>
             </section>
 
-
             <section id="tela-coletar">
                 <button class="btn-voltar">← Voltar</button>
                 <h2>Ação: Coletar</h2>
@@ -97,7 +97,6 @@
                     <button class="btn-acao-coletar">REIVINDICAR TOKENS (CLAIM)</button>
                 </div>
             </section>
-
 
             <section id="tela-trocar">
                 <button class="btn-voltar">← Voltar</button>
@@ -123,7 +122,6 @@
                 </div>
             </section>
 
-
             <section id="tela-nft">
                 <h2>Painel NFT</h2>
                 <div class="cards-grid">
@@ -133,7 +131,6 @@
                     <div class="card-item"><h3>Autenticidade</h3><p>Info: O que é propriedade digital</p></div>
                 </div>
             </section>
-
 
             <section id="tela-dao">
                 <h2>Governança e Comunidade (DAO)</h2>
@@ -186,7 +183,6 @@
                 <div class="conteudo-tecnico"><p>Mecânica visual da roleta premiada...</p></div>
             </section>
 
-
             <section id="tela-redes">
                 <h2>Configurações de Rede</h2>
                 <div class="cards-grid">
@@ -197,13 +193,12 @@
                 </div>
             </section>
 
-
             <section id="tela-perfil">
                 <h2>Meu Perfil</h2>
                 <div class="cards-grid">
                     <div class="card-item"><h3>Minha Conta</h3><p>Gerenciar dados gerais</p></div>
                     <div class="card-item"><h3>Segurança</h3><p>Backup de chaves privadas</p></div>
-                    <div class="card-item"><h3>Preferências</h3><p>Idioma e moedas locais</p></div>
+                    <div class="card-item"><h3>Preferences</h3><p>Idioma e moedas locais</p></div>
                     <div class="card-item"><h3>Sobre</h3><p>Info: Detalhes do Nitrogênio</p></div>
                 </div>
             </section>
@@ -211,7 +206,7 @@
         </main>
 
         <nav id="rodape-fixo">
-            <button id="btn-menu-home">HOME</button>
+            <button id="btn-menu-home" class="active">HOME</button>
             <button id="btn-menu-nft">NFT</button>
             <button id="btn-menu-dao">DAO</button>
             <button id="btn-menu-redes">REDES</button>
@@ -220,5 +215,7 @@
 
     </div>
 
+    <!-- CONEXÃO FUTURA DO SEU JS -->
+    <script src="script.js"></script>
 </body>
 </html>
