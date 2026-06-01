@@ -38,11 +38,34 @@ document.getElementById('card-recompensa-quiz').addEventListener('click', () => 
 document.getElementById('card-recompensa-checkin').addEventListener('click', () => navegarPara('folha-checkin'));
 document.getElementById('card-recompensa-roleta').addEventListener('click', () => navegarPara('folha-roleta'));
 
-// 6. Botões de Voltar (Pega todos os botões com a classe .btn-voltar)
-document.querySelectorAll('.btn-voltar').forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Volta sempre para a tela Home
-        navegarPara('tela-home');
+// 6. Sistema de Botões de Voltar (Versão Corrigida e Segura)
+document.querySelectorAll('.btn-voltar').forEach(botao => {
+    botao.addEventListener('click', () => {
+        const telaAtual = botao.closest('section');
+        
+        if (!telaAtual) return;
+
+        // Remove a classe ativa da tela onde o usuário clicou em voltar
+        telaAtual.classList.remove('ativa');
+
+        // Se o usuário estiver nas folhas profundas do QUIZ, ROLETA, POUPANÇA ou CHECKIN:
+        if (telaAtual.id.startsWith('folha-')) {
+            navegarPara('sub-recompensas'); // Volta sempre para a Central de Recompensas
+        } 
+        // Se o usuário estiver nas sub-telas de ação direta da Home:
+        else if (telaAtual.id === 'sub-pagar-leitor') {
+            navegarPara('tela-pagar');
+        } else if (telaAtual.id === 'sub-receber-gerar-qr') {
+            navegarPara('tela-receber');
+        } else if (telaAtual.id === 'sub-coletar-executar') {
+            navegarPara('tela-coletar');
+        } else if (telaAtual.id === 'sub-trocar-pancakeswap') {
+            navegarPara('tela-trocar');
+        } 
+        // Se for qualquer outra tela interna (tela-pagar, sub-recompensas, etc), volta para a HOME
+        else {
+            navegarPara('tela-home');
+        }
     });
 });
 
