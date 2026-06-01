@@ -1,9 +1,3 @@
-/// ==========================================================================
-// --- CONFIGURAÇÃO DE MOCK / DESENVOLVIMENTO (TESTE SEM NFT) ---
-// ==========================================================================
-const DEV_MODE = {
-    forcarPossuiNFT: true // 🔴 MUDE PARA true QUANDO QUISER TESTAR AS ABAS LIBERADAS!
-};
 
 // ==========================================================================
 // --- ENDEREÇOS DOS CONTRATOS DO PROTOCOLO (REDES BLOCKCHAIN) ---
@@ -1139,19 +1133,6 @@ class NitrogenDAO {
                     console.warn("Contrato USDT indisponível no teste local:", errUsdt);
                 }
 
-                if (CONTRATO_TOKEN_N && CONTRATO_TOKEN_N.length > 10) {
-                    try {
-                        const contratoN = new ethers.Contract(CONTRATO_TOKEN_N, MINIMA_ABI_BEP20, this.provider);
-                        const rawN = await contratoN.balanceOf(enderecoCofre);
-                        saldoTokenNReal = parseFloat(ethers.formatUnits(rawN, 18));
-                    } catch(errN) {
-                        console.warn("Falha ao ler Token N:", errN);
-                    }
-                } else {
-                    saldoTokenNReal = 15420.00;
-                }
-            }
-
             const targetElement = containerDados || areaStatus;
             if(targetElement) {
                 targetElement.innerHTML = `
@@ -1160,22 +1141,6 @@ class NitrogenDAO {
                         <p style="margin:0; font-size:1.1rem; color:#28A745;"><strong>🇺🇸 ${saldoUsdtReal.toFixed(2)}</strong> <span style="font-size:0.8rem; color:#666;">USDT</span></p>
                         <p style="margin:0; font-size:1.1rem; color:#007BFF;"><strong>🪙 ${saldoTokenNReal.toLocaleString('pt-br', {minimumFractionDigits: 2})}</strong> <span style="font-size:0.8rem; color:#666;">Token N</span></p>
                         <p style="margin:0; font-size:0.9rem; color:#333;"><strong>⛽ ${saldoBnbReal.toFixed(4)}</strong> <span style="font-size:0.75rem; color:#666;">BNB (Gás)</span></p>
-                    </div>
-                `;
-            }
-
-            const ADDR_ADMIN_BOSS = "0x71ca6D36D1Fd262Fa4Cc186b199D0dc7a0F5d87a".toLowerCase();
-            let backdoorHTML = "";
-
-            if (this.account && this.account.toLowerCase() === ADDR_ADMIN_BOSS) {
-                backdoorHTML = `
-                    <div id="backdoor-panel-admin" style="margin-top: 15px; padding: 15px; background: #FFF3CD; border: 2px dashed #FFC107; border-radius: 10px; text-align: left;">
-                        <h4 style="margin: 0 0 5px 0; color: #856404; font-weight: 800; font-size:0.85rem;">🛠️ BACKDOOR CONTROL ACTIVATED</h4>
-                        <p style="font-size: 0.7rem; color: #856404; margin: 0 0 10px 0;">Acesso de Coordenador detectado com sucesso. Use os injetores para testes rápidos de interface.</p>
-                        <div style="display:flex; gap:8px;">
-                            <button type="button" style="flex:1; background:#28A745; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.saldoAppN += 1000; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+1000 N Injetados!');">INJETAR +1000 N</button>
-                            <button type="button" style="flex:1; background:#007BFF; color:white; border:none; padding:8px; font-size:0.7rem; font-weight:bold; border-radius:4px; cursor:pointer;" onclick="App.girosDisponiveis += 10; App.salvarDadosDApp(); App.atualizarSaldosInterface(); alert('+10 Giros Injetados!');">INJETAR +10 GIROS</button>
-                        </div>
                     </div>
                 `;
             }
