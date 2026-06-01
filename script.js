@@ -453,6 +453,11 @@ class NitrogenDAO {
     }
     
     mudarAba(aba) {
+        // 🔥 CORREÇÃO: Toca o som de clique imediatamente ao alternar qualquer aba (inclusive REDES)
+        if (typeof this.tocarSomClique === 'function') {
+            this.tocarSomClique();
+        }
+
         document.querySelectorAll('.cmc-footer-nav .cmc-nav-item').forEach(item => {
             item.classList.remove('active');
         });
