@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Navegação Dinâmica Corrigida - Nitrogênio Protocolo
+   Navegação Dinâmica Corrigida e Segura - Nitrogênio Protocolo
    ========================================================================== */
 
 // 1. Função principal para trocar de tela
@@ -12,39 +12,46 @@ function navegarPara(idTela) {
     if (novaTela) {
         novaTela.classList.add('ativa');
     } else {
-        console.error(`Erro: A tela com ID "${idTela}" não foi encontrada no HTML.`);
+        console.warn(`Aviso: A tela "${idTela}" ainda não foi criada no HTML.`);
+    }
+}
+
+// Função auxiliar para evitar que o código quebre caso o ID não exista no HTML
+function adicionarCliqueSeguro(idBotao, idTelaDestino) {
+    const elemento = document.getElementById(idBotao);
+    if (elemento) {
+        elemento.addEventListener('click', () => navegarPara(idTelaDestino));
     }
 }
 
 // 2. Eventos dos botões do Rodapé (Fixo)
-document.getElementById('btn-menu-home').addEventListener('click', () => navegarPara('tela-home'));
-document.getElementById('btn-menu-nft').addEventListener('click', () => navegarPara('tela-nft'));
-document.getElementById('btn-menu-dao').addEventListener('click', () => navegarPara('tela-dao'));
-document.getElementById('btn-menu-redes').addEventListener('click', () => navegarPara('tela-redes'));
-document.getElementById('btn-menu-perfil').addEventListener('click', () => navegarPara('tela-perfil'));
+adicionarCliqueSeguro('btn-menu-home', 'tela-home');
+adicionarCliqueSeguro('btn-menu-nft', 'tela-nft');
+adicionarCliqueSeguro('btn-menu-dao', 'tela-dao');
+adicionarCliqueSeguro('btn-menu-redes', 'tela-redes');
+adicionarCliqueSeguro('btn-menu-perfil', 'tela-perfil');
 
 // 3. Eventos dos Novos Botões Rápidos da Home
-document.getElementById('nav-pagar').addEventListener('click', () => navegarPara('tela-pagar'));
-document.getElementById('nav-receber').addEventListener('click', () => navegarPara('tela-receber'));
-document.getElementById('nav-trocar').addEventListener('click', () => navegarPara('tela-trocar'));
-document.getElementById('nav-coletar').addEventListener('click', () => navegarPara('tela-coletar'));
+adicionarCliqueSeguro('nav-pagar', 'tela-pagar');
+adicionarCliqueSeguro('nav-receber', 'tela-receber');
+adicionarCliqueSeguro('nav-trocar', 'tela-trocar');
+adicionarCliqueSeguro('nav-coletar', 'tela-coletar');
 
-// 4. Eventos de Sub-telas internas (Ações dos Cards)
-document.getElementById('card-pagar-leitor').addEventListener('click', () => navegarPara('sub-pagar-leitor'));
-document.getElementById('card-receber-gerar').addEventListener('click', () => navegarPara('sub-receber-gerar-qr'));
-document.getElementById('card-coletar-executar').addEventListener('click', () => navegarPara('sub-coletar-executar'));
-document.getElementById('card-trocar-pancake').addEventListener('click', () => navegarPara('sub-trocar-pancakeswap'));
-document.getElementById('card-dao-recompensas').addEventListener('click', () => navegarPara('sub-recompensas'));
+// 4. Eventos de Sub-telas internas (Ações dos Cards) - Protegidos contra travamento!
+adicionarCliqueSeguro('card-pagar-leitor', 'sub-pagar-leitor');
+adicionarCliqueSeguro('card-receber-gerar', 'sub-receber-gerar-qr');
+adicionarCliqueSeguro('card-coletar-executar', 'sub-coletar-executar');
+adicionarCliqueSeguro('card-trocar-pancake', 'sub-trocar-pancakeswap');
+adicionarCliqueSeguro('card-dao-recompensas', 'sub-recompensas');
 
 // 5. Sub-recompensas da DAO
-document.getElementById('card-recompensa-poupanca').addEventListener('click', () => navegarPara('folha-poupanca'));
-document.getElementById('card-recompensa-quiz').addEventListener('click', () => navegarPara('folha-quiz'));
-document.getElementById('card-recompensa-checkin').addEventListener('click', () => navegarPara('folha-checkin'));
-document.getElementById('card-recompensa-roleta').addEventListener('click', () => navegarPara('folha-roleta'));
+adicionarCliqueSeguro('card-recompensa-poupanca', 'folha-poupanca');
+adicionarCliqueSeguro('card-recompensa-quiz', 'folha-quiz');
+adicionarCliqueSeguro('card-recompensa-checkin', 'folha-checkin');
+adicionarCliqueSeguro('card-recompensa-roleta', 'folha-roleta');
 
 // 6. Mapa de Retorno Exato (Mapeia qual tela volta para onde, sem erros)
 const mapaDeRetorno = {
-    // Sub-telas profundas voltam para as telas mães
     'folha-poupanca': 'sub-recompensas',
     'folha-quiz': 'sub-recompensas',
     'folha-checkin': 'sub-recompensas',
@@ -53,9 +60,7 @@ const mapaDeRetorno = {
     'sub-receber-gerar-qr': 'tela-receber',
     'sub-coletar-executar': 'tela-coletar',
     'sub-trocar-pancakeswap': 'tela-trocar',
-    
-    // Telas do primeiro nível e abas do menu voltam para a HOME
-    'sub-recompensas': 'tela-home',
+    'sub-recompensas': 'tela-dao',
     'tela-pagar': 'tela-home',
     'tela-receber': 'tela-home',
     'tela-coletar': 'tela-home',
@@ -73,10 +78,9 @@ document.querySelectorAll('.btn-voltar').forEach(botao => {
         if (idTelaDestino) {
             navegarPara(idTelaDestino);
         } else {
-            // Caso falte mapear alguma tela por segurança ele volta para a home
             navegarPara('tela-home');
         }
     });
 });
 
-console.log("Nitrogênio Protocolo: Sistema de navegação mapeado e corrigido!");
+console.log("Nitrogênio Protocolo: Proteção ativa. Central de Recompensas destravada!");
