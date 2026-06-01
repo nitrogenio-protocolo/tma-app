@@ -948,7 +948,7 @@ class NitrogenDAO {
         }
     }
 
-    e    async executarCheckIn() {
+    async executarCheckIn() {
         const btn = document.getElementById('btn-executar-checkin');
         if (btn) {
             btn.disabled = true;
