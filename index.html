@@ -1,1 +1,81 @@
 
+<template id="template-folha-receber">
+    <div class="converter-box">
+        <small>VALOR (R$)</small>
+        <input type="number" id="v-brl" class="input-brl" placeholder="0,00" inputmode="decimal">
+        <p id="v-bnb" class="label-bnb" style="font-size:0.7rem; opacity:0.6;">≈ 0.0000 BNB</p>
+    </div>
+    <div id="qr-area" style="display:none; margin-top:20px;">
+        <img id="img-qr" style="width:200px; border:10px solid white; border-radius:10px;" src="">
+        <p style="color:#007BFF; font-weight:bold; margin-top:10px; font-size:0.8rem;">APRESENTE O CÓDIGO</p>
+    </div>
+</template>
+
+<template id="template-folha-pagar">
+    <div class="card-pagamento-fixo">
+        <div id="reader" style="display:none;"></div>
+        <div id="info-pagamento">
+            <small class="label-clean">ENDEREÇO DO DESTINO</small>
+            <input type="text" id="p-addr" class="txt-destino" placeholder="0x..." style="background:transparent; border:none; text-align:center; width:100%; outline:none;">
+            <small class="label-clean">VALOR EM R$</small>
+            <input type="number" id="p-brl" class="input-transparente" placeholder="0.00" inputmode="decimal">
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button class="btn-confirm green" id="btn-prosseguir-manual">PROSSEGUIR</button>
+        <button class="btn-confirm blue" id="btn-usar-camera">LIGAR CÂMERA</button>
+    </div>
+</template>
+
+<template id="template-preparar-pagamento">
+    <div class="converter-box">
+        <p id="pagamento-destino-reduzido" style="font-size:0.7rem; color:#666;"></p>
+        <h2 id="pagamento-valor-convertido" style="margin:15px 0; color:#28A745;"></h2>
+        <button class="btn-confirm" id="confirm-final">ASSINAR PAGAMENTO</button>
+    </div>
+</template>
+
+<template id="template-folha-coletar">
+    <div class="converter-box" style="text-align: center; display: flex; flex-direction: column; gap: 15px; align-items: center; padding-top: 10px;">
+        <div class="detalhes-coleta" style="width: 100%; text-align: left; background: rgba(0,0,0,0.03); padding: 14px; border-radius: 8px; font-size: 0.85rem; box-sizing: border-box;">
+            <p style="margin: 6px 0;"><strong>Status na DAO:</strong> <span id="status-guardiao" style="color: #666;">Verificando carteira...</span></p>
+            <p style="margin: 6px 0;"><strong>Saldo Acumulado (App):</strong> <span id="coleta-saldo-app" style="color: #007BFF; font-weight: bold;">0 N</span></p>
+            <p style="margin: 6px 0;"><strong>Sua Quota Semanal (DAO):</strong> <span id="coleta-quota" style="color: #007BFF; font-weight: bold;">0 N</span></p>
+            <div style="border-top: 1px dashed rgba(0,0,0,0.1); margin: 8px 0; padding-top: 8px;"></div>
+            <p style="margin: 6px 0; font-size: 0.95rem;"><strong>TOTAL A RECEBER:</strong> <span id="coleta-total-soma" style="color: #28A745; font-weight: bold;">0 N</span></p>
+        </div>
+        <button class="btn-confirm" id="confirmar-coleta" disabled style="background: #cccccc; cursor: not-allowed; width: 100%; margin-top: 5px; font-weight: bold;">
+            AGUARDANDO CONEXÃO...
+        </button>
+    </div>
+</template>
+
+<template id="template-sala-recompensas">
+    <div class="perfil-container" style="padding-top: 5px;">
+        <div style="text-align: left; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #f0f0f0; margin-bottom: 15px;">
+            <p class="perfil-label" style="font-size: 9px; margin-bottom: 6px; font-weight: bold; color: #666;">CÓDIGO DA COMUNIDADE</p>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="input-cod-comunidade" placeholder="Insira o código aqui" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #E0E0E0; font-size: 0.85rem; outline: none; font-weight: bold;">
+                <button type="button" id="btn-enviar-codigo-comunidade" style="background: var(--blue); color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; cursor: pointer;">ENVIAR</button>
+            </div>
+        </div>
+        <div class="perfil-menu-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+            <button type="button" class="btn-perfil-menu" data-modulo="poupanca" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">💰 POUPANÇA</button>
+            <button type="button" class="btn-perfil-menu" data-modulo="quiz" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">📚 QUIZ SEMANAL</button>
+            <button type="button" class="btn-perfil-menu" data-modulo="checkin" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">📆 CHECK-IN DIÁRIO</button>
+            <button type="button" class="btn-perfil-menu" data-modulo="roleta" style="padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer;">🎯 ROLETA DO BEM</button>
+        </div>
+        <div id="subsecao-perfil-container" class="subsec-perfil" style="margin-top: 15px; width: 100%;"></div>
+    </div>
+</template>
+
+<template id="template-quiz-estrutura">
+    <div class="quiz-container" style="padding: 10px 0; display: flex; flex-direction: column; gap: 15px;">
+        <div style="background: #ffffff; padding: 166px; border-radius: 16px; border: 1px solid #f0f0f0; text-align: left;">
+            <span id="quiz-contagem-passos" style="font-size: 0.75rem; color: #666; font-weight: bold;"></span>
+            <h3 id="quiz-texto-pergunta" style="margin: 8px 0 0 0; font-size: 1.05rem; color: #1a1a1a; font-weight: 800; line-height: 1.4;"></h3>
+        </div>
+        <div id="quiz-opcoes-lista" style="display: flex; flex-direction: column; gap: 12px; width: 100%;"></div>
+        <div id="quiz-feedback" style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 5px;"></div>
+    </div>
+</template>
