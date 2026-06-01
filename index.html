@@ -22,105 +22,39 @@
         <main id="conteudo-principal">
 
             <!-- AQUI: Adicionamos a classe 'ativa' na seção correta para ela aparecer sozinha -->
-            <section id="tela-home" class="ativa">
-                <div class="balance-card">
-                    <p class="balance-title">SALDO DA CONTA CONECTADA</p>
-                    <p class="balance-value">0.00 BNB</p>
-                </div>
+             <section id="tela-home" class="ativa">
+             <!-- Card de Saldo Centralizado -->
+             <div class="balance-card">
+            <p class="balance-title">SALDO DA CONTA CONECTADA</p>
+           <p class="balance-value">0.00 BNB</p>
+       </div>
 
-                <div class="functions-grid">
-                    <div class="card-item" id="nav-pagar"><h3>PAGAR</h3></div>
-                    <div class="card-item" id="nav-receber"><h3>RECEBER</h3></div>
-                    <div class="card-item" id="nav-coletar"><h3>COLETAR</h3></div>
-                    <div class="card-item" id="nav-trocar"><h3>TROCAR</h3></div>
-                </div>
-            </section>
+    <!-- Ações Rápidas Padronizadas (Setas e Ícones) -->
+    <div class="quick-actions-menu">
+        <button class="action-btn" id="nav-pagar">
+            <span class="action-icon">↑</span>
+            <span class="action-label">Pagar</span>
+        </button>
+        
+        <button class="action-btn" id="nav-receber">
+            <span class="action-icon">↓</span>
+            <span class="action-label">Receber</span>
+        </button>
 
-            <section id="tela-pagar">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Ação: Pagar</h2>
-                <div class="cards-grid">
-                    <div class="card-item"><h3>Transferência</h3><p>Enviar saldo para carteira</p></div>
-                    <div class="card-item" id="card-pagar-leitor"><h3>Leitor QR Code</h3><p>Escanear com segurança</p></div>
-                    <div class="card-item"><h3>Agendamentos</h3><p>Info: Taxas programadas</p></div>
-                    <div class="card-item"><h3>Histórico Seguro</h3><p>Info: Identificar golpes</p></div>
-                </div>
-            </section>
+        <button class="action-btn" id="nav-trocar">
+            <span class="action-icon">⇄</span>
+            <span class="action-label">Trocar</span>
+        </button>
 
-            <section id="sub-pagar-leitor">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Escanear Carteira</h2>
-                <div class="area-scanner">
-                    <div class="quadrado-camera"><p>[ Câmera Ativa ]</p></div>
-                    <p class="instrucao">Aponte para o QR Code do recebedor</p>
-                </div>
-            </section>
+        <button class="action-btn" id="nav-coletar">
+            <span class="action-icon">🪙</span>
+            <span class="action-label">Coletar</span>
+        </button>
+    </div>
+</section>
+            
 
-            <section id="tela-receber">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Ação: Receber</h2>
-                <div class="cards-grid">
-                    <div class="card-item" id="card-receber-gerar"><h3>Gerar QR Code</h3><p>Digitar valor e criar código</p></div>
-                    <div class="card-item"><h3>Minha Chave</h3><p>Copiar/colar endereço</p></div>
-                    <div class="card-item"><h3>Solicitar</h3><p>Info: Redes suportadas</p></div>
-                    <div class="card-item"><h3>Limites</h3><p>Info: Cuidados com a rede</p></div>
-                </div>
-            </section>
-
-            <section id="sub-receber-gerar-qr">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Gerar Código de Cobrança</h2>
-                <div class="formulario-receber">
-                    <label for="valor-receber">Digite o valor (em BNB):</label>
-                    <input type="number" id="valor-receber" placeholder="Ex: 0.05" step="0.0001">
-                    <button class="btn-acao-gerar">GERAR QR CODE</button>
-                    <div class="resultado-qr-code"><p>O QR Code aparecerá aqui</p></div>
-                </div>
-            </section>
-
-            <section id="tela-coletar">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Ação: Coletar</h2>
-                <div class="cards-grid">
-                    <div class="card-item" id="card-coletar-executar"><h3>Coletar Ganhos</h3><p>Reivindicar tokens de trabalho</p></div>
-                    <div class="card-item"><h3>Histórico</h3><p>Gaveta futura</p></div>
-                    <div class="card-item"><h3>Validador</h3><p>Gaveta futura</p></div>
-                    <div class="card-item"><h3>Regras</h3><p>Info: Como funciona o ganho</p></div>
-                </div>
-            </section>
-
-            <section id="sub-coletar-executar">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Painel de Coleta</h2>
-                <div class="painel-coleta">
-                    <p>Tokens acumulados por trabalho: <strong id="tokens-disponiveis">0.00 NITRO</strong></p>
-                    <button class="btn-acao-coletar">REIVINDICAR TOKENS (CLAIM)</button>
-                </div>
-            </section>
-
-            <section id="tela-trocar">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Ação: Trocar</h2>
-                <div class="cards-grid">
-                    <div class="card-item" id="card-trocar-pancake"><h3>PancakeSwap</h3><p>Negociar via BSC</p></div>
-                    <div class="card-item"><h3>Nova DEX</h3><p>Gaveta futura de corretora</p></div>
-                    <div class="card-item"><h3>Nova DEX</h3><p>Gaveta futura de corretora</p></div>
-                    <div class="card-item"><h3>Slippage</h3><p>Info: Evite taxas abusivas</p></div>
-                </div>
-            </section>
-
-            <section id="sub-trocar-pancakeswap">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Negociar na PancakeSwap</h2>
-                <div class="container-swap">
-                    <div class="bloco-inputs-swap">
-                        <input type="number" placeholder="De: BNB">
-                        <p class="seta-troca">↓</p>
-                        <input type="number" placeholder="Para: NITRO">
-                    </div>
-                    <button class="btn-acao-swap">EXECUTAR TROCA</button>
-                </div>
-            </section>
+            
 
             <section id="tela-nft">
                 <h2>Painel NFT</h2>
