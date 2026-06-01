@@ -1,65 +1,84 @@
 /* ==========================================================================
-   Navegação Dinâmica Corrigida e Segura - Nitrogênio Protocolo
+   Navegação Dinâmica Isolada - Nitrogênio Protocolo
    ========================================================================== */
 
-// 1. Função principal para trocar de tela
+// 1. Função principal para alternar e isolar as telas totalmente
 function navegarPara(idTela) {
-    document.querySelectorAll('main section').forEach(section => {
+    // Esconde absolutamente todas as seções do conteúdo principal
+    document.querySelectorAll('main#conteudo-principal section').forEach(section => {
         section.classList.remove('ativa');
+        section.style.display = 'none'; // Força a tela a sumir e desocupar o espaço
     });
     
+    // Alvo que queremos abrir
     const novaTela = document.getElementById(idTela);
     if (novaTela) {
         novaTela.classList.add('ativa');
+        novaTela.style.display = 'block'; // Mostra apenas a tela selecionada no topo
+        window.scrollTo(0, 0); // Garante que ela abra no início dela
     } else {
-        console.warn(`Aviso: A tela "${idTela}" ainda não foi criada no HTML.`);
+        console.warn(`Aviso: A tela "${idTela}" não foi encontrada ou ainda não está criada no HTML.`);
     }
 }
 
-// Função auxiliar para evitar que o código quebre caso o ID não exista no HTML
-function adicionarCliqueSeguro(idBotao, idTelaDestino) {
-    const elemento = document.getElementById(idBotao);
-    if (elemento) {
-        elemento.addEventListener('click', () => navegarPara(idTelaDestino));
+// Função auxiliar para aplicar cliques apenas se o elemento existir no HTML
+function ligarAcao(idBotao, idTelaDestino) {
+    const botao = document.getElementById(idBotao);
+    if (botao) {
+        botao.addEventListener('click', (e) => {
+            e.preventDefault();
+            navegarPara(idTelaDestino);
+        });
     }
 }
 
-// 2. Eventos dos botões do Rodapé (Fixo)
-adicionarCliqueSeguro('btn-menu-home', 'tela-home');
-adicionarCliqueSeguro('btn-menu-nft', 'tela-nft');
-adicionarCliqueSeguro('btn-menu-dao', 'tela-dao');
-adicionarCliqueSeguro('btn-menu-redes', 'tela-redes');
-adicionarCliqueSeguro('btn-menu-perfil', 'tela-perfil');
+// ==========================================================================
+// CONFIGURAÇÃO DOS GATILHOS DE CLIQUE
+// ==========================================================================
 
-// 3. Eventos dos Novos Botões Rápidos da Home
-adicionarCliqueSeguro('nav-pagar', 'tela-pagar');
-adicionarCliqueSeguro('nav-receber', 'tela-receber');
-adicionarCliqueSeguro('nav-trocar', 'tela-trocar');
-adicionarCliqueSeguro('nav-coletar', 'tela-coletar');
+// 2. Menu do Rodapé Fixo
+ligarAcao('btn-menu-home', 'tela-home');
+ligarAcao('btn-menu-nft', 'tela-nft');
+ligarAcao('btn-menu-dao', 'tela-dao');
+ligarAcao('btn-menu-redes', 'tela-redes');
+ligarAcao('btn-menu-perfil', 'tela-perfil');
 
-// 4. Eventos de Sub-telas internas (Ações dos Cards) - Protegidos contra travamento!
-adicionarCliqueSeguro('card-pagar-leitor', 'sub-pagar-leitor');
-adicionarCliqueSeguro('card-receber-gerar', 'sub-receber-gerar-qr');
-adicionarCliqueSeguro('card-coletar-executar', 'sub-coletar-executar');
-adicionarCliqueSeguro('card-trocar-pancake', 'sub-trocar-pancakeswap');
-adicionarCliqueSeguro('card-dao-recompensas', 'sub-recompensas');
+// 3. Botões Redondos Rápidos da Home
+ligarAcao('nav-pagar', 'tela-pagar');
+ligarAcao('nav-receber', 'tela-receber');
+ligarAcao('nav-trocar', 'tela-trocar');
+ligarAcao('nav-coletar', 'tela-coletar');
 
-// 5. Sub-recompensas da DAO
-adicionarCliqueSeguro('card-recompensa-poupanca', 'folha-poupanca');
-adicionarCliqueSeguro('card-recompensa-quiz', 'folha-quiz');
-adicionarCliqueSeguro('card-recompensa-checkin', 'folha-checkin');
-adicionarCliqueSeguro('card-recompensa-roleta', 'folha-roleta');
+// 4. Cards da DAO e Sub-telas
+ligarAcao('card-dao-recompensas', 'sub-recompensas');
+ligarAcao('card-pagar-leitor', 'sub-pagar-leitor');
+ligarAcao('card-receber-gerar', 'sub-receber-gerar-qr');
+ligarAcao('card-coletar-executar', 'sub-coletar-executar');
+ligarAcao('card-trocar-pancake', 'sub-trocar-pancakeswap');
 
-// 6. Mapa de Retorno Exato (Mapeia qual tela volta para onde, sem erros)
-const mapaDeRetorno = {
+// 5. Salas de Recompensa da DAO (Poupança, Quiz, Check-in, Roleta)
+ligarAcao('card-recompensa-poupanca', 'folha-poupanca');
+ligarAcao('card-recompensa-quiz', 'folha-quiz');
+ligarAcao('card-recompensa-checkin', 'folha-checkin');
+ligarAcao('card-recompensa-roleta', 'folha-roleta');
+
+
+// ==========================================================================
+// LOGICA DO BOTÃO VOLTAR (SETAS DO TOPO)
+// ==========================================================================
+
+// 6. Mapa rígido de retorno para as setas
+const caminhosVoltar = {
     'folha-poupanca': 'sub-recompensas',
     'folha-quiz': 'sub-recompensas',
     'folha-checkin': 'sub-recompensas',
     'folha-roleta': 'sub-recompensas',
+    
     'sub-pagar-leitor': 'tela-pagar',
     'sub-receber-gerar-qr': 'tela-receber',
     'sub-coletar-executar': 'tela-coletar',
     'sub-trocar-pancakeswap': 'tela-trocar',
+    
     'sub-recompensas': 'tela-dao',
     'tela-pagar': 'tela-home',
     'tela-receber': 'tela-home',
@@ -67,20 +86,25 @@ const mapaDeRetorno = {
     'tela-trocar': 'tela-home'
 };
 
-// 7. Aplica a lógica em todos os botões "Voltar"
+// 7. Aplica a ação nas setas físicas sem conflito
 document.querySelectorAll('.btn-voltar').forEach(botao => {
-    botao.addEventListener('click', () => {
+    botao.addEventListener('click', (e) => {
+        e.preventDefault();
         const telaAtual = botao.closest('section');
         if (!telaAtual) return;
 
-        const idTelaDestino = mapaDeRetorno[telaAtual.id];
-
-        if (idTelaDestino) {
-            navegarPara(idTelaDestino);
+        const destino = caminhosVoltar[telaAtual.id];
+        if (destino) {
+            navegarPara(destino);
         } else {
-            navegarPara('tela-home');
+            navegarPara('tela-home'); // Segurança
         }
     });
 });
 
-console.log("Nitrogênio Protocolo: Proteção ativa. Central de Recompensas destravada!");
+// Inicialização segura: Garante que a Home comece visível e o resto oculto
+document.addEventListener('DOMContentLoaded', () => {
+    navegarPara('tela-home');
+});
+
+console.log("Nitrogênio Protocolo: Home destravada e isolada com sucesso!");
