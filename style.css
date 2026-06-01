@@ -320,3 +320,44 @@ input[type="text"]:focus, input[type="number"]:focus {
     color: #3861fb !important; 
     font-weight: bold;
 }
+
+
+/* ==========================================================================
+   ESTILIZAÇÃO DAS NOVAS SEÇÕES E SETA VOLTAR MESTRE
+   ========================================================================== */
+
+/* Garante que as novas telas ocupem o espaço correto com espaçamento interno */
+main#conteudo-principal section {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Deixa o título de cada área elegante e centralizado ou alinhado */
+main#conteudo-principal section h2 {
+    color: #333333;
+    font-size: 1.4rem;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+/* Transforma o texto "← Voltar" em um botão oval, nítido e muito fácil de clicar */
+.btn-voltar {
+    background-color: #ffffff !important; /* Fundo branco para contrastar no fundo cinza */
+    color: #007bff !important; /* Seta na cor azul padrão do botão Conectar */
+    border: 1px solid #E0E4EC !important; /* Bordinha sutil */
+    padding: 8px 16px !important;
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+    border-radius: 20px !important; /* Bordas arredondadas estilo pílula */
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05) !important; /* Sombra leve para flutuar */
+    display: inline-flex !important;
+    align-items: center;
+    margin-bottom: 15px !important; /* Afasta o botão do título de baixo */
+    transition: transform 0.1s ease;
+}
+
+/* Efeito físico de clique no botão de voltar */
+.btn-voltar:active {
+    transform: scale(0.95);
+}
