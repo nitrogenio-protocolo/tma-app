@@ -1318,7 +1318,7 @@ function fecharSubFolha(idFolha) {
     }
 }
 
-c// Garante o início seguro apenas após o carregamento completo do HTML
+// Garante o início seguro apenas após o carregamento completo do HTML
 window.addEventListener('DOMContentLoaded', () => {
     window.App = new NitrogenDAO();
 });
