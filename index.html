@@ -249,14 +249,18 @@
         </div>
         <div class="side-panel-content" style="padding: 15px;">
             
-            <!-- Bloco do Saldo do Cofre Safe -->
             <div style="background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #e0e0e0; text-align: center; margin-bottom: 15px;">
                 <p style="font-size: 11px; color: #666; font-weight: bold; margin: 0 0 8px 0; letter-spacing: 0.5px;">SALDO DO COFRE (SAFE WALLET)</p>
-                <!-- O JS vai buscar este ID abaixo para injetar o saldo real do cofre -->
-                <h2 id="saldo-bnb" style="font-size: 1.8rem; margin: 0; color: #1a1a1a; font-weight: 800;">0.0000 BNB</h2>
+                <h2 id="saldo-bnb" style="font-size: 1.8rem; margin: 0 0 15px 0; color: #1a1a1a; font-weight: 800;">0.0000 BNB</h2>
+                
+                <button type="button" 
+                        id="btn-sincronizar-cofre" 
+                        style="width: 100%; background: #007BFF; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;"
+                        onclick="App.executarSincronizacaoReal()">
+                    🔄 SINCRONIZAR COFRE
+                </button>
             </div>
 
-            <!-- Área dinâmica para o JS injetar o endereço do cofre, tokens adicionais ou botões de ação -->
             <div id="panel-content"></div>
             
         </div>
