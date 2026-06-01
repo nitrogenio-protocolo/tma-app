@@ -182,7 +182,7 @@ main#conteudo-principal section.ativa {
 /* ==========================================================================
    ESTILIZAÇÃO DAS GRADES DE CARDS 2x2 (VISÃO DO USUÁRIO)
    ========================================================================== */
-.functions-grid, .cards-grid { 
+.cards-grid { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); /* Grade técnica de 2 colunas */
     gap: 15px; 
