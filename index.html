@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitrogênio Protocolo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <div class="app-container">
+        
+        <header class="app-header">
+            <div class="logo-area">
+                <h1>NITROGÊNIO</h1>
+                <span>PROTOCOLO</span>
+            </div>
+            <button class="btn-conectar" id="btnConectar">CONECTAR</button>
+        </header>
+
+        <main class="app-content">
+
+            <section id="tela-home" class="tela ativa">
+                <div class="balance-card">
+                    <p class="balance-title">SALDO DA CONTA CONECTADA</p>
+                    <p class="balance-value">0.00 BNB</p>
+                </div>
+
+                <div class="functions-grid">
+                    <button class="btn-funcao" onclick="navegarPara('tela-pagar')">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                        <span>PAGAR</span>
+                    </button>
+                    <button class="btn-funcao" onclick="navegarPara('tela-receber')">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11 5v11.86l-5.43-5.43-1.42 1.42L12 21.14l8.29-8.29-1.42-1.42L13 16.86V5h-2z"/></svg>
+                        <span>RECEBER</span>
+                    </button>
+                    <button class="btn-funcao" onclick="navegarPara('tela-coletar')">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11 5v11.86l-5.43-5.43-1.42 1.42L12 21.14l8.29-8.29-1.42-1.42L13 16.86V5h-2z"/></svg>
+                        <span>COLETAR</span>
+                    </button>
+                    <button class="btn-funcao" onclick="navegarPara('tela-trocar')">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M17 17H7v-3l-4 4 4 4v-3h12v-6h-2v4zM7 7h10v3l4-4-4-4v3H5v6h2V7z"/></svg>
+                        <span>TROCAR</span>
+                    </button>
+                </div>
+            </section>
+
+
+            <section id="tela-pagar" class="tela">
+                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+                <h2>Ação: Pagar</h2>
+                <div class="cards-grid">
+                    <div class="card-item" onclick="navegarPara('sub-pagar-transferencia')">
+                        <h3>Transferência</h3>
+                        <p>Enviar saldo para carteira</p>
+                    </div>
+                    <div class="card-item" onclick="navegarPara('sub-pagar-leitor')">
+                        <h3>Leitor QR Code</h3>
+                        <p>Escanear e ler carteira</p>
+                    </div>
+                    <div class="card-item inativo">
+                        <h3>Agendamentos</h3>
+                        <p>Em breve</p>
+                    </div>
+                    <div class="card-item inativo">
+                        <h3>Histórico</h3>
+                        <p>Em breve</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sub-pagar-leitor" class="tela">
+                <button class="btn-voltar" onclick="navegarPara('tela-pagar')">← Voltar</button>
+                <h2>Escanear Carteira</h2>
+                <div class="conteudo-folha">
+                    <div class="camera-placeholder">
+                        <p>[ Câmera/Scanner Ativo ]</p>
+                    </div>
+                    <div class="info-carteira-detectada">
+                        <p><strong>Status:</strong> Aguardando leitura...</p>
+                        <p><strong>Saldo Atual do Usuário:</strong> 0.00 BNB</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sub-pagar-transferencia" class="tela">
+                <button class="btn-voltar" onclick="navegarPara('tela-pagar')">← Voltar</button>
+                <h2>Nova Transferência</h2>
+                <div class="conteudo-folha">
+                    <p>Formulário de envio de BNB ficará aqui.</p>
+                </div>
+            </section>
+
+
+            <section id="tela-receber" class="tela">
+                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+                <h2>Ação: Receber</h2>
+                <div class="cards-grid">
+                    <div class="card-item inativo"><h3>Card 1</h3><p>Minha Chave</p></div>
+                    <div class="card-item inativo"><h3>Card 2</h3><p>Gerar QR Code</p></div>
+                    <div class="card-item inativo"><h3>Card 3</h3><p>Solicitar</p></div>
+                    <div class="card-item inativo"><h3>Card 4</h3><p>Depósitos</p></div>
+                </div>
+            </section>
+
+
+            <section id="tela-coletar" class="tela">
+                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+                <h2>Ação: Coletar</h2>
+                <div class="cards-grid">
+                    <div class="card-item inativo"><h3>Card 1</h3><p>Claim</p></div>
+                    <div class="card-item inativo"><h3>Card 2</h3><p>Pools</p></div>
+                    <div class="card-item inativo"><h3>Card 3</h3><p>Histórico</p></div>
+                    <div class="card-item inativo"><h3>Card 4</h3><p>Regras</p></div>
+                </div>
+            </section>
+
+
+            <section id="tela-trocar" class="tela">
+                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+                <h2>Ação: Trocar</h2>
+                <div class="cards-grid">
+                    <div class="card-item inativo"><h3>Card 1</h3><p>Swap</p></div>
+                    <div class="card-item inativo"><h3>Card 2</h3><p>Liquidez</p></div>
+                    <div class="card-item inativo"><h3>Card 3</h3><p>Slippage</p></div>
+                    <div class="card-item inativo"><h3>Card 4</h3><p>Histórico</p></div>
+                </div>
+            </section>
+
+            </main>
+
+        <footer class="app-footer">
+            <button class="nav-btn active" onclick="navegarPara('tela-home')">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>HOME</span>
+            </button>
+            <button class="nav-btn" onclick="navegarPara('tela-nft')">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
+                <span>NFT</span>
+            </button>
+            <button class="nav-btn" onclick="navegarPara('tela-dao')">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                <span>DAO</span>
+            </button>
+            <button class="nav-btn" onclick="navegarPara('tela-redes')">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <span>REDES</span>
+            </button>
+            <button class="nav-btn" onclick="navegarPara('tela-perfil')">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>PERFIL</span>
+            </button>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
