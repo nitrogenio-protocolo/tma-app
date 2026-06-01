@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nitrogênio Protocolo</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -15,146 +14,210 @@
                 <h1>NITROGÊNIO</h1>
                 <span>PROTOCOLO</span>
             </div>
-            <button class="btn-conectar" id="btnConectar">CONECTAR</button>
+            <button class="btn-conectar">CONECTAR</button>
         </header>
 
-        <main class="app-content">
+        <main id="conteudo-principal">
 
-            <section id="tela-home" class="tela ativa">
+            <section id="tela-home">
                 <div class="balance-card">
                     <p class="balance-title">SALDO DA CONTA CONECTADA</p>
                     <p class="balance-value">0.00 BNB</p>
                 </div>
 
                 <div class="functions-grid">
-                    <button class="btn-funcao" onclick="navegarPara('tela-pagar')">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
-                        <span>PAGAR</span>
-                    </button>
-                    <button class="btn-funcao" onclick="navegarPara('tela-receber')">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11 5v11.86l-5.43-5.43-1.42 1.42L12 21.14l8.29-8.29-1.42-1.42L13 16.86V5h-2z"/></svg>
-                        <span>RECEBER</span>
-                    </button>
-                    <button class="btn-funcao" onclick="navegarPara('tela-coletar')">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11 5v11.86l-5.43-5.43-1.42 1.42L12 21.14l8.29-8.29-1.42-1.42L13 16.86V5h-2z"/></svg>
-                        <span>COLETAR</span>
-                    </button>
-                    <button class="btn-funcao" onclick="navegarPara('tela-trocar')">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M17 17H7v-3l-4 4 4 4v-3h12v-6h-2v4zM7 7h10v3l4-4-4-4v3H5v6h2V7z"/></svg>
-                        <span>TROCAR</span>
-                    </button>
+                    <div class="card-item" id="nav-pagar"><h3>PAGAR</h3></div>
+                    <div class="card-item" id="nav-receber"><h3>RECEBER</h3></div>
+                    <div class="card-item" id="nav-coletar"><h3>COLETAR</h3></div>
+                    <div class="card-item" id="nav-trocar"><h3>TROCAR</h3></div>
                 </div>
             </section>
 
-
-            <section id="tela-pagar" class="tela">
-                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+            <section id="tela-pagar">
+                <button class="btn-voltar">← Voltar</button>
                 <h2>Ação: Pagar</h2>
                 <div class="cards-grid">
-                    <div class="card-item" onclick="navegarPara('sub-pagar-transferencia')">
-                        <h3>Transferência</h3>
-                        <p>Enviar saldo para carteira</p>
-                    </div>
-                    <div class="card-item" onclick="navegarPara('sub-pagar-leitor')">
-                        <h3>Leitor QR Code</h3>
-                        <p>Escanear e ler carteira</p>
-                    </div>
-                    <div class="card-item inativo">
-                        <h3>Agendamentos</h3>
-                        <p>Em breve</p>
-                    </div>
-                    <div class="card-item inativo">
-                        <h3>Histórico</h3>
-                        <p>Em breve</p>
-                    </div>
+                    <div class="card-item"><h3>Transferência</h3><p>Enviar saldo para carteira</p></div>
+                    <div class="card-item" id="card-pagar-leitor"><h3>Leitor QR Code</h3><p>Escanear com segurança</p></div>
+                    <div class="card-item"><h3>Agendamentos</h3><p>Info: Taxas programadas</p></div>
+                    <div class="card-item"><h3>Histórico Seguro</h3><p>Info: Identificar golpes</p></div>
                 </div>
             </section>
 
-            <section id="sub-pagar-leitor" class="tela">
-                <button class="btn-voltar" onclick="navegarPara('tela-pagar')">← Voltar</button>
+            <section id="sub-pagar-leitor">
+                <button class="btn-voltar">← Voltar</button>
                 <h2>Escanear Carteira</h2>
-                <div class="conteudo-folha">
-                    <div class="camera-placeholder">
-                        <p>[ Câmera/Scanner Ativo ]</p>
-                    </div>
-                    <div class="info-carteira-detectada">
-                        <p><strong>Status:</strong> Aguardando leitura...</p>
-                        <p><strong>Saldo Atual do Usuário:</strong> 0.00 BNB</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="sub-pagar-transferencia" class="tela">
-                <button class="btn-voltar" onclick="navegarPara('tela-pagar')">← Voltar</button>
-                <h2>Nova Transferência</h2>
-                <div class="conteudo-folha">
-                    <p>Formulário de envio de BNB ficará aqui.</p>
+                <div class="area-scanner">
+                    <div class="quadrado-camera"><p>[ Câmera Ativa ]</p></div>
+                    <p class="instrucao">Aponte para o QR Code do recebedor</p>
                 </div>
             </section>
 
 
-            <section id="tela-receber" class="tela">
-                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+            <section id="tela-receber">
+                <button class="btn-voltar">← Voltar</button>
                 <h2>Ação: Receber</h2>
                 <div class="cards-grid">
-                    <div class="card-item inativo"><h3>Card 1</h3><p>Minha Chave</p></div>
-                    <div class="card-item inativo"><h3>Card 2</h3><p>Gerar QR Code</p></div>
-                    <div class="card-item inativo"><h3>Card 3</h3><p>Solicitar</p></div>
-                    <div class="card-item inativo"><h3>Card 4</h3><p>Depósitos</p></div>
+                    <div class="card-item" id="card-receber-gerar"><h3>Gerar QR Code</h3><p>Digitar valor e criar código</p></div>
+                    <div class="card-item"><h3>Minha Chave</h3><p>Copiar/colar endereço</p></div>
+                    <div class="card-item"><h3>Solicitar</h3><p>Info: Redes suportadas</p></div>
+                    <div class="card-item"><h3>Limites</h3><p>Info: Cuidados com a rede</p></div>
+                </div>
+            </section>
+
+            <section id="sub-receber-gerar-qr">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Gerar Código de Cobrança</h2>
+                <div class="formulario-receber">
+                    <label for="valor-receber">Digite o valor (em BNB):</label>
+                    <input type="number" id="valor-receber" placeholder="Ex: 0.05" step="0.0001">
+                    <button class="btn-acao-gerar">GERAR QR CODE</button>
+                    <div class="resultado-qr-code"><p>O QR Code aparecerá aqui</p></div>
                 </div>
             </section>
 
 
-            <section id="tela-coletar" class="tela">
-                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+            <section id="tela-coletar">
+                <button class="btn-voltar">← Voltar</button>
                 <h2>Ação: Coletar</h2>
                 <div class="cards-grid">
-                    <div class="card-item inativo"><h3>Card 1</h3><p>Claim</p></div>
-                    <div class="card-item inativo"><h3>Card 2</h3><p>Pools</p></div>
-                    <div class="card-item inativo"><h3>Card 3</h3><p>Histórico</p></div>
-                    <div class="card-item inativo"><h3>Card 4</h3><p>Regras</p></div>
+                    <div class="card-item" id="card-coletar-executar"><h3>Coletar Ganhos</h3><p>Reivindicar tokens de trabalho</p></div>
+                    <div class="card-item"><h3>Histórico</h3><p>Gaveta futura</p></div>
+                    <div class="card-item"><h3>Validador</h3><p>Gaveta futura</p></div>
+                    <div class="card-item"><h3>Regras</h3><p>Info: Como funciona o ganho</p></div>
+                </div>
+            </section>
+
+            <section id="sub-coletar-executar">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Painel de Coleta</h2>
+                <div class="painel-coleta">
+                    <p>Tokens acumulados por trabalho: <strong id="tokens-disponiveis">0.00 NITRO</strong></p>
+                    <button class="btn-acao-coletar">REIVINDICAR TOKENS (CLAIM)</button>
                 </div>
             </section>
 
 
-            <section id="tela-trocar" class="tela">
-                <button class="btn-voltar" onclick="navegarPara('tela-home')">← Voltar</button>
+            <section id="tela-trocar">
+                <button class="btn-voltar">← Voltar</button>
                 <h2>Ação: Trocar</h2>
                 <div class="cards-grid">
-                    <div class="card-item inativo"><h3>Card 1</h3><p>Swap</p></div>
-                    <div class="card-item inativo"><h3>Card 2</h3><p>Liquidez</p></div>
-                    <div class="card-item inativo"><h3>Card 3</h3><p>Slippage</p></div>
-                    <div class="card-item inativo"><h3>Card 4</h3><p>Histórico</p></div>
+                    <div class="card-item" id="card-trocar-pancake"><h3>PancakeSwap</h3><p>Negociar via BSC</p></div>
+                    <div class="card-item"><h3>Nova DEX</h3><p>Gaveta futura de corretora</p></div>
+                    <div class="card-item"><h3>Nova DEX</h3><p>Gaveta futura de corretora</p></div>
+                    <div class="card-item"><h3>Slippage</h3><p>Info: Evite taxas abusivas</p></div>
                 </div>
             </section>
 
-            </main>
+            <section id="sub-trocar-pancakeswap">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Negociar na PancakeSwap</h2>
+                <div class="container-swap">
+                    <div class="bloco-inputs-swap">
+                        <input type="number" placeholder="De: BNB">
+                        <p class="seta-troca">↓</p>
+                        <input type="number" placeholder="Para: NITRO">
+                    </div>
+                    <button class="btn-acao-swap">EXECUTAR TROCA</button>
+                </div>
+            </section>
 
-        <footer class="app-footer">
-            <button class="nav-btn active" onclick="navegarPara('tela-home')">
-                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                <span>HOME</span>
-            </button>
-            <button class="nav-btn" onclick="navegarPara('tela-nft')">
-                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
-                <span>NFT</span>
-            </button>
-            <button class="nav-btn" onclick="navegarPara('tela-dao')">
-                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                <span>DAO</span>
-            </button>
-            <button class="nav-btn" onclick="navegarPara('tela-redes')">
-                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                <span>REDES</span>
-            </button>
-            <button class="nav-btn" onclick="navegarPara('tela-perfil')">
-                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>PERFIL</span>
-            </button>
-        </footer>
+
+            <section id="tela-nft">
+                <h2>Painel NFT</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Coleção Gênio</h3><p>Ver meus avatares originais</p></div>
+                    <div class="card-item"><h3>Nova Coleção</h3><p>Gaveta futura</p></div>
+                    <div class="card-item"><h3>Nova Coleção</h3><p>Gaveta futura</p></div>
+                    <div class="card-item"><h3>Autenticidade</h3><p>Info: O que é propriedade digital</p></div>
+                </div>
+            </section>
+
+
+            <section id="tela-dao">
+                <h2>Governança e Comunidade (DAO)</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Governança</h3><p>Votações e propostas abertas</p></div>
+                    <div class="card-item"><h3>Tesouraria</h3><p>Fundos protegidos do protocolo</p></div>
+                    <div class="card-item"><h3>Ideias</h3><p>Espaço para sugestões da comunidade</p></div>
+                    <div class="card-item" id="card-dao-recompensas"><h3>Recompensas</h3><p>Poupança, Quiz e Roleta</p></div>
+                </div>
+            </section>
+
+            <section id="sub-recompensas">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Central de Recompensas</h2>
+                
+                <div class="bloco-codigo">
+                    <input type="text" id="input-codigo-comunidade" placeholder="Código da Comunidade">
+                    <button class="btn-validar">Validar Código</button>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card-item" id="card-recompensa-poupanca"><h4>Poupança</h4><p>Colocar saldo para render</p></div>
+                    <div class="card-item" id="card-recompensa-quiz"><h4>Quiz</h4><p>Responda e ganhe tokens</p></div>
+                    <div class="card-item" id="card-recompensa-checkin"><h4>Check-in Diário</h4><p>Validar presença diária</p></div>
+                    <div class="card-item" id="card-recompensa-roleta"><h4>Roleta do Bem</h4><p>Girar para ganhar prêmios</p></div>
+                </div>
+            </section>
+
+            <section id="folha-poupanca">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Poupança Staking</h2>
+                <div class="conteudo-tecnico"><p>Interface de rendimento travado...</p></div>
+            </section>
+
+            <section id="folha-quiz">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Quiz Educativo</h2>
+                <div class="conteudo-tecnico"><p>Painel de perguntas e respostas...</p></div>
+            </section>
+
+            <section id="folha-checkin">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Check-in Diário</h2>
+                <div class="conteudo-tecnico"><p>Marcar presença de hoje...</p></div>
+            </section>
+
+            <section id="folha-roleta">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Roleta do Bem</h2>
+                <div class="conteudo-tecnico"><p>Mecânica visual da roleta premiada...</p></div>
+            </section>
+
+
+            <section id="tela-redes">
+                <h2>Configurações de Rede</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Redes Ativas</h3><p>Visualizar blockchains</p></div>
+                    <div class="card-item"><h3>RPC Customizado</h3><p>Adicionar novas redes</p></div>
+                    <div class="card-item"><h3>Velocidade</h3><p>Testar latência dos nós</p></div>
+                    <div class="card-item"><h3>Gas Tracker</h3><p>Info: Como calcular taxas</p></div>
+                </div>
+            </section>
+
+
+            <section id="tela-perfil">
+                <h2>Meu Perfil</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Minha Conta</h3><p>Gerenciar dados gerais</p></div>
+                    <div class="card-item"><h3>Segurança</h3><p>Backup de chaves privadas</p></div>
+                    <div class="card-item"><h3>Preferências</h3><p>Idioma e moedas locais</p></div>
+                    <div class="card-item"><h3>Sobre</h3><p>Info: Detalhes do Nitrogênio</p></div>
+                </div>
+            </section>
+
+        </main>
+
+        <nav id="rodape-fixo">
+            <button id="btn-menu-nft">NFT</button>
+            <button id="btn-menu-home">HOME</button>
+            <button id="btn-menu-dao">DAO</button>
+            <button id="btn-menu-redes">REDES</button>
+            <button id="btn-menu-perfil">PERFIL</button>
+        </nav>
 
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
