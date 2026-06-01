@@ -47,8 +47,3 @@ document.querySelectorAll('.btn-voltar').forEach(btn => {
 });
 
 console.log("Nitrogênio Protocolo: Navegação carregada com sucesso!");
-
-
-
-
-Aí já aproveita, aí já dá uma analisada como a gente removeu aqueles botões lá e substituiu pelos mais simples. Aí já vê se tem alguma coisa para mim remover aí no JS também.
