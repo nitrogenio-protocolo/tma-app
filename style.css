@@ -84,46 +84,59 @@ main#conteudo-principal section.ativa {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ==========================================================================
+   NOVOS BOTÕES DE AÇÃO RÁPIDA (CORRIGIDOS)
+   ========================================================================== */
 .quick-actions-menu {
     display: flex;
-    justify-content: space-around; /* Distribui os botões igualmente */
+    justify-content: space-around; 
     align-items: center;
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 10px 5px;
 }
 
 .action-btn {
     display: flex;
-    flex-direction: column; /* Coloca o ícone em cima e o texto embaixo */
+    flex-direction: column; 
     align-items: center;
     background: none;
     border: none;
     cursor: pointer;
-    color: white; /* Ou a cor do seu tema */
+    background: transparent;
+    width: 75px; 
 }
 
+/* Corrigido: Fundo branco e borda sutil para destacar no fundo cinza claro */
 .action-icon {
-    width: 50px;
-    height: 50px;
-    background-color: #333; /* Cor de fundo do círculo */
-    border-radius: 50%; /* Transforma em um círculo perfeito */
+    width: 52px;
+    height: 52px;
+    background-color: var(--white) !important; /* Força o fundo a ser branco */
+    border: 1px solid #E0E4EC; /* Uma bordinha sutil para dar acabamento */
+    border-radius: 50%; 
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    margin-bottom: 8px; /* Espaço entre o ícone e o texto */
-    transition: background 0.3s;
+    font-size: 1.3rem;
+    color: var(--blue) !important; /* Força a seta/ícone a ser azul */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra leve para flutuar */
+    margin-bottom: 8px;
+    transition: transform 0.1s ease, background-color 0.2s;
 }
 
-.action-btn:hover .action-icon {
-    background-color: #00ffcc; /* Cor de destaque ao passar o mouse */
-    color: #000;
+/* Efeito de clique físico simulando app mobile */
+.action-btn:active .action-icon {
+    transform: scale(0.92);
+    background-color: #E8F0FE !important; /* Azul bem clarinho ao tocar */
 }
 
+/* Corrigido: Texto escuro e legível abaixo do botão */
 .action-label {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #333333 !important; /* Força o texto a ser cinza escuro/preto */
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* ==========================================================================
