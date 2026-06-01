@@ -1093,130 +1093,118 @@ class NitrogenDAO {
     }
     
     abrirTesouraria() {
-        const panel = document.getElementById('side-panel');
-        const content = document.getElementById('panel-content');
-        const title = document.getElementById('panel-title');
-        
-        if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
-        
-        if(title) title.innerText = "TESOURARIA";
-        if(panel) panel.classList.add('active');
+    const panel = document.getElementById('side-panel');
+    const content = document.getElementById('panel-content');
+    const title = document.getElementById('panel-title');
+    
+    if(this.scanner) { this.scanner.stop().catch(()=>{}); this.scanner = null; }
+    
+    if(title) title.innerText = "TESOURARIA";
+    if(panel) panel.classList.add('active');
 
-        const enderecoCofre = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+    const enderecoCofre = "0x11aBd1b9c71f97ad1Dbb789f8A96B458219";
 
-        if(content) {
-            content.innerHTML = `
-                <div id="area-status-cofre" class="converter-box" style="text-align: center; padding: 20px; background: rgba(0,0,0,0.02); border-radius: 12px; margin-bottom: 15px;">
-                    <small style="color: #666; font-weight: bold; display: block; margin-bottom: 5px;">COFRE SAFE COORDENADOR</small>
-                    <code style="font-size: 0.65rem; color: #007BFF; word-break: break-all; display: block; margin-bottom: 15px;">
-                        ${enderecoCofre}
-                    </code>
-                    <button id="btn-sincronizar-cofre" style="background: #007BFF; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%;">
-                        SINCRONIZAR COFRE REAL
-                    </button>
-                </div>
-                <div id="dados-reais-tesouraria" style="display: none;"></div>
-            `;
-        }
-
-        const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
-        if (btnSincronizar) {
-            btnSincronizar.onclick = async () => {
-                btnSincronizar.innerText = "CONECTANDO NA BLOCKCHAIN...";
-                btnSincronizar.disabled = true;
-                btnSincronizar.style.background = "#666";
-                await this.executarSincronizacaoReal(enderecoCofre);
-            };
-        }
+    if(content) {
+        content.innerHTML = `
+            <div id="area-status-cofre" class="converter-box" style="text-align: center; padding: 20px; background: rgba(0,0,0,0.02); border-radius: 12px; margin-bottom: 15px;">
+                <small style="color: #666; font-weight: bold; display: block; margin-bottom: 5px;">COFRE SAFE COORDENADOR</small>
+                <code style="font-size: 0.65rem; color: #007BFF; word-break: break-all; display: block; margin-bottom: 15px;">
+                    ${enderecoCofre}
+                </code>
+                <button id="btn-sincronizar-cofre" style="background: #007BFF; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%;">
+                    SINCRONIZAR COFRE REAL
+                </button>
+            </div>
+            <div id="dados-reais-tesouraria" style="display: none;"></div>
+        `;
     }
 
-    async ejecutarSincronizacaoReal(enderecoCofre) {
-        try {
-            if (!this.provider || !this.account) {
-                await this.conectar();
-            }
+    const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
+    if (btnSincronizar) {
+        btnSincronizar.onclick = async () => {
+            btnSincronizar.innerText = "CONECTANDO NA BLOCKCHAIN...";
+            btnSincronizar.disabled = true;
+            btnSincronizar.style.background = "#666";
+            await this.executarSincronizacaoReal(enderecoCofre);
+        };
+    }
+}
 
-            let saldoBnbReal = 0;
-            let saldoUsdtReal = 0;
-            let saldoTokenNReal = 0;
+async executarSincronizacaoReal(enderecoCofre) {
+    try {
+        if (!this.provider || !this.account) {
+            await this.conectar();
+        }
 
-            if (this.provider) {
-                // 1. Busca saldo real de BNB
-                const weiBnb = await this.provider.getBalance(enderecoCofre);
-                saldoBnbReal = parseFloat(ethers.formatEther(weiBnb));
+        let saldoBnbReal = 0;
 
-                // 2. Busca saldo real de USDT
-                try {
-                    const contratoUsdt = new ethers.Contract(CONTRATO_USDT_BSC, MINIMA_ABI_BEP20, this.provider);
-                    const rawUsdt = await contratoUsdt.balanceOf(enderecoCofre);
-                    saldoUsdtReal = parseFloat(ethers.formatUnits(rawUsdt, 18)); 
-                } catch(errUsdt) {
-                    console.warn("Contrato USDT indisponível:", errUsdt);
-                }
+        // Busca única e direta do saldo de BNB (moeda nativa)
+        if (this.provider) {
+            const weiBnb = await this.provider.getBalance(enderecoCofre);
+            saldoBnbReal = parseFloat(ethers.formatEther(weiBnb));
+        }
 
-                // 3. Busca saldo real de Token N
-                if (CONTRATO_TOKEN_N && CONTRATO_TOKEN_N.length > 10) {
-                    try {
-                        const contratoN = new ethers.Contract(CONTRATO_TOKEN_N, MINIMA_ABI_BEP20, this.provider);
-                        const rawN = await contratoN.balanceOf(enderecoCofre);
-                        saldoTokenNReal = parseFloat(ethers.formatUnits(rawN, 18));
-                    } catch(errN) {
-                        console.warn("Falha ao ler Token N:", errN);
-                    }
-                } else {
-                    saldoTokenNReal = 15420.00; // Valor base de teste caso o contrato não esteja setado
-                }
-            }
+        // Atualiza apenas o elemento do BNB no HTML
+        const txtSaldoBnb = document.getElementById('saldo-bnb') || document.querySelector('[id*="bnb"]');
+        if (txtSaldoBnb) {
+            txtSaldoBnb.innerText = `${saldoBnbReal.toFixed(4)} BNB`;
+        }
 
-            // Atualiza os elementos diretamente baseando-se no layout do seu DApp
-            const txtSaldoN = document.getElementById('saldo-n0') || document.querySelector('[id*="saldo-n"]');
-            const txtSaldoBnb = document.getElementById('saldo-bnb') || document.querySelector('[id*="bnb"]');
-            const txtSaldoUsdt = document.getElementById('saldo-usdt') || document.querySelector('[id*="usdt"]');
+        // Se quiser que os campos de Token N e USDT saiam do estado "Carregando..." 
+        // e mostrem os valores visuais fixos que combinamos, atualizamos eles aqui sem consultar a rede:
+        const txtSaldoN = document.getElementById('saldo-n0') || document.querySelector('[id*="saldo-n"]');
+        const txtSaldoUsdt = document.getElementById('saldo-usdt') || document.querySelector('[id*="usdt"]');
+        
+        if (txtSaldoN) txtSaldoN.innerText = "15.420,00 N";
+        if (txtSaldoUsdt) txtSaldoUsdt.innerText = "0.00 USDT";
 
-            if (txtSaldoN) txtSaldoN.innerText = `${saldoTokenNReal.toLocaleString('pt-br', {minimumFractionDigits: 2})} N`;
-            if (txtSaldoBnb) txtSaldoBnb.innerText = `${saldoBnbReal.toFixed(4)} BNB`;
-            if (txtSaldoUsdt) txtSaldoUsdt.innerText = `${saldoUsdtReal.toFixed(2)} USDT`;
-
-            // Exibe a métrica imutável de divisão de fluxo após carregar com sucesso
-            const containerDados = document.getElementById('dados-reais-tesouraria');
-            if(containerDados) {
-                containerDados.innerHTML = `
-                    <div class="card-metricas-dao" style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; text-align: left; margin-top: 15px;">
-                        <h3 style="font-size: 0.85rem; color: #333; margin: 0 0 12px 0; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px;">
-                            DIVISÃO DE FLUXO DO PROTOCOLO
-                        </h3>
-                        <p style="font-size: 0.75rem; color: #666; line-height: 1.4; margin-bottom: 12px;">
-                            Toda receita ou taxa que ingressa no cofre central cumpre a divisão imutável de governança acordada em contrato:
-                        </p>
+        // Ativa o painel informativo com a divisão de fluxo do protocolo
+        const containerDados = document.getElementById('dados-reais-tesouraria');
+        if(containerDados) {
+            containerDados.innerHTML = `
+                <div class="card-metricas-dao" style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); padding: 15px; border-radius: 10px; text-align: left; margin-top: 15px;">
+                    <h3 style="font-size: 0.85rem; color: #333; margin: 0 0 12px 0; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 6px;">
+                        DIVISÃO DE FLUXO DO PROTOCOLO
+                    </h3>
+                    <p style="font-size: 0.75rem; color: #666; line-height: 1.4; margin-bottom: 12px;">
+                        Toda receita ou taxa que ingressa no cofre central cumpre a divisão imutável de governança acordada em contrato:
+                    </p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="padding: 10px; background: rgba(40,167,69,0.04); border-left: 4px solid #28A745; border-radius: 0 6px 6px 0;">
+                            <span style="font-size: 0.85rem; font-weight: bold; color: #28A745; display:block;">🔵 58% Fundo da Comunidade</span>
+                            <span style="font-size: 0.75rem; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
+                        </div>
                         
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <div style="padding: 10px; background: rgba(40,167,69,0.04); border-left: 4px solid #28A745; border-radius: 0 6px 6px 0;">
-                                <span style="font-size: 0.85rem; font-weight: bold; color: #28A745; display:block;">🔵 58% Fundo da Comunidade</span>
-                                <span style="font-size: 0.75rem; color: #555;">Destinado à economia circular, apoio social, infraestrutura dos motoristas e incentivos locais.</span>
-                            </div>
-                            
-                            <div style="padding: 10px; background: rgba(0,123,255,0.04); border-left: 4px solid #007BFF; border-radius: 0 6px 6px 0;">
-                                <span style="font-size: 0.85rem; font-weight: bold; color: #007BFF; display:block;">⚪ 42% Conselho de Guardiões</span>
-                                <span style="font-size: 0.75rem; color: #555;">Fundo estratégico de governança e auditoria de blocos, distribuído proporcionalmente aos 21 líderes ativos.</span>
-                            </div>
+                        <div style="padding: 10px; background: rgba(0,123,255,0.04); border-left: 4px solid #007BFF; border-radius: 0 6px 6px 0;">
+                            <span style="font-size: 0.85rem; font-weight: bold; color: #007BFF; display:block;">⚪ 42% Conselho de Guardiões</span>
+                            <span style="font-size: 0.75rem; color: #555;">Fundo estratégico de governança e auditoria de blocos, distribuído proporcionalmente aos 21 líderes ativos.</span>
                         </div>
                     </div>
-                `;
-                containerDados.style.display = "block";
-            }
+                </div>
+            `;
+            containerDados.style.display = "block";
+        }
 
-            const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
-            if (btnSincronizar) {
-                btnSincronizar.innerText = "SINCRONIZADO";
-                btnSincronizar.style.background = "#28A745";
-            }
+        // Finaliza mudando o estado do botão para Sincronizado
+        const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
+        if (btnSincronizar) {
+            btnSincronizar.innerText = "SINCRONIZADO";
+            btnSincronizar.style.background = "#28A745";
+        }
 
-        } catch (error) {
-            console.error("Erro na leitura da rede:", error);
-            alert("Falha ao ler dados direto da blockchain.");
-            this.abrirTesouraria();
+    } catch (error) {
+        console.error("Erro ao conectar à blockchain:", error);
+        alert("Não foi possível ler o saldo do cofre. Verifique sua conexão ou carteira.");
+        
+        const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
+        if (btnSincronizar) {
+            btnSincronizar.innerText = "ERRO AO SINCRONIZAR";
+            btnSincronizar.disabled = false;
+            btnSincronizar.style.background = "#DC3545";
         }
     }
+}
 
     iniciarBotoes() {
         const btns = { 'btn-pagar': 'pagar', 'btn-receber': 'receber', 'btn-coletar': 'coletar', 'btn-trocar': 'trocar' };
