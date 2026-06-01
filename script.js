@@ -1092,7 +1092,7 @@ class NitrogenDAO {
         }, 4000); 
     }
     
-    a    abrirTesouraria() {
+    abrirTesouraria () {
         const panel = document.getElementById('side-panel');
         const content = document.getElementById('panel-content');
         const title = document.getElementById('panel-title');
