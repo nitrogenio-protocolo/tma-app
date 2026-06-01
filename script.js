@@ -1133,9 +1133,6 @@ class NitrogenDAO {
     }
 
     async ejecutarSincronizacaoReal(enderecoCofre) {
-        const containerDados = document.getElementById('dados-reais-tesouraria');
-        const areaStatus = document.getElementById('area-status-cofre');
-        
         try {
             if (!this.provider || !this.account) {
                 await this.conectar();
@@ -1146,17 +1143,20 @@ class NitrogenDAO {
             let saldoTokenNReal = 0;
 
             if (this.provider) {
+                // 1. Busca saldo real de BNB
                 const weiBnb = await this.provider.getBalance(enderecoCofre);
                 saldoBnbReal = parseFloat(ethers.formatEther(weiBnb));
 
+                // 2. Busca saldo real de USDT
                 try {
                     const contratoUsdt = new ethers.Contract(CONTRATO_USDT_BSC, MINIMA_ABI_BEP20, this.provider);
                     const rawUsdt = await contratoUsdt.balanceOf(enderecoCofre);
                     saldoUsdtReal = parseFloat(ethers.formatUnits(rawUsdt, 18)); 
                 } catch(errUsdt) {
-                    console.warn("Contrato USDT indisponível no teste local:", errUsdt);
+                    console.warn("Contrato USDT indisponível:", errUsdt);
                 }
 
+                // 3. Busca saldo real de Token N
                 if (CONTRATO_TOKEN_N && CONTRATO_TOKEN_N.length > 10) {
                     try {
                         const contratoN = new ethers.Contract(CONTRATO_TOKEN_N, MINIMA_ABI_BEP20, this.provider);
@@ -1166,21 +1166,25 @@ class NitrogenDAO {
                         console.warn("Falha ao ler Token N:", errN);
                     }
                 } else {
-                    saldoTokenNReal = 15420.00;
+                    saldoTokenNReal = 15420.00; // Valor base de teste caso o contrato não esteja setado
                 }
             }
 
-            const targetElement = containerDados || areaStatus;
-            if(targetElement) {
-                targetElement.innerHTML = `
-                    <small style="color: #666; font-weight: bold; letter-spacing: 0.5px;">ATIVOS NO COFRE SAFE (ON-CHAIN)</small>
-                    <div style="text-align: left; margin: 15px 0; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; display:flex; flex-direction:column; gap:8px;">
-                        <p style="margin:0; font-size:1.1rem; color:#28A745;"><strong>🇺🇸 ${saldoUsdtReal.toFixed(2)}</strong> <span style="font-size:0.8rem; color:#666;">USDT</span></p>
-                        <p style="margin:0; font-size:1.1rem; color:#007BFF;"><strong>🪙 ${saldoTokenNReal.toLocaleString('pt-br', {minimumFractionDigits: 2})}</strong> <span style="font-size:0.8rem; color:#666;">Token N</span></p>
-                        <p style="margin:0; font-size:0.9rem; color:#333;"><strong>⛽ ${saldoBnbReal.toFixed(4)}</strong> <span style="font-size:0.75rem; color:#666;">BNB (Gás)</span></p>
-                    </div>
-                `;
-            }
+            // 🔥 CORREÇÃO: Atualiza os elementos diretamente baseando-se no layout do seu DApp
+            // Ajuste os IDs abaixo ('saldo-n0', 'saldo-bnb', 'saldo-usdt') caso eles tenham nomes diferentes no seu HTML
+            const txtSaldoN = document.getElementById('saldo-n0') || document.querySelector('[id*="saldo-n"]');
+            const txtSaldoBnb = document.getElementById('saldo-bnb') || document.querySelector('[id*="bnb"]');
+            const txtSaldoUsdt = document.getElementById('saldo-usdt') || document.querySelector('[id*="usdt"]');
+
+            if (txtSaldoN) txtSaldoN.innerText = `${saldoTokenNReal.toLocaleString('pt-br', {minimumFractionDigits: 2})} N`;
+            if (txtSaldoBnb) txtSaldoBnb.innerText = `${saldoBnbReal.toFixed(4)} BNB`;
+            if (txtSaldoUsdt) txtSaldoUsdt.innerText = `${saldoUsdtReal.toFixed(2)} USDT`;
+
+        } catch (error) {
+            console.error("Erro na leitura da rede:", error);
+            alert("Falha ao ler dados direto da blockchain.");
+        }
+    }
 
             if(containerDados) {
                 containerDados.innerHTML = `
