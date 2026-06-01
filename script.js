@@ -1092,7 +1092,7 @@ class NitrogenDAO {
         }, 4000); 
     }
     
-    abrirTesouraria() {
+    a    abrirTesouraria() {
         const panel = document.getElementById('side-panel');
         const content = document.getElementById('panel-content');
         const title = document.getElementById('panel-title');
@@ -1102,7 +1102,7 @@ class NitrogenDAO {
         if(title) title.innerText = "TESOURARIA";
         if(panel) panel.classList.add('active');
 
-        // Endereço oficial do seu cofre com o checksum correto (D maiúsculo)
+        // Endereço oficial do cofre com o checksum correto
         const enderecoCofre = "0x11aBd1b9c71f97ad1Dbb789f8A96B458219";
 
         if(content) {
@@ -1122,7 +1122,7 @@ class NitrogenDAO {
         const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
         if (btnSincronizar) {
             btnSincronizar.onclick = async () => {
-                btnSincronizar.innerText = "⌛ CONECTANDO NA BLOCKCHAIN...";
+                btnSincronizar.innerText = "⌛ CONSULTANDO BLOCKCHAIN DE FORMA DIRETA...";
                 btnSincronizar.disabled = true;
                 btnSincronizar.style.background = "#666";
                 await this.executarSincronizacaoReal(enderecoCofre);
@@ -1132,32 +1132,29 @@ class NitrogenDAO {
 
     async executarSincronizacaoReal(enderecoCofre) {
         try {
-            if (!this.provider || !this.account) {
-                await this.conectar();
-            }
-
             let saldoBnbReal = 0;
 
-            // Consulta real do saldo de BNB na rede BSC através do Provider da carteira conectada
-            if (this.provider) {
-                const weiBnb = await this.provider.getBalance(enderecoCofre);
+            // SOLUÇÃO DEFINITIVA: Cria um provider público direto da rede BSC
+            // Isso ignora qualquer bloqueio ou falha de conexão da MetaMask do utilizador
+            const rpcPublicaBSC = new ethers.JsonRpcProvider("https://bsc-dataseed.binance.org/");
+            
+            if (rpcPublicaBSC) {
+                const weiBnb = await rpcPublicaBSC.getBalance(enderecoCofre);
                 saldoBnbReal = parseFloat(ethers.formatEther(weiBnb));
             }
 
-            // Injeta o saldo real diretamente na tag HTML do topo
+            // Injeta o valor real no HTML
             const txtSaldoBnb = document.getElementById('saldo-bnb');
             if (txtSaldoBnb) {
                 txtSaldoBnb.innerText = `${saldoBnbReal.toFixed(4)} BNB`;
             }
 
-            // Finaliza mudando o estado do botão para indicar sucesso
             const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
             if (btnSincronizar) {
                 btnSincronizar.innerText = "✅ SALDO ATUALIZADO";
                 btnSincronizar.style.background = "#28A745";
                 btnSincronizar.disabled = false;
                 
-                // Restaura o texto original do botão após 3 segundos para novas consultas
                 setTimeout(() => {
                     btnSincronizar.innerText = "🔄 SINCRONIZAR SALDO EM BNB";
                     btnSincronizar.style.background = "#007BFF";
@@ -1165,12 +1162,12 @@ class NitrogenDAO {
             }
 
         } catch (error) {
-            console.error("Erro ao conectar à blockchain:", error);
-            alert("Não foi possível ler o saldo do cofre. Verifique sua conexão ou carteira.");
+            console.error("Erro na consulta RPC pública:", error);
+            alert("Não foi possível ler a blockchain. Verifique a sua ligação à internet.");
             
             const btnSincronizar = document.getElementById('btn-sincronizar-cofre');
             if (btnSincronizar) {
-                btnSincronizar.innerText = "❌ ERRO AO SINCRONIZAR";
+                btnSincronizar.innerText = "❌ ERRO AO CONSULTAR NETWORK";
                 btnSincronizar.disabled = false;
                 btnSincronizar.style.background = "#DC3545";
             }
