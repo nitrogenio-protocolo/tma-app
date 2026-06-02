@@ -15,146 +15,149 @@
                 <h1>NITROGÊNIO</h1>
                 <span>PROTOCOLO</span>
             </div>
-            <!-- ADICIONADO ID AQUI -->
             <button class="btn-conectar" id="btn-conectar-wallet">CONECTAR</button>
         </header>
 
         <main id="conteudo-principal">
 
-             <section id="tela-home" class="ativa">
-             <!-- Card de Saldo Centralizado Atualizado para Token -->
-             <div class="balance-card">
-                <p class="balance-title" id="carteira-status">CARTEIRA DESCONECTADA</p>
-                <!-- ADICIONADO ID AQUI E MUDADO PARA NITRO -->
-                <p class="balance-value" id="txt-saldo-token">0.00 NITRO</p> 
-            </div>
+            <section id="tela-home" class="ativa">
+                <div class="balance-card">
+                    <p class="balance-title" id="carteira-status">CARTEIRA DESCONECTADA</p>
+                    <p class="balance-value" id="txt-saldo-token">0.00 NITRO</p> 
+                </div>
 
-            <!-- Ações Rápidas Padronizadas -->
-            <div class="quick-actions-menu">
-                <button class="action-btn" id="nav-pagar">
-                    <span class="action-icon">↑</span>
-                    <span class="action-label">Pagar</span>
-                </button>
+                <div class="quick-actions-menu">
+                    <button class="action-btn" id="nav-pagar">
+                        <span class="action-icon">↑</span>
+                        <span class="action-label">Pagar</span>
+                    </button>
+                    
+                    <button class="action-btn" id="nav-receber">
+                        <span class="action-icon">↓</span>
+                        <span class="action-label">Receber</span>
+                    </button>
+
+                    <button class="action-btn" id="nav-trocar">
+                        <span class="action-icon">⇄</span>
+                        <span class="action-label">Trocar</span>
+                    </button>
+
+                    <button class="action-btn" id="nav-coletar">
+                        <span class="action-icon">↓</span>
+                        <span class="action-label">Coletar</span>
+                    </button>
+                </div>
+            </section>
                 
-                <button class="action-btn" id="nav-receber">
-                    <span class="action-icon">↓</span>
-                    <span class="action-label">Receber</span>
-                </button>
+            <section id="tela-pagar"><button class="btn-voltar">← Voltar</button><h2>Área de Pagamentos</h2></section>
+            <section id="tela-receber"><button class="btn-voltar">← Voltar</button><h2>Área de Recebimentos</h2></section>
+            <section id="tela-trocar"><button class="btn-voltar">← Voltar</button><h2>Área de Trocas (Swap)</h2></section>
+            <section id="tela-coletar"><button class="btn-voltar">← Voltar</button><h2>Área de Coleta</h2></section>
 
-                <button class="action-btn" id="nav-trocar">
-                    <span class="action-icon">⇄</span>
-                    <span class="action-label">Trocar</span>
-                </button>
+            <section id="tela-nft">
+                <h2>Painel NFT</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Coleção Gênio</h3><p>Ver meus avatares originais</p></div>
+                    <div class="card-item"><h3>Nova Coleção</h3><p>Gaveta futura</p></div>
+                    <div class="card-item"><h3>Nova Coleção</h3><p>Gaveta futura</p></div>
+                    <div class="card-item"><h3>Autenticidade</h3><p>Info: O que é propriedade digital</p></div>
+                </div>
+            </section>
 
-                <button class="action-btn" id="nav-coletar">
-                    <span class="action-icon">↓</span>
-                    <span class="action-label">Coletar</span>
-                </button>
-            </div>
-        </section>
-            
-        <!-- GAVETAS DAS NOVAS TELAS -->
-        <section id="tela-pagar"><button class="btn-voltar">← Voltar</button><h2>Área de Pagamentos</h2></section>
-        <section id="tela-receber"><button class="btn-voltar">← Voltar</button><h2>Área de Recebimentos</h2></section>
-        <section id="tela-trocar"><button class="btn-voltar">← Voltar</button><h2>Área de Trocas (Swap)</h2></section>
-        <section id="tela-coletar"><button class="btn-voltar">← Voltar</button><h2>Área de Coleta</h2></section>
+            <section id="tela-dao">
+                <h2>Governança e Comunidade (DAO)</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Governança</h3><p>Votações e propostas abertas</p></div>
+                    <div class="card-item"><h3>Tesouraria</h3><p>Fundos protegidos do protocolo</p></div>
+                    <div class="card-item"><h3>Ideias</h3><p>Espaço para sugestões da comunidade</p></div>
+                    <div class="card-item" id="card-dao-recompensas"><h3>Recompensas</h3><p>Poupança, Quiz e Roleta</p></div>
+                </div>
+            </section>
 
-        <section id="tela-nft">
-            <h2>Painel NFT</h2>
-            <div class="cards-grid">
-                <div class="card-item"><h3>Coleção Gênio</h3><p>Ver meus avatares originais</p></div>
-                <div class="card-item"><h3>Nova Coleção</h3><p>Gaveta futura</p></div>
-                <div class="card-item"><h3>Nova Coleção</h3><p>Gaveta futura</p></div>
-                <div class="card-item"><h3>Autenticidade</h3><p>Info: O que é propriedade digital</p></div>
-            </div>
-        </section>
+            <section id="sub-recompensas">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Central de Recompensas</h2>
+                
+                <div class="bloco-codigo">
+                    <input type="text" id="input-codigo-comunidade" placeholder="Código da Comunidade">
+                    <button class="btn-validar">Validar Código</button>
+                </div>
 
-        <section id="tela-dao">
-            <h2>Governança e Comunidade (DAO)</h2>
-            <div class="cards-grid">
-                <div class="card-item"><h3>Governança</h3><p>Votações e propostas abertas</p></div>
-                <div class="card-item"><h3>Tesouraria</h3><p>Fundos protegidos do protocolo</p></div>
-                <div class="card-item"><h3>Ideias</h3><p>Espaço para sugestões da comunidade</p></div>
-                <div class="card-item" id="card-dao-recompensas"><h3>Recompensas</h3><p>Poupança, Quiz e Roleta</p></div>
-            </div>
-        </section>
+                <div class="cards-grid">
+                    <div class="card-item" id="card-recompensa-poupanca"><h4>Poupança</h4><p>Colocar saldo para render</p></div>
+                    <div class="card-item" id="card-recompensa-quiz"><h4>Quiz</h4><p>Responda e ganhe tokens</p></div>
+                    <div class="card-item" id="card-recompensa-checkin"><h4>Check-in Diário</h4><p>Validar presença diária</p></div>
+                    <div class="card-item" id="card-recompensa-roleta"><h4>Roleta do Bem</h4><p>Girar para ganhar prêmios</p></div>
+                </div>
+            </section>
 
-        <section id="sub-recompensas">
-            <button class="btn-voltar">← Voltar</button>
-            <h2>Central de Recompensas</h2>
-            
-            <div class="bloco-codigo">
-                <input type="text" id="input-codigo-comunidade" placeholder="Código da Comunidade">
-                <button class="btn-validar">Validar Código</button>
-            </div>
+            <section id="folha-poupanca">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Poupança Staking</h2>
+                <div class="conteudo-tecnico"><p>Interface de rendimento travado...</p></div>
+            </section>
 
-            <div class="cards-grid">
-                <div class="card-item" id="card-recompensa-poupanca"><h4>Poupança</h4><p>Colocar saldo para render</p></div>
-                <div class="card-item" id="card-recompensa-quiz"><h4>Quiz</h4><p>Responda e ganhe tokens</p></div>
-                <div class="card-item" id="card-recompensa-checkin"><h4>Check-in Diário</h4><p>Validar presença diária</p></div>
-                <div class="card-item" id="card-recompensa-roleta"><h4>Roleta do Bem</h4><p>Girar para ganhar prêmios</p></div>
-            </div>
-        </section>
+            <section id="folha-quiz">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Quiz Educativo</h2>
+                <div class="conteudo-tecnico"><p>Painel de perguntas e respostas...</p></div>
+            </section>
 
-        <section id="folha-poupanca">
-            <button class="btn-voltar">← Voltar</button>
-            <h2>Poupança Staking</h2>
-            <div class="conteudo-tecnico"><p>Interface de rendimento travado...</p></div>
-        </section>
+            <section id="folha-checkin">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Check-in Diário</h2>
+                <div class="conteudo-tecnico"><p>Marcar presença de hoje...</p></div>
+            </section>
 
-        <section id="folha-quiz">
-            <button class="btn-voltar">← Voltar</button>
-            <h2>Quiz Educativo</h2>
-            <div class="conteudo-tecnico"><p>Painel de perguntas e respostas...</p></div>
-        </section>
+            <section id="folha-roleta">
+                <button class="btn-voltar">← Voltar</button>
+                <h2>Roleta do Bem</h2>
+                <div class="conteudo-tecnico"><p>Mecânica visual da roleta premiada...</p></div>
+            </section>
 
-        <section id="folha-checkin">
-            <button class="btn-voltar">← Voltar</button>
-            <h2>Check-in Diário</h2>
-            <div class="conteudo-tecnico"><p>Marcar presença de hoje...</p></div>
-        </section>
+            <section id="tela-redes">
+                <h2>Configurações de Rede</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Redes Ativas</h3><p>Visualizar blockchains</p></div>
+                    <div class="card-item"><h3>RPC Customizado</h3><p>Adicionar novas redes</p></div>
+                    <div class="card-item"><h3>Velocidade</h3><p>Testar latência dos nós</p></div>
+                    <div class="card-item"><h3>Gas Tracker</h3><p>Info: Como calcular taxas</p></div>
+                </div>
+            </section>
 
-        <section id="folha-roleta">
-            <button class="btn-voltar">← Voltar</button>
-            <h2>Roleta do Bem</h2>
-            <div class="conteudo-tecnico"><p>Mecânica visual da roleta premiada...</p></div>
-        </section>
-
-        <section id="tela-redes">
-            <h2>Configurações de Rede</h2>
-            <div class="cards-grid">
-                <div class="card-item"><h3>Redes Ativas</h3><p>Visualizar blockchains</p></div>
-                <div class="card-item"><h3>RPC Customizado</h3><p>Adicionar novas redes</p></div>
-                <div class="card-item"><h3>Velocidade</h3><p>Testar latência dos nós</p></div>
-                <div class="card-item"><h3>Gas Tracker</h3><p>Info: Como calcular taxas</p></div>
-            </div>
-        </section>
-
-        <section id="tela-perfil">
-            <h2>Meu Perfil</h2>
-            <div class="cards-grid">
-                <div class="card-item"><h3>Minha Conta</h3><p>Gerenciar dados gerais</p></div>
-                <div class="card-item"><h3>Segurança</h3><p>Backup de chaves privadas</p></div>
-                <div class="card-item"><h3>Preferences</h3><p>Idioma e moedas locais</p></div>
-                <div class="card-item"><h3>Sobre</h3><p>Info: Detalhes do Nitrogênio</p></div>
-            </div>
-        </section>
+            <section id="tela-perfil">
+                <h2>Meu Perfil</h2>
+                <div class="cards-grid">
+                    <div class="card-item"><h3>Minha Conta</h3><p>Gerenciar dados gerais</p></div>
+                    <div class="card-item"><h3>Segurança</h3><p>Backup de chaves privadas</p></div>
+                    <div class="card-item"><h3>Preferences</h3><p>Idioma e moedas locais</p></div>
+                    <div class="card-item"><h3>Sobre</h3><p>Info: Detalhes do Nitrogênio</p></div>
+                </div>
+            </section>
 
         </main>
 
         <nav id="rodape-fixo">
-            <button id="btn-menu-home" class="active">HOME</button>
-            <button id="btn-menu-nft">NFT</button>
-            <button id="btn-menu-dao">DAO</button>
-            <button id="btn-menu-redes">REDES</button>
-            <button id="btn-menu-perfil">PERFIL</button>
+            <button id="btn-menu-home" class="active">
+                <span class="tab-label">HOME</span>
+            </button>
+            <button id="btn-menu-nft">
+                <span class="tab-label">NFT</span>
+            </button>
+            <button id="btn-menu-dao">
+                <span class="tab-label">DAO</span>
+            </button>
+            <button id="btn-menu-redes">
+                <span class="tab-label">REDES</span>
+            </button>
+            <button id="btn-menu-perfil">
+                <span class="tab-label">PERFIL</span>
+            </button>
         </nav>
 
     </div>
 
-    <!-- IMPORTANDO ETHERS V6 VIA CDN PRIMEIRO -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.5/ethers.umd.min.js"></script>
-    <!-- SEU SCRIPT DEPOIS -->
     <script src="script.js"></script>
 </body>
 </html>
