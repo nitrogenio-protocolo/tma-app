@@ -372,3 +372,14 @@ main#conteudo-principal section h2 {
 .btn-voltar:active {
     transform: scale(0.95);
 }
+
+/* Remove sublinhados e decorações dos cards que são links */
+.link-rede-social {
+    text-decoration: none !important;
+}
+
+/* Deixa o ícone de cima maior e mais destacado no card da rede social */
+.link-rede-social .action-icon {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
