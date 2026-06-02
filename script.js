@@ -3,16 +3,44 @@
    ========================================================================== */
 
 function navegarPara(idTela) {
+    // 1. Esconde todas as seções do app
     document.querySelectorAll('main#conteudo-principal section').forEach(section => {
         section.classList.remove('ativa');
         section.style.display = 'none'; 
     });
     
+    // 2. Mostra a nova tela ativa
     const novaTela = document.getElementById(idTela);
     if (novaTela) {
         novaTela.classList.add('ativa');
         novaTela.style.display = 'block'; 
         window.scrollTo(0, 0); 
+        
+        // ==========================================================================
+        // MÁGICA DOS BOTÕES DO RODAPÉ (Injetada aqui para automação total)
+        // ==========================================================================
+        // Remove o azul (.active) de TODOS os botões do rodapé
+        document.querySelectorAll('#rodape-fixo button').forEach(b => b.classList.remove('active'));
+        
+        // Mapeia qual botão deve acender baseado na tela atual
+        const mapaBotoes = {
+            'tela-home': 'btn-menu-home',
+            'tela-nft': 'btn-menu-nft',
+            'tela-dao': 'btn-menu-dao',
+            'tela-redes': 'btn-menu-redes',
+            'tela-perfil': 'btn-menu-perfil'
+        };
+        
+        // Descobre o ID do botão correspondente à tela ativa
+        const idBotaoAlvo = mapaBotoes[idTela];
+        const botaoMenu = document.getElementById(idBotaoAlvo);
+        
+        // Se achou o botão no rodapé, acende ele (fica azul, os outros ficam cinza)
+        if (botaoMenu) {
+            botaoMenu.classList.add('active');
+        }
+        // ==========================================================================
+
     } else {
         console.warn(`Aviso: A tela "${idTela}" não foi encontrada.`);
     }
