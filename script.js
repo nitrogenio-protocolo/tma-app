@@ -104,7 +104,8 @@ const caminhosVoltar = {
     'tela-receber': 'tela-home',
     'tela-coletar': 'tela-home',
     'tela-trocar': 'tela-home',
-    'tela-tesouraria': 'tela-dao', 
+    'tela-tesouraria': 'tela-dao',
+   'sub-governanca-safe': 'tela-dao',
 };
 
 document.querySelectorAll('.btn-voltar').forEach(botao => {
