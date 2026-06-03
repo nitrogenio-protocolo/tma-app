@@ -69,6 +69,7 @@ ligarAcao('nav-trocar', 'tela-trocar');
 ligarAcao('nav-coletar', 'tela-coletar');
 
 ligarAcao('card-dao-recompensas', 'sub-recompensas');
+ligarAcao('btn-abrir-governanca', 'sub-governanca-safe');
 ligarAcao('btn-abrir-tesouraria', 'tela-tesouraria');
 ligarAcao('card-pagar-leitor', 'sub-pagar-leitor');
 ligarAcao('card-receber-gerar', 'sub-receber-gerar-qr');
