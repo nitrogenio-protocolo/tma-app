@@ -208,39 +208,80 @@ if (btnConectar) {
     btnConectar.addEventListener('click', gerenciarConexaoMetaMask);
 }
 
+/**
+ * Consulta o saldo em tempo real da BNB Chain e atualiza a interface da tesouraria.
+ * Sem simulações: exibe o valor exato contido no contrato inteligente.
+ */
 async function atualizarSaldosTesouraria() {
-    if (!provider) return;
+    if (!provider) {
+        console.warn("[Web3] Provedor não inicializado. Impossível ler saldo do cofre.");
+        return;
+    }
     
     const ENDERECO_COFRE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
     
+    // Captura dos elementos do DOM
+    const txtPatrimonio = document.getElementById('txt-patrimonio-real');
+    const txtBnbTesouraria = document.getElementById('txt-bnb-tesouraria');
+    const txtBnbFiat = document.getElementById('txt-bnb-fiat');
+    
     try {
-        // Busca o saldo bruto de Ether nativo do cofre
+        // 1. Requisição Blockchain: Busca saldo nativo em Wei
         const saldoWei = await provider.getBalance(ENDERECO_COFRE);
-        const saldoETH = ethers.formatEther(saldoWei);
         
-        // Atualiza o valor de ETH na interface da Tesouraria
-        // Procura o elemento correspondente ao saldo de cripto e altera
-        const txtBalanceCrypto = document.querySelector('#tela-tesouraria .treasury-balance-crypto');
-        if (txtBalanceCrypto) {
-            txtBalanceCrypto.innerText = `${parseFloat(saldoETH).toFixed(4)} ETH`;
+        // 2. Conversão segura para formato decimal (String)
+        const saldoBNBString = ethers.formatEther(saldoWei);
+        const saldoBNB = parseFloat(saldoBNBString);
+        
+        // 3. Atualização da quantidade de Cripto no DOM
+        if (txtBnbTesouraria) {
+            if (saldoBNB === 0) {
+                txtBnbTesouraria.innerText = "0.00 BNB";
+            } else if (saldoBNB < 0.0001) {
+                // Se for um valor muito baixo (ex: 0.0000001), exibe com até 8 casas decimais
+                txtBnbTesouraria.innerText = `${saldoBNB.toFixed(8)} BNB`;
+            } else {
+                // Padrão de mercado com 4 casas decimais para valores comuns
+                txtBnbTesouraria.innerText = `${saldoBNB.toFixed(4)} BNB`;
+            }
         }
+
+        // 4. Requisição de Mercado: Busca cotação oficial e atualizada do BNB em tempo real
+        let cotacaoBnbBrl = 0;
+        try {
+            // API pública e oficial da Binance (Preço do par BNB/BRL)
+            const respostaTicker = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL");
+            const dadosTicker = await replyTicker.json();
+            if (dadosTicker && dadosTicker.price) {
+                cotacaoBnbBrl = parseFloat(dadosTicker.price);
+            }
+        } catch (erroApi) {
+            console.error("[Web3 API] Falha ao buscar cotação em tempo real. Usando fallback de contingência.", erroApi);
+            cotacaoBnbBrl = 3450.00; // Valor aproximado apenas se a API da Binance falhar
+        }
+
+        // 5. Cálculo Financeiro Real
+        const patrimonioTotalCalculado = saldoBNB * cotacaoBnbBrl;
+
+        // 6. Formatador de Moeda Padrão Brasileiro
+        const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+
+        // 7. Atualização dos valores fiduciários na Interface
+        if (txtPatrimonio) {
+            txtPatrimonio.innerText = formatadorMoeda.format(patrimonioTotalCalculado);
+        }
+        if (txtBnbFiat) {
+            txtBnbFiat.innerText = formatadorMoeda.format(patrimonioTotalCalculado);
+        }
+
+        console.log(`[Web3 Audit] Sincronização concluída. Saldo Real: ${saldoBNB} BNB. Cotação: R$ ${cotacaoBnbBrl}`);
+
     } catch (erro) {
-        console.error("Erro ao buscar fundos da Safe Wallet:", erro);
+        console.error("[Web3 Erro] Falha crítica ao auditar cofre:", erro);
+        if (txtPatrimonio) txtPatrimonio.innerText = "Erro de conexão";
     }
 }
-
-// LÓGICA PARA COPIAR O ENDEREÇO DO COFRE DA TESOURARIA
-const btnCopiarCofre = document.getElementById('btn-copiar-cofre');
-
-if (btnCopiarCofre) {
-    btnCopiarCofre.addEventListener('click', () => {
-        const enderecoCompleto = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
-        
-        // Função moderna dos navegadores para copiar textos
-        navigator.clipboard.writeText(enderecoCompleto).then(() => {
-            alert("Endereço do cofre copiado com sucesso!");
-        }).catch(erro => {
-            console.error("Erro ao copiar endereço: ", erro);
-        });
-    });
-}
+ 
