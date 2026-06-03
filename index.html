@@ -121,43 +121,28 @@
     <p style="font-size: 0.8rem; color: #666; margin-bottom: 20px;">Fundos auditáveis protegidos por contrato multi-sig.</p>
 
     <div class="treasury-master-card">
-        <span class="balance-title">PATRIMÔNIO TOTAL</span>
-        <div class="balance-value">R$ 45.890,00</div>
+        <span class="balance-title">PATRIMÔNIO TOTAL (BNB CHAIN)</span>
+        <div class="balance-value" id="txt-patrimonio-real">R$ 0,00</div>
         <div class="treasury-address-container">
-    <div class="treasury-address">Cofre: 0x11aBd...8219</div>
-    <button id="btn-copiar-cofre" title="Copiar endereço">📋</button>
-</div>
+            <div class="treasury-address">Cofre: 0x11aBd...8219</div>
+            <button id="btn-copiar-cofre" title="Copiar endereço">📋</button>
+        </div>
+    </div>
 
     <div class="treasury-token-list">
         <div class="treasury-token-item">
             <div class="treasury-token-info">
                 <div class="treasury-token-icon">
-                    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH">
+                    <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB">
                 </div>
                 <div>
-                    <span class="treasury-token-name">Ethereum</span>
-                    <span class="treasury-token-symbol">ETH</span>
+                    <span class="treasury-token-name">BNB Nativo</span>
+                    <span class="treasury-token-symbol">BNB</span>
                 </div>
             </div>
             <div class="treasury-token-balance">
-                <span class="treasury-balance-crypto">2.50 ETH</span>
-                <span class="treasury-balance-fiat">R$ 43.500,00</span>
-            </div>
-        </div>
-
-        <div class="treasury-token-item">
-            <div class="treasury-token-info">
-                <div class="treasury-token-icon">
-                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
-                </div>
-                <div>
-                    <span class="treasury-token-name">Tether USD</span>
-                    <span class="treasury-token-symbol">USDT</span>
-                </div>
-            </div>
-            <div class="treasury-token-balance">
-                <span class="treasury-balance-crypto">412.00 USDT</span>
-                <span class="treasury-balance-fiat">R$ 2.390,00</span>
+                <span class="treasury-balance-crypto" id="txt-bnb-tesouraria">0.00 BNB</span>
+                <span class="treasury-balance-fiat" id="txt-bnb-fiat">R$ 0,00</span>
             </div>
         </div>
     </div>
