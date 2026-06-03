@@ -104,13 +104,13 @@ main#conteudo-principal section.ativa {
     border: none;
     cursor: pointer;
     background: transparent;
-    width: 75px; 
+    width: 95px; 
 }
 
 /* Corrigido: Fundo branco e borda sutil para destacar no fundo cinza claro */
 .action-icon {
-    width: 52px;
-    height: 52px;
+    width: 72px;
+    height: 72px;
     background-color: var(--white) !important; /* Força o fundo a ser branco */
     border: 1px solid #E0E4EC; /* Uma bordinha sutil para dar acabamento */
     border-radius: 50%; 
