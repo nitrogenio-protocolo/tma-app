@@ -228,3 +228,19 @@ async function atualizarSaldosTesouraria() {
         console.error("Erro ao buscar fundos da Safe Wallet:", erro);
     }
 }
+
+// LÓGICA PARA COPIAR O ENDEREÇO DO COFRE DA TESOURARIA
+const btnCopiarCofre = document.getElementById('btn-copiar-cofre');
+
+if (btnCopiarCofre) {
+    btnCopiarCofre.addEventListener('click', () => {
+        const enderecoCompleto = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+        
+        // Função moderna dos navegadores para copiar textos
+        navigator.clipboard.writeText(enderecoCompleto).then(() => {
+            alert("Endereço do cofre copiado com sucesso!");
+        }).catch(erro => {
+            console.error("Erro ao copiar endereço: ", erro);
+        });
+    });
+}
