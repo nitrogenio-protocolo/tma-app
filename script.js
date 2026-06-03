@@ -94,7 +94,7 @@ const caminhosVoltar = {
     'tela-pagar': 'tela-home',
     'tela-receber': 'tela-home',
     'tela-coletar': 'tela-home',
-    'tela-trocar': 'tela-home',//
+    'tela-trocar': 'tela-home',
     'tela-tesouraria': 'tela-dao', 
 };
 
