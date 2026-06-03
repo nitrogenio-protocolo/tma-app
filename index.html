@@ -105,56 +105,62 @@
 </section>
 
             <section id="tela-dao">
-    <h2>Governança e Comunidade (DAO)</h2>
-    
-    <div class="cards-grid">
-        <div class="card-item" id="btn-abrir-governanca-votos">
-            <h3>Governança</h3>
-            <p>Votações e propostas abertas</p>
-        </div>
-        <div class="card-item" id="btn-abrir-tesouraria">
-            <h3>Tesouraria</h3>
-            <p>Fundos protegidos do protocolo</p>
-        </div>
-        <div class="card-item">
-            <h3>Ideias</h3>
-            <p>Espaço para sugestões</p>
-        </div>
-        <div class="card-item" id="card-dao-recompensas">
-            <h3>Recompensas</h3>
-            <p>Poupança, Quiz e Roleta</p>
-        </div>
-    </div>
-
-    <div class="safe-governance-container" style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px;">
-        <h3 style="font-size: 1rem; margin-bottom: 5px; color: #333; text-transform: uppercase;">Fila de Execução (Safe Multi-Sig)</h3>
-        <p style="font-size: 0.75rem; color: #666; margin-bottom: 15px;">Aprovação de transações por Nonce do cofre oficial.</p>
-
-        <div class="safe-card pending-card">
-            <div class="safe-card-header">
-                <span class="badge badge-pending">AGUARDANDO ASSINATURA</span>
-                <span class="safe-nonce" id="txt-safe-nonce-atual">Nonce: --</span>
-            </div>
-            <div class="safe-card-body">
-                <div class="safe-tx-info">
-                    <strong>Destino:</strong> <span id="txt-safe-tx-destino">0x...</span>
+                <h2>Governança e Comunidade (DAO)</h2>
+                <div class="cards-grid">
+                    <div class="card-item" id="btn-abrir-governanca">
+                        <h3>Governança</h3>
+                        <p>Votações e propostas abertas</p>
+                    </div>
+                    <div class="card-item" id="btn-abrir-tesouraria">
+                        <h3>Tesouraria</h3>
+                        <p>Fundos protegidos do protocolo</p>
+                    </div>
+                    <div class="card-item">
+                        <h3>Ideias</h3>
+                        <p>Espaço para sugestões da comunidade</p>
+                    </div>
+                    <div class="card-item" id="card-dao-recompensas">
+                        <h3>Recompensas</h3>
+                        <p>Poupança, Quiz e Roleta</p>
+                    </div>
                 </div>
-                <div class="safe-tx-info">
-                    <strong>Valor/Ação:</strong> <span id="txt-safe-tx-valor">0.00 BNB</span>
-                </div>
-                <div class="safe-progress">
-                    <span id="txt-safe-assinaturas-status">Assinaturas: 0 de 0</span>
-                </div>
-            </div>
-            <button class="btn-aprovar-safe" id="btn-assinar-safe-tx" disabled>ASSINAR VIA METAMASK</button>
-        </div>
+            </section>
 
-        <h4 style="font-size: 0.85rem; margin-top: 20px; margin-bottom: 10px; color: #55s; font-weight: bold;">Últimas Transações Executadas</h4>
-        <div id="container-safe-historico" class="safe-history-list">
-            <p style="font-size: 0.8rem; color: #999; text-align: center;">Carregando histórico do cofre...</p>
-        </div>
-    </div>
-</section>
+            <section id="sub-governanca-safe">
+                <button class="btn-voltar">← Voltar</button>
+                
+                <h2>Painel de Governança</h2>
+                <p style="font-size: 0.8rem; color: #666; margin-bottom: 20px;">Aprovações técnicas e histórico de decisões da DAO.</p>
+
+                <div class="safe-governance-container">
+                    <h3 style="font-size: 1rem; margin-bottom: 5px; color: #333; text-transform: uppercase;">Fila de Execução (Safe Multi-Sig)</h3>
+                    <p style="font-size: 0.75rem; color: #666; margin-bottom: 15px;">Aprovação de transações por Nonce do cofre oficial.</p>
+
+                    <div class="safe-card pending-card">
+                        <div class="safe-card-header">
+                            <span class="badge badge-pending">AGUARDANDO ASSINATURA</span>
+                            <span class="safe-nonce" id="txt-safe-nonce-atual">Nonce: --</span>
+                        </div>
+                        <div class="safe-card-body">
+                            <div class="safe-tx-info">
+                                <strong>Destino:</strong> <span id="txt-safe-tx-destino">0x...</span>
+                            </div>
+                            <div class="safe-tx-info">
+                                <strong>Valor/Ação:</strong> <span id="txt-safe-tx-valor">0.00 BNB</span>
+                            </div>
+                            <div class="safe-progress">
+                                <span id="txt-safe-assinaturas-status">Assinaturas: 0 de 0</span>
+                            </div>
+                        </div>
+                        <button class="btn-aprovar-safe" id="btn-assinar-safe-tx" disabled>ASSINAR VIA METAMASK</button>
+                    </div>
+
+                    <h4 style="font-size: 0.85rem; margin-top: 25px; margin-bottom: 10px; color: #333; font-weight: bold; text-transform: uppercase;">Últimas Transações Executadas</h4>
+                    <div id="container-safe-historico" class="safe-history-list">
+                        <p style="font-size: 0.8rem; color: #999; text-align: center;">Carregando histórico do cofre...</p>
+                    </div>
+                </div>
+            </section>
 
            <section id="tela-tesouraria">
     <button class="btn-voltar">← Voltar</button>
