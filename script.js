@@ -69,6 +69,7 @@ ligarAcao('nav-trocar', 'tela-trocar');
 ligarAcao('nav-coletar', 'tela-coletar');
 
 ligarAcao('card-dao-recompensas', 'sub-recompensas');
+ligarAcao('btn-abrir-tesouraria', 'tela-tesouraria');
 ligarAcao('card-pagar-leitor', 'sub-pagar-leitor');
 ligarAcao('card-receber-gerar', 'sub-receber-gerar-qr');
 ligarAcao('card-coletar-executar', 'sub-coletar-executar');
@@ -94,6 +95,7 @@ const caminhosVoltar = {
     'tela-receber': 'tela-home',
     'tela-coletar': 'tela-home',
     'tela-trocar': 'tela-home'
+    'tela-tesouraria': 'tela-dao', 
 };
 
 document.querySelectorAll('.btn-voltar').forEach(botao => {
@@ -204,4 +206,25 @@ async function atualizarSaldoDoToken() {
 // 4. Ouvinte de Clique para o botão Conectar do Topo
 if (btnConectar) {
     btnConectar.addEventListener('click', gerenciarConexaoMetaMask);
+}
+
+async function atualizarSaldosTesouraria() {
+    if (!provider) return;
+    
+    const ENDERECO_COFRE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+    
+    try {
+        // Busca o saldo bruto de Ether nativo do cofre
+        const saldoWei = await provider.getBalance(ENDERECO_COFRE);
+        const saldoETH = ethers.formatEther(saldoWei);
+        
+        // Atualiza o valor de ETH na interface da Tesouraria
+        // Procura o elemento correspondente ao saldo de cripto e altera
+        const txtBalanceCrypto = document.querySelector('#tela-tesouraria .treasury-balance-crypto');
+        if (txtBalanceCrypto) {
+            txtBalanceCrypto.innerText = `${parseFloat(saldoETH).toFixed(4)} ETH`;
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar fundos da Safe Wallet:", erro);
+    }
 }
