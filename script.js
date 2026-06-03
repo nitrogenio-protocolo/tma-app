@@ -319,3 +319,178 @@ async function atualizarSaldosTesouraria() {
         if (txtPatrimonio) txtPatrimonio.innerText = "Erro de conexão";
     }
 }
+
+// Configuração da API da Safe Wallet (Rede Binance Smart Chain)
+const SAFE_API_URL = "https://safe-transaction-bsc.safe.global/api/v1";
+const ENDERECO_COFRE_DAO = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+
+// Variável para guardar temporariamente os dados da transação que precisa de assinatura
+let transacaoPendenteAtual = null;
+
+/**
+ * Carrega os dados de governança multi-sig vindos da API oficial da Safe.
+ * Deve ser invocada quando o usuário conecta a carteira ou clica na aba DAO.
+ */
+async function atualizarPainelSafeDAO() {
+    const txtNonce = document.getElementById('txt-safe-nonce-atual');
+    const txtDestino = document.getElementById('txt-safe-tx-destino');
+    const txtValor = document.getElementById('txt-safe-tx-valor');
+    const txtStatusAssinaturas = document.getElementById('txt-safe-assinaturas-status');
+    const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+    const containerHistorico = document.getElementById('container-safe-historico');
+
+    try {
+        // 1. REQUISIÇÃO: Transações na Fila (Pendentes de aprovação ou execução)
+        const respostaFila = await fetch(`${SAFE_API_URL}/safes/${ENDERECO_COFRE_DAO}/multisig-transactions/?executed=false&queued=true`);
+        const dadosFila = await respostaFila.json();
+
+        if (dadosFila && dadosFila.results && dadosFila.results.length > 0) {
+            // Pegamos a primeira da fila (com o menor Nonce pendente)
+            transacaoPendenteAtual = dadosFila.results[0];
+            
+            // Atualiza os dados na tela
+            if (txtNonce) txtNonce.innerText = `Nonce: ${transacaoPendenteAtual.nonce}`;
+            if (txtDestino) txtDestino.innerText = `${transacaoPendenteAtual.to.substring(0, 10)}...${transacaoPendenteAtual.to.substring(transacaoPendenteAtual.to.length - 6)}`;
+            
+            // Formata o valor transferido (se houver BNB nativo envolvido)
+            const valorEmBnb = ethers.formatEther(transacaoPendenteAtual.value || "0");
+            if (txtValor) txtValor.innerText = parseFloat(valorEmBnb) > 0 ? `${valorEmBnb} BNB` : "Chamada de Contrato (Ação DAO)";
+
+            // Verifica assinaturas coletadas vs limite (threshold) do cofre
+            const assinaturasColetadas = transacaoPendenteAtual.confirmations ? transacaoPendenteAtual.confirmations.length : 0;
+            // Nota: Se a API da Safe não retornar o threshold na tx, podemos buscar dinamicamente ou deixar fixo informativo
+            if (txtStatusAssinaturas) txtStatusAssinaturas.innerText = `Assinaturas: ${assinaturasColetadas} coletadas`;
+
+            // Libera o botão de aprovação se o usuário estiver conectado
+            if (btnAssinar && signer) {
+                btnAssinar.disabled = false;
+                btnAssinar.innerText = "ASSINAR VIA METAMASK";
+            }
+        } else {
+            // Caso não existam transações pendentes na fila
+            if (txtNonce) txtNonce.innerText = "Nonce: OK";
+            if (txtDestino) txtDestino.innerText = "Nenhuma pendente";
+            if (txtValor) txtValor.innerText = "Cofre Sincronizado";
+            if (txtStatusAssinaturas) txtStatusAssinaturas.innerText = "Sem pendências";
+            if (btnAssinar) {
+                btnAssinar.disabled = true;
+                btnAssinar.innerText = "NADA PARA ASSINAR";
+            }
+        }
+
+        // ========================================================
+        // 2. REQUISIÇÃO: Histórico dos últimos itens já aprovados
+        // ========================================================
+        const respostaHistorico = await fetch(`${SAFE_API_URL}/safes/${ENDERECO_COFRE_DAO}/multisig-transactions/?executed=true&limit=5`);
+        const dadosHistorico = await respostaHistorico.json();
+
+        if (containerHistorico && dadosHistorico && dadosHistorico.results) {
+            containerHistorico.innerHTML = ""; // Limpa texto de carregamento
+            
+            if (dadosHistorico.results.length === 0) {
+                containerHistorico.innerHTML = `<p style="font-size: 0.8rem; color: #999; text-align: center;">Nenhuma transação anterior encontrada.</p>`;
+            } else {
+                dadosHistorico.results.forEach(tx => {
+                    const itemHtml = `
+                        <div class="safe-history-item">
+                            <div>
+                                <span class="badge badge-success">EXECUTADO</span>
+                                <strong style="font-size: 0.8rem; margin-left: 5px;">Nonce ${tx.nonce}</strong>
+                            </div>
+                            <span style="font-size: 0.75rem; color: #666;">
+                                ${tx.value !== "0" ? parseFloat(ethers.formatEther(tx.value)).toFixed(4) + " BNB" : "Contrato"}
+                            </span>
+                        </div>
+                    `;
+                    containerHistorico.insertAdjacentHTML('beforeend', itemHtml);
+                });
+            }
+        }
+
+    } catch (erro) {
+        console.error("[Safe API Erro] Falha ao renderizar governança:", erro);
+    }
+}
+
+/**
+ * Executa a assinatura criptográfica (padrão EIP-712 ou Hash da Safe) via MetaMask 
+ * e envia de volta para a API da Safe para contabilizar o voto de aprovação.
+ */
+async function assinarTransacaoSafePendente() {
+    if (!signer || !transacaoPendenteAtual) {
+        alert("Por favor, conecte sua carteira primeiro.");
+        return;
+    }
+
+    try {
+        const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+        if (btnAssinar) {
+            btnAssinar.disabled = true;
+            btnAssinar.innerText = "ASSINANDO...";
+        }
+
+        // 1. Captura o hash da transação gerado pela própria infraestrutura da Safe
+        const hashTransacaoSafe = transacaoPendenteAtual.safeTxHash;
+
+        // 2. Solicita assinatura pessoal (Personal Sign) via MetaMask do hash da transação
+        // O Ethers v6 simplifica isso com o método .signMessage
+        // Como o hash é uma string hexadecimal de dados, transformamos em Bytes para assinar o valor real
+        const dadosEmBytes = ethers.getBytes(hashTransacaoSafe);
+        const assinaturaCriptografica = await signer.signMessage(dadosEmBytes);
+
+        // 3. POST: Envia a assinatura gerada para a API da Safe computar o voto/aprovação
+        const urlEnvioAssinatura = `${SAFE_API_URL}/multisig-transactions/${hashTransacaoSafe}/confirmations/`;
+        
+        const respostaPost = await fetch(urlEnvioAssinatura, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                signature: assinaturaCriptografica
+            })
+        });
+
+        if (respostaPost.ok || respostaPost.status === 201) {
+            alert(`Sucesso! Aprovação do Nonce ${transacaoPendenteAtual.nonce} enviada com sucesso para a DAO.`);
+            // Recarrega o painel para atualizar a contagem de assinaturas na tela
+            await atualizarPainelSafeDAO();
+        } else {
+            const erroCorpo = await respostaPost.text();
+            console.error("Erro no retorno da API da Safe:", erroCorpo);
+            alert("Falha ao registrar aprovação no servidor da Safe.");
+            if (btnAssinar) {
+                btnAssinar.disabled = false;
+                btnAssinar.innerText = "TENTAR NOVAMENTE";
+            }
+        }
+
+    } catch (erro) {
+        console.error("[Web3 Safe Sign] Erro na assinatura:", erro);
+        alert("Assinatura rejeitada pelo usuário ou erro de comunicação.");
+        const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+        if (btnAssinar) {
+            btnAssinar.disabled = false;
+            btnAssinar.innerText = "ASSINAR VIA METAMASK";
+        }
+    }
+}
+
+// ========================================================
+// GATILHOS DE EXECUÇÃO
+// ========================================================
+
+// Certifique-se de disparar a atualização do painel após a conexão bem sucedida da carteira
+// Adicione isso ao final do seu bloco `gerenciarConexaoMetaMask()` atual:
+// ...
+// await atualizarSaldoDoToken();
+// await atualizarSaldosTesouraria();
+// await atualizarPainelSafeDAO(); // <-- ADICIONE ESTA LINHA LÁ EM CIMA
+
+// Ouvinte do clique do botão de aprovação da Safe
+document.addEventListener('DOMContentLoaded', () => {
+    const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+    if (btnAssinar) {
+        btnAssinar.addEventListener('click', assinarTransacaoSafePendente);
+    }
+});
