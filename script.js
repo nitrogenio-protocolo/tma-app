@@ -219,69 +219,103 @@ async function atualizarSaldosTesouraria() {
     }
     
     const ENDERECO_COFRE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+    // Endereço oficial do contrato do USDT na BSC (BEP-20)
+    const ENDERECO_USDT_BSC = "0x55d398326f99059fF775485246999027B3197955";
+    
+    // ABI mínima para consultar saldo e decimais de um token padrão ERC-20
+    const abiErc20Minima = [
+        "function balanceOf(address account) view returns (uint256)",
+        "function decimals() view returns (uint8)"
+    ];
     
     // Captura dos elementos do DOM
     const txtPatrimonio = document.getElementById('txt-patrimonio-real');
     const txtBnbTesouraria = document.getElementById('txt-bnb-tesouraria');
     const txtBnbFiat = document.getElementById('txt-bnb-fiat');
+    const txtUsdtTesouraria = document.getElementById('txt-usdt-tesouraria');
+    const txtUsdtFiat = document.getElementById('txt-usdt-fiat');
     
+    if (txtPatrimonio) txtPatrimonio.innerText = "Atualizando...";
+
     try {
-        // 1. Requisição Blockchain: Busca saldo nativo em Wei
+        // ==========================================
+        // 1. BUSCA SALDO DO BNB NATIVO
+        // ==========================================
         const saldoWei = await provider.getBalance(ENDERECO_COFRE);
-        
-        // 2. Conversão segura para formato decimal (String)
         const saldoBNBString = ethers.formatEther(saldoWei);
         const saldoBNB = parseFloat(saldoBNBString);
         
-        // 3. Atualização da quantidade de Cripto no DOM
         if (txtBnbTesouraria) {
-            if (saldoBNB === 0) {
-                txtBnbTesouraria.innerText = "0.00 BNB";
-            } else if (saldoBNB < 0.0001) {
-                // Se for um valor muito baixo (ex: 0.0000001), exibe com até 8 casas decimais
-                txtBnbTesouraria.innerText = `${saldoBNB.toFixed(8)} BNB`;
-            } else {
-                // Padrão de mercado com 4 casas decimais para valores comuns
-                txtBnbTesouraria.innerText = `${saldoBNB.toFixed(4)} BNB`;
-            }
+            txtBnbTesouraria.innerText = saldoBNB === 0 ? "0.00 BNB" : 
+                                         saldoBNB < 0.0001 ? `${saldoBNB.toFixed(8)} BNB` : `${saldoBNB.toFixed(4)} BNB`;
         }
 
-        // 4. Requisição de Mercado: Busca cotação oficial e atualizada do BNB em tempo real
-        let cotacaoBnbBrl = 0;
+        // ==========================================
+        // 2. BUSCA SALDO DO USDT (CONTRATO BEP-20)
+        // ==========================================
+        let saldoUSDT = 0;
         try {
-            // API pública e oficial da Binance (Preço do par BNB/BRL)
-            const respostaTicker = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL");
-            const dadosTicker = await replyTicker.json();
-            if (dadosTicker && dadosTicker.price) {
-                cotacaoBnbBrl = parseFloat(dadosTicker.price);
+            const contratoUsdt = new ethers.Contract(ENDERECO_USDT_BSC, abiErc20Minima, provider);
+            const [decimaisUsdt, saldoBrutoUsdt] = await Promise.all([
+                contratoUsdt.decimals(),
+                contratoUsdt.balanceOf(ENDERECO_COFRE)
+            ]);
+            const saldoUsdtFormatado = ethers.formatUnits(saldoBrutoUsdt, decimaisUsdt);
+            saldoUSDT = parseFloat(saldoUsdtFormatado);
+        } catch (erroUsdt) {
+            console.error("[Web3 Erro] Falha ao consultar contrato USDT:", erroUsdt);
+        }
+
+        if (txtUsdtTesouraria) {
+            txtUsdtTesouraria.innerText = `${saldoUSDT.toFixed(2)} USDT`;
+        }
+
+        // ==========================================
+        // 3. BUSCA COTAÇÕES DE MERCADO (BINANCE API)
+        // ==========================================
+        let cotacaoBnbBrl = 3450.00; // Fallbacks estáveis de contingência
+        let cotacaoUsdtBrl = 5.00;
+        
+        try {
+            // Busca cotação simultânea para otimizar velocidade
+            const [resBnb, resUsdt] = await Promise.all([
+                fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL"),
+                fetch("https://api.binance.com/api/v3/ticker/price?symbol=USDTBRL")
+            ]);
+            
+            if (resBnb.ok) {
+                const dadosBnb = await resBnb.json();
+                if (dadosBnb.price) cotacaoBnbBrl = parseFloat(dadosBnb.price);
+            }
+            if (resUsdt.ok) {
+                const dadosUsdt = await resUsdt.json();
+                if (dadosUsdt.price) cotacaoUsdtBrl = parseFloat(dadosUsdt.price);
             }
         } catch (erroApi) {
-            console.error("[Web3 API] Falha ao buscar cotação em tempo real. Usando fallback de contingência.", erroApi);
-            cotacaoBnbBrl = 3450.00; // Valor aproximado apenas se a API da Binance falhar
+            console.error("[Web3 API] Falha ao buscar cotações online. Usando fallback.", erroApi);
         }
 
-        // 5. Cálculo Financeiro Real
-        const patrimonioTotalCalculado = saldoBNB * cotacaoBnbBrl;
+        // ==========================================
+        // 4. CÁLCULO E RENDERIZAÇÃO FINANCEIRA
+        // ==========================================
+        const patrimonioBnbFiat = saldoBNB * cotacaoBnbBrl;
+        const patrimonioUsdtFiat = saldoUSDT * cotacaoUsdtBrl;
+        const patrimonioTotalCalculado = patrimonioBnbFiat + patrimonioUsdtFiat;
 
-        // 6. Formatador de Moeda Padrão Brasileiro
         const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
         });
 
-        // 7. Atualização dos valores fiduciários na Interface
-        if (txtPatrimonio) {
-            txtPatrimonio.innerText = formatadorMoeda.format(patrimonioTotalCalculado);
-        }
-        if (txtBnbFiat) {
-            txtBnbFiat.innerText = formatadorMoeda.format(patrimonioTotalCalculado);
-        }
+        // Atualização dos campos individuais e do painel consolidado
+        if (txtBnbFiat) txtBnbFiat.innerText = formatadorMoeda.format(patrimonioBnbFiat);
+        if (txtUsdtFiat) txtUsdtFiat.innerText = formatadorMoeda.format(patrimonioUsdtFiat);
+        if (txtPatrimonio) txtPatrimonio.innerText = formatadorMoeda.format(patrimonioTotalCalculado);
 
-        console.log(`[Web3 Audit] Sincronização concluída. Saldo Real: ${saldoBNB} BNB. Cotação: R$ ${cotacaoBnbBrl}`);
+        console.log(`[Web3 Audit] Sincronização concluída. Total: R$ ${patrimonioTotalCalculado.toFixed(2)}`);
 
     } catch (erro) {
         console.error("[Web3 Erro] Falha crítica ao auditar cofre:", erro);
         if (txtPatrimonio) txtPatrimonio.innerText = "Erro de conexão";
     }
 }
- 
