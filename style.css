@@ -117,7 +117,7 @@ main#conteudo-principal section.ativa {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3.9rem;
+    font-size: 2.6rem;
     color: var(--blue) !important; /* Força a seta/ícone a ser azul */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra leve para flutuar */
     margin-bottom: 8px;
