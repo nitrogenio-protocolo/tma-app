@@ -109,15 +109,15 @@ main#conteudo-principal section.ativa {
 
 /* Corrigido: Fundo branco e borda sutil para destacar no fundo cinza claro */
 .action-icon {
-    width: 72px;
-    height: 72px;
+    width: 62px;
+    height: 62px;
     background-color: var(--white) !important; /* Força o fundo a ser branco */
     border: 1px solid #E0E4EC; /* Uma bordinha sutil para dar acabamento */
     border-radius: 50%; 
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.6rem;
+    font-size: 2.0rem;
     color: var(--blue) !important; /* Força a seta/ícone a ser azul */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra leve para flutuar */
     margin-bottom: 8px;
