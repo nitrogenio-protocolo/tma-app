@@ -483,3 +483,39 @@ main#conteudo-principal section h2 {
     color: #28A745; /* Verde para o valor em dinheiro */
     font-weight: 600;
 }
+
+/* Container para alinhar o endereço e o botão lado a lado */
+.treasury-address-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* Ajuste sutil no estilo do endereço que você já tinha */
+.treasury-address {
+    font-size: 0.75rem;
+    color: #8E9AA0;
+    font-family: monospace;
+    background: #F4F7FA;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-top: 0 !important; /* Reseta a margem para alinhar com o botão */
+}
+
+/* Estilo do botão de cópia */
+#btn-copiar-cofre {
+    background: #F4F7FA !important;
+    border: 1px solid #E0E4EC !important;
+    border-radius: 8px;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: transform 0.1s ease, background-color 0.2s;
+}
+
+/* Efeito de clique físico no mobile */
+#btn-copiar-cofre:active {
+    transform: scale(0.90);
+    background-color: #E8F0FE !important; /* Muda de cor de leve ao tocar */
+}
