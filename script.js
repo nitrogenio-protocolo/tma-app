@@ -81,6 +81,14 @@ ligarAcao('card-recompensa-quiz', 'folha-quiz');
 ligarAcao('card-recompensa-checkin', 'folha-checkin');
 ligarAcao('card-recompensa-roleta', 'folha-roleta');
 
+// Dispara a busca de dados da API da Safe assim que o usuário abre a governança
+const botaoGovClick = document.getElementById('btn-abrir-governanca');
+if (botaoGovClick) {
+    botaoGovClick.addEventListener('click', () => {
+        atualizarPainelSafeDAO();
+    });
+}
+
 // LOGICA DO BOTÃO VOLTAR
 const caminhosVoltar = {
     'folha-poupanca': 'sub-recompensas',
