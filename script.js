@@ -94,7 +94,7 @@ const caminhosVoltar = {
     'tela-pagar': 'tela-home',
     'tela-receber': 'tela-home',
     'tela-coletar': 'tela-home',
-    'tela-trocar': 'tela-home'
+    'tela-trocar': 'tela-home',
     'tela-tesouraria': 'tela-dao', 
 };
 
@@ -166,7 +166,7 @@ async function gerenciarConexaoMetaMask() {
 
         // Executa a busca de saldo do Token
         await atualizarSaldoDoToken();
-
+       await atualizarSaldosTesouraria();
     } catch (erro) {
         console.error("Erro na conexão:", erro);
         alert("Usuário rejeitou ou falhou na conexão.");
