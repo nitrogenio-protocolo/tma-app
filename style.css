@@ -109,8 +109,8 @@ main#conteudo-principal section.ativa {
 
 /* Corrigido: Fundo branco e borda sutil para destacar no fundo cinza claro */
 .action-icon {
-    width: 92px;
-    height: 92px;
+    width: 82px;
+    height: 82px;
     background-color: var(--white) !important; /* Força o fundo a ser branco */
     border: 1px solid #E0E4EC; /* Uma bordinha sutil para dar acabamento */
     border-radius: 50%; 
