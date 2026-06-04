@@ -667,3 +667,9 @@ main#conteudo-principal section h2 {
     display: flex;
     align-items: center;
 }
+
+/* Cria o espaço ideal entre o topo e o card de saldo na Home */
+#tela-home .app-header {
+    margin-bottom: 20px; /* Altere o valor se quiser mais ou menos espaço */
+}
+
