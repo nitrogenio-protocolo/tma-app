@@ -536,8 +536,6 @@ async function assinarTransacaoSafePendente() {
 
 // Ouvinte do clique do botão de aprovação da Safe
 document.addEventListener('DOMContentLoaded', () => {
-    const btnAssinar = document.getElementById('btn-assinar-safe-tx');
-    if (btnAssinar) {
-        btnAssinar.addEventListener('click', assinarTransacaoSafePendente);
-    }
+    navegarPara('tela-home');
+    atualizarSaldosTesouraria(); // Vai forçar o estado zerado visualmente
 });
