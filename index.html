@@ -283,14 +283,91 @@
 </section>
 
             <section id="tela-perfil">
-                <h2>Meu Perfil</h2>
-                <div class="cards-grid">
-                    <div class="card-item"><h3>Minha Conta</h3><p>Gerenciar dados gerais</p></div>
-                    <div class="card-item"><h3>Segurança</h3><p>Backup de chaves privadas</p></div>
-                    <div class="card-item"><h3>Preferences</h3><p>Idioma e moedas locais</p></div>
-                    <div class="card-item"><h3>Sobre</h3><p>Info: Detalhes do Nitrogênio</p></div>
+    <h2>Meu Perfil</h2>
+
+    <!-- CARD DO USUÁRIO (NFT E INFOS GERAIS) -->
+    <div class="balance-card" style="display: flex; align-items: center; gap: 15px; margin-top: 15px;">
+        <!-- Espaço para a imagem do NFT do usuário (Crachá) -->
+        <div style="width: 65px; height: 65px; border-radius: 12px; background-color: #F4F7FA; display: flex; align-items: center; justify-content: center; border: 1px solid #E0E4EC; overflow: hidden;">
+            <span style="font-size: 2rem;">🆔</span> <!-- Quando tiver o NFT real, substitua pela tag <img> -->
+        </div>
+        <div>
+            <span class="balance-title">STATUS DO PERFIL</span>
+            <div style="font-size: 1.1rem; font-weight: bold; margin-top: 2px;" id="txt-perfil-nome">Membro Nitrogênio</div>
+            <div style="font-size: 0.75rem; color: #8E9AA0; font-family: monospace; margin-top: 2px;" id="txt-perfil-carteira">0x...</div>
+        </div>
+    </div>
+
+    <!-- CARD VISUAL DE ESTATÍSTICAS (Ganhos da Roleta, Giros e Poupança) -->
+    <div class="bloco-codigo" style="margin-top: 15px; margin-bottom: 25px;">
+        <h3 style="font-size: 0.85rem; color: #333; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px;">Resumo de Atividades</h3>
+        
+        <div class="treasury-token-list">
+            <!-- Tokens Ganhos na Roleta -->
+            <div class="treasury-token-item" style="padding: 12px 16px;">
+                <div class="treasury-token-info">
+                    <span style="font-size: 1.2rem;">🎁</span>
+                    <div>
+                        <span class="treasury-token-name" style="font-size: 0.85rem;">Tokens da Roleta</span>
+                        <span class="treasury-token-symbol">Total acumulado</span>
+                    </div>
                 </div>
-            </section>
+                <div class="treasury-token-balance">
+                    <span class="treasury-balance-crypto" style="font-size: 0.9rem;" id="txt-perfil-tokens-roleta">0.00 N</span>
+                </div>
+            </div>
+
+            <!-- Giros Disponíveis -->
+            <div class="treasury-token-item" style="padding: 12px 16px; margin-top: 8px;">
+                <div class="treasury-token-info">
+                    <span style="font-size: 1.2rem;">🔄</span>
+                    <div>
+                        <span class="treasury-token-name" style="font-size: 0.85rem;">Giros Disponíveis</span>
+                        <span class="treasury-token-symbol">Roleta do Bem</span>
+                    </div>
+                </div>
+                <div class="treasury-token-balance">
+                    <span class="treasury-balance-crypto" style="font-size: 0.9rem; color: var(--blue);" id="txt-perfil-giros">0</span>
+                </div>
+            </div>
+
+            <!-- Poupança Trancada -->
+            <div class="treasury-token-item" style="padding: 12px 16px; margin-top: 8px;">
+                <div class="treasury-token-info">
+                    <span style="font-size: 1.2rem;">🔒</span>
+                    <div>
+                        <span class="treasury-token-name" style="font-size: 0.85rem;">Poupança Trancada</span>
+                        <span class="treasury-token-symbol">Em Staking</span>
+                    </div>
+                </div>
+                <div class="treasury-token-balance">
+                    <span class="treasury-balance-crypto" style="font-size: 0.9rem;" id="txt-perfil-poupanca-status">0.00 N</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARDS INFORMATIVOS (Apenas textos sobre o protocolo) -->
+    <h3 style="font-size: 0.85rem; margin-bottom: 10px; text-transform: uppercase; color: #666; letter-spacing: 0.5px;">Sobre o Protocolo</h3>
+    <div class="cards-grid">
+        <div class="card-item" id="nav-info-conta">
+            <h3>Nossa Missão</h3>
+            <p>Conectar finanças tradicionais à segurança Web3</p>
+        </div>
+        <div class="card-item" id="nav-info-seguranca">
+            <h3>Segurança</h3>
+            <p>Contratos multi-sig auditáveis na BSC</p>
+        </div>
+        <div class="card-item" id="nav-info-preferencias">
+            <h3>Distribuição</h3>
+            <p>Modelo comunitário focado em recompensas</p>
+        </div>
+        <div class="card-item" id="nav-info-sobre">
+            <h3>O Elemento N</h3>
+            <p>Saiba mais sobre a arquitetura do ecossistema</p>
+        </div>
+    </div>
+</section>
 
         </main>
 
