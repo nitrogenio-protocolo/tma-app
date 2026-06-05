@@ -300,101 +300,6 @@ async function atualizarSaldosTesouraria() {
             }
             if (resUsdt.ok) {
                 const dadosUsdt = await resUsdt.json();
-                if (txtPatrimonio.innerText = "Erro de conexão";
-    }
-}
-
-// Configuração da API da Safe Wallet (Rede Binance Smart Chain)
-const SAFE_API_URL = "https://safe-transaction-bsc.safe.global/api/v1";
-const ENDERECO_COFRE_DAO = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
-
-// Variável para guardar temporariamente os dados da transação que precisa de assinatura
-let transacaoPendenteAtual = null;
-
-/**
- * Carrega os dados de governança multi-sig vindos da API oficial da Safe.
- * Deve ser invocada quando o usuário conecta a carteira ou clica na aba DAO.
- */
-async function atualizarSaldosTesouraria() {
-    // Captura dos elementos do DOM
-    const txtPatrimonio = document.getElementById('txt-patrimonio-real');
-    const txtBnbTesouraria = document.getElementById('txt-bnb-tesouraria');
-    const txtBnbFiat = document.getElementById('txt-bnb-fiat');
-    const txtUsdtTesouraria = document.getElementById('txt-usdt-tesouraria');
-    const txtUsdtFiat = document.getElementById('txt-usdt-fiat');
-
-    // 🔒 BARREIRA DE SEGURANÇA: Se não tiver provider (MetaMask desconectada), zera tudo e para aqui!
-    if (!provider) {
-        console.warn("[Web3] Carteira desconectada. Saldos da tesouraria ocultados.");
-        if (txtPatrimonio) txtPatrimonio.innerText = "R$ 0,00";
-        if (txtBnbTesouraria) txtBnbTesouraria.innerText = "0.00 BNB";
-        if (txtBnbFiat) txtBnbFiat.innerText = "R$ 0,00";
-        if (txtUsdtTesouraria) txtUsdtTesouraria.innerText = "0.00 USDT";
-        if (txtUsdtFiat) txtUsdtFiat.innerText = "R$ 0,00";
-        return; // Encerra a função aqui mesmo
-    }
-    
-    const ENDERECO_COFRE = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
-    const ENDERECO_USDT_BSC = "0x55d398326f99059fF775485246999027B3197955";
-    
-    const abiErc20Minima = [
-        "function balanceOf(address account) view returns (uint256)",
-        "function decimals() view returns (uint8)"
-    ];
-    
-    if (txtPatrimonio) txtPatrimonio.innerText = "Atualizando...";
-
-    try {
-        // ==========================================
-        // 1. BUSCA SALDO DO BNB NATIVO
-        // ==========================================
-        const saldoWei = await provider.getBalance(ENDERECO_COFRE);
-        const saldoBNBString = ethers.formatEther(saldoWei);
-        const saldoBNB = parseFloat(saldoBNBString);
-        
-        if (txtBnbTesouraria) {
-            txtBnbTesouraria.innerText = saldoBNB === 0 ? "0.00 BNB" : 
-                                         saldoBNB < 0.0001 ? `${saldoBNB.toFixed(8)} BNB` : `${saldoBNB.toFixed(4)} BNB`;
-        }
-
-        // ==========================================
-        // 2. BUSCA SALDO DO USDT (CONTRATO BEP-20)
-        // ==========================================
-        let saldoUSDT = 0;
-        try {
-            const contratoUsdt = new ethers.Contract(ENDERECO_USDT_BSC, abiErc20Minima, provider);
-            const [decimaisUsdt, saldoBrutoUsdt] = await Promise.all([
-                contratoUsdt.decimals(),
-                contratoUsdt.balanceOf(ENDERECO_COFRE)
-            ]);
-            const saldoUsdtFormatado = ethers.formatUnits(saldoBrutoUsdt, decimaisUsdt);
-            saldoUSDT = parseFloat(saldoUsdtFormatado);
-        } catch (erroUsdt) {
-            console.error("[Web3 Erro] Falha ao consultar contrato USDT:", erroUsdt);
-        }
-
-        if (txtUsdtTesouraria) {
-            txtUsdtTesouraria.innerText = `${saldoUSDT.toFixed(2)} USDT`;
-        }
-
-        // ==========================================
-        // 3. BUSCA COTAÇÕES DE MERCADO (BINANCE API)
-        // ==========================================
-        let cotacaoBnbBrl = 3450.00; 
-        let cotacaoUsdtBrl = 5.00;
-        
-        try {
-            const [resBnb, resUsdt] = await Promise.all([
-                fetch("https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL"),
-                fetch("https://api.binance.com/api/v3/ticker/price?symbol=USDTBRL")
-            ]);
-            
-            if (resBnb.ok) {
-                const dadosBnb = await resBnb.json();
-                if (dadosBnb.price) cotacaoBnbBrl = parseFloat(dadosBnb.price);
-            }
-            if (resUsdt.ok) {
-                const dadosUsdt = await resUsdt.json();
                 if (dadosUsdt.price) cotacaoUsdtBrl = parseFloat(dadosUsdt.price);
             }
         } catch (erroApi) {
@@ -413,6 +318,7 @@ async function atualizarSaldosTesouraria() {
             currency: 'BRL'
         });
 
+        // Atualização dos campos individuais e do painel consolidado
         if (txtBnbFiat) txtBnbFiat.innerText = formatadorMoeda.format(patrimonioBnbFiat);
         if (txtUsdtFiat) txtUsdtFiat.innerText = formatadorMoeda.format(patrimonioUsdtFiat);
         if (txtPatrimonio) txtPatrimonio.innerText = formatadorMoeda.format(patrimonioTotalCalculado);
@@ -424,6 +330,64 @@ async function atualizarSaldosTesouraria() {
         if (txtPatrimonio) txtPatrimonio.innerText = "Erro de conexão";
     }
 }
+
+// Configuração da API da Safe Wallet (Rede Binance Smart Chain)
+const SAFE_API_URL = "https://safe-transaction-bsc.safe.global/api/v1";
+const ENDERECO_COFRE_DAO = "0x11aBd1b9c71f97ad1df8A0Dbb789f8A96B458219";
+
+// Variável para guardar temporariamente os dados da transação que precisa de assinatura
+let transacaoPendenteAtual = null;
+
+/**
+ * Carrega os dados de governança multi-sig vindos da API oficial da Safe.
+ * Deve ser invocada quando o usuário conecta a carteira ou clica na aba DAO.
+ */
+async function atualizarPainelSafeDAO() {
+    const txtNonce = document.getElementById('txt-safe-nonce-atual');
+    const txtDestino = document.getElementById('txt-safe-tx-destino');
+    const txtValor = document.getElementById('txt-safe-tx-valor');
+    const txtStatusAssinaturas = document.getElementById('txt-safe-assinaturas-status');
+    const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+    const containerHistorico = document.getElementById('container-safe-historico');
+
+    try {
+        // 1. REQUISIÇÃO: Transações na Fila (Pendentes de aprovação ou execução)
+        const respostaFila = await fetch(`${SAFE_API_URL}/safes/${ENDERECO_COFRE_DAO}/multisig-transactions/?executed=false&queued=true`);
+        const dadosFila = await respostaFila.json();
+
+        if (dadosFila && dadosFila.results && dadosFila.results.length > 0) {
+            // Pegamos a primeira da fila (com o menor Nonce pendente)
+            transacaoPendenteAtual = dadosFila.results[0];
+            
+            // Atualiza os dados na tela
+            if (txtNonce) txtNonce.innerText = `Nonce: ${transacaoPendenteAtual.nonce}`;
+            if (txtDestino) txtDestino.innerText = `${transacaoPendenteAtual.to.substring(0, 10)}...${transacaoPendenteAtual.to.substring(transacaoPendenteAtual.to.length - 6)}`;
+            
+            // Formata o valor transferido (se houver BNB nativo envolvido)
+            const valorEmBnb = ethers.formatEther(transacaoPendenteAtual.value || "0");
+            if (txtValor) txtValor.innerText = parseFloat(valorEmBnb) > 0 ? `${valorEmBnb} BNB` : "Chamada de Contrato (Ação DAO)";
+
+            // Verifica assinaturas coletadas vs limite (threshold) do cofre
+            const assinaturasColetadas = transacaoPendenteAtual.confirmations ? transacaoPendenteAtual.confirmations.length : 0;
+            // Nota: Se a API da Safe não retornar o threshold na tx, podemos buscar dinamicamente ou deixar fixo informativo
+            if (txtStatusAssinaturas) txtStatusAssinaturas.innerText = `Assinaturas: ${assinaturasColetadas} coletadas`;
+
+            // Libera o botão de aprovação se o usuário estiver conectado
+            if (btnAssinar && signer) {
+                btnAssinar.disabled = false;
+                btnAssinar.innerText = "ASSINAR VIA METAMASK";
+            }
+        } else {
+            // Caso não existam transações pendentes na fila
+            if (txtNonce) txtNonce.innerText = "Nonce: OK";
+            if (txtDestino) txtDestino.innerText = "Nenhuma pendente";
+            if (txtValor) txtValor.innerText = "Cofre Sincronizado";
+            if (txtStatusAssinaturas) txtStatusAssinaturas.innerText = "Sem pendências";
+            if (btnAssinar) {
+                btnAssinar.disabled = true;
+                btnAssinar.innerText = "NADA PARA ASSINAR";
+            }
+        }
 
         // ========================================================
         // 2. REQUISIÇÃO: Histórico dos últimos itens já aprovados
@@ -536,6 +500,8 @@ async function assinarTransacaoSafePendente() {
 
 // Ouvinte do clique do botão de aprovação da Safe
 document.addEventListener('DOMContentLoaded', () => {
-    navegarPara('tela-home');
-    atualizarSaldosTesouraria(); // Vai forçar o estado zerado visualmente
+    const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+    if (btnAssinar) {
+        btnAssinar.addEventListener('click', assinarTransacaoSafePendente);
+    }
 });
