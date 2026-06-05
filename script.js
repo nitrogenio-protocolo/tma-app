@@ -342,7 +342,22 @@ let transacaoPendenteAtual = null;
  * Carrega os dados de governança multi-sig vindos da API oficial da Safe.
  * Deve ser invocada quando o usuário conecta a carteira ou clica na aba DAO.
  */
-async function atualizarPainelSafeDAO() {
+async function atualizarPainelSafeDAO()  {
+    // === NOVA TRAVA DE SEGURANÇA / UX ===
+    if (!provider || !signer) {
+        console.warn("[Safe API] Bloqueado: Conecte a carteira para ver a Governança.");
+        
+        // Opcional: Você pode injetar uma mensagem amigável nos seus elementos HTML
+        const txtStatusAssinaturas = document.getElementById('txt-safe-assinaturas-status');
+        const btnAssinar = document.getElementById('btn-assinar-safe-tx');
+        
+        if (txtStatusAssinaturas) txtStatusAssinaturas.innerText = "Conecte sua carteira para carregar";
+        if (btnAssinar) {
+            btnAssinar.disabled = true;
+            btnAssinar.innerText = "AGUARDANDO CONEXÃO";
+        }
+        return; // <--- Para a função bem aqui!
+    }
     const txtNonce = document.getElementById('txt-safe-nonce-atual');
     const txtDestino = document.getElementById('txt-safe-tx-destino');
     const txtValor = document.getElementById('txt-safe-tx-valor');
