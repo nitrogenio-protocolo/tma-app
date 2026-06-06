@@ -537,37 +537,38 @@ if (btnGirarRoleta && discoRoleta) {
     btnGirarRoleta.addEventListener('click', (e) => {
         e.preventDefault();
 
-        // 1. Trava o botão para o usuário não clicar de novo enquanto gira
+        // 1. Trava o botão para evitar múltiplos cliques
         btnGirarRoleta.disabled = true;
         btnGirarRoleta.innerText = "GIRANDO...";
         btnGirarRoleta.style.opacity = "0.7";
 
         // 2. Sorteia o prêmio (Índice de 0 a 7)
-        // No futuro, esse resultado virá criptografado do Firebase por segurança!
         const indiceSorteado = Math.floor(Math.random() * TOTAL_FATIAS);
 
-        // 3. Calcula o ângulo que a fatia sorteada representa
+        // 3. Calcula o ângulo inicial da fatia correspondente
         const anguloFatia = indiceSorteado * GRAUS_POR_FATIA;
 
-        // 4. Faz dar 5 voltas completas (1800º) para dar o efeito de velocidade máxima
-        // e compensa para o disco girar de forma que pare na setinha vermelha do topo
-        const voltasCompletas = 5 * 360;
-        grausRoletaAtuais += voltasCompletas + (360 - anguloFatia);
+        // === O SEGREDO DO AJUSTE FINO ===
+        // Somamos metade de uma fatia (GRAUS_POR_FATIA / 2) para o ponteiro centralizar na cor!
+        const deslocamentoCentral = GRAUS_POR_FATIA / 2;
 
-        // 5. Aplica a rotação via CSS (o navegador usa a GPU do celular automaticamente a 60 FPS)
+        // 4. Acumula as 5 voltas completas (1800º) + compensação para girar no sentido horário
+        const voltasCompletas = 5 * 360;
+        grausRoletaAtuais += voltasCompletas + (360 - (anguloFatia + deslocamentoCentral));
+
+        // 5. Aplica a rotação acelerada pela GPU do aparelho
         discoRoleta.style.transform = `rotate(${grausRoletaAtuais}deg)`;
 
-        // 6. Aguarda os 5 segundos da animação física do CSS terminar para mostrar o prêmio
+        // 6. Aguarda a animação de 5 segundos terminar
         setTimeout(() => {
-            // Destrava o botão novamente para o próximo uso
             btnGirarRoleta.disabled = false;
             btnGirarRoleta.innerText = "GIRAR ROLETA";
             btnGirarRoleta.style.opacity = "1";
 
-            // Exibe o feedback em tela
+            // Feedback limpo do resultado
             alert(`Parabéns! A roleta parou na fatia número: ${indiceSorteado}`);
-            console.log(`[Roleta] Resultado coletado off-chain: Índice ${indiceSorteado}`);
+            console.log(`[Roleta] Parada perfeita centralizada no índice: ${indiceSorteado}`);
             
-        }, 5000); // 5000 milissegundos = 5 segundos exatos do CSS transition
+        }, 5000);
     });
 }
