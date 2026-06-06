@@ -248,10 +248,29 @@
             </section>
 
             <section id="folha-roleta">
-                <button class="btn-voltar">← Voltar</button>
-                <h2>Roleta do Bem</h2>
-                <div class="conteudo-tecnico"><p>Mecânica visual da roleta premiada...</p></div>
-            </section>
+    <button class="btn-voltar">← Voltar</button>
+    <h2>Roleta do Bem</h2>
+    
+    <div class="conteudo-tecnico">
+        <p style="font-size: 0.85rem; color: #666; margin-bottom: 25px; text-align: center;">
+            Gire o disco para receber suas premiações off-chain!
+        </p>
+
+        <!-- ESTRUTURA COMPLETA DA ROLETA INJETADA AQUI -->
+        <div class="roleta-wrapper">
+            <!-- Marcador fixo que aponta para o prêmio selecionado (Setinha) -->
+            <div class="marcador-topo"></div>
+            
+            <!-- Disco com as fatias coloridas em gradiente conic (CSS renderiza isso) -->
+            <div id="disco-roleta" class="disco"></div>
+        </div>
+
+        <!-- Botão estilizado para disparar o giro -->
+        <button id="btn-girar" class="btn-validar" style="width: 100%; max-width: 320px; margin: 30px auto 0 auto; display: block;">
+            GIRAR ROLETA
+        </button>
+    </div>
+</section>
 
             <section id="tela-redes">
     <h2>Nossa Comunidade</h2>
