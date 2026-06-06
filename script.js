@@ -550,7 +550,7 @@ if (btnGirarRoleta && discoRoleta) {
 
         // === O SEGREDO DO AJUSTE FINO ===
         // Somamos metade de uma fatia (GRAUS_POR_FATIA / 2) para o ponteiro centralizar na cor!
-        const deslocamentoCentral = GRAUS_POR_FATIA / 2;
+        const deslocamentoCentral = (GRAUS_POR_FATIA / 2) + (Math.random() * 20 - 10); 
 
         // 4. Acumula as 5 voltas completas (1800º) + compensação para girar no sentido horário
         const voltasCompletas = 5 * 360;
