@@ -522,22 +522,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   MECÂNICA DA ROLETA DOS 12 MESES DA SAÚDE (Organizada no final)
+   MECÂNICA DA ROLETA DOS 12 MESES DA SAÚDE (Calibrada e Sincronizada)
    ========================================================================== */
 
 let grausRoletaAtuais = 0;
 const TOTAL_FATIAS = 12; 
-const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; 
+const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; // 30 graus
 
 const discoRoleta = document.querySelector('.roleta-disco'); 
 const btnGirarInferior = document.getElementById('btn-girar');
 const btnEixoCentral = document.getElementById('btn-eixo-roleta');
+
+// Lista oficial sincronizada exatamente com a ordem horária do conic-gradient do CSS
+const mesesAno = [
+    "Janeiro Branco",     // Fatia 1 (0° a 30°)
+    "Fevereiro Laranja",   // Fatia 2 (30° a 60°)
+    "Março Vermelho",      // Fatia 3 (60° a 90°)
+    "Abril Azul",          // Fatia 4 (90° a 120°)
+    "Maio Cinza",          // Fatia 5 (120° a 150°)
+    "Junho Vermelho",      // Fatia 6 (150° a 180°)
+    "Julho Verde",         // Fatia 7 (180° a 210°)
+    "Agosto Dourado",      // Fatia 8 (210° a 240°)
+    "Setembro Amarelo",    // Fatia 9 (240° a 270°)
+    "Outubro Rosa",        // Fatia 10 (270° a 300°)
+    "Novembro Azul",       // Fatia 11 (300° a 330°)
+    "Dezembro Vermelho"    // Fatia 12 (330° a 360°)
+];
 
 function executarGiroRoleta(e) {
     if (e) e.preventDefault();
 
     if (!discoRoleta || (btnGirarInferior && btnGirarInferior.disabled)) return;
 
+    // Desativa botões durante o giro
     if (btnGirarInferior) {
         btnGirarInferior.disabled = true;
         btnGirarInferior.innerText = "GIRANDO...";
@@ -548,16 +565,24 @@ function executarGiroRoleta(e) {
         btnEixoCentral.style.opacity = "0.7";
     }
 
+    // 1. Sorteia o índice de 0 a 11
     const indiceSorteado = Math.floor(Math.random() * TOTAL_FATIAS);
-    const anguloFatia = indiceSorteado * GRAUS_POR_FATIA;
-    const deslocamentoCentral = (GRAUS_POR_FATIA / 2); 
+    
+    // 2. Calcula o ângulo exato do meio da fatia sorteada
+    const anguloFatia = (indiceSorteado * GRAUS_POR_FATIA) + (GRAUS_POR_FATIA / 2);
 
+    // 3. Define 5 voltas completas para dar o efeito de velocidade
     const voltasCompletas = 5 * 360;
-    grausRoletaAtuais += voltasCompletas + (360 - (anguloFatia + deslocamentoCentral));
+    
+    // 4. MATEMÁTICA CORRIGIDA: Subtrai o ângulo sorteado para que a fatia certa pare na seta (topo)
+    grausRoletaAtuais += voltasCompletas + (360 - anguloFatia);
 
+    // Aplica a rotação no elemento visual
     discoRoleta.style.transform = `translate(-50%, -50%) rotate(${grausRoletaAtuais}deg)`;
 
+    // Aguarda os 5 segundos do giro terminar
     setTimeout(() => {
+        // Reativa os botões
         if (btnGirarInferior) {
             btnGirarInferior.disabled = false;
             btnGirarInferior.innerText = "GIRAR ROLETA";
@@ -568,16 +593,12 @@ function executarGiroRoleta(e) {
             btnEixoCentral.style.opacity = "1";
         }
 
-        const mesesAno = [
-            "Janeiro Branco", "Fevereiro Laranja", "Março Vermelho", "Abril Azul",
-            "Maio Cinza", "Junho Vermelho", "Julho Verde", "Agosto Dourado",
-            "Setembro Amarelo", "Outubro Rosa", "Novembro Azul", "Dezembro Vermelho"
-        ];
-
+        // Dispara o alerta com o mês exato que está embaixo da seta
         alert(`Parabéns! A roleta parou em: ${mesesAno[indiceSorteado]}`);
         
     }, 5000);
 }
+  
 
 // Vincula os cliques de forma definitiva e única nos dois botões
 if (btnGirarInferior) {
