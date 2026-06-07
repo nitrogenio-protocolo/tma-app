@@ -802,7 +802,7 @@ main#conteudo-principal section h2 {
     border-right: 15px solid transparent;
     border-top: 22px solid #FF3B30; 
     position: absolute;
-    top: 30px;                  /* Baixamos de 15px para 30px para colar na borda */
+    top: 14px;                  /* Baixamos de 15px para 30px para colar na borda */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;                /* Fica por cima da mesa e da pizza */
@@ -811,8 +811,8 @@ main#conteudo-principal section h2 {
 
 /* O DISCO DA PIZZA AMPLIADO (Encaixe ideal no círculo) */
 .pizza-disco {
-    width: 315px;               /* Aumentado de 290px para 315px */
-    height: 315px;              /* Aumentado de 290px para 315px */
+    width: 370px;               /* Aumentado de 290px para 315px */
+    height: 370px;              /* Aumentado de 290px para 315px */
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: contain;
