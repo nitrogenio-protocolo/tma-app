@@ -571,11 +571,15 @@ function executarGiroRoleta(e) {
     // 2. Calcula o ângulo exato do meio da fatia sorteada
     const anguloFatia = (indiceSorteado * GRAUS_POR_FATIA) + (GRAUS_POR_FATIA / 2);
 
-    // 3. Define 5 voltas completas para dar o efeito de velocidade
+    // 3. Define 5 voltas completas para o efeito visual de velocidade
     const voltasCompletas = 5 * 360;
     
-    // 4. MATEMÁTICA CORRIGIDA: Subtrai o ângulo sorteado para que a fatia certa pare na seta (topo)
-    grausRoletaAtuais += voltasCompletas + (360 - anguloFatia);
+    // ==========================================================================
+    // SOLUÇÃO DO BUG DO 2º GIRO:
+    // 1º Zera o excedente dos giros anteriores mantendo a roleta na mesma posição visual (grausRoletaAtuais % 360)
+    // 2º Aplica a matemática precisa subtraindo o ângulo sorteado do topo (360 - anguloFatia)
+    // ==========================================================================
+    grausRoletaAtuais = grausRoletaAtuais - (grausRoletaAtuais % 360) + voltasCompletas + (360 - anguloFatia);
 
     // Aplica a rotação no elemento visual
     discoRoleta.style.transform = `translate(-50%, -50%) rotate(${grausRoletaAtuais}deg)`;
@@ -598,6 +602,7 @@ function executarGiroRoleta(e) {
         
     }, 5000);
 }
+
   
 
 // Vincula os cliques de forma definitiva e única nos dois botões
