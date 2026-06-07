@@ -733,89 +733,102 @@ main#conteudo-principal section h2 {
 }
 
 /* ==========================================================================
-   NOVA ROLETA DE PIZZA (ESTILIZAÇÃO ESTILO CAPA DE CADERNO)
+   ROLETA DE PIZZA - FOCO EM DISPOSITIVOS VERTICAIS (CELULAR EM PÉ)
    ========================================================================== */
 
-/* A folha inteira agora assume a imagem da mesa como fundo total (Capa do Caderno) */
+/* A folha inteira com fundo escuro integrado */
 #folha-roleta {
     padding: 0 !important;
     margin: 0 !important;
     min-height: 100vh;
-    background-image: url('mMeTsa.png');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-color: #171513;  /* Tonalidade escura que combina com a madeira */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Empurra o topo para cima e as ações para baixo */
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.5); /* Vinheta escura nas bordas da tela */
+    justify-content: space-between;
+    box-sizing: border-box;
 }
 
-/* Área do topo (Título e Voltar) flutuando sobre a madeira */
+/* ÁREA DO TOPO */
 .roleta-topo-container {
-    padding: 20px 20px 0 20px;
+    padding: 20px 20px 10px 20px;
     text-align: center;
 }
 
 #folha-roleta h2 {
     margin: 10px 0 5px 0;
     color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Sombra para dar leitura sobre a madeira */
 }
 
 #folha-roleta p {
     margin: 0;
-    color: #f0f0f0;
+    color: #b3b3b3;
     font-size: 0.85rem;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 #folha-roleta .btn-voltar {
     margin: 0;
-    float: left; /* Mantém o botão alinhado à esquerda */
+    float: left;
 }
 
-/* CONTAINER CENTRAL DA PIZZA (Fica transparente pois o fundo já é a mesa) */
+/* ÁREA CENTRAL QUE CENTRALIZA A MESA */
 .full-screen-roleta {
     width: 100%;
-    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     flex-grow: 1;
-    margin: 20px 0;
+    padding: 10px 0;
 }
 
-/* O DISCO DA PIZZA TRANSPARENTE (Centralizado na tela) */
-.pizza-disco {
-    width: 500px;  
-    height: 500px; 
-    background-image: url('pizza-roleta.png');
+/* O QUADRADO FIXO DA MESA (A imagem não deforma nem estica) */
+.mesa-container {
+    width: 92%;
+    max-width: 380px;           /* Tamanho ideal para telas de celulares em pé */
+    height: 380px;              /* Força o quadrado perfeito */
+    position: relative;         /* Serve de âncora para os elementos internos */
+    background-image: url('mesa-pizzaria.png');
     background-position: center;
-    background-size: contain;
+    background-size: cover;     /* Centraliza o entalhe redondo no meio */
     background-repeat: no-repeat;
-    transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
-    will-change: transform;
-    z-index: 2;
+    border-radius: 16px;        /* Deixa as bordinhas da mesa arredondadas e elegantes */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6); /* Separa a mesa do fundo escuro */
 }
 
-/* SETINHA VERMELHA (Posicionada perfeitamente acima da pizza flutuante) */
+/* SETINHA VERMELHA (Fixada perfeitamente no topo interno da mesa) */
 .marcador-topo {
     width: 0;
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 20px solid #FF3B30; 
+    border-top: 22px solid #FF3B30; 
     position: absolute;
-    top: calc(50% - 170px); /* Trava dinamicamente logo acima do disco de 300px */
+    top: 15px;                  /* Distância cirúrgica para colar na borda da pizza */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10; 
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.6));
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
 }
 
-/* Botão central (Miolo azul com a letra N) */
+/* O DISCO DA PIZZA GRANDE (Encaixado perfeitamente no entalhe da madeira) */
+.pizza-disco {
+    width: 320px;               /* Pizza bem grande ocupando quase toda a mesa */
+    height: 320px; 
+    background-image: url('pizza-roleta.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centralização perfeita no meio do quadrado */
+    
+    /* A física do giro suave e rápida */
+    transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
+    will-change: transform;
+    z-index: 2;
+}
+
+/* BOTÃO CENTRAL AZUL 'N' */
 .btn-roleta-centro { 
     position: absolute; 
     top: 50%; 
@@ -836,34 +849,15 @@ main#conteudo-principal section h2 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
-/* Container do Botão Inferior (Totalmente transparente para expor a madeira) */
+/* CONTAINER DO BOTÃO INFERIOR */
 .roleta-actions-container {
     width: 100%;
-    padding: 20px;
-    background: transparent; /* Remove qualquer cor de fundo */
+    padding: 25px;
+    background: transparent;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
 }
-
-/* AJUSTE EXCLUSIVO PARA QUANDO O CELULAR ESTIVER DEITADO (LANDSCAPE) */
-@media (orientation: landscape) and (max-height: 500px) {
-    .pizza-disco {
-        width: 200px;  
-        height: 200px;
-    }
-    .marcador-topo {
-        top: calc(50% - 120px); /* Ajusta a seta para o tamanho menor da pizza */
-    }
-    .roleta-actions-container {
-        padding: 10px 20px;
-    }
-}
-
-
-
-
-
     
     /* Configuração da desaceleração física (5 segundos) */
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
