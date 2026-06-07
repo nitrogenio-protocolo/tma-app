@@ -811,8 +811,8 @@ main#conteudo-principal section h2 {
 
 /* O DISCO DA PIZZA GRANDE (Encaixado perfeitamente no entalhe da madeira) */
 .pizza-disco {
-    width: 320px;               /* Pizza bem grande ocupando quase toda a mesa */
-    height: 320px; 
+    width: 220px;               /* Pizza bem grande ocupando quase toda a mesa */
+    height: 220px; 
     background-image: url('circulo.png');
     background-position: center;
     background-size: contain;
