@@ -824,7 +824,7 @@ main#conteudo-principal section h2 {
 
 /* O DISCO DA ROLETA (AGORA 100% EM CÓDIGO - SEM IMAGEM PNG) */
 .roleta-disco {
-    width: 100%;            /* Ocupa o tamanho ideal do container */
+    width: 100%;
     height: 100%;
     position: absolute;
     top: 50%;
@@ -832,21 +832,27 @@ main#conteudo-principal section h2 {
     transform: translate(-50%, -50%) rotate(0deg);
     border-radius: 50%;
     
-    /* Criação das 12 fatias exatas baseadas nos meses da saúde (30 graus cada) */
+    /* Cores calibradas em fatias exatas de 30 graus, começando do topo */
     background: conic-gradient(
-        #D3D3D3 0deg 30deg,     /* Jan: Branco/Cinza Claro */
-        #FF4500 30deg 60deg,    /* Fev: Laranja */
+        #E0E0E0 0deg 30deg,     /* Jan: Branco/Cinza Claro */
+        #FF5722 30deg 60deg,    /* Fev: Laranja */
         #8B0000 60deg 90deg,    /* Mar: Vermelho Escuro */
         #00BFFF 90deg 120deg,   /* Abr: Azul Claro */
-        #808080 120deg 150deg,  /* Mai: Cinza */
-        #FF0000 150deg 180deg,  /* Jun: Vermelho */
+        #8E8E93 120deg 150deg,  /* Mai: Cinza */
+        #E60000 150deg 180deg,  /* Jun: Vermelho */
         #006400 180deg 210deg,  /* Jul: Verde Escuro */
-        #DAA520 210deg 240deg,  /* Ago: Dourado */
-        #FFFF00 240deg 270deg,  /* Set: Amarelo */
+        #D4AF37 210deg 240deg,  /* Ago: Dourado */
+        #FFEB3B 240deg 270deg,  /* Set: Amarelo */
         #FF69B4 270deg 300deg,  /* Out: Rosa */
         #000080 300deg 330deg,  /* Nov: Azul Escuro */
         #CD5C5C 330deg 360deg   /* Dez: Vermelho Médio */
     );
+    
+    border: 6px solid #1a1a1a;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: transform 5s cubic-bezier(0.2, 0.8, 0.1, 1);
+    z-index: 1;
+}
     
     /* Uma borda fina e elegante para acabamento */
     border: 4px solid #333;
