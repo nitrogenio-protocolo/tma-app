@@ -786,7 +786,7 @@ main#conteudo-principal section h2 {
     max-width: 380px;           /* Tamanho ideal para telas de celulares em pé */
     height: 380px;              /* Força o quadrado perfeito */
     position: relative;         /* Serve de âncora para os elementos internos */
-    background-image: url('Mesa-.png');
+    background-image: url('paleta de cores.png');
     background-position: center;
     background-size: cover;     /* Centraliza o entalhe redondo no meio */
     background-repeat: no-repeat;
@@ -794,69 +794,78 @@ main#conteudo-principal section h2 {
     box-shadow: 0 10px 30px rgba(0,0,0,0.6); /* Separa a mesa do fundo escuro */
 }
 
-/* SETINHA VERMELHA (Fixada perfeitamente no topo interno da mesa) */
+/* CONTAINER GERAL - ESTILO FOLHA DE CADERNO */
+.caderno-container {
+    width: 100%;
+    max-width: 380px;
+    height: 400px;
+    margin: 0 auto;
+    position: relative;
+    background-color: #FDFBF7; /* Cor de papel antigo/marfim */
+    /* Linhas azuis de caderno pautado feitas direto no CSS */
+    background-image: linear-gradient(#E8E3D9 1px, transparent 1px);
+    background-size: 100% 24px; 
+    border-radius: 12px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 4px 10px rgba(0,0,0,0.3);
+    border-left: 4px solid #FF4D4D; /* Linha vermelha da margem do caderno */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SETINHA VERMELHA (Espremida milimetricamente colada na roleta) */
 .marcador-topo {
     width: 0;
     height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 22px solid #FF3B30; 
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 20px solid #FF3B30; 
     position: absolute;
-    top: 15px;                  /* Distância cirúrgica para colar na borda da pizza */
+    top: 5px;                  /* Colada no topo máximo */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10; 
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
+    z-index: 10;                
+    filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.4));
 }
 
-/* O DISCO DA PIZZA GRANDE (Encaixado perfeitamente no entalhe da madeira) */
-.circulo-disco {
-    width: 320px;               /* Pizza bem grande ocupando quase toda a mesa */
-    height: 320px; 
-    background-image: url('circulo.png');
+/* O DISCO DA ROLETA GIGANTE (Ocupando o espaço máximo com segurança) */
+.roleta-disco {
+    width: 365px;               /* Tamanho máximo para não estourar telas de 380px */
+    height: 365px;
+    background-image: url('roleta-meses.png'); /* Sua nova imagem sem fundo */
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
-    top: 50%;
+    top: 51%;                   /* Ajuste fino para colar na ponta da seta */
     left: 50%;
-    transform: translate(-50%, -50%); /* Centralização perfeita no meio do quadrado */
-    
-    /* A física do giro suave e rápida */
+    transform: translate(-50%, -50%);
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
     will-change: transform;
-    z-index: 2;
+    z-index: 2;                 
 }
 
-/* BOTÃO CENTRAL AZUL 'N' */
+/* BOTÃO CENTRAL MINIMALISTA (O menor possível para não tampar as cores) */
 .btn-roleta-centro { 
     position: absolute; 
-    top: 50%; 
+    top: 51%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
-    width: 55px; 
-    height: 55px; 
+    width: 42px;                /* Reduzido de 55px para 42px */
+    height: 42px;               /* Reduzido de 55px para 42px */
     background: var(--blue); 
     color: #fff; 
-    border: 3px solid #FFF; 
+    border: 2px solid #FFF; 
     border-radius: 50%; 
-    font-size: 1.1rem; 
+    font-size: 0.9rem;          /* Letra menor para encaixar no botão pequeno */
     font-weight: bold; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    z-index: 50; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-}
-
-/* CONTAINER DO BOTÃO INFERIOR */
-.roleta-actions-container {
-    width: 100%;
-    padding: 25px;
-    background: transparent;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
+    z-index: 20;                
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    cursor: pointer;
 }
     
     /* Configuração da desaceleração física (5 segundos) */
