@@ -798,20 +798,13 @@ main#conteudo-principal section h2 {
 .caderno-container {
     width: 100%;
     max-width: 380px;
-    height: 400px;
+    height: 380px;
     margin: 0 auto;
     position: relative;
-    background-color: #FDFBF7; /* Cor de papel antigo/marfim */
-    /* Linhas azuis de caderno pautado feitas direto no CSS */
-    background-image: linear-gradient(#E8E3D9 1px, transparent 1px);
-    background-size: 100% 24px; 
-    border-radius: 12px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 4px 10px rgba(0,0,0,0.3);
-    border-left: 4px solid #FF4D4D; /* Linha vermelha da margem do caderno */
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* Removemos o background pautado, as linhas e as bordas que simulavam o caderno */
+    background: transparent; 
+    border: none;
+    box-shadow: none;
 }
 
 /* SETINHA VERMELHA (Espremida milimetricamente colada na roleta) */
