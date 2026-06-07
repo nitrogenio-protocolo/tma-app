@@ -522,14 +522,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   MECÂNICA DA ROLETA DOS 12 MESES DA SAÚDE
+   MECÂNICA DA ROLETA DOS 12 MESES DA SAÚDE (Organizada no final)
    ========================================================================== */
 
 let grausRoletaAtuais = 0;
-const TOTAL_FATIAS = 12; // Atualizado para os 12 meses do ano!
-const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; // 30 graus cada
+const TOTAL_FATIAS = 12; 
+const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; 
 
-// Captura a nova classe do disco da roleta
 const discoRoleta = document.querySelector('.roleta-disco'); 
 const btnGirarInferior = document.getElementById('btn-girar');
 const btnEixoCentral = document.getElementById('btn-eixo-roleta');
@@ -539,7 +538,6 @@ function executarGiroRoleta(e) {
 
     if (!discoRoleta || (btnGirarInferior && btnGirarInferior.disabled)) return;
 
-    // Trava os botões durante o giro
     if (btnGirarInferior) {
         btnGirarInferior.disabled = true;
         btnGirarInferior.innerText = "GIRANDO...";
@@ -550,18 +548,13 @@ function executarGiroRoleta(e) {
         btnEixoCentral.style.opacity = "0.7";
     }
 
-    // Sorteia o mês (Índice de 0 a 11)
     const indiceSorteado = Math.floor(Math.random() * TOTAL_FATIAS);
     const anguloFatia = indiceSorteado * GRAUS_POR_FATIA;
-
-    // Ajuste para parar bem no centro da fatia colorida
     const deslocamentoCentral = (GRAUS_POR_FATIA / 2); 
 
-    // 5 voltas completas + compensação para rotação horária
     const voltasCompletas = 5 * 360;
     grausRoletaAtuais += voltasCompletas + (360 - (anguloFatia + deslocamentoCentral));
 
-    // Gira mantendo o alinhamento centralizado
     discoRoleta.style.transform = `translate(-50%, -50%) rotate(${grausRoletaAtuais}deg)`;
 
     setTimeout(() => {
@@ -575,7 +568,6 @@ function executarGiroRoleta(e) {
             btnEixoCentral.style.opacity = "1";
         }
 
-        // Mapeia o resultado para exibir o nome do mês certinho no alerta
         const mesesAno = [
             "Janeiro Branco", "Fevereiro Laranja", "Março Vermelho", "Abril Azul",
             "Maio Cinza", "Junho Vermelho", "Julho Verde", "Agosto Dourado",
@@ -587,19 +579,10 @@ function executarGiroRoleta(e) {
     }, 5000);
 }
 
-// Ativa os cliques nos dois botões azuis
-if (btnGirarInferior) btnGirarInferior.addEventListener('click', executarGiroRoleta);
-if (btnEixoCentral) btnEixoCentral.addEventListener('click', executarGiroRoleta);
-  
-
-// ATIVAÇÃO DOS OUVINTES DE CLIQUE (Gatilhos)
-
-// Ativa o clique no botão azul inferior "GIRAR ROLETA"
+// Vincula os cliques de forma definitiva e única nos dois botões
 if (btnGirarInferior) {
     btnGirarInferior.addEventListener('click', executarGiroRoleta);
 }
-
-// Ativa o clique também no botão azul central 'N' do eixo
 if (btnEixoCentral) {
     btnEixoCentral.addEventListener('click', executarGiroRoleta);
 }
