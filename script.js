@@ -522,72 +522,75 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   MECÂNICA DA ROLETA DO BEM (CORRIGIDA E CALIBRADA COM DUPLO CLIQUE)
+   MECÂNICA DA ROLETA DOS 12 MESES DA SAÚDE
    ========================================================================== */
 
 let grausRoletaAtuais = 0;
-const TOTAL_FATIAS = 8; 
-const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; // 45 graus cada
+const TOTAL_FATIAS = 12; // Atualizado para os 12 meses do ano!
+const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; // 30 graus cada
 
-// Elementos capturados corretamente do seu HTML
-const discoRoleta = document.querySelector('.pizza-disco'); // Captura a classe correta da pizza
+// Captura a nova classe do disco da roleta
+const discoRoleta = document.querySelector('.roleta-disco'); 
 const btnGirarInferior = document.getElementById('btn-girar');
 const btnEixoCentral = document.getElementById('btn-eixo-roleta');
 
 function executarGiroRoleta(e) {
     if (e) e.preventDefault();
 
-    // Se o disco não existir ou a roleta já estiver girando, cancela
     if (!discoRoleta || (btnGirarInferior && btnGirarInferior.disabled)) return;
 
-    // 1. Trava os botões para evitar múltiplos cliques simultâneos
+    // Trava os botões durante o giro
     if (btnGirarInferior) {
         btnGirarInferior.disabled = true;
         btnGirarInferior.innerText = "GIRANDO...";
         btnGirarInferior.style.opacity = "0.7";
     }
     if (btnEixoCentral) {
-        btnEixoCentral.style.pointerEvents = "none"; // Desativa temporariamente o clique no 'N'
+        btnEixoCentral.style.pointerEvents = "none";
         btnEixoCentral.style.opacity = "0.7";
     }
 
-    // 2. Sorteia o prêmio (Índice de 0 a 7)
+    // Sorteia o mês (Índice de 0 a 11)
     const indiceSorteado = Math.floor(Math.random() * TOTAL_FATIAS);
-
-    // 3. Calcula o ângulo inicial da fatia correspondente
     const anguloFatia = indiceSorteado * GRAUS_POR_FATIA;
 
-    // === O SEGREDO DO AJUSTE FINO ===
-    // Somamos metade de uma fatia para o ponteiro centralizar na cor
-    const deslocamentoCentral = (GRAUS_POR_FATIA / 2) + (Math.random() * 20 - 10); 
+    // Ajuste para parar bem no centro da fatia colorida
+    const deslocamentoCentral = (GRAUS_POR_FATIA / 2); 
 
-    // 4. Acumula as 5 voltas completas (1800º) + compensação para girar no sentido horário
+    // 5 voltas completas + compensação para rotação horária
     const voltasCompletas = 5 * 360;
     grausRoletaAtuais += voltasCompletas + (360 - (anguloFatia + deslocamentoCentral));
 
-    // 5. Aplica a rotação de forma centralizada mantendo o translate necessário do CSS
+    // Gira mantendo o alinhamento centralizado
     discoRoleta.style.transform = `translate(-50%, -50%) rotate(${grausRoletaAtuais}deg)`;
 
-    // 6. Aguarda a animação de 5 segundos terminar
     setTimeout(() => {
-        // Libera o botão inferior
         if (btnGirarInferior) {
             btnGirarInferior.disabled = false;
             btnGirarInferior.innerText = "GIRAR ROLETA";
             btnGirarInferior.style.opacity = "1";
         }
-        // Libera o botão azul central 'N'
         if (btnEixoCentral) {
             btnEixoCentral.style.pointerEvents = "auto";
             btnEixoCentral.style.opacity = "1";
         }
 
-        // Feedback do resultado
-        alert(`Parabéns! A roleta parou na fatia número: ${indiceSorteado}`);
-        console.log(`[Roleta] Parada perfeita centralizada no índice: ${indiceSorteado}`);
+        // Mapeia o resultado para exibir o nome do mês certinho no alerta
+        const mesesAno = [
+            "Janeiro Branco", "Fevereiro Laranja", "Março Vermelho", "Abril Azul",
+            "Maio Cinza", "Junho Vermelho", "Julho Verde", "Agosto Dourado",
+            "Setembro Amarelo", "Outubro Rosa", "Novembro Azul", "Dezembro Vermelho"
+        ];
+
+        alert(`Parabéns! A roleta parou em: ${mesesAno[indiceSorteado]}`);
         
     }, 5000);
 }
+
+// Ativa os cliques nos dois botões azuis
+if (btnGirarInferior) btnGirarInferior.addEventListener('click', executarGiroRoleta);
+if (btnEixoCentral) btnEixoCentral.addEventListener('click', executarGiroRoleta);
+  
 
 // ATIVAÇÃO DOS OUVINTES DE CLIQUE (Gatilhos)
 
