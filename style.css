@@ -811,8 +811,8 @@ main#conteudo-principal section h2 {
 
 /* O DISCO DA PIZZA AMPLIADO (Encaixe ideal no círculo) */
 .pizza-disco {
-    width: 370px;               /* Aumentado de 290px para 315px */
-    height: 370px;              /* Aumentado de 290px para 315px */
+    width: 390px;               /* Aumentado de 290px para 315px */
+    height: 390px;              /* Aumentado de 290px para 315px */
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: contain;
