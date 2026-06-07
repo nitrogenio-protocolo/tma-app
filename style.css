@@ -695,19 +695,46 @@ main#conteudo-principal section h2 {
     z-index: 10;
 }
 
-/*/* ==========================================================================
+/* ==========================================================================
    COMPONENTES DA CENTRAL DE RECOMPENSAS (Sua Lógica da DAO)
    ========================================================================== */
 /* Calendário de Check-In */
-.calendario-checkin { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 20px 0; }
-.dia-box { background: var(--bg); border: 1px solid #E0E0E0; border-radius: 8px; padding: 8px 4px; text-align: center; }
-.status-circulo { width: 22px; height: 22px; border-radius: 50%; background: #E0E0E0; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; margin: 4px auto 0; }
-.dia-box.concluido { border-color: var(--green); background: #E8F5E9; }
-.dia-box.concluido .status-circulo { background: var(--green) !important; color: white !important; }
+.calendario-checkin { 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 6px; 
+    margin: 20px 0; 
+}
+.dia-box { 
+    background: var(--bg); 
+    border: 1px solid #E0E0E0; 
+    border-radius: 8px; 
+    padding: 8px 4px; 
+    text-align: center; 
+}
+.status-circulo { 
+    width: 22px; 
+    height: 22px; 
+    border-radius: 50%; 
+    background: #E0E0E0; 
+    font-size: 0.7rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin: 4px auto 0; 
+}
+.dia-box.concluido { 
+    border-color: var(--green); 
+    background: #E8F5E9; 
+}
+.dia-box.concluido .status-circulo { 
+    background: var(--green) !important; 
+    color: white !important; 
+}
 
-/* ==========================================
+/* ==========================================================================
    NOVA ROLETA DE PIZZA (ESTILIZAÇÃO COM AS IMAGENS)
-   ========================================== */
+   ========================================================================== */
 
 /* CONTAINER DA MESA RÚSTICA (Substitui o roleta-container antigo) */
 .mesa-container {
@@ -719,8 +746,6 @@ main#conteudo-principal section h2 {
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     overflow: hidden;
-
-    /* Puxando a sua imagem nova da mesa */
     background-image: url('mesa-pizzaria.png');
     background-position: center;
     background-size: cover;
@@ -735,14 +760,12 @@ main#conteudo-principal section h2 {
     top: 19%; /* Centraliza perfeitamente no entalhe redondo da mesa */
     left: 19%;
     border-radius: 50%;
-    
-    /* Puxando a sua imagem nova da pizza recortada */
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 
-    /* A física do giro suave e rápida */
+    /* A física do giro suave e rápida (5 segundos de desaceleração) */
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
     will-change: transform;
 }
