@@ -736,19 +736,19 @@ main#conteudo-principal section h2 {
    ROLETA DE PIZZA - FOCO EM DISPOSITIVOS VERTICAIS (CELULAR EM PÉ)
    ========================================================================== */
 
-/* A folha inteira agora tem um fundo escuro para eliminar totalmente o branco */
+/* A folha inteira com fundo escuro integrado */
 #folha-roleta {
     padding: 0 !important;
     margin: 0 !important;
     min-height: 100vh;
-    background-color: #171513;  /* Cor escura que combina com a madeira */
+    background-color: #171513;  /* Tonalidade escura que combina com a madeira */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
 }
 
-/* 1. ÁREA DO TOPO (Textos brancos para destacar no fundo escuro) */
+/* ÁREA DO TOPO */
 .roleta-topo-container {
     padding: 20px 20px 10px 20px;
     text-align: center;
@@ -770,7 +770,7 @@ main#conteudo-principal section h2 {
     float: left;
 }
 
-/* 2. CONTEXTO DA MESA (Centralizado e quadrado perfeito para o celular em pé) */
+/* ÁREA CENTRAL QUE CENTRALIZA A MESA */
 .full-screen-roleta {
     width: 100%;
     display: flex;
@@ -780,47 +780,47 @@ main#conteudo-principal section h2 {
     padding: 10px 0;
 }
 
-/* O quadrado da mesa onde a imagem não deforma */
+/* O QUADRADO FIXO DA MESA (A imagem não deforma nem estica) */
 .mesa-container {
-    width: 100%;
-    max-width: 380px;           /* Limita a largura para ficar perfeito em pé */
-    height: 380px;              /* Força um quadrado perfeito */
-    position: relative;
+    width: 92%;
+    max-width: 380px;           /* Tamanho ideal para telas de celulares em pé */
+    height: 380px;              /* Força o quadrado perfeito */
+    position: relative;         /* Serve de âncora para os elementos internos */
     background-image: url('mesa-pizzaria.png');
     background-position: center;
-    background-size: cover;     /* Corta e ajusta perfeitamente o círculo no meio */
+    background-size: cover;     /* Centraliza o entalhe redondo no meio */
     background-repeat: no-repeat;
-    border-radius: 12px;        /* Bordas levemente arredondadas na mesa */
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5); /* Destaca a mesa do fundo escuro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 16px;        /* Deixa as bordinhas da mesa arredondadas e elegantes */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6); /* Separa a mesa do fundo escuro */
 }
 
-/* SETINHA VERMELHA (Trava no topo exato da mesa quadrada) */
+/* SETINHA VERMELHA (Fixada perfeitamente no topo interno da mesa) */
 .marcador-topo {
     width: 0;
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 20px solid #FF3B30; 
+    border-top: 22px solid #FF3B30; 
     position: absolute;
-    top: 15px;                  /* Distância fixa do topo da mesa */
+    top: 15px;                  /* Distância cirúrgica para colar na borda da pizza */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10; 
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
 }
 
-/* O DISCO DA PIZZA (Centralizado perfeitamente no miolo da mesa quadrada) */
+/* O DISCO DA PIZZA GRANDE (Encaixado perfeitamente no entalhe da madeira) */
 .pizza-disco {
-    width: 290px;               /* Tamanho exato para encaixar no entalhe do quadrado */
-    height: 290px; 
+    width: 320px;               /* Pizza bem grande ocupando quase toda a mesa */
+    height: 320px; 
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centralização perfeita no meio do quadrado */
     
     /* A física do giro suave e rápida */
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
@@ -828,7 +828,7 @@ main#conteudo-principal section h2 {
     z-index: 2;
 }
 
-/* Botão azul central 'N' */
+/* BOTÃO CENTRAL AZUL 'N' */
 .btn-roleta-centro { 
     position: absolute; 
     top: 50%; 
@@ -849,15 +849,16 @@ main#conteudo-principal section h2 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
-/* 3. ÁREA DO BOTÃO INFERIOR */
+/* CONTAINER DO BOTÃO INFERIOR */
 .roleta-actions-container {
     width: 100%;
-    padding: 20px;
+    padding: 25px;
     background: transparent;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
 }
+
     
     /* Configuração da desaceleração física (5 segundos) */
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
