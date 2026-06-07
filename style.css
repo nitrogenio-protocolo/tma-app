@@ -794,7 +794,7 @@ main#conteudo-principal section h2 {
     box-shadow: 0 10px 30px rgba(0,0,0,0.6); /* Separa a mesa do fundo escuro */
 }
 
-/* SETINHA VERMELHA (Fixada perfeitamente no topo interno da mesa) */
+/* SETINHA VERMELHA (Descida um pouco para colar na pizza maior) */
 .marcador-topo {
     width: 0;
     height: 0;
@@ -802,17 +802,17 @@ main#conteudo-principal section h2 {
     border-right: 15px solid transparent;
     border-top: 22px solid #FF3B30; 
     position: absolute;
-    top: 15px;                  /* Distância cirúrgica para colar na borda da pizza */
+    top: 30px;                  /* Baixamos de 15px para 30px para colar na borda */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10; 
+    z-index: 10;                /* Fica por cima da mesa e da pizza */
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
 }
 
-/* O DISCO DA PIZZA GRANDE (Encaixado perfeitamente no entalhe da madeira) */
+/* O DISCO DA PIZZA AMPLIADO (Encaixe ideal no círculo) */
 .pizza-disco {
-    width: 320px;               /* Pizza bem grande ocupando quase toda a mesa */
-    height: 320px; 
+    width: 315px;               /* Aumentado de 290px para 315px */
+    height: 315px;              /* Aumentado de 290px para 315px */
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: contain;
@@ -820,15 +820,13 @@ main#conteudo-principal section h2 {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Centralização perfeita no meio do quadrado */
-    
-    /* A física do giro suave e rápida */
+    transform: translate(-50%, -50%);
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
     will-change: transform;
-    z-index: 2;
+    z-index: 2;                 /* Fica abaixo da seta e do botão azul */
 }
 
-/* BOTÃO CENTRAL AZUL 'N' */
+/* BOTÃO CENTRAL AZUL 'N' (Corrigido para receber o clique) */
 .btn-roleta-centro { 
     position: absolute; 
     top: 50%; 
@@ -845,8 +843,9 @@ main#conteudo-principal section h2 {
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    z-index: 50; 
+    z-index: 20;                /* Valor alto garante que fique na frente da pizza e clique */
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    cursor: pointer;            /* Transforma a seta do mouse em mãozinha no PC */
 }
 
 /* CONTAINER DO BOTÃO INFERIOR */
