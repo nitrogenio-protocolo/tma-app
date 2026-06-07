@@ -813,7 +813,7 @@ main#conteudo-principal section h2 {
 .pizza-disco {
     width: 320px;               /* Pizza bem grande ocupando quase toda a mesa */
     height: 320px; 
-    background-image: url('pizza-roleta.png');
+    background-image: url('circulo.png');
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
