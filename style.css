@@ -786,7 +786,7 @@ main#conteudo-principal section h2 {
     max-width: 380px;           /* Tamanho ideal para telas de celulares em pé */
     height: 380px;              /* Força o quadrado perfeito */
     position: relative;         /* Serve de âncora para os elementos internos */
-    background-image: url('mesa-pizzaria.png');
+    background-image: url('mesa.png');
     background-position: center;
     background-size: cover;     /* Centraliza o entalhe redondo no meio */
     background-repeat: no-repeat;
