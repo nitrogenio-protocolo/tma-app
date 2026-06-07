@@ -789,8 +789,8 @@ main#conteudo-principal section h2 {
 
 /* O DISCO DA PIZZA TRANSPARENTE (Centralizado na tela) */
 .pizza-disco {
-    width: 400px;  
-    height: 400px; 
+    width: 500px;  
+    height: 500px; 
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: contain;
