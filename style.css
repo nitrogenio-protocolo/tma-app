@@ -787,20 +787,28 @@ main#conteudo-principal section h2 {
     margin: 20px 0;
 }
 
-/* O DISCO DA PIZZA TRANSPARENTE (Centralizado na tela) */
+/* O DISCO DA PIZZA TRANSPARENTE (Ajustado para o centro do entalhe e maior) */
 .pizza-disco {
-    width: 300px;  
-    height: 300px; 
+    width: 320px;   /* Aumentamos para preencher melhor o entalhe e aproximar da seta */
+    height: 320px; 
     background-image: url('pizza-roleta.png');
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
+    
+    /* Reposiciona dinamicamente para alinhar com o círculo esculpido na madeira */
+    position: absolute;
+    top: 53%;       
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* A física do giro suave e rápida (5 segundos de desaceleração) */
     transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1);
     will-change: transform;
     z-index: 2;
 }
 
-/* SETINHA VERMELHA (Posicionada perfeitamente acima da pizza flutuante) */
+/* SETINHA VERMELHA (Calibrada para apontar exatamente na borda superior da pizza maior) */
 .marcador-topo {
     width: 0;
     height: 0;
@@ -808,7 +816,7 @@ main#conteudo-principal section h2 {
     border-right: 15px solid transparent;
     border-top: 20px solid #FF3B30; 
     position: absolute;
-    top: calc(50% - 170px); /* Trava dinamicamente logo acima do disco de 300px */
+    top: calc(53% - 180px); /* Acompanha o novo centro da pizza, travando na borda superior */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10; 
