@@ -522,53 +522,81 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   MECÂNICA DA ROLETA DO BEM (INJETADA COM PERFEIÇÃO NO FIM DO ARQUIVO)
+   MECÂNICA DA ROLETA DO BEM (CORRIGIDA E CALIBRADA COM DUPLO CLIQUE)
    ========================================================================== */
 
 let grausRoletaAtuais = 0;
 const TOTAL_FATIAS = 8; 
 const GRAUS_POR_FATIA = 360 / TOTAL_FATIAS; // 45 graus cada
 
-// Elementos capturados diretamente do seu HTML modificado
-const discoRoleta = document.getElementById('disco-roleta');
-const btnGirarRoleta = document.getElementById('btn-girar');
+// Elementos capturados corretamente do seu HTML
+const discoRoleta = document.querySelector('.pizza-disco'); // Captura a classe correta da pizza
+const btnGirarInferior = document.getElementById('btn-girar');
+const btnEixoCentral = document.getElementById('btn-eixo-roleta');
 
-if (btnGirarRoleta && discoRoleta) {
-    btnGirarRoleta.addEventListener('click', (e) => {
-        e.preventDefault();
+function executarGiroRoleta(e) {
+    if (e) e.preventDefault();
 
-        // 1. Trava o botão para evitar múltiplos cliques
-        btnGirarRoleta.disabled = true;
-        btnGirarRoleta.innerText = "GIRANDO...";
-        btnGirarRoleta.style.opacity = "0.7";
+    // Se o disco não existir ou a roleta já estiver girando, cancela
+    if (!discoRoleta || (btnGirarInferior && btnGirarInferior.disabled)) return;
 
-        // 2. Sorteia o prêmio (Índice de 0 a 7)
-        const indiceSorteado = Math.floor(Math.random() * TOTAL_FATIAS);
+    // 1. Trava os botões para evitar múltiplos cliques simultâneos
+    if (btnGirarInferior) {
+        btnGirarInferior.disabled = true;
+        btnGirarInferior.innerText = "GIRANDO...";
+        btnGirarInferior.style.opacity = "0.7";
+    }
+    if (btnEixoCentral) {
+        btnEixoCentral.style.pointerEvents = "none"; // Desativa temporariamente o clique no 'N'
+        btnEixoCentral.style.opacity = "0.7";
+    }
 
-        // 3. Calcula o ângulo inicial da fatia correspondente
-        const anguloFatia = indiceSorteado * GRAUS_POR_FATIA;
+    // 2. Sorteia o prêmio (Índice de 0 a 7)
+    const indiceSorteado = Math.floor(Math.random() * TOTAL_FATIAS);
 
-        // === O SEGREDO DO AJUSTE FINO ===
-        // Somamos metade de uma fatia (GRAUS_POR_FATIA / 2) para o ponteiro centralizar na cor!
-        const deslocamentoCentral = (GRAUS_POR_FATIA / 2) + (Math.random() * 20 - 10); 
+    // 3. Calcula o ângulo inicial da fatia correspondente
+    const anguloFatia = indiceSorteado * GRAUS_POR_FATIA;
 
-        // 4. Acumula as 5 voltas completas (1800º) + compensação para girar no sentido horário
-        const voltasCompletas = 5 * 360;
-        grausRoletaAtuais += voltasCompletas + (360 - (anguloFatia + deslocamentoCentral));
+    // === O SEGREDO DO AJUSTE FINO ===
+    // Somamos metade de uma fatia para o ponteiro centralizar na cor
+    const deslocamentoCentral = (GRAUS_POR_FATIA / 2) + (Math.random() * 20 - 10); 
 
-        // 5. Aplica a rotação acelerada pela GPU do aparelho
-        discoRoleta.style.transform = `rotate(${grausRoletaAtuais}deg)`;
+    // 4. Acumula as 5 voltas completas (1800º) + compensação para girar no sentido horário
+    const voltasCompletas = 5 * 360;
+    grausRoletaAtuais += voltasCompletas + (360 - (anguloFatia + deslocamentoCentral));
 
-        // 6. Aguarda a animação de 5 segundos terminar
-        setTimeout(() => {
-            btnGirarRoleta.disabled = false;
-            btnGirarRoleta.innerText = "GIRAR ROLETA";
-            btnGirarRoleta.style.opacity = "1";
+    // 5. Aplica a rotação de forma centralizada mantendo o translate necessário do CSS
+    discoRoleta.style.transform = `translate(-50%, -50%) rotate(${grausRoletaAtuais}deg)`;
 
-            // Feedback limpo do resultado
-            alert(`Parabéns! A roleta parou na fatia número: ${indiceSorteado}`);
-            console.log(`[Roleta] Parada perfeita centralizada no índice: ${indiceSorteado}`);
-            
-        }, 5000);
-    });
+    // 6. Aguarda a animação de 5 segundos terminar
+    setTimeout(() => {
+        // Libera o botão inferior
+        if (btnGirarInferior) {
+            btnGirarInferior.disabled = false;
+            btnGirarInferior.innerText = "GIRAR ROLETA";
+            btnGirarInferior.style.opacity = "1";
+        }
+        // Libera o botão azul central 'N'
+        if (btnEixoCentral) {
+            btnEixoCentral.style.pointerEvents = "auto";
+            btnEixoCentral.style.opacity = "1";
+        }
+
+        // Feedback do resultado
+        alert(`Parabéns! A roleta parou na fatia número: ${indiceSorteado}`);
+        console.log(`[Roleta] Parada perfeita centralizada no índice: ${indiceSorteado}`);
+        
+    }, 5000);
+}
+
+// ATIVAÇÃO DOS OUVINTES DE CLIQUE (Gatilhos)
+
+// Ativa o clique no botão azul inferior "GIRAR ROLETA"
+if (btnGirarInferior) {
+    btnGirarInferior.addEventListener('click', executarGiroRoleta);
+}
+
+// Ativa o clique também no botão azul central 'N' do eixo
+if (btnEixoCentral) {
+    btnEixoCentral.addEventListener('click', executarGiroRoleta);
 }
