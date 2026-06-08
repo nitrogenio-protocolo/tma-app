@@ -841,6 +841,9 @@ main#conteudo-principal section h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(0deg);
+    transform-origin: center center;
+    will-change: transform;
+    z-index: 1;
     border-radius: 50%;
     
     background: conic-gradient(
