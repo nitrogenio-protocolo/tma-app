@@ -788,6 +788,7 @@ main#conteudo-principal section h2 {
     align-items: center;
     flex-grow: 1;
     padding: 10px 0;
+    overflow: hidden;
 }
 
 /* O QUADRADO FIXO DA MESA (Sem deformar a mesa de madeira) */
@@ -802,6 +803,7 @@ main#conteudo-principal section h2 {
     background-repeat: no-repeat;
     border-radius: 16px;        
     box-shadow: 0 10px 30px rgba(0,0,0,0.6); 
+    overflow: hidden;
 }
 
 /* CONTAINER GERAL - TRANSPARENTE PARA MOSTRAR A MESA */
